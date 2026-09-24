@@ -1,25 +1,67 @@
 {
   "expo": {
-    "name": "cefr-mock",
+    "name": "CEFR Mock",
     "slug": "cefr-mock",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "cefrmock",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "uz.cefrmock.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak."
+      }
     },
     "android": {
+      "package": "uz.cefrmock.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#F0FDDC",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-asset",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#F6F6F7"
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fa3862c3-3a0b-4941-9a3a-f868eb316f05"
+      }
     }
   }
 }

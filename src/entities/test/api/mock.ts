@@ -1,0 +1,108 @@
+import type { SectionMeta, TestDetail, TestSummary } from '../model/types';
+import { listeningParts, readingParts, speakingQuestions, writingTasks } from './content';
+
+export const tests: TestSummary[] = [
+  {
+    id: 't13',
+    number: 13,
+    title: 'Mock Test #13',
+    subtitle: 'Sentabr 2026 formati',
+    durationLabel: '2:45',
+    isNew: true,
+    isFree: true,
+    isPro: false,
+    status: 'new',
+  },
+  {
+    id: 't12',
+    number: 12,
+    title: 'Mock Test #12',
+    subtitle: 'Davom etmoqda · Reading',
+    durationLabel: '2:45',
+    isNew: false,
+    isFree: true,
+    isPro: false,
+    status: 'in_progress',
+    progress: 0.51,
+    resumeSection: 'reading',
+    resumeLabel: '18/35 · 32:10 qoldi',
+  },
+  {
+    id: 't11',
+    number: 11,
+    title: 'Mock Test #11',
+    subtitle: 'Tugatilgan · 22-sentabr',
+    durationLabel: '2:45',
+    isNew: false,
+    isFree: true,
+    isPro: false,
+    status: 'completed',
+    score: 58,
+    level: 'B2',
+    completedLabel: '22-sentabr',
+    resultId: 'r11',
+  },
+  {
+    id: 't14',
+    number: 14,
+    title: 'Mock Test #14',
+    subtitle: 'Premium · C1 darajali',
+    durationLabel: '2:45',
+    isNew: false,
+    isFree: false,
+    isPro: true,
+    status: 'locked',
+  },
+  {
+    id: 't10',
+    number: 10,
+    title: 'Mock Test #10',
+    subtitle: 'Tugatilgan · 8-sentabr',
+    durationLabel: '2:45',
+    isNew: false,
+    isFree: true,
+    isPro: false,
+    status: 'completed',
+    score: 54,
+    level: 'B2',
+    completedLabel: '8-sentabr',
+    resultId: 'r10',
+  },
+  {
+    id: 't15',
+    number: 15,
+    title: 'Mock Test #15',
+    subtitle: 'Premium · Oktabr formati',
+    durationLabel: '2:45',
+    isNew: true,
+    isFree: false,
+    isPro: true,
+    status: 'locked',
+  },
+];
+
+const sections: SectionMeta[] = [
+  { kind: 'listening', title: 'Listening', detail: `${listeningParts.length} qism · 35 savol`, minutes: 35 },
+  { kind: 'reading', title: 'Reading', detail: `${readingParts.length} qism · 35 savol`, minutes: 60 },
+  { kind: 'writing', title: 'Writing', detail: `${writingTasks.length} topshiriq · AI baho`, minutes: 60 },
+  { kind: 'speaking', title: 'Speaking', detail: '3 qism · AI baho', minutes: 15, approx: true },
+];
+
+export const buildTestDetail = (summary: TestSummary): TestDetail => ({
+  id: summary.id,
+  number: summary.number,
+  title: summary.title,
+  subtitle: summary.subtitle,
+  format: 'Sentabr 2026 rasmiy formati',
+  durationLabel: summary.durationLabel,
+  sectionsCount: sections.length,
+  scoreRange: '0–75',
+  sections,
+  listening: listeningParts,
+  reading: readingParts,
+  writing: writingTasks,
+  speaking: speakingQuestions,
+});
+
+export const delay = <T,>(value: T, ms = 400) =>
+  new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
