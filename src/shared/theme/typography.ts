@@ -1,10 +1,10 @@
 import { Platform, TextStyle } from 'react-native';
 
 export const font = {
-  light: 'Geist-Light',
-  regular: 'Geist-Regular',
-  medium: 'Geist-Medium',
-  semibold: 'Geist-SemiBold',
+  light: 'Montserrat-Light',
+  regular: 'Montserrat-Regular',
+  medium: 'Montserrat-Medium',
+  semibold: 'Montserrat-SemiBold',
   mono: 'GeistMono-Regular',
   monoMedium: 'GeistMono-Medium',
   serif: Platform.select({ ios: 'Georgia', default: 'serif' }),
@@ -26,23 +26,23 @@ const make = (fontFamily: string, fontSize: number, lineHeight: number, tracking
 });
 
 export const type = {
-  displayXl: make(font.light, 64, 58, -0.06),
-  display: make(font.light, 56, 50, -0.06),
-  displayMd: make(font.light, 48, 44, -0.06),
-  displaySm: make(font.light, 40, 36, -0.055),
-  numeral: make(font.light, 36, 36, -0.05),
+  displayXl: make(font.light, 64, 58, -0.03),
+  display: make(font.light, 56, 50, -0.03),
+  displayMd: make(font.light, 48, 44, -0.03),
+  displaySm: make(font.light, 40, 36, -0.027),
+  numeral: make(font.light, 36, 36, -0.025),
 
-  statLg: make(font.regular, 26, 26, -0.04),
-  statMd: make(font.regular, 22, 22, -0.04),
+  statLg: make(font.regular, 26, 26, -0.02),
+  statMd: make(font.regular, 22, 22, -0.02),
 
-  titleXl: make(font.medium, 30, 34, -0.035),
-  titleLg: make(font.medium, 28, 32, -0.035),
-  titleLogo: make(font.medium, 24, 28, -0.03),
-  titleSheet: make(font.medium, 22, 28, -0.03),
-  titleMd: make(font.medium, 20, 25, -0.025),
-  titleReading: make(font.medium, 19, 25, -0.025),
-  titleBadge: make(font.medium, 18, 22, -0.02),
-  heading: make(font.medium, 17, 22, -0.015),
+  titleXl: make(font.semibold, 30, 34, -0.017),
+  titleLg: make(font.semibold, 28, 32, -0.017),
+  titleLogo: make(font.semibold, 24, 28, -0.015),
+  titleSheet: make(font.semibold, 22, 28, -0.015),
+  titleMd: make(font.semibold, 20, 25, -0.012),
+  titleReading: make(font.semibold, 19, 25, -0.012),
+  titleBadge: make(font.semibold, 18, 22, -0.01),
+  heading: make(font.semibold, 17, 22, -0.007),
   titleSm: make(font.medium, 16, 22),
 
   lead: make(font.regular, 17, 25),
@@ -50,7 +50,7 @@ export const type = {
   bodyMedium: make(font.medium, 16, 24),
   label: make(font.regular, 15, 21),
   labelRelaxed: make(font.regular, 15, 23),
-  labelMedium: make(font.medium, 15, 21, -0.01),
+  labelMedium: make(font.medium, 15, 21, -0.005),
   bodySm: make(font.regular, 14, 20),
   bodySmRelaxed: make(font.regular, 14, 21),
   bodySmMedium: make(font.medium, 14, 20),

@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
 import { useAttemptStore } from '@/entities/attempt';
@@ -9,6 +10,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useKeyboardLift } from '@/shared/lib';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button, ConfirmSheet, SegmentedControl } from '@/shared/ui';
 import { countWords, useDrafts } from './draft';
@@ -50,6 +52,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
   const task = tasks[index];
   const other = tasks[(index + 1) % tasks.length];
   const footerSpace = Math.max(insets.bottom, space[3]) + size.buttonM + space[3];
+  const lift = useKeyboardLift(footerSpace);
 
   useEffect(() => {
     setPosition('writing', index);
@@ -73,8 +76,10 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
   }, [finish]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
-      <View style={[styles.body, { paddingTop: insets.top + size.topGap, paddingBottom: footerSpace + space[3] }]}>
+    <View style={styles.screen}>
+      <Animated.View
+        style={[styles.body, { paddingTop: insets.top + size.topGap, paddingBottom: footerSpace + space[3] }, lift]}
+      >
         <SessionHeader
           title="Writing"
           subtitle={`${task.label} · ${task.kind}`}
@@ -89,7 +94,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
             <TaskBrief task={task} />
           </ScrollView>
         )}
-      </View>
+      </Animated.View>
 
       <SessionFooter>
         <View style={styles.actions}>
@@ -119,7 +124,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
         onClose={() => setShortWarning(null)}
       />
       <SessionSheets controls={controls} />
-    </KeyboardAvoidingView>
+    </View>
   );
 });
 

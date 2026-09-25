@@ -5,12 +5,13 @@ import { Avatar, Button, Card, Tag, Text } from '@/shared/ui';
 
 export type ProfileCardProps = {
   name: string;
-  phone: string;
+  contact: string;
+  monoContact: boolean;
   isPro: boolean;
   onUpgrade: () => void;
 };
 
-export const ProfileCard = memo<ProfileCardProps>(({ name, phone, isPro, onUpgrade }) => {
+export const ProfileCard = memo<ProfileCardProps>(({ name, contact, monoContact, isPro, onUpgrade }) => {
   const { colors } = useTheme();
 
   return (
@@ -18,8 +19,8 @@ export const ProfileCard = memo<ProfileCardProps>(({ name, phone, isPro, onUpgra
       <Avatar name={name} size={56} />
       <View style={styles.body}>
         <Text variant="heading">{name}</Text>
-        <Text variant="monoSm" color={colors.textSecondary}>
-          {phone}
+        <Text variant={monoContact ? 'monoSm' : 'caption'} color={colors.textSecondary} numberOfLines={1}>
+          {contact}
         </Text>
       </View>
       {isPro ? (

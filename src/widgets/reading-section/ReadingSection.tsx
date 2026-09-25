@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react-native';
 import { QuestionGridSheet, useAttemptStore } from '@/entities/attempt';
@@ -9,6 +10,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useKeyboardLift } from '@/shared/lib';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, SegmentedControl, Text } from '@/shared/ui';
 import { Passage } from './Passage';
@@ -41,6 +43,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
   const part = parts[partIndex];
   const indexInPart = part.questions.indexOf(question);
   const footerSpace = Math.max(insets.bottom, space[3]) + size.buttonM + space[3];
+  const lift = useKeyboardLift(footerSpace);
 
   useEffect(() => {
     setPosition('reading', index);
@@ -74,43 +77,45 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
   }, [requestFinish]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
-      <View style={[styles.top, { paddingTop: insets.top + size.topGap }]}>
-        <SessionHeader
-          title="Reading"
-          counter={`${partIndex + 1}/${parts.length}`}
-          progress={{ total: parts.length, completed: partIndex, current: indexInPart / part.questions.length }}
-          timer={<SectionTimer section="reading" onExpire={controls.finish} />}
-          onClose={controls.requestExit}
-        />
-        <View style={styles.tools}>
-          <SegmentedControl options={modeOptions} value={mode} onChange={setMode} style={styles.modes} />
-          <Pressable
-            accessibilityRole="switch"
-            accessibilityLabel="Serif shrift"
-            accessibilityState={{ checked: serif }}
-            onPress={() => setSerif((value) => !value)}
-            style={[styles.fontToggle, serif && styles.fontToggleActive]}
-          >
-            <Text variant="serifLabel" color={serif ? colors.selectedText : colors.text} style={styles.fontLabel}>
-              Aa
-            </Text>
-          </Pressable>
+    <View style={styles.screen}>
+      <Animated.View style={[styles.body, lift]}>
+        <View style={[styles.top, { paddingTop: insets.top + size.topGap }]}>
+          <SessionHeader
+            title="Reading"
+            counter={`${partIndex + 1}/${parts.length}`}
+            progress={{ total: parts.length, completed: partIndex, current: indexInPart / part.questions.length }}
+            timer={<SectionTimer section="reading" onExpire={controls.finish} />}
+            onClose={controls.requestExit}
+          />
+          <View style={styles.tools}>
+            <SegmentedControl options={modeOptions} value={mode} onChange={setMode} style={styles.modes} />
+            <Pressable
+              accessibilityRole="switch"
+              accessibilityLabel="Serif shrift"
+              accessibilityState={{ checked: serif }}
+              onPress={() => setSerif((value) => !value)}
+              style={[styles.fontToggle, serif && styles.fontToggleActive]}
+            >
+              <Text variant="serifLabel" color={serif ? colors.selectedText : colors.text} style={styles.fontLabel}>
+                Aa
+              </Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
 
-      {mode === 'questions' ? null : (
-        <Passage part={part} serif={serif} bottomInset={mode === 'text' ? footerSpace : 0} />
-      )}
+        {mode === 'questions' ? null : (
+          <Passage part={part} serif={serif} bottomInset={mode === 'text' ? footerSpace : 0} />
+        )}
 
-      {mode === 'text' ? null : (
-        <QuestionPanel
-          question={question}
-          siblings={part.questions}
-          expanded={mode === 'questions'}
-          bottomInset={footerSpace}
-        />
-      )}
+        {mode === 'text' ? null : (
+          <QuestionPanel
+            question={question}
+            siblings={part.questions}
+            expanded={mode === 'questions'}
+            bottomInset={footerSpace}
+          />
+        )}
+      </Animated.View>
 
       <SessionFooter tone="solid">
         <View style={styles.actions}>
@@ -160,13 +165,16 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
         onClose={() => setGridOpen(false)}
       />
       <SessionSheets controls={controls} onReview={onReview} />
-    </KeyboardAvoidingView>
+    </View>
   );
 });
 
 ReadingSection.displayName = 'ReadingSection';
 
 const useStyles = makeStyles(({ colors }) => ({
+  body: {
+    flex: 1,
+  },
   screen: {
     flex: 1,
     backgroundColor: colors.bg,

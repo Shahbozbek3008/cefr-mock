@@ -22,9 +22,9 @@ export const features = [
   'Shaxsiy tayyorgarlik rejasi',
 ];
 
-export const paymentMethods: { id: PaymentMethod; title: string; letter: string }[] = [
-  { id: 'click', title: 'Click', letter: 'C' },
-  { id: 'payme', title: 'Payme', letter: 'P' },
+export const paymentMethods: { id: PaymentMethod; title: string }[] = [
+  { id: 'click', title: 'Click' },
+  { id: 'payme', title: 'Payme' },
 ];
 
 export const formatSum = (value: number) => String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

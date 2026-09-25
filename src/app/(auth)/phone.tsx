@@ -1,14 +1,17 @@
 import { useCallback, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
-import { isPhoneComplete } from '@/features/auth/model';
+import { useUserStore } from '@/entities/user/model';
+import type { User } from '@/entities/user/model';
+import { isPhoneComplete, useGoogleSignIn } from '@/features/auth/model';
 import { PhoneField } from '@/features/auth/ui/PhoneField';
 import { SocialButton } from '@/features/auth/ui/SocialButton';
 import { AppleIcon, GoogleIcon } from '@/shared/icons';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
-import { Button, HeroSurface, Screen, Text } from '@/shared/ui';
+import { Button, HeroSurface, Screen, Text, useToast } from '@/shared/ui';
 
 export default function PhoneScreen() {
   const styles = useStyles();
@@ -17,6 +20,20 @@ export default function PhoneScreen() {
   const [digits, setDigits] = useState('');
 
   const complete = isPhoneComplete(digits);
+  const setUser = useUserStore((s) => s.setUser);
+  const showToast = useToast((s) => s.show);
+
+  const onGoogleUser = useCallback(
+    (user: User) => {
+      setUser(user);
+      router.replace('/(tabs)/home');
+    },
+    [setUser],
+  );
+
+  const onGoogleError = useCallback((message: string) => showToast({ message, tone: 'error' }), [showToast]);
+
+  const google = useGoogleSignIn(onGoogleUser, onGoogleError);
 
   const onRequestCode = useCallback(() => {
     if (!complete) return;
@@ -25,7 +42,7 @@ export default function PhoneScreen() {
 
   return (
     <Screen paddingHorizontal={24}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
+      <KeyboardAvoidingView behavior="padding" style={styles.flex}>
         <ScrollView
           contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled"
@@ -64,8 +81,18 @@ export default function PhoneScreen() {
           </View>
 
           <View style={styles.social}>
-            <SocialButton label="Google bilan davom etish" icon={<GoogleIcon />} onPress={() => undefined} />
-            <SocialButton label="Apple bilan davom etish" icon={<AppleIcon color={colors.surface} />} tone="dark" onPress={() => undefined} />
+            <SocialButton
+              label="Google bilan davom etish"
+              icon={<GoogleIcon />}
+              loading={google.loading}
+              onPress={google.signIn}
+            />
+            <SocialButton
+              label="Apple bilan davom etish"
+              icon={<AppleIcon color={colors.surface} />}
+              tone="dark"
+              onPress={() => undefined}
+            />
           </View>
         </ScrollView>
 

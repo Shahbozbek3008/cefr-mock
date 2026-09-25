@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ChevronLeft, RotateCcw } from 'lucide-react-native';
 import { useUserStore } from '@/entities/user/model';
@@ -27,6 +28,7 @@ export default function OtpScreen() {
     setUser({
       id: 'local',
       name: 'Aziza Karimova',
+      provider: 'phone',
       phone: `${PHONE_PREFIX}${phone}`,
       isPro: false,
     });
@@ -39,7 +41,7 @@ export default function OtpScreen() {
 
   return (
     <Screen paddingHorizontal={24}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
+      <KeyboardAvoidingView behavior="padding" style={styles.flex}>
         <View style={styles.topBar}>
           <IconButton accessibilityLabel="Orqaga" onPress={router.back} style={styles.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />

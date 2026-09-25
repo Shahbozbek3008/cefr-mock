@@ -5,7 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Bell, Calendar, CircleHelp, Globe, Moon, Sun, Target } from 'lucide-react-native';
 import { useAttemptStore } from '@/entities/attempt';
 import { useUserStore } from '@/entities/user/model';
-import { PHONE_PREFIX, formatPhone } from '@/features/auth/model';
+import type { User } from '@/entities/user/model';
+import { PHONE_PREFIX, formatPhone, signOutFromGoogle } from '@/features/auth/model';
 import { ProfileCard } from '@/features/profile/ui/ProfileCard';
 import { themeLabel } from '@/features/theme-switch/model/options';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
@@ -14,7 +15,8 @@ import { hitSlop, makeStyles, size, space, useTheme, useThemePreference } from '
 import { ConfirmSheet, ListGroup, ListRow, Switch, Text, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
-const displayPhone = (phone: string) => `${PHONE_PREFIX} ${formatPhone(phone.replace(PHONE_PREFIX, ''))}`;
+const contactOf = (user: User | null) =>
+  user?.phone ? `${PHONE_PREFIX} ${formatPhone(user.phone.replace(PHONE_PREFIX, ''))}` : (user?.email ?? '');
 
 export default function ProfileScreen() {
   const styles = useStyles();
@@ -35,10 +37,11 @@ export default function ProfileScreen() {
 
   const onSignOut = useCallback(() => {
     setConfirmOpen(false);
+    if (user?.provider === 'google') signOutFromGoogle();
     resetAttempt();
     signOut();
     router.replace('/(auth)/phone');
-  }, [resetAttempt, signOut]);
+  }, [resetAttempt, signOut, user?.provider]);
 
   const soon = useCallback(() => showToast({ message: "Bu sozlama keyingi versiyada qo'shiladi" }), [showToast]);
 
@@ -58,7 +61,8 @@ export default function ProfileScreen() {
 
         <ProfileCard
           name={user?.name ?? 'Aziza Karimova'}
-          phone={displayPhone(user?.phone ?? '')}
+          contact={contactOf(user)}
+          monoContact={Boolean(user?.phone)}
           isPro={user?.isPro ?? false}
           onUpgrade={() => router.push('/subscription')}
         />

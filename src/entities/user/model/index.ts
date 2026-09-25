@@ -1,2 +1,2 @@
 export { useUserStore, selectIsAuthenticated, selectOnboardingCompleted } from './store';
-export type { DailyMinutes, OnboardingState, TargetLevel, User } from './types';
+export type { AuthProvider, DailyMinutes, OnboardingState, TargetLevel, User } from './types';

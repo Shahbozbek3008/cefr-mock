@@ -9,3 +9,4 @@ export {
   formatCountdown,
 } from './phone';
 export { useCountdown } from './useCountdown';
+export { signInWithGoogle, signOutFromGoogle, useGoogleSignIn } from './google';

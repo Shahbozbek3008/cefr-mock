@@ -6,3 +6,4 @@ export { MAX_SCORE, levelFor, levelNames, levelThresholds, nextLevelGap, toScale
 export type { Level } from './level';
 export { daysUntil, formatDayMonth, formatLongDate, formatShortDate } from './date';
 export { usePlayback } from './usePlayback';
+export { useKeyboardLift } from './useKeyboardLift';

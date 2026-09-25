@@ -49,7 +49,7 @@ export const palette = {
   streak: '#E57F4F',
   disabledBg: '#F1F1F3',
   disabledText: '#B0B2B9',
-  brand: { click: '#1E8BC3', payme: '#33B5B0' },
+  brand: { click: '#1E8BC3', payme: '#33CCCC' },
   overlay: 'rgba(24,26,34,0.34)',
   keyboard: '#D4D6DB',
   white: {

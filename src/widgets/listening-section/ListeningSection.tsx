@@ -1,5 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import type { KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
 import { FlagButton, QuestionNavigator, useAttemptStore } from '@/entities/attempt';
@@ -31,7 +33,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
   const [currentId, setCurrentId] = useState(
     () => questions[useAttemptStore.getState().position.listening ?? 0]?.id ?? questions[0].id,
   );
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
   const inputs = useRef<Record<string, TextInput | null>>({});
   const offsets = useRef<Record<string, number>>({});
   const pendingFocus = useRef<string | null>(null);
@@ -97,7 +99,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
   const last = part.questions[part.questions.length - 1].number;
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
+    <View style={styles.screen}>
       <View style={[styles.header, { paddingTop: insets.top + size.topGap }]}>
         <SessionHeader
           title="Listening"
@@ -108,8 +110,9 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
         />
       </View>
 
-      <ScrollView
+      <KeyboardAwareScrollView
         ref={scrollRef}
+        bottomOffset={space[6]}
         contentContainerStyle={[
           styles.content,
           { paddingBottom: Math.max(insets.bottom, space[3]) + FOOTER_SPACE + space[4] },
@@ -139,7 +142,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
             ) : null,
           )
         )}
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <SessionFooter>
         <QuestionNavigator questions={part.questions} currentId={currentId} onSelect={select} />
@@ -156,7 +159,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
       </SessionFooter>
 
       <SessionSheets controls={controls} onReview={onReview} />
-    </KeyboardAvoidingView>
+    </View>
   );
 });
 
