@@ -1,10 +1,10 @@
 import { Platform, TextStyle } from 'react-native';
 
 export const font = {
-  light: 'Montserrat-Light',
-  regular: 'Montserrat-Regular',
-  medium: 'Montserrat-Medium',
-  semibold: 'Montserrat-SemiBold',
+  light: 'PlusJakartaSans-Light',
+  regular: 'PlusJakartaSans-Regular',
+  medium: 'PlusJakartaSans-Medium',
+  semibold: 'PlusJakartaSans-SemiBold',
   mono: 'GeistMono-Regular',
   monoMedium: 'GeistMono-Medium',
   serif: Platform.select({ ios: 'Georgia', default: 'serif' }),
