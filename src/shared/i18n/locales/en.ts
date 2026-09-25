@@ -16,10 +16,12 @@ export const en: Dictionary = {
     finish: 'Finish',
     exit: 'Exit',
     stay: 'Stay',
+    cancel: 'Cancel',
     clear: 'Clear',
     all: 'All',
     comingSoon: 'This setting is coming in the next version',
     notSelected: 'Not set',
+    loading: 'Loading',
   },
   units: {
     days: { one: '{{count}} day', other: '{{count}} days' },
@@ -132,7 +134,6 @@ export const en: Dictionary = {
   home: {
     greeting: 'Hi, {{name}}',
     notifications: 'Notifications',
-    noNotifications: 'No new notifications',
     untilExam: 'Until the exam',
     daysWord: 'days',
     pickDate: 'Pick a date',
@@ -374,6 +375,44 @@ export const en: Dictionary = {
     subtitle: 'The app interface will be shown in the selected language.',
   },
   notifications: {
+    title: 'Notifications',
+    markAllRead: 'Mark all as read',
+    clear: 'Clear',
+    clearTitle: 'Clear notifications?',
+    clearMessage: 'All notifications will be removed from the list.',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    earlier: 'Earlier',
+    unread: {
+      one: '{{count}} new',
+      other: '{{count}} new',
+    },
+    emptyTitle: 'No notifications yet',
+    emptyMessage: 'Results, AI reviews and reminders will appear here as soon as they are ready.',
+    emptyAction: 'Turn on reminders',
+    loadFailed: 'Could not load notifications',
+    kinds: {
+      result: {
+        title: 'Your result is ready',
+        body: '{{title}}: {{score}} points ({{level}}). See the detailed review.',
+      },
+      aiReview: {
+        title: 'AI review is ready',
+        body: 'Scores and corrections for Writing {{task}} are ready.',
+      },
+      reminder: {
+        title: "Today's practice is waiting",
+        body: 'Complete your {{minutes}}-minute plan and keep your rhythm.',
+      },
+      newTest: {
+        title: 'New mock test added',
+        body: '{{title}} in the official format. Be among the first to try it.',
+      },
+      exam: {
+        title: '{{days}} days until your exam',
+        body: 'Review your plan and focus on your weakest section.',
+      },
+    },
     denied: 'Notifications are not allowed. You can turn them on in phone settings.',
     open: 'Open',
   },

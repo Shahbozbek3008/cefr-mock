@@ -4,9 +4,10 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useAttemptStore } from '@/entities/attempt';
 import { sectionOrder, useTest } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
+import { SectionSkeleton } from '@/features/test-session/ui/SectionSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { space } from '@/shared/theme';
-import { Screen, SkeletonCard, StateView } from '@/shared/ui';
+import { Screen, StateView } from '@/shared/ui';
 import { ListeningSection } from '@/widgets/listening-section/ListeningSection';
 import { ReadingSection } from '@/widgets/reading-section/ReadingSection';
 import { SpeakingSection } from '@/widgets/speaking-section/SpeakingSection';
@@ -50,10 +51,7 @@ export default function SectionScreen() {
               onAction={() => test.refetch()}
             />
           ) : (
-            <>
-              <SkeletonCard lines={4} />
-              <SkeletonCard lines={3} />
-            </>
+            <SectionSkeleton />
           )}
         </View>
       </Screen>
@@ -66,7 +64,6 @@ export default function SectionScreen() {
 
 const styles = StyleSheet.create({
   loading: {
-    paddingTop: space[12],
     gap: space[3],
   },
 });

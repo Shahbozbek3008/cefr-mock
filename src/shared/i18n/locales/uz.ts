@@ -14,10 +14,12 @@ export const uz = {
     finish: 'Yakunlash',
     exit: 'Chiqish',
     stay: 'Qolish',
+    cancel: 'Bekor qilish',
     clear: 'Tozalash',
     all: 'Barchasi',
     comingSoon: "Bu sozlama keyingi versiyada qo'shiladi",
     notSelected: 'Tanlanmagan',
+    loading: 'Yuklanmoqda',
   },
   units: {
     days: { one: '{{count}} kun', other: '{{count}} kun' },
@@ -130,7 +132,6 @@ export const uz = {
   home: {
     greeting: 'Salom, {{name}}',
     notifications: 'Bildirishnomalar',
-    noNotifications: "Yangi bildirishnomalar yo'q",
     untilExam: 'Imtihongacha',
     daysWord: 'kun',
     pickDate: 'Sana tanlash',
@@ -372,6 +373,44 @@ export const uz = {
     subtitle: "Ilova interfeysi tanlangan tilda ko'rsatiladi.",
   },
   notifications: {
+    title: 'Bildirishnomalar',
+    markAllRead: "Barchasini o'qilgan deb belgilash",
+    clear: 'Tozalash',
+    clearTitle: 'Bildirishnomalarni tozalaysizmi?',
+    clearMessage: "Barcha bildirishnomalar ro'yxatdan o'chiriladi.",
+    today: 'Bugun',
+    yesterday: 'Kecha',
+    earlier: 'Oldinroq',
+    unread: {
+      one: '{{count}} ta yangi',
+      other: '{{count}} ta yangi',
+    },
+    emptyTitle: "Hozircha bildirishnoma yo'q",
+    emptyMessage: "Natijalar, AI baholar va eslatmalar tayyor bo'lganda shu yerda ko'rinadi.",
+    emptyAction: 'Eslatmalarni yoqish',
+    loadFailed: 'Bildirishnomalar yuklanmadi',
+    kinds: {
+      result: {
+        title: 'Natijangiz tayyor',
+        body: "{{title}}: {{score}} ball ({{level}}). Batafsil tahlilni ko'ring.",
+      },
+      aiReview: {
+        title: 'AI baho tayyor',
+        body: "Writing {{task}} bo'yicha baho va tuzatishlar tayyor.",
+      },
+      reminder: {
+        title: 'Bugungi mashq kutmoqda',
+        body: '{{minutes}} daqiqalik rejani bajarib, ritmni saqlang.',
+      },
+      newTest: {
+        title: "Yangi mock test qo'shildi",
+        body: "{{title}} rasmiy formatda. Birinchilardan bo'lib ishlang.",
+      },
+      exam: {
+        title: 'Imtihonga {{days}} kun qoldi',
+        body: "Rejangizni ko'rib chiqing va zaif bo'limga e'tibor qarating.",
+      },
+    },
     denied: 'Bildirishnomalarga ruxsat berilmadi. Ularni telefon sozlamalaridan yoqishingiz mumkin.',
     open: 'Ochish',
   },

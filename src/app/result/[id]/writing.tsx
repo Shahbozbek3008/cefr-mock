@@ -8,9 +8,10 @@ import { CriteriaList } from '@/features/ai-review/ui/CriteriaList';
 import { ErrorsCard } from '@/features/ai-review/ui/ErrorsCard';
 import { ImprovedSheet } from '@/features/ai-review/ui/ImprovedSheet';
 import { ScoreHero } from '@/features/ai-review/ui/ScoreHero';
+import { WritingReviewSkeleton } from '@/features/ai-review/ui/AiReviewSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
-import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
+import { Button, IconButton, Screen, StateView, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + space[3];
 
@@ -34,7 +35,7 @@ export default function WritingReviewScreen() {
         }
         center={
           <>
-            <Text variant="bodySmMedium">AI Writing bahosi</Text>
+            <Text variant="bodySmMedium">{t('aiReview.writingTitle')}</Text>
             <Text variant="caption" color={colors.textSecondary}>
               {data ? t('aiReview.writingMeta', { task: data.taskLabel, count: data.words }) : ' '}
             </Text>
@@ -67,11 +68,7 @@ export default function WritingReviewScreen() {
             onAction={() => review.refetch()}
           />
         ) : (
-          <>
-            <SkeletonCard lines={3} />
-            <SkeletonCard lines={4} />
-            <SkeletonCard lines={5} />
-          </>
+          <WritingReviewSkeleton />
         )}
       </ScrollView>
 

@@ -11,10 +11,12 @@ import type { CatalogFilter, CatalogMode, CatalogSort, PracticeItem } from '@/fe
 import { PracticeCard } from '@/features/catalog/ui/PracticeCard';
 import { SearchField } from '@/features/catalog/ui/SearchField';
 import { TestCard } from '@/features/catalog/ui/TestCard';
+import { TestListSkeleton } from '@/features/catalog/ui/TestListSkeleton';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
+import { useRefresh } from '@/shared/lib';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
-import { Chip, Dot, IconButton, Radio, SegmentedControl, Sheet, SkeletonCard, StateView, Text } from '@/shared/ui';
+import { Chip, Dot, IconButton, Radio, SegmentedControl, Sheet, RefreshControl, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 const sortOptions: { value: CatalogSort; label: TKey }[] = [
@@ -31,6 +33,7 @@ export default function TestsScreen() {
   const modeOptions = useMemo(() => modes.map((value) => ({ value, label: t(modeLabels[value]) })), [t]);
   const insets = useSafeAreaInsets();
   const tests = useTests();
+  const refresh = useRefresh(tests.refetch);
   const [mode, setMode] = useState<CatalogMode>('full');
   const [filter, setFilter] = useState<CatalogFilter>('all');
   const [query, setQuery] = useState('');
@@ -98,6 +101,10 @@ export default function TestsScreen() {
     </View>
   );
 
+  const refreshControl = (
+    <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={insets.top} />
+  );
+
   const contentStyle = {
     paddingTop: insets.top + size.topGap,
     paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4],
@@ -114,6 +121,7 @@ export default function TestsScreen() {
           ItemSeparatorComponent={Separator}
           ListHeaderComponent={header}
           contentContainerStyle={contentStyle}
+          refreshControl={refreshControl}
           showsVerticalScrollIndicator={false}
         />
       ) : (
@@ -125,11 +133,7 @@ export default function TestsScreen() {
           ListHeaderComponent={header}
           ListEmptyComponent={
             tests.isPending ? (
-              <View style={styles.skeletons}>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </View>
+              <TestListSkeleton />
             ) : tests.isError ? (
               <StateView
                 tone="error"
@@ -151,6 +155,7 @@ export default function TestsScreen() {
             )
           }
           contentContainerStyle={contentStyle}
+          refreshControl={refreshControl}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         />
@@ -220,9 +225,6 @@ const useStyles = makeStyles(({ colors }) => ({
   },
   separator: {
     height: space[2.5],
-  },
-  skeletons: {
-    gap: space[2.5],
   },
   sheetTitle: {
     paddingHorizontal: space[1],

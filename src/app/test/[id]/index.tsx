@@ -8,9 +8,10 @@ import { sectionOrder, useTest } from '@/entities/test';
 import { RulesList } from '@/features/test-intro/ui/RulesList';
 import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
 import { TestStats } from '@/features/test-intro/ui/TestStats';
+import { TestIntroSkeleton } from '@/features/test-intro/ui/TestIntroSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
-import { Button, IconButton, Screen, SkeletonCard, StateView, Tag, Text, TopBar } from '@/shared/ui';
+import { Button, IconButton, Screen, StateView, Tag, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + space[6];
 
@@ -79,10 +80,7 @@ export default function TestIntroScreen() {
             onAction={() => test.refetch()}
           />
         ) : (
-          <>
-            <SkeletonCard lines={3} />
-            <SkeletonCard lines={5} />
-          </>
+          <TestIntroSkeleton />
         )}
       </ScrollView>
 

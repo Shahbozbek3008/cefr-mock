@@ -10,10 +10,11 @@ import { AiReviewSheet } from '@/features/result/ui/AiReviewSheet';
 import { RecommendationCard } from '@/features/result/ui/RecommendationCard';
 import { ResultGauge } from '@/features/result/ui/ResultGauge';
 import { SectionScoreCard } from '@/features/result/ui/SectionScoreCard';
+import { ResultSkeleton } from '@/features/result/ui/ResultSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, levelFor } from '@/shared/lib';
 import { gradientDirection, size, space, useTheme } from '@/shared/theme';
-import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
+import { Button, IconButton, Screen, StateView, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonM + space[3] * 2;
 
@@ -109,10 +110,7 @@ export default function ResultScreen() {
             onAction={() => result.refetch()}
           />
         ) : (
-          <>
-            <SkeletonCard lines={5} />
-            <SkeletonCard lines={3} />
-          </>
+          <ResultSkeleton />
         )}
       </ScrollView>
 

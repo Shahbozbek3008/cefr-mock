@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useUnreadCount } from '@/entities/notification';
 import { useLatestResult } from '@/entities/result';
 import { useTests } from '@/entities/test';
 import { useUserStore } from '@/entities/user/model';
@@ -10,12 +11,13 @@ import type { PlanItem } from '@/features/home/model/plan';
 import { ContinueCard } from '@/features/home/ui/ContinueCard';
 import { ExamHero } from '@/features/home/ui/ExamHero';
 import { HomeHeader } from '@/features/home/ui/HomeHeader';
+import { ExamHeroSkeleton, SectionsOverviewSkeleton } from '@/features/home/ui/HomeSkeleton';
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
 import { useI18n } from '@/shared/i18n';
-import { daysUntil } from '@/shared/lib';
+import { daysUntil, useRefresh } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
-import { SkeletonCard, StateView, useToast } from '@/shared/ui';
+import { RefreshControl, StateView } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 export default function HomeScreen() {
@@ -26,8 +28,9 @@ export default function HomeScreen() {
   const examDate = useUserStore((s) => s.examDate);
   const targetLevel = useUserStore((s) => s.targetLevel);
   const latest = useLatestResult();
+  const unread = useUnreadCount();
   const tests = useTests();
-  const showToast = useToast((s) => s.show);
+  const refresh = useRefresh(latest.refetch, tests.refetch);
 
   const resume = useMemo(() => tests.data?.find((t) => t.status === 'in_progress'), [tests.data]);
   const firstName = user?.name.split(' ')[0] ?? 'Aziza';
@@ -51,16 +54,15 @@ export default function HomeScreen() {
         styles.content,
         { paddingTop: insets.top + size.topGap, paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] },
       ]}
+      refreshControl={
+        <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={insets.top} />
+      }
       showsVerticalScrollIndicator={false}
     >
-      <HomeHeader
-        name={firstName}
-        hasNotifications
-        onBellPress={() => showToast({ message: t('home.noNotifications') })}
-      />
+      <HomeHeader name={firstName} hasNotifications={unread > 0} onBellPress={() => router.push('/notifications')} />
 
       {latest.isPending ? (
-        <SkeletonCard lines={4} />
+        <ExamHeroSkeleton />
       ) : latest.isError ? (
         <StateView
           tone="error"
@@ -85,6 +87,8 @@ export default function HomeScreen() {
 
       {latest.data ? (
         <SectionsOverview sections={latest.data.sections} onPress={() => router.navigate('/(tabs)/progress')} />
+      ) : latest.isPending ? (
+        <SectionsOverviewSkeleton />
       ) : null}
     </ScrollView>
   );

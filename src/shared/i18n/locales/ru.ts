@@ -16,10 +16,12 @@ export const ru: Dictionary = {
     finish: 'Завершить',
     exit: 'Выйти',
     stay: 'Остаться',
+    cancel: 'Отмена',
     clear: 'Сбросить',
     all: 'Все',
     comingSoon: 'Эта настройка появится в следующей версии',
     notSelected: 'Не выбрано',
+    loading: 'Загрузка',
   },
   units: {
     days: { one: '{{count}} день', few: '{{count}} дня', many: '{{count}} дней', other: '{{count}} дня' },
@@ -132,7 +134,6 @@ export const ru: Dictionary = {
   home: {
     greeting: 'Привет, {{name}}',
     notifications: 'Уведомления',
-    noNotifications: 'Новых уведомлений нет',
     untilExam: 'До экзамена',
     daysWord: 'дн.',
     pickDate: 'Выбрать дату',
@@ -374,6 +375,46 @@ export const ru: Dictionary = {
     subtitle: 'Интерфейс приложения будет показан на выбранном языке.',
   },
   notifications: {
+    title: 'Уведомления',
+    markAllRead: 'Отметить все как прочитанные',
+    clear: 'Очистить',
+    clearTitle: 'Очистить уведомления?',
+    clearMessage: 'Все уведомления будут удалены из списка.',
+    today: 'Сегодня',
+    yesterday: 'Вчера',
+    earlier: 'Ранее',
+    unread: {
+      one: '{{count}} новое',
+      few: '{{count}} новых',
+      many: '{{count}} новых',
+      other: '{{count}} новых',
+    },
+    emptyTitle: 'Уведомлений пока нет',
+    emptyMessage: 'Здесь появятся результаты, AI-оценки и напоминания, как только они будут готовы.',
+    emptyAction: 'Включить напоминания',
+    loadFailed: 'Не удалось загрузить уведомления',
+    kinds: {
+      result: {
+        title: 'Ваш результат готов',
+        body: '{{title}}: {{score}} баллов ({{level}}). Посмотрите подробный разбор.',
+      },
+      aiReview: {
+        title: 'AI-оценка готова',
+        body: 'Оценка и исправления по Writing {{task}} готовы.',
+      },
+      reminder: {
+        title: 'Сегодняшняя практика ждёт',
+        body: 'Выполните план на {{minutes}} минут и сохраните ритм.',
+      },
+      newTest: {
+        title: 'Добавлен новый mock-тест',
+        body: '{{title}} в официальном формате. Пройдите одним из первых.',
+      },
+      exam: {
+        title: 'До экзамена осталось дней: {{days}}',
+        body: 'Проверьте план и уделите внимание слабому разделу.',
+      },
+    },
     denied: 'Уведомления не разрешены. Их можно включить в настройках телефона.',
     open: 'Открыть',
   },

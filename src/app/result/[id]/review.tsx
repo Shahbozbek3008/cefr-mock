@@ -8,9 +8,10 @@ import { sectionTitles, useTest } from '@/entities/test';
 import type { ListeningPart } from '@/entities/test';
 import { AnswerDetail } from '@/features/review/ui/AnswerDetail';
 import { ReviewGrid } from '@/features/review/ui/ReviewGrid';
+import { ReviewSkeleton } from '@/features/review/ui/ReviewSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
-import { Button, IconButton, Screen, SegmentedControl, SkeletonCard, Text, TopBar } from '@/shared/ui';
+import { Button, IconButton, Screen, SegmentedControl, Text, TopBar } from '@/shared/ui';
 
 type Tab = 'listening' | 'reading' | 'writing' | 'speaking';
 
@@ -113,10 +114,7 @@ export default function ReviewScreen() {
             <AnswerDetail item={current} question={question} />
           </>
         ) : (
-          <>
-            <SkeletonCard lines={4} />
-            <SkeletonCard lines={3} />
-          </>
+          <ReviewSkeleton />
         )}
       </ScrollView>
 

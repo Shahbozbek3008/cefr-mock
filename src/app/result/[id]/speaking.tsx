@@ -7,9 +7,10 @@ import { CriteriaTiles } from '@/features/ai-review/ui/CriteriaTiles';
 import { MarkedText } from '@/features/ai-review/ui/MarkedText';
 import { PlaybackCard } from '@/features/ai-review/ui/PlaybackCard';
 import { TipList } from '@/features/ai-review/ui/TipList';
+import { SpeakingReviewSkeleton } from '@/features/ai-review/ui/AiReviewSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { space, useTheme } from '@/shared/theme';
-import { Card, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
+import { Card, IconButton, Screen, StateView, Text, TopBar } from '@/shared/ui';
 
 export default function SpeakingReviewScreen() {
   const { colors } = useTheme();
@@ -30,7 +31,7 @@ export default function SpeakingReviewScreen() {
         }
         center={
           <>
-            <Text variant="bodySmMedium">AI Speaking bahosi</Text>
+            <Text variant="bodySmMedium">{t('aiReview.speakingTitle')}</Text>
             <Text variant="caption" color={colors.textSecondary}>
               {data ? t('aiReview.speakingMeta', { part: data.part, count: data.durationSec }) : ' '}
             </Text>
@@ -49,7 +50,7 @@ export default function SpeakingReviewScreen() {
             <CriteriaTiles criteria={data.criteria} />
             <Card style={styles.transcript}>
               <View style={styles.transcriptHeader}>
-                <Text variant="bodySmMedium">Transkript</Text>
+                <Text variant="bodySmMedium">{t('aiReview.transcript')}</Text>
                 <Text variant="monoXs" color={colors.textTertiary}>
                   {t('aiReview.transcriptMeta', { words: data.words, wpm: data.wpm })}
                 </Text>
@@ -67,11 +68,7 @@ export default function SpeakingReviewScreen() {
             onAction={() => review.refetch()}
           />
         ) : (
-          <>
-            <SkeletonCard lines={2} />
-            <SkeletonCard lines={4} />
-            <SkeletonCard lines={5} />
-          </>
+          <SpeakingReviewSkeleton />
         )}
       </ScrollView>
     </Screen>

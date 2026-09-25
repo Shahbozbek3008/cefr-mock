@@ -7,3 +7,4 @@ export type { Level } from './level';
 export { daysUntil, formatShortDate } from './date';
 export { usePlayback } from './usePlayback';
 export { useKeyboardLift } from './useKeyboardLift';
+export { useRefresh } from './useRefresh';

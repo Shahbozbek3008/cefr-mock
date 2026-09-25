@@ -6,10 +6,12 @@ import { useProgress } from '@/entities/result';
 import type { HistoryItem, ProgressPeriod } from '@/entities/result';
 import { HistoryList } from '@/features/progress/ui/HistoryList';
 import { ScoreChartCard } from '@/features/progress/ui/ScoreChartCard';
+import { ProgressSkeleton } from '@/features/progress/ui/ProgressSkeleton';
 import { SectionProgress } from '@/features/progress/ui/SectionProgress';
 import { useI18n } from '@/shared/i18n';
+import { useRefresh } from '@/shared/lib';
 import { hitSlop, makeStyles, size, space, useTheme } from '@/shared/theme';
-import { SegmentedControl, SkeletonCard, StateView, Text } from '@/shared/ui';
+import { RefreshControl, SegmentedControl, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 const periods: ProgressPeriod[] = ['1m', '3m', 'all'];
@@ -22,6 +24,7 @@ export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
   const [period, setPeriod] = useState<ProgressPeriod>('3m');
   const progress = useProgress(period);
+  const refresh = useRefresh(progress.refetch);
 
   const onHistoryPress = useCallback((item: HistoryItem) => {
     router.push({ pathname: '/result/[id]', params: { id: item.resultId } });
@@ -34,6 +37,9 @@ export default function ProgressScreen() {
         styles.content,
         { paddingTop: insets.top + size.topGap, paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] },
       ]}
+      refreshControl={
+        <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={insets.top} />
+      }
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.header}>
@@ -64,10 +70,7 @@ export default function ProgressScreen() {
           onAction={() => progress.refetch()}
         />
       ) : (
-        <>
-          <SkeletonCard lines={5} />
-          <SkeletonCard lines={4} />
-        </>
+        <ProgressSkeleton />
       )}
     </ScrollView>
   );
