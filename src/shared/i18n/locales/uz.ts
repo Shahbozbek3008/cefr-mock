@@ -371,4 +371,8 @@ export const uz = {
     title: 'Til',
     subtitle: "Ilova interfeysi tanlangan tilda ko'rsatiladi.",
   },
+  notifications: {
+    denied: 'Bildirishnomalarga ruxsat berilmadi. Ularni telefon sozlamalaridan yoqishingiz mumkin.',
+    open: 'Ochish',
+  },
 };

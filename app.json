@@ -11,7 +11,10 @@
       "supportsTablet": false,
       "bundleIdentifier": "uz.cefrmock.app",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak."
+        "NSMicrophoneUsageDescription": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak.",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
@@ -26,7 +29,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.POST_NOTIFICATIONS"
       ],
       "predictiveBackGestureEnabled": false
     },

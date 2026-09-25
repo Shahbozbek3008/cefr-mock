@@ -373,4 +373,8 @@ export const en: Dictionary = {
     title: 'Language',
     subtitle: 'The app interface will be shown in the selected language.',
   },
+  notifications: {
+    denied: 'Notifications are not allowed. You can turn them on in phone settings.',
+    open: 'Open',
+  },
 };
