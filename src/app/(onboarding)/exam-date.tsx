@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, ChevronLeft } from 'lucide-react-native';
 import { useUserStore } from '@/entities/user/model';
@@ -12,17 +12,22 @@ import { Button, Card, IconButton, ProgressSteps, Screen, Text } from '@/shared/
 
 export default function ExamDateScreen() {
   const insets = useSafeAreaInsets();
+  const { edit } = useLocalSearchParams<{ edit?: string }>();
   const examDate = useUserStore((state) => state.examDate);
   const setExamDate = useUserStore((state) => state.setExamDate);
 
   const onContinue = useCallback(() => {
+    if (edit) {
+      router.back();
+      return;
+    }
     router.push('/(onboarding)/pace');
-  }, []);
+  }, [edit]);
 
   const onSkip = useCallback(() => {
     setExamDate(null);
-    router.push('/(onboarding)/pace');
-  }, [setExamDate]);
+    onContinue();
+  }, [setExamDate, onContinue]);
 
   const remaining = examDate ? daysUntil(examDate) : null;
 

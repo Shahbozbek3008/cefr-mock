@@ -18,6 +18,8 @@ export { buildReview, countCorrect, isCorrect } from './lib/review';
 export {
   fetchResult,
   fetchResults,
+  fetchSpeakingReview,
+  fetchWritingReview,
   resultKeys,
   useLatestResult,
   useProgress,

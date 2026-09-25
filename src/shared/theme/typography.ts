@@ -57,6 +57,7 @@ export const type = {
   labelRelaxed: make(font.regular, 15, 23),
   labelMedium: make(font.medium, 15, 21, -0.01),
   bodySm: make(font.regular, 14, 20),
+  bodySmRelaxed: make(font.regular, 14, 21),
   bodySmMedium: make(font.medium, 14, 20),
   callout: make(font.regular, 13, 18),
   calloutRelaxed: make(font.regular, 13, 20),
@@ -72,6 +73,7 @@ export const type = {
 
   reading: make(font.regular, 17, 30),
   readingSm: make(font.regular, 15, 26),
+  editor: make(font.regular, 16, 27),
   serifLabel: make(font.serif, 14, 18),
 
   monoTimer: make(font.mono, 34, 36, -0.04),
@@ -86,6 +88,7 @@ export const type = {
   monoSm: make(font.mono, 12, 16),
   monoSmMedium: make(font.monoMedium, 12, 16),
   monoXs: make(font.mono, 11, 14),
+  monoLabel: make(font.mono, 11, 14, 0.02),
   monoNano: make(font.mono, 10, 13),
 } as const;
 

@@ -2,6 +2,7 @@ import { palette } from './palette';
 
 export const light = {
   bg: palette.neutral[25],
+  bgClear: 'rgba(246,246,247,0)',
   surface: palette.neutral.white,
   surfaceMuted: palette.neutral[50],
   surfaceSubtle: palette.neutral[100],

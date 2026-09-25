@@ -7,13 +7,16 @@ export type SegmentedControlProps<T extends string> = {
   options: readonly { value: T; label: string }[];
   value: T;
   onChange: (value: T) => void;
-  size?: 'sm' | 'md' | 'lg';
+  size?: Size;
   fit?: boolean;
   style?: ViewStyle;
 };
 
-const metrics: Record<'sm' | 'md' | 'lg', { height: number; pad: number; track: number; seg: number; text: TypeToken; active: TypeToken }> = {
+type Size = 'sm' | 'compact' | 'md' | 'lg';
+
+const metrics: Record<Size, { height: number; pad: number; track: number; seg: number; text: TypeToken; active: TypeToken }> = {
   sm: { height: 32, pad: 3, track: radius.sm, seg: radius.tag, text: 'caption', active: 'captionMedium' },
+  compact: { height: 36, pad: 3, track: radius.input, seg: radius.segment, text: 'caption', active: 'captionMedium' },
   md: { height: 36, pad: 3, track: radius.input, seg: radius.segment, text: 'callout', active: 'calloutMedium' },
   lg: { height: 40, pad: 4, track: radius.track, seg: radius.sm, text: 'bodySm', active: 'bodySmMedium' },
 };

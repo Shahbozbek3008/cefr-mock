@@ -63,7 +63,7 @@ export default function HomeScreen() {
           examDate={examDate}
           score={latest.data?.total ?? 0}
           target={targetLevel}
-          onDatePress={() => router.push('/(onboarding)/exam-date')}
+          onDatePress={() => router.push({ pathname: '/(onboarding)/exam-date', params: { edit: '1' } })}
         />
       )}
 

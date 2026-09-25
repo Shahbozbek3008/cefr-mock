@@ -1,4 +1,6 @@
 export { ActionSurface } from './ActionSurface';
+export { AnswerOption } from './AnswerOption';
+export type { AnswerState } from './AnswerOption';
 export { Avatar } from './Avatar';
 export { Button } from './Button';
 export type { ButtonProps } from './Button';
@@ -6,6 +8,8 @@ export { Card } from './Card';
 export type { CardProps } from './Card';
 export { CheckBadge } from './CheckBadge';
 export { Chip } from './Chip';
+export { ChoiceTile } from './ChoiceTile';
+export { ConfirmSheet } from './ConfirmSheet';
 export { Delta } from './Delta';
 export { Dot } from './Dot';
 export { HeroSurface } from './HeroSurface';

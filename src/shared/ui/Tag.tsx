@@ -6,10 +6,18 @@ import { Text } from './Text';
 
 export type TagTone = 'lime' | 'neutral' | 'muted' | 'success' | 'warning' | 'error' | 'pro';
 
+type TagSize = 'xs' | 'sm' | 'md';
+
+const metrics: Record<TagSize, { height: number; radius: number; padding: number; text: TypeToken; mono: TypeToken }> = {
+  xs: { height: 20, radius: radius.xs, padding: 7, text: 'nanoMedium', mono: 'monoNano' },
+  sm: { height: 22, radius: radius.chip, padding: space[2], text: 'microMedium', mono: 'monoXs' },
+  md: { height: 24, radius: radius.tag, padding: space[2], text: 'captionMedium', mono: 'monoSmMedium' },
+};
+
 export type TagProps = {
   label: string;
   tone?: TagTone;
-  size?: 'sm' | 'md';
+  size?: TagSize;
   mono?: boolean;
   icon?: ReactNode;
   style?: ViewStyle;
@@ -25,9 +33,9 @@ const tones: Record<Exclude<TagTone, 'pro'>, { bg: string; fg: string }> = {
 };
 
 export const Tag = memo<TagProps>(({ label, tone = 'neutral', size = 'sm', mono = false, icon, style }) => {
-  const height = size === 'sm' ? 22 : 24;
-  const variant: TypeToken = mono ? (size === 'sm' ? 'monoXs' : 'monoSmMedium') : size === 'sm' ? 'microMedium' : 'captionMedium';
-  const shape = [styles.tag, { height, borderRadius: size === 'sm' ? radius.chip : radius.tag }, style];
+  const m = metrics[size];
+  const variant = mono ? m.mono : m.text;
+  const shape = [styles.tag, { height: m.height, borderRadius: m.radius, paddingHorizontal: m.padding }, style];
 
   if (tone === 'pro') {
     return (
@@ -59,6 +67,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     gap: space[1],
-    paddingHorizontal: space[2],
   },
 });

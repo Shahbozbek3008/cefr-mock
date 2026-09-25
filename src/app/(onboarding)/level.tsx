@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, Info } from 'lucide-react-native';
 import { useUserStore } from '@/entities/user/model';
@@ -13,6 +13,7 @@ import { Button, ProgressSteps, Screen, Text } from '@/shared/ui';
 
 export default function LevelScreen() {
   const insets = useSafeAreaInsets();
+  const { edit } = useLocalSearchParams<{ edit?: string }>();
   const targetLevel = useUserStore((state) => state.targetLevel);
   const setTargetLevel = useUserStore((state) => state.setTargetLevel);
 
@@ -22,8 +23,12 @@ export default function LevelScreen() {
   );
 
   const onContinue = useCallback(() => {
+    if (edit) {
+      router.back();
+      return;
+    }
     router.push('/(onboarding)/exam-date');
-  }, []);
+  }, [edit]);
 
   return (
     <Screen paddingHorizontal={24}>

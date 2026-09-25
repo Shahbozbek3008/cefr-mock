@@ -30,6 +30,10 @@ export const fetchResult = async (id: string) => {
   return found;
 };
 
+export const fetchWritingReview = () => delay(writingReview, 500);
+
+export const fetchSpeakingReview = () => delay(speakingReview, 500);
+
 export const useResults = () => useQuery({ queryKey: resultKeys.all, queryFn: fetchResults });
 
 export const useResult = (id: string) =>
@@ -41,10 +45,10 @@ export const useLatestResult = () => {
 };
 
 export const useWritingReview = (id: string) =>
-  useQuery({ queryKey: resultKeys.writing(id), queryFn: () => delay(writingReview, 500) });
+  useQuery({ queryKey: resultKeys.writing(id), queryFn: fetchWritingReview });
 
 export const useSpeakingReview = (id: string) =>
-  useQuery({ queryKey: resultKeys.speaking(id), queryFn: () => delay(speakingReview, 500) });
+  useQuery({ queryKey: resultKeys.speaking(id), queryFn: fetchSpeakingReview });
 
 export const useProgress = (period: ProgressPeriod) =>
   useQuery({ queryKey: resultKeys.progress(period), queryFn: () => delay(progressByPeriod[period], 250), placeholderData: (prev) => prev });

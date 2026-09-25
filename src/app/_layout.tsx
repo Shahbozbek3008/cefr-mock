@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { fontAssets } from '@/shared/config/fonts';
 import { queryClient } from '@/shared/lib';
 import { light } from '@/shared/theme';
+import { ToastHost } from '@/shared/ui';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,7 +39,11 @@ export default function RootLayout() {
                 contentStyle: styles.content,
                 animation: 'slide_from_right',
               }}
-            />
+            >
+              <Stack.Screen name="test/[id]/[section]" options={{ gestureEnabled: false, animation: 'fade' }} />
+              <Stack.Screen name="subscription" options={{ animation: 'slide_from_bottom' }} />
+            </Stack>
+            <ToastHost />
           </View>
         </QueryClientProvider>
       </SafeAreaProvider>

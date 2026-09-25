@@ -118,6 +118,18 @@ export const elevation = {
     ios('#14161E', 0.22, 16, 16),
   ),
 
+  focusRing: {
+    outlineWidth: 4,
+    outlineStyle: 'solid',
+    outlineColor: 'rgba(148,213,60,0.28)',
+  } as ViewStyle,
+
+  warningRing: {
+    outlineWidth: 3,
+    outlineStyle: 'solid',
+    outlineColor: '#FFF5E1',
+  } as ViewStyle,
+
   thumb: shadow(
     [{ x: 0, y: 1, blur: 3, spread: 0, color: 'rgba(0,0,0,0.2)' }],
     ios('#000000', 0.2, 3, 1),

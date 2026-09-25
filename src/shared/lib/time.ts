@@ -16,3 +16,8 @@ export const formatHours = (totalSeconds: number) => {
 };
 
 export const secondsUntil = (timestamp: number) => Math.max(0, Math.ceil((timestamp - Date.now()) / 1000));
+
+export const formatShortClock = (totalSeconds: number) => {
+  const safe = Math.max(0, Math.floor(totalSeconds));
+  return `${Math.floor(safe / 60)}:${pad(safe % 60)}`;
+};

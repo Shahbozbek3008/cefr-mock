@@ -16,4 +16,4 @@ export const fetchTest = async (id: string) => {
 export const useTests = () => useQuery({ queryKey: testKeys.all, queryFn: fetchTests });
 
 export const useTest = (id: string) =>
-  useQuery({ queryKey: testKeys.detail(id), queryFn: () => fetchTest(id), staleTime: Infinity });
+  useQuery({ queryKey: testKeys.detail(id), queryFn: () => fetchTest(id), staleTime: Infinity, enabled: id !== '' });
