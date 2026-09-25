@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Pause } from 'lucide-react-native';
 import { PlayIcon } from '@/shared/icons';
+import { useI18n } from '@/shared/i18n';
 import { formatShortClock, usePlayback } from '@/shared/lib';
 import { space, useTheme } from '@/shared/theme';
 import { ActionSurface, Card, Text } from '@/shared/ui';
@@ -14,11 +15,16 @@ export type PlaybackCardProps = {
 
 export const PlaybackCard = memo<PlaybackCardProps>(({ durationSec, bars }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const { position, playing, progress, toggle } = usePlayback(durationSec);
 
   return (
     <Card style={styles.card}>
-      <Pressable accessibilityRole="button" accessibilityLabel={playing ? "To'xtatish" : 'Tinglash'} onPress={toggle}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={t(playing ? 'aiReview.pause' : 'aiReview.play')}
+        onPress={toggle}
+      >
         <ActionSurface style={styles.play}>
           {playing ? (
             <Pause size={14} color={colors.onAction} fill={colors.onAction} strokeWidth={1.6} />

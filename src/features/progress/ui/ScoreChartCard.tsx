@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ProgressData } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { levelThresholds } from '@/shared/lib';
 import { radius, space, useTheme } from '@/shared/theme';
 import { Card, Tag, Text } from '@/shared/ui';
@@ -15,13 +16,14 @@ const DOMAIN = [33.84, 69.15] as const;
 
 export const ScoreChartCard = memo<{ data: ProgressData }>(({ data }) => {
   const { colors } = useTheme();
+  const { t, dict } = useI18n();
 
   return (
     <Card level="strong" radius={radius.cardLg} style={styles.card}>
       <View style={styles.top}>
         <View style={styles.summary}>
           <Text variant="caption" color={colors.textSecondary}>
-            Umumiy ball
+            {t('progress.totalScore')}
           </Text>
           <View style={styles.valueRow}>
             <Text variant="displaySm">{data.total}</Text>
@@ -29,18 +31,22 @@ export const ScoreChartCard = memo<{ data: ProgressData }>(({ data }) => {
           </View>
         </View>
         <Text variant="monoXs" color={colors.textTertiary}>
-          {`${data.testsCount} test`}
+          {t('units.tests', { count: data.testsCount })}
         </Text>
       </View>
 
       <LineChart values={data.values} guides={guides} domain={DOMAIN} />
 
       <View style={styles.axis}>
-        {data.axis.map((label) => (
-          <Text key={label} variant="monoNano" color={colors.textTertiary}>
-            {label}
-          </Text>
-        ))}
+        {data.axis.map((mark) => {
+          const month = dict.date.monthsShort[mark.month];
+          const label = mark.day ? `${mark.day} ${month}` : month;
+          return (
+            <Text key={label} variant="monoNano" color={colors.textTertiary}>
+              {label}
+            </Text>
+          );
+        })}
       </View>
     </Card>
   );

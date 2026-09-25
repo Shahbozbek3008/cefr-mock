@@ -12,6 +12,7 @@ import { ExamHero } from '@/features/home/ui/ExamHero';
 import { HomeHeader } from '@/features/home/ui/HomeHeader';
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
+import { useI18n } from '@/shared/i18n';
 import { daysUntil } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
 import { SkeletonCard, StateView, useToast } from '@/shared/ui';
@@ -20,6 +21,7 @@ import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 export default function HomeScreen() {
   const styles = useStyles();
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const user = useUserStore((s) => s.user);
   const examDate = useUserStore((s) => s.examDate);
   const targetLevel = useUserStore((s) => s.targetLevel);
@@ -54,7 +56,7 @@ export default function HomeScreen() {
       <HomeHeader
         name={firstName}
         hasNotifications
-        onBellPress={() => showToast({ message: "Yangi bildirishnomalar yo'q" })}
+        onBellPress={() => showToast({ message: t('home.noNotifications') })}
       />
 
       {latest.isPending ? (
@@ -62,9 +64,9 @@ export default function HomeScreen() {
       ) : latest.isError ? (
         <StateView
           tone="error"
-          title="Xatolik"
-          message="Internetni tekshiring"
-          actionLabel="Qayta"
+          title={t('common.error')}
+          message={t('common.checkInternet')}
+          actionLabel={t('common.retry')}
           onAction={() => latest.refetch()}
         />
       ) : (

@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Calendar } from 'lucide-react-native';
-import { formatDayMonth, levelFor } from '@/shared/lib';
+import { useI18n } from '@/shared/i18n';
+import { levelFor } from '@/shared/lib';
 import { palette, radius, space, useTheme } from '@/shared/theme';
 import { HeroSurface, Text } from '@/shared/ui';
 import { LevelBar } from './LevelBar';
@@ -16,6 +17,7 @@ export type ExamHeroProps = {
 
 export const ExamHero = memo<ExamHeroProps>(({ daysLeft, examDate, score, target, onDatePress }) => {
   const { colors, elevation } = useTheme();
+  const { t, dayMonth } = useI18n();
 
   return (
     <HeroSurface style={[styles.card, elevation.hero]}>
@@ -25,14 +27,14 @@ export const ExamHero = memo<ExamHeroProps>(({ daysLeft, examDate, score, target
       <View style={styles.top}>
         <View style={styles.countdown}>
           <Text variant="callout" color={colors.onHeroMuted}>
-            Imtihongacha
+            {t('home.untilExam')}
           </Text>
           <View style={styles.days}>
             <Text variant="display" color={colors.onHero}>
               {daysLeft ?? '—'}
             </Text>
             <Text variant="body" color={palette.white.a80}>
-              kun
+              {t('home.daysWord')}
             </Text>
           </View>
         </View>
@@ -40,7 +42,7 @@ export const ExamHero = memo<ExamHeroProps>(({ daysLeft, examDate, score, target
         <Pressable accessibilityRole="button" onPress={onDatePress} style={styles.datePill}>
           <Calendar size={13} color={colors.onHero} strokeWidth={1.75} />
           <Text variant="captionMedium" color={colors.onHero}>
-            {examDate ? formatDayMonth(examDate) : 'Sana tanlash'}
+            {examDate ? dayMonth(examDate) : t('home.pickDate')}
           </Text>
         </Pressable>
       </View>
@@ -48,13 +50,13 @@ export const ExamHero = memo<ExamHeroProps>(({ daysLeft, examDate, score, target
       <View style={styles.level}>
         <View style={styles.levelRow}>
           <Text variant="caption" color={colors.onHeroMuted}>
-            Joriy daraja{' '}
+            {t('home.currentLevel')}{' '}
             <Text variant="captionMedium" color={colors.onHero}>
               {`${score} · ${levelFor(score)}`}
             </Text>
           </Text>
           <Text variant="caption" color={colors.onHeroMuted}>
-            Maqsad{' '}
+            {t('home.target')}{' '}
             <Text variant="captionMedium" color={colors.onHero}>
               {target ?? '—'}
             </Text>

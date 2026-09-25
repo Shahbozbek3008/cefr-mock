@@ -1,5 +1,9 @@
 import type { SectionKind } from '@/entities/test';
 
+export type Recommendation = { level: string | null; points: number; focus: string };
+
+export type AxisMark = { month: number; day?: number };
+
 export type SectionScore = {
   kind: SectionKind;
   title: string;
@@ -17,7 +21,7 @@ export type TestResult = {
   total: number;
   delta: number;
   sections: SectionScore[];
-  recommendation: { title: string; detail: string };
+  recommendation: Recommendation;
   answers: Record<string, string>;
 };
 
@@ -86,7 +90,7 @@ export type ProgressData = {
   delta: number;
   testsCount: number;
   values: number[];
-  axis: string[];
+  axis: AxisMark[];
   sections: { title: string; score: number; delta: number; weak?: boolean }[];
   history: HistoryItem[];
 };

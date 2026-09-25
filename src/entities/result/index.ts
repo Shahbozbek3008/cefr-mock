@@ -1,4 +1,6 @@
 export type {
+  AxisMark,
+  Recommendation,
   AnswerReview,
   Correction,
   Criterion,

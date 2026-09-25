@@ -1,5 +1,6 @@
 import { memo, useCallback, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, type, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import { PHONE_DIGITS, PHONE_PREFIX, formatPhone, sanitizeDigits } from '../model';
@@ -13,6 +14,7 @@ export type PhoneFieldProps = {
 export const PhoneField = memo<PhoneFieldProps>(({ value, onChange, error }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const inputRef = useRef<TextInput>(null);
   const [focused, setFocused] = useState(false);
 
@@ -25,7 +27,7 @@ export const PhoneField = memo<PhoneFieldProps>(({ value, onChange, error }) => 
   return (
     <View style={styles.container}>
       <Text variant="bodySm" color={colors.textSecondary}>
-        Telefon raqam
+        {t('auth.phoneLabel')}
       </Text>
 
       <Pressable onPress={focus} accessibilityRole="none">

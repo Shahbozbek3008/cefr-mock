@@ -5,6 +5,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, motion, radius, space, useTheme } from '../theme';
+import { useI18n } from '../i18n';
 
 export type SheetProps = {
   visible: boolean;
@@ -19,6 +20,7 @@ const accelerate = Easing.bezier(...motion.curve.accelerate);
 export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children }) => {
   const styles = useStyles();
   const { elevation } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
   const [mounted, setMounted] = useState(visible);
@@ -80,7 +82,11 @@ export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children })
     >
       <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]}>
         {Platform.OS === 'ios' ? <BlurView intensity={8} tint="dark" style={StyleSheet.absoluteFill} /> : null}
-        <Pressable accessibilityLabel="Yopish" style={[StyleSheet.absoluteFill, styles.backdrop]} onPress={close} />
+        <Pressable
+          accessibilityLabel={t('common.close')}
+          style={[StyleSheet.absoluteFill, styles.backdrop]}
+          onPress={close}
+        />
       </Animated.View>
 
       <Animated.View onLayout={onLayout} style={[styles.sheet, elevation.sheet, { bottom }, sheetStyle]}>

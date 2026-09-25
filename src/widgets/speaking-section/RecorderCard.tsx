@@ -1,6 +1,7 @@
 import { memo, useMemo } from 'react';
 import { View } from 'react-native';
 import type { SpeakingQuestion } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { formatClock } from '@/shared/lib';
 import { Colors, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
@@ -12,13 +13,13 @@ const idleBars = [
   0.7, 0.4,
 ];
 
-const statusFor = (colors: Colors, phase: RecorderPhase): { label: string; dot: string; text: string; ring?: string } =>
+const statusFor = (colors: Colors, phase: RecorderPhase): { dot: string; text: string; ring?: string } =>
   ({
-    pending: { label: 'Mikrofon tayyorlanmoqda', dot: colors.textTertiary, text: colors.textSecondary },
-    prep: { label: 'Tayyorlaning', dot: colors.data, text: colors.selectedText, ring: colors.focusRing },
-    recording: { label: 'Yozilmoqda', dot: colors.error[500], text: colors.error.text, ring: colors.error.ring },
-    done: { label: 'Yozib olindi', dot: colors.success[500], text: colors.success.text },
-    denied: { label: "Ruxsat yo'q", dot: colors.error[500], text: colors.error.text },
+    pending: { dot: colors.textTertiary, text: colors.textSecondary },
+    prep: { dot: colors.data, text: colors.selectedText, ring: colors.focusRing },
+    recording: { dot: colors.error[500], text: colors.error.text, ring: colors.error.ring },
+    done: { dot: colors.success[500], text: colors.success.text },
+    denied: { dot: colors.error[500], text: colors.error.text },
   })[phase];
 
 export type RecorderCardProps = {
@@ -31,6 +32,7 @@ export type RecorderCardProps = {
 export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed, bars }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const status = statusFor(colors, phase);
   const wave = useMemo(() => idleBars.map((idle, i) => bars[i] ?? idle), [bars]);
   const prepared = phase === 'recording' || phase === 'done';
@@ -41,7 +43,7 @@ export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed,
         <View style={styles.status}>
           <Dot color={status.dot} size={8} ring={status.ring} ringWidth={4} />
           <Text variant="calloutMedium" color={status.text}>
-            {status.label}
+            {t(`speaking.status.${phase}`)}
           </Text>
         </View>
         <Text variant="monoCallout" color={colors.textSecondary}>
@@ -54,12 +56,12 @@ export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed,
       <View style={styles.chips}>
         <View style={styles.chip}>
           <Text variant="monoXs" color={colors.textSecondary}>
-            {`Tayyorlanish ${question.prepSec}s${prepared ? ' ✓' : ''}`}
+            {`${t('speaking.prepChip', { count: question.prepSec })}${prepared ? ' ✓' : ''}`}
           </Text>
         </View>
         <View style={styles.chip}>
           <Text variant="monoXs" color={colors.textSecondary}>
-            {`Javob ${question.answerSec}s`}
+            {t('speaking.answerChip', { count: question.answerSec })}
           </Text>
         </View>
       </View>

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { TextInput, View } from 'react-native';
 import { Search } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, type, useTheme } from '@/shared/theme';
 
 export type SearchFieldProps = {
@@ -11,6 +12,7 @@ export type SearchFieldProps = {
 export const SearchField = memo<SearchFieldProps>(({ value, onChange }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <View style={styles.field}>
@@ -18,7 +20,7 @@ export const SearchField = memo<SearchFieldProps>(({ value, onChange }) => {
       <TextInput
         value={value}
         onChangeText={onChange}
-        placeholder="Test yoki mavzu qidirish"
+        placeholder={t('catalog.search')}
         placeholderTextColor={colors.textTertiary}
         selectionColor={colors.selectedBorder}
         allowFontScaling={false}

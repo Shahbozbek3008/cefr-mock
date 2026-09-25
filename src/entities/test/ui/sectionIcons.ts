@@ -1,4 +1,5 @@
 import { BookOpen, Headphones, LucideIcon, Mic, PenLine } from 'lucide-react-native';
+import type { TKey } from '@/shared/i18n';
 import type { SectionKind } from '../model/types';
 
 export const sectionIcons: Record<SectionKind, LucideIcon> = {
@@ -16,3 +17,10 @@ export const sectionTitles: Record<SectionKind, string> = {
 };
 
 export const sectionOrder: SectionKind[] = ['listening', 'reading', 'writing', 'speaking'];
+
+export const sectionDetailKeys = {
+  listening: 'sections.listeningDetail',
+  reading: 'sections.readingDetail',
+  writing: 'sections.writingDetail',
+  speaking: 'sections.speakingDetail',
+} as const satisfies Record<SectionKind, TKey>;

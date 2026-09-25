@@ -1,6 +1,7 @@
 import { ReactNode, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { X } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { IconButton, SegmentProgress, Text } from '@/shared/ui';
 
@@ -15,10 +16,11 @@ export type SessionHeaderProps = {
 
 export const SessionHeader = memo<SessionHeaderProps>(({ title, counter, subtitle, progress, timer, onClose }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <View style={styles.bar}>
-      <IconButton accessibilityLabel="Testdan chiqish" onPress={onClose}>
+      <IconButton accessibilityLabel={t('session.exitA11y')} onPress={onClose}>
         <X size={17} color={colors.textStrong} strokeWidth={1.6} />
       </IconButton>
 

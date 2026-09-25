@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,25 +7,18 @@ import type { HistoryItem, ProgressPeriod } from '@/entities/result';
 import { HistoryList } from '@/features/progress/ui/HistoryList';
 import { ScoreChartCard } from '@/features/progress/ui/ScoreChartCard';
 import { SectionProgress } from '@/features/progress/ui/SectionProgress';
+import { useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, size, space, useTheme } from '@/shared/theme';
 import { SegmentedControl, SkeletonCard, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
-const periodOptions = [
-  { value: '1m', label: '1 oy' },
-  { value: '3m', label: '3 oy' },
-  { value: 'all', label: 'Hammasi' },
-] as const;
-
-const periodLabels: Record<ProgressPeriod, string> = {
-  '1m': '1 oy ichida',
-  '3m': '3 oy ichida',
-  all: 'Barcha vaqt',
-};
+const periods: ProgressPeriod[] = ['1m', '3m', 'all'];
 
 export default function ProgressScreen() {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
+  const periodOptions = useMemo(() => periods.map((value) => ({ value, label: t(`progress.periods.${value}`) })), [t]);
   const insets = useSafeAreaInsets();
   const [period, setPeriod] = useState<ProgressPeriod>('3m');
   const progress = useProgress(period);
@@ -44,19 +37,19 @@ export default function ProgressScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.header}>
-        <Text variant="titleLg">Progress</Text>
+        <Text variant="titleLg">{t('progress.title')}</Text>
         <SegmentedControl options={periodOptions} value={period} onChange={setPeriod} size="sm" fit />
       </View>
 
       {progress.data ? (
         <>
           <ScoreChartCard data={progress.data} />
-          <SectionProgress sections={progress.data.sections} periodLabel={periodLabels[period]} />
+          <SectionProgress sections={progress.data.sections} periodLabel={t(`progress.periodLabels.${period}`)} />
           <View style={styles.historyHeader}>
-            <Text variant="labelMedium">Tarix</Text>
+            <Text variant="labelMedium">{t('progress.history')}</Text>
             <Pressable accessibilityRole="button" hitSlop={hitSlop} onPress={() => router.navigate('/(tabs)/tests')}>
               <Text variant="calloutMedium" color={colors.link}>
-                Barchasi
+                {t('common.all')}
               </Text>
             </Pressable>
           </View>
@@ -65,9 +58,9 @@ export default function ProgressScreen() {
       ) : progress.isError ? (
         <StateView
           tone="error"
-          title="Xatolik"
-          message="Internetni tekshiring"
-          actionLabel="Qayta"
+          title={t('common.error')}
+          message={t('common.checkInternet')}
+          actionLabel={t('common.retry')}
           onAction={() => progress.refetch()}
         />
       ) : (

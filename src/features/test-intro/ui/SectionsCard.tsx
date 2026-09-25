@@ -1,13 +1,15 @@
 import { memo } from 'react';
 import { View } from 'react-native';
-import { sectionIcons } from '@/entities/test';
+import { sectionDetailKeys, sectionIcons } from '@/entities/test';
 import type { SectionMeta } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Card, IconTile, Text } from '@/shared/ui';
 
 export const SectionsCard = memo<{ sections: SectionMeta[] }>(({ sections }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card style={styles.card}>
@@ -21,11 +23,11 @@ export const SectionsCard = memo<{ sections: SectionMeta[] }>(({ sections }) => 
             <View style={styles.body}>
               <Text variant="labelMedium">{section.title}</Text>
               <Text variant="caption" color={colors.textSecondary}>
-                {section.detail}
+                {t(sectionDetailKeys[section.kind], { parts: section.parts, questions: section.questions ?? 0 })}
               </Text>
             </View>
             <Text variant="monoCallout" color={colors.textStrong}>
-              {`${section.approx ? '~' : ''}${section.minutes} daq`}
+              {t(section.approx ? 'units.minutesApprox' : 'units.minutes', { count: section.minutes })}
             </Text>
           </View>
         );

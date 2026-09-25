@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Pressable, View } from 'react-native';
 import { sectionIcons } from '@/entities/test';
 import type { SectionScore } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, levelThresholds } from '@/shared/lib';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Delta, IconTile, ProgressBar, Text } from '@/shared/ui';
@@ -16,15 +17,16 @@ export type SectionsOverviewProps = {
 export const SectionsOverview = memo<SectionsOverviewProps>(({ sections, onPress }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card radius={radius.cardLg}>
       <View style={styles.header}>
-        <Text variant="labelMedium">Bo'limlar</Text>
+        <Text variant="labelMedium">{t('home.sections')}</Text>
         <View style={styles.legend}>
           <View style={styles.legendLine} />
           <Text variant="caption" color={colors.textSecondary}>
-            {`B2 chegarasi · ${B2}`}
+            {t('home.b2Threshold', { score: B2 })}
           </Text>
         </View>
       </View>

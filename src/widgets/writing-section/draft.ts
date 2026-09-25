@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAttemptStore } from '@/entities/attempt';
+import type { TKey } from '@/shared/i18n';
 
 const AUTOSAVE_MS = 2000;
 
@@ -8,11 +9,11 @@ export const countWords = (text: string) => {
   return trimmed === '' ? 0 : trimmed.split(/\s+/).length;
 };
 
-export const savedLabel = (savedAt: number | null, now: number) => {
-  if (!savedAt) return 'Qoralama avtomatik saqlanadi';
+export const savedStatus = (savedAt: number | null, now: number): { key: TKey; count?: number } => {
+  if (!savedAt) return { key: 'writing.savedAuto' };
   const seconds = Math.max(1, Math.round((now - savedAt) / 1000));
-  if (seconds < 60) return `Qoralama ${seconds} soniya oldin saqlandi`;
-  return `Qoralama ${Math.round(seconds / 60)} daqiqa oldin saqlandi`;
+  if (seconds < 60) return { key: 'writing.savedSeconds', count: seconds };
+  return { key: 'writing.savedMinutes', count: Math.round(seconds / 60) };
 };
 
 export const useDrafts = () => {

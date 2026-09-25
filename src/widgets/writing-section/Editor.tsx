@@ -1,5 +1,6 @@
 import { memo, useState } from 'react';
 import { TextInput, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, type, useTheme } from '@/shared/theme';
 import { ProgressBar, Text } from '@/shared/ui';
 import { countWords } from './draft';
@@ -13,6 +14,7 @@ export type EditorProps = {
 export const Editor = memo<EditorProps>(({ value, onChange, targetWords }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const [focused, setFocused] = useState(false);
   const words = countWords(value);
 
@@ -27,11 +29,11 @@ export const Editor = memo<EditorProps>(({ value, onChange, targetWords }) => {
         textAlignVertical="top"
         autoCapitalize="sentences"
         allowFontScaling={false}
-        placeholder="Javobingizni shu yerga yozing…"
+        placeholder={t('writing.placeholder')}
         placeholderTextColor={colors.textTertiary}
         selectionColor={colors.selectedBorder}
         cursorColor={colors.selectedBorder}
-        accessibilityLabel="Writing javobi"
+        accessibilityLabel={t('writing.answerA11y')}
         style={styles.input}
       />
       <View style={styles.footer}>

@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import { View } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
 import type { Correction, TextSegment } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 import { MarkedText } from './MarkedText';
@@ -14,9 +15,10 @@ export type ErrorsCardProps = {
 export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const legend = [
-    { label: 'Grammar', color: colors.error[500] },
-    { label: "Lug'at", color: colors.warning[500] },
+    { label: t('aiReview.grammar'), color: colors.error[500] },
+    { label: t('aiReview.lexis'), color: colors.warning[500] },
   ];
   const [active, setActive] = useState(corrections[0]?.from);
   const correction = corrections.find((c) => c.from === active);
@@ -24,7 +26,7 @@ export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
   return (
     <Card style={styles.card}>
       <View style={styles.header}>
-        <Text variant="bodySmMedium">Matndagi xatolar</Text>
+        <Text variant="bodySmMedium">{t('aiReview.errorsInText')}</Text>
         <View style={styles.legend}>
           {legend.map((item) => (
             <View key={item.label} style={styles.legendItem}>

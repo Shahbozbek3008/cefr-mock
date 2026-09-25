@@ -3,23 +3,15 @@ export type PaymentMethod = 'click' | 'payme';
 
 export type Plan = {
   id: PlanId;
-  title: string;
   price: number;
   months: number;
   discount?: number;
 };
 
 export const plans: Plan[] = [
-  { id: 'monthly', title: 'Oylik', price: 49_000, months: 1 },
-  { id: 'quarterly', title: '3 oylik', price: 119_000, months: 3, discount: 19 },
-  { id: 'yearly', title: 'Yillik', price: 349_000, months: 12, discount: 41 },
-];
-
-export const features = [
-  'Cheksiz mock testlar — 40+',
-  'AI Writing va Speaking baholash',
-  "Har bir savol bo'yicha tushuntirish",
-  'Shaxsiy tayyorgarlik rejasi',
+  { id: 'monthly', price: 49_000, months: 1 },
+  { id: 'quarterly', price: 119_000, months: 3, discount: 19 },
+  { id: 'yearly', price: 349_000, months: 12, discount: 41 },
 ];
 
 export const paymentMethods: { id: PaymentMethod; title: string }[] = [

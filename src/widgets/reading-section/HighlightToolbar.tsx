@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Pressable, View } from 'react-native';
 import type { Highlight } from '@/entities/attempt';
+import { useI18n } from '@/shared/i18n';
 import { Colors, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
@@ -21,6 +22,7 @@ export type HighlightToolbarProps = {
 export const HighlightToolbar = memo<HighlightToolbarProps>(({ active, onPick, onNote }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
 
   return (
     <View style={[styles.toolbar, elevation.floating]}>
@@ -28,7 +30,7 @@ export const HighlightToolbar = memo<HighlightToolbarProps>(({ active, onPick, o
         <Pressable
           key={color}
           accessibilityRole="button"
-          accessibilityLabel={color === 'yellow' ? 'Sariq bilan belgilash' : "Ko'k bilan belgilash"}
+          accessibilityLabel={t(color === 'yellow' ? 'reading.highlightYellow' : 'reading.highlightBlue')}
           accessibilityState={{ selected: active === color }}
           onPress={() => onPick(color)}
           style={styles.swatchButton}
@@ -45,7 +47,7 @@ export const HighlightToolbar = memo<HighlightToolbarProps>(({ active, onPick, o
       <View style={styles.divider} />
       <Pressable accessibilityRole="button" onPress={onNote} style={styles.note}>
         <Text variant="callout" color={colors.textStrong}>
-          Izoh
+          {t('reading.note')}
         </Text>
       </Pressable>
     </View>

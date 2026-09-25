@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import type { SectionScore } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, nextLevelGap } from '@/shared/lib';
 import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Card, Delta, ProgressBar, Text } from '@/shared/ui';
@@ -8,6 +9,7 @@ import { Card, Delta, ProgressBar, Text } from '@/shared/ui';
 export const SectionScoreCard = memo<{ section: SectionScore }>(({ section }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const gap = nextLevelGap(section.score);
   const focus = Boolean(section.focus);
 
@@ -23,7 +25,7 @@ export const SectionScoreCard = memo<{ section: SectionScore }>(({ section }) =>
         <Text variant="statLg">{section.score}</Text>
         {focus ? (
           <Text variant="microMedium" color={colors.warning.text}>
-            Fokus
+            {t('result.focus')}
           </Text>
         ) : (
           <Text variant="monoXs" color={colors.textTertiary}>

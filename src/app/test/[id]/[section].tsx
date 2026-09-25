@@ -4,6 +4,7 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useAttemptStore } from '@/entities/attempt';
 import { sectionOrder, useTest } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { space } from '@/shared/theme';
 import { Screen, SkeletonCard, StateView } from '@/shared/ui';
 import { ListeningSection } from '@/widgets/listening-section/ListeningSection';
@@ -23,6 +24,7 @@ const isSection = (value: string | undefined): value is SectionKind => sectionOr
 export default function SectionScreen() {
   const { id, section } = useLocalSearchParams<{ id: string; section: string }>();
   const test = useTest(id);
+  const { t } = useI18n();
   const start = useAttemptStore((s) => s.start);
   const enterSection = useAttemptStore((s) => s.enterSection);
   const minutes = test.data?.sections.find((s) => s.kind === section)?.minutes;
@@ -42,9 +44,9 @@ export default function SectionScreen() {
           {test.isError ? (
             <StateView
               tone="error"
-              title="Xatolik"
-              message="Test yuklanmadi"
-              actionLabel="Qayta"
+              title={t('common.error')}
+              message={t('testIntro.loadFailed')}
+              actionLabel={t('common.retry')}
               onAction={() => test.refetch()}
             />
           ) : (

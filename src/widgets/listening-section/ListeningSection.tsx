@@ -12,6 +12,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button } from '@/shared/ui';
 import { AudioCard } from './AudioCard';
@@ -24,6 +25,7 @@ const FOOTER_SPACE = NAVIGATOR_HEIGHT + size.buttonM + space[3] * 2;
 export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const parts = test.listening;
   const questions = useMemo(() => parts.flatMap((p) => p.questions), [parts]);
@@ -149,7 +151,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
         <View style={styles.actions}>
           <FlagButton questionId={currentId} />
           <Button
-            label={next ? (nextInOtherPart ? 'Keyingi qism' : 'Keyingi savol') : 'Yakunlash'}
+            label={next ? t(nextInOtherPart ? 'session.nextPart' : 'session.nextQuestion') : t('common.finish')}
             size="M"
             grow
             onPress={goNext}

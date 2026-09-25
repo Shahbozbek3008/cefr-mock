@@ -10,6 +10,7 @@ import { AiReviewSheet } from '@/features/result/ui/AiReviewSheet';
 import { RecommendationCard } from '@/features/result/ui/RecommendationCard';
 import { ResultGauge } from '@/features/result/ui/ResultGauge';
 import { SectionScoreCard } from '@/features/result/ui/SectionScoreCard';
+import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, levelFor } from '@/shared/lib';
 import { gradientDirection, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
@@ -24,6 +25,7 @@ const reviewRoutes = {
 
 export default function ResultScreen() {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { id, from } = useLocalSearchParams<{ id: string; from?: string }>();
   const result = useResult(id);
@@ -37,8 +39,8 @@ export default function ResultScreen() {
   const share = useCallback(() => {
     if (!result.data) return;
     const { title, total } = result.data;
-    Share.share({ message: `CEFR Mock · ${title}: ${total}/${MAX_SCORE} (${levelFor(total)})` });
-  }, [result.data]);
+    Share.share({ message: t('result.shareMessage', { title, score: total, max: MAX_SCORE, level: levelFor(total) }) });
+  }, [result.data, t]);
 
   const openReview = useCallback(
     (screen: keyof typeof reviewRoutes) => {
@@ -55,7 +57,7 @@ export default function ResultScreen() {
       <TopBar
         centered
         left={
-          <IconButton accessibilityLabel="Yopish" onPress={close}>
+          <IconButton accessibilityLabel={t('common.close')} onPress={close}>
             <X size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -70,7 +72,7 @@ export default function ResultScreen() {
           ) : null
         }
         right={
-          <IconButton accessibilityLabel="Ulashish" onPress={share} disabled={!data}>
+          <IconButton accessibilityLabel={t('common.share')} onPress={share} disabled={!data}>
             <ShareIcon size={16} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -89,17 +91,21 @@ export default function ResultScreen() {
               ))}
             </View>
             <RecommendationCard
-              title={data.recommendation.title}
-              detail={data.recommendation.detail}
+              title={
+                data.recommendation.level
+                  ? t('result.toLevel', { level: data.recommendation.level, points: data.recommendation.points })
+                  : t('result.topLevel')
+              }
+              detail={t('result.growthPoint', { focus: data.recommendation.focus })}
               onPress={() => openReview('writing')}
             />
           </>
         ) : result.isError ? (
           <StateView
             tone="error"
-            title="Natija topilmadi"
-            message="Internetni tekshiring"
-            actionLabel="Qayta"
+            title={t('result.notFound')}
+            message={t('common.checkInternet')}
+            actionLabel={t('common.retry')}
             onAction={() => result.refetch()}
           />
         ) : (
@@ -122,7 +128,7 @@ export default function ResultScreen() {
         </View>
         <View style={styles.primary}>
           <Button
-            label="Batafsil tahlil"
+            label={t('result.details')}
             size="M"
             disabled={!data}
             onPress={() => openReview('review')}

@@ -4,16 +4,18 @@ import { Tabs } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChartLine, House, Layers, LucideIcon, UserRound } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
+import type { TKey } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0];
 
-const items: Record<string, { label: string; Icon: LucideIcon }> = {
-  home: { label: 'Asosiy', Icon: House },
-  tests: { label: 'Testlar', Icon: Layers },
-  progress: { label: 'Progress', Icon: ChartLine },
-  profile: { label: 'Profil', Icon: UserRound },
+const items: Record<string, { label: TKey; Icon: LucideIcon }> = {
+  home: { label: 'tabs.home', Icon: House },
+  tests: { label: 'tabs.tests', Icon: Layers },
+  progress: { label: 'tabs.progress', Icon: ChartLine },
+  profile: { label: 'tabs.profile', Icon: UserRound },
 };
 
 export const TAB_BAR_SPACE = size.tabBar + size.tabBarGap * 2;
@@ -21,6 +23,7 @@ export const TAB_BAR_SPACE = size.tabBar + size.tabBarGap * 2;
 export const TabBar = memo(({ state, navigation }: TabBarProps) => {
   const styles = useStyles();
   const { colors, elevation, scheme } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
 
   return (
@@ -45,13 +48,13 @@ export const TabBar = memo(({ state, navigation }: TabBarProps) => {
             key={route.key}
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
-            accessibilityLabel={item.label}
+            accessibilityLabel={t(item.label)}
             onPress={onPress}
             style={[styles.item, focused && styles.itemActive]}
           >
             <item.Icon size={20} color={color} strokeWidth={focused ? 1.6 : 1.5} />
             <Text variant={focused ? 'nanoMedium' : 'nano'} color={color}>
-              {item.label}
+              {t(item.label)}
             </Text>
           </Pressable>
         );

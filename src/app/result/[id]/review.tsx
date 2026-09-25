@@ -8,6 +8,7 @@ import { sectionTitles, useTest } from '@/entities/test';
 import type { ListeningPart } from '@/entities/test';
 import { AnswerDetail } from '@/features/review/ui/AnswerDetail';
 import { ReviewGrid } from '@/features/review/ui/ReviewGrid';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SegmentedControl, SkeletonCard, Text, TopBar } from '@/shared/ui';
 
@@ -28,6 +29,8 @@ const audioMarks = (parts: ListeningPart[]): Record<number, number> =>
 export default function ReviewScreen() {
   const styles = useStyles();
   const { colors } = useTheme();
+
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const result = useResult(id);
@@ -70,7 +73,7 @@ export default function ReviewScreen() {
     [navigable, position],
   );
 
-  const modeLabel = onlyWrong ? 'Faqat xatolar' : 'Barcha savollar';
+  const modeLabel = t(onlyWrong ? 'review.onlyWrong' : 'review.allQuestions');
   const counter = `${position >= 0 ? position + 1 : '–'}/${navigable.length}`;
 
   return (
@@ -78,7 +81,7 @@ export default function ReviewScreen() {
       <TopBar
         centered
         left={
-          <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={router.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -86,7 +89,7 @@ export default function ReviewScreen() {
           <>
             <Text variant="bodySmMedium">Batafsil tahlil</Text>
             <Text variant="caption" color={colors.textSecondary}>
-              {test.data ? `Mock #${test.data.number} · ${sectionTitles[tab]}` : ' '}
+              {test.data ? t('review.subtitle', { number: test.data.number, section: sectionTitles[tab] }) : ' '}
             </Text>
           </>
         }
@@ -102,9 +105,9 @@ export default function ReviewScreen() {
         {review && current && question ? (
           <>
             <View style={styles.summary}>
-              <Summary value={review.correct} label="to'g'ri" color={colors.success.text} />
-              <Summary value={review.wrong} label="xato" color={colors.error.text} />
-              <Summary value={review.empty} label="javobsiz" color={colors.text} />
+              <Summary value={review.correct} label={t('review.correct')} color={colors.success.text} />
+              <Summary value={review.wrong} label={t('review.wrong')} color={colors.error.text} />
+              <Summary value={review.empty} label={t('review.empty')} color={colors.text} />
             </View>
             <ReviewGrid items={review.items} selectedId={current.questionId} onSelect={setSelectedId} />
             <AnswerDetail item={current} question={question} />
@@ -119,7 +122,7 @@ export default function ReviewScreen() {
 
       <View style={[styles.footer, { bottom: insets.bottom + space[3] }]}>
         <IconButton
-          accessibilityLabel="Oldingi"
+          accessibilityLabel={t('common.previous')}
           shape="square"
           tone="outline"
           disabled={position <= 0}
@@ -130,7 +133,7 @@ export default function ReviewScreen() {
         <Pressable
           accessibilityRole="switch"
           accessibilityState={{ checked: onlyWrong }}
-          accessibilityLabel="Faqat xatolarni ko'rsatish"
+          accessibilityLabel={t('review.onlyWrongA11y')}
           onPress={() => setOnlyWrong((value) => !value)}
           style={styles.mode}
         >
@@ -142,7 +145,7 @@ export default function ReviewScreen() {
           </Text>
         </Pressable>
         <Button
-          accessibilityLabel="Keyingi"
+          accessibilityLabel={t('common.next')}
           size="M"
           icon={<ChevronRight size={18} color={colors.onAction} strokeWidth={1.75} />}
           disabled={position >= navigable.length - 1}

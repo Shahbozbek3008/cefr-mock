@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import type { AnswerReview, ReviewStatus } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { Colors, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 
@@ -24,6 +25,7 @@ const chunk = <T,>(list: T[], length: number) =>
 
 export const ReviewGrid = memo<ReviewGridProps>(({ items, selectedId, onSelect }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card style={styles.card}>
@@ -37,7 +39,7 @@ export const ReviewGrid = memo<ReviewGridProps>(({ items, selectedId, onSelect }
               <Pressable
                 key={item.questionId}
                 accessibilityRole="button"
-                accessibilityLabel={`Savol ${item.number}`}
+                accessibilityLabel={t('session.question', { number: item.number })}
                 accessibilityState={{ selected: Boolean(selected) }}
                 onPress={() => onSelect(item.questionId)}
                 style={[styles.cell, { backgroundColor: tone.bg }, selected]}

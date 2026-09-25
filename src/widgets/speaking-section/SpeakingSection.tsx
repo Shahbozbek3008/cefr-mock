@@ -6,6 +6,7 @@ import type { SpeakingQuestion, TestDetail } from '@/entities/test';
 import { useSessionControls } from '@/features/test-session/model/useSessionControls';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, size, space } from '@/shared/theme';
 import { SegmentProgress, StateView, StaticTimerPill } from '@/shared/ui';
 import { PromptCard } from './PromptCard';
@@ -26,6 +27,7 @@ type QuestionViewProps = {
 const QuestionView = memo<QuestionViewProps>(({ question, index, total, onClose, onNext }) => {
   const styles = useStyles();
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const setRecording = useAttemptStore((s) => s.setRecording);
   const onSaved = useCallback((uri: string) => setRecording(question.id, uri), [question.id, setRecording]);
   const { phase, secondsLeft, elapsed, bars, start, stop, restart } = useAnswerRecorder(question, onSaved);
@@ -46,7 +48,7 @@ const QuestionView = memo<QuestionViewProps>(({ question, index, total, onClose,
       >
         <SessionHeader
           title="Speaking"
-          subtitle={`Part ${question.part} · Savol ${index + 1} / ${total}`}
+          subtitle={t('speaking.subtitle', { part: question.part, index: index + 1, total })}
           timer={<StaticTimerPill seconds={secondsLeft} tone={phase === 'recording' ? 'warning' : 'normal'} />}
           onClose={onClose}
         />
@@ -55,9 +57,9 @@ const QuestionView = memo<QuestionViewProps>(({ question, index, total, onClose,
         {phase === 'denied' ? (
           <StateView
             tone="error"
-            title="Mikrofonga ruxsat berilmagan"
-            message="Speaking javobini yozib olish uchun sozlamalarda mikrofonni yoqing."
-            actionLabel="Sozlamalarni ochish"
+            title={t('speaking.deniedTitle')}
+            message={t('speaking.deniedMessage')}
+            actionLabel={t('speaking.openSettings')}
             onAction={() => Linking.openSettings()}
           />
         ) : (

@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 import { ChevronRight, Lock } from 'lucide-react-native';
 import { sectionOrder, sectionTitles } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Card, IconTile, Tag, Text } from '@/shared/ui';
 import { ProgressRing } from '@/shared/ui/charts';
@@ -12,23 +13,38 @@ export type TestCardProps = {
   onPress: (test: TestSummary) => void;
 };
 
+const useSubtitle = (test: TestSummary) => {
+  const { t, dayMonth, monthYear } = useI18n();
+  const period = monthYear(test.format.month, test.format.year);
+  if (test.status === 'in_progress') {
+    return t('catalog.inProgress', { section: sectionTitles[test.resumeSection ?? 'listening'] });
+  }
+  if (test.status === 'completed' && test.completedAt) {
+    return t('catalog.completedOn', { date: dayMonth(test.completedAt) });
+  }
+  if (test.status === 'locked') return t('catalog.premium', { period });
+  return t('catalog.formatOf', { period });
+};
+
 const NewCard = ({ test }: { test: TestSummary }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
+  const subtitle = useSubtitle(test);
 
   return (
     <Card level="raised" style={styles.newCard}>
       <View style={styles.newTop}>
         <View style={styles.newInfo}>
           <View style={styles.tags}>
-            {test.isNew ? <Tag label="Yangi" tone="lime" /> : null}
-            {test.isFree ? <Tag label="Bepul" tone="neutral" /> : null}
+            {test.isNew ? <Tag label={t('catalog.newBadge')} tone="lime" /> : null}
+            {test.isFree ? <Tag label={t('catalog.freeBadge')} tone="neutral" /> : null}
           </View>
           <Text variant="heading" style={styles.newTitle}>
             {test.title}
           </Text>
           <Text variant="callout" color={colors.textSecondary}>
-            {test.subtitle}
+            {subtitle}
           </Text>
         </View>
         <Text variant="monoSm" color={colors.textTertiary}>
@@ -51,6 +67,8 @@ const NewCard = ({ test }: { test: TestSummary }) => {
 const RowCard = ({ test, onPress }: TestCardProps) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
+  const subtitle = useSubtitle(test);
   const leading =
     test.status === 'in_progress' ? (
       <ProgressRing value={test.progress ?? 0}>
@@ -73,7 +91,7 @@ const RowCard = ({ test, onPress }: TestCardProps) => {
 
   const trailing =
     test.status === 'in_progress' ? (
-      <Button label="Davom" variant="soft" size="S" onPress={() => onPress(test)} />
+      <Button label={t('catalog.resumeShort')} variant="soft" size="S" onPress={() => onPress(test)} />
     ) : test.status === 'completed' ? (
       <ChevronRight size={18} color={colors.textTertiary} strokeWidth={1.75} />
     ) : (
@@ -86,7 +104,7 @@ const RowCard = ({ test, onPress }: TestCardProps) => {
       <View style={styles.rowBody}>
         <Text variant="titleSm">{test.title}</Text>
         <Text variant="callout" color={colors.textSecondary}>
-          {test.subtitle}
+          {subtitle}
         </Text>
       </View>
       {trailing}

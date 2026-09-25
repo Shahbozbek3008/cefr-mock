@@ -8,9 +8,9 @@ import { useUserStore } from '@/entities/user/model';
 import type { User } from '@/entities/user/model';
 import { PHONE_PREFIX, formatPhone, signOutFromGoogle } from '@/features/auth/model';
 import { ProfileCard } from '@/features/profile/ui/ProfileCard';
-import { themeLabel } from '@/features/theme-switch/model/options';
+import { LanguageSheet } from '@/features/language-switch/ui/LanguageSheet';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
-import { formatDayMonth } from '@/shared/lib';
+import { locales, useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, size, space, useTheme, useThemePreference } from '@/shared/theme';
 import { ConfirmSheet, ListGroup, ListRow, Switch, Text, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
@@ -21,6 +21,7 @@ const contactOf = (user: User | null) =>
 export default function ProfileScreen() {
   const styles = useStyles();
   const { colors, scheme } = useTheme();
+  const { t, locale, dayMonth } = useI18n();
   const icon = { size: 16, color: colors.textStrong, strokeWidth: 1.5 };
   const insets = useSafeAreaInsets();
   const user = useUserStore((s) => s.user);
@@ -33,6 +34,7 @@ export default function ProfileScreen() {
   const showToast = useToast((s) => s.show);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const preference = useThemePreference((s) => s.preference);
 
   const onSignOut = useCallback(() => {
@@ -43,7 +45,7 @@ export default function ProfileScreen() {
     router.replace('/(auth)/phone');
   }, [resetAttempt, signOut, user?.provider]);
 
-  const soon = useCallback(() => showToast({ message: "Bu sozlama keyingi versiyada qo'shiladi" }), [showToast]);
+  const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
 
   return (
     <>
@@ -56,7 +58,7 @@ export default function ProfileScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text variant="titleLg">Profil</Text>
+          <Text variant="titleLg">{t('profile.title')}</Text>
         </View>
 
         <ProfileCard
@@ -68,48 +70,57 @@ export default function ProfileScreen() {
         />
 
         <Text variant="caption" color={colors.textTertiary} style={styles.groupLabel}>
-          Imtihon
+          {t('profile.exam')}
         </Text>
         <ListGroup>
           <ListRow
             icon={<Calendar {...icon} />}
-            title="Imtihon sanasi"
-            value={examDate ? formatDayMonth(examDate) : 'Tanlanmagan'}
+            title={t('profile.examDate')}
+            value={examDate ? dayMonth(examDate) : t('common.notSelected')}
             divider
             onPress={() => router.push({ pathname: '/(onboarding)/exam-date', params: { edit: '1' } })}
           />
           <ListRow
             icon={<Target {...icon} />}
-            title="Maqsad daraja"
+            title={t('profile.targetLevel')}
             value={targetLevel ?? '—'}
             onPress={() => router.push({ pathname: '/(onboarding)/level', params: { edit: '1' } })}
           />
         </ListGroup>
 
         <Text variant="caption" color={colors.textTertiary} style={styles.groupLabel}>
-          Sozlamalar
+          {t('profile.settings')}
         </Text>
         <ListGroup>
           <ListRow
             icon={scheme === 'dark' ? <Moon {...icon} /> : <Sun {...icon} />}
-            title="Tema"
-            value={themeLabel(preference)}
+            title={t('profile.theme')}
+            value={t(`theme.${preference}`)}
             divider
             onPress={() => setThemeOpen(true)}
           />
           <ListRow
             icon={<Bell {...icon} />}
-            title="Eslatmalar"
+            title={t('profile.reminders')}
             divider
             trailing={
-              <Switch value={reminderEnabled} onValueChange={setReminderEnabled} accessibilityLabel="Eslatmalar" />
+              <Switch
+                value={reminderEnabled}
+                onValueChange={setReminderEnabled}
+                accessibilityLabel={t('profile.reminders')}
+              />
             }
           />
-          <ListRow icon={<Globe {...icon} />} title="Interfeys tili" value="O'zbekcha" onPress={soon} />
+          <ListRow
+            icon={<Globe {...icon} />}
+            title={t('profile.language')}
+            value={locales.find((item) => item.value === locale)?.label}
+            onPress={() => setLanguageOpen(true)}
+          />
         </ListGroup>
 
         <ListGroup>
-          <ListRow icon={<CircleHelp {...icon} />} title="Yordam va aloqa" onPress={soon} />
+          <ListRow icon={<CircleHelp {...icon} />} title={t('profile.help')} onPress={soon} />
         </ListGroup>
 
         <Pressable
@@ -119,18 +130,19 @@ export default function ProfileScreen() {
           style={styles.signOut}
         >
           <Text variant="bodySmMedium" color={colors.error.text}>
-            Chiqish
+            {t('profile.signOut')}
           </Text>
         </Pressable>
       </ScrollView>
 
       <ThemeSheet visible={themeOpen} onClose={() => setThemeOpen(false)} />
+      <LanguageSheet visible={languageOpen} onClose={() => setLanguageOpen(false)} />
       <ConfirmSheet
         visible={confirmOpen}
-        title="Hisobdan chiqasizmi?"
-        message="Qurilmadagi tugallanmagan test javoblari o'chiriladi."
-        confirmLabel="Chiqish"
-        cancelLabel="Qolish"
+        title={t('profile.signOutTitle')}
+        message={t('profile.signOutMessage')}
+        confirmLabel={t('common.exit')}
+        cancelLabel={t('common.stay')}
         destructive
         onConfirm={onSignOut}
         onClose={() => setConfirmOpen(false)}

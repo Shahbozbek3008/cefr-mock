@@ -10,6 +10,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useI18n } from '@/shared/i18n';
 import { useKeyboardLift } from '@/shared/lib';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button, ConfirmSheet, SegmentedControl } from '@/shared/ui';
@@ -20,10 +21,7 @@ import { TaskBrief, TaskCard } from './TaskCard';
 
 type Pane = 'task' | 'answer';
 
-const paneOptions = [
-  { value: 'task', label: 'Topshiriq' },
-  { value: 'answer', label: 'Javob' },
-] as const;
+const panes: Pane[] = ['task', 'answer'];
 
 const AnswerPane = memo<{ task: WritingTask; text: string; onChange: (taskId: string, text: string) => void }>(
   ({ task, text, onChange }) => (
@@ -40,6 +38,7 @@ AnswerPane.displayName = 'AnswerPane';
 export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const tasks = test.writing;
   const controls = useSessionControls(test, 'writing');
@@ -62,13 +61,19 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
 
   const submit = useCallback(() => {
     const writing = flush();
-    const short = tasks.filter((t) => countWords(writing[t.id] ?? '') < t.minWords);
+    const short = tasks.filter((item) => countWords(writing[item.id] ?? '') < item.minWords);
     if (short.length === 0) {
       requestFinish();
       return;
     }
-    setShortWarning(short.map((t) => `${t.label}: ${countWords(writing[t.id] ?? '')}/${t.minWords} so'z`).join(', '));
-  }, [flush, requestFinish, tasks]);
+    setShortWarning(
+      short
+        .map((item) =>
+          t('writing.shortItem', { task: item.label, count: countWords(writing[item.id] ?? ''), min: item.minWords }),
+        )
+        .join(', '),
+    );
+  }, [flush, requestFinish, t, tasks]);
 
   const confirmShort = useCallback(() => {
     setShortWarning(null);
@@ -86,7 +91,11 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
           timer={<SectionTimer section="writing" onExpire={finish} />}
           onClose={controls.requestExit}
         />
-        <SegmentedControl options={paneOptions} value={pane} onChange={setPane} />
+        <SegmentedControl
+          options={panes.map((value) => ({ value, label: t(`writing.panes.${value}`) }))}
+          value={pane}
+          onChange={setPane}
+        />
         {pane === 'answer' ? (
           <AnswerPane task={task} text={drafts[task.id] ?? ''} onChange={update} />
         ) : (
@@ -105,7 +114,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
           ) : null}
           <View style={styles.primary}>
             <Button
-              label="Topshirish"
+              label={t('writing.submit')}
               size="M"
               onPress={submit}
               trailingIcon={<ArrowRight size={18} color={colors.onAction} strokeWidth={1.75} />}
@@ -116,10 +125,10 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
 
       <ConfirmSheet
         visible={shortWarning !== null}
-        title="So'zlar soni yetarli emas"
-        message={`${shortWarning ?? ''}. Kam so'zli javob pastroq baholanadi.`}
-        confirmLabel="Baribir topshirish"
-        cancelLabel="Yozishni davom ettirish"
+        title={t('writing.shortTitle')}
+        message={t('writing.shortMessage', { items: shortWarning ?? '' })}
+        confirmLabel={t('writing.submitAnyway')}
+        cancelLabel={t('writing.keepWriting')}
         onConfirm={confirmShort}
         onClose={() => setShortWarning(null)}
       />

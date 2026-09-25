@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Pressable, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { useAnswer, useIsFlagged } from '../model/store';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
@@ -15,6 +16,7 @@ export type QuestionCellProps = {
 export const QuestionCell = memo<QuestionCellProps>(({ id, number, current, size = 'sm', onPress }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const answered = useAnswer(id).trim() !== '';
   const flagged = useIsFlagged(id);
   const color = current ? colors.onAction : answered ? colors.selectedText : colors.textSecondary;
@@ -22,7 +24,7 @@ export const QuestionCell = memo<QuestionCellProps>(({ id, number, current, size
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Savol ${number}`}
+      accessibilityLabel={t('session.question', { number })}
       accessibilityState={{ selected: current }}
       onPress={() => onPress(id)}
       style={[

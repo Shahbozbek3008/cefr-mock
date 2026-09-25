@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { space, useTheme } from '@/shared/theme';
 import { Sheet, Text } from '@/shared/ui';
 
@@ -11,13 +12,14 @@ export type ImprovedSheetProps = {
 
 export const ImprovedSheet = memo<ImprovedSheetProps>(({ visible, text, onClose }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Sheet visible={visible} onClose={onClose}>
       <View style={styles.intro}>
-        <Text variant="titleSheet">Yaxshilangan variant</Text>
+        <Text variant="titleSheet">{t('aiReview.improvedTitle')}</Text>
         <Text variant="labelRelaxed" color={colors.textSecondary}>
-          Xatolar tuzatilgan va akademik uslubga moslangan.
+          {t('aiReview.improvedSubtitle')}
         </Text>
       </View>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>

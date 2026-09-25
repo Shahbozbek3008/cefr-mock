@@ -61,10 +61,13 @@ export type SpeakingQuestion = {
 export type SectionMeta = {
   kind: SectionKind;
   title: string;
-  detail: string;
+  parts: number;
+  questions?: number;
   minutes: number;
   approx?: boolean;
 };
+
+export type TestFormat = { month: number; year: number };
 
 export type TestStatus = 'new' | 'in_progress' | 'completed' | 'locked';
 
@@ -72,7 +75,7 @@ export type TestSummary = {
   id: string;
   number: number;
   title: string;
-  subtitle: string;
+  format: TestFormat;
   durationLabel: string;
   isNew: boolean;
   isFree: boolean;
@@ -80,10 +83,12 @@ export type TestSummary = {
   status: TestStatus;
   progress?: number;
   resumeSection?: SectionKind;
-  resumeLabel?: string;
+  resumeAnswered?: number;
+  resumeTotal?: number;
+  resumeRemainingSec?: number;
   score?: number;
   level?: string;
-  completedLabel?: string;
+  completedAt?: string;
   resultId?: string;
 };
 
@@ -91,8 +96,7 @@ export type TestDetail = {
   id: string;
   number: number;
   title: string;
-  subtitle: string;
-  format: string;
+  format: TestFormat;
   durationLabel: string;
   sectionsCount: number;
   scoreRange: string;

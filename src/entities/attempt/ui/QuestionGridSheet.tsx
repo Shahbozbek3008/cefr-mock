@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { Question } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { space, useTheme } from '@/shared/theme';
 import { Button, Sheet, Text } from '@/shared/ui';
 import { QuestionCell } from './QuestionCell';
@@ -17,16 +18,17 @@ export type QuestionGridSheetProps = {
 export const QuestionGridSheet = memo<QuestionGridSheetProps>(
   ({ visible, questions, currentId, onSelect, onFinish, onClose }) => {
     const { colors } = useTheme();
+    const { t } = useI18n();
     const legend = [
-      { label: 'Javob berilgan', color: colors.chipActiveBg },
-      { label: 'Joriy', color: colors.action },
-      { label: 'Belgilangan', color: colors.warning[500] },
+      { label: t('session.legendAnswered'), color: colors.chipActiveBg },
+      { label: t('session.legendCurrent'), color: colors.action },
+      { label: t('session.legendFlagged'), color: colors.warning[500] },
     ];
 
     return (
       <Sheet visible={visible} onClose={onClose}>
         <View style={styles.header}>
-          <Text variant="titleSheet">Savollar</Text>
+          <Text variant="titleSheet">{t('session.questions')}</Text>
           <View style={styles.legend}>
             {legend.map((item) => (
               <View key={item.label} style={styles.legendItem}>
@@ -52,7 +54,7 @@ export const QuestionGridSheet = memo<QuestionGridSheetProps>(
           ))}
         </View>
 
-        <Button label="Bo'limni yakunlash" variant="muted" size="M" onPress={onFinish} />
+        <Button label={t('session.finishSection')} variant="muted" size="M" onPress={onFinish} />
       </Sheet>
     );
   },

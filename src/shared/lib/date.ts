@@ -1,33 +1,6 @@
-const weekdays = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
-
-const months = [
-  'yanvar',
-  'fevral',
-  'mart',
-  'aprel',
-  'may',
-  'iyun',
-  'iyul',
-  'avgust',
-  'sentabr',
-  'oktabr',
-  'noyabr',
-  'dekabr',
-];
-
 const pad = (value: number) => String(value).padStart(2, '0');
 
 const parse = (value: Date | string) => (typeof value === 'string' ? new Date(`${value}T00:00:00`) : value);
-
-export const formatDayMonth = (value: Date | string) => {
-  const date = parse(value);
-  return `${date.getDate()}-${months[date.getMonth()]}`;
-};
-
-export const formatLongDate = (value: Date | string) => {
-  const date = parse(value);
-  return `${weekdays[date.getDay()]}, ${formatDayMonth(date)}`;
-};
 
 export const formatShortDate = (value: Date | string) => {
   const date = parse(value);

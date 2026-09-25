@@ -2,9 +2,11 @@ import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { sectionIcons, sectionTitles } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { radius, space, useTheme } from '@/shared/theme';
 import { ActionSurface, Card, Text } from '@/shared/ui';
 import { ProgressRing } from '@/shared/ui/charts';
+import { formatClock } from '@/shared/lib';
 import { PlayIcon } from '@/shared/icons';
 
 export type ContinueCardProps = {
@@ -14,6 +16,7 @@ export type ContinueCardProps = {
 
 export const ContinueCard = memo<ContinueCardProps>(({ test, onPress }) => {
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const section = test.resumeSection ?? 'listening';
   const Icon = sectionIcons[section];
 
@@ -25,17 +28,21 @@ export const ContinueCard = memo<ContinueCardProps>(({ test, onPress }) => {
 
       <View style={styles.body}>
         <Text variant="caption" color={colors.textSecondary}>
-          Davom ettirish
+          {t('home.continueLabel')}
         </Text>
         <Text variant="labelMedium">{`Mock #${test.number} · ${sectionTitles[section]}`}</Text>
-        {test.resumeLabel ? (
+        {test.resumeTotal ? (
           <Text variant="monoXs" color={colors.textTertiary}>
-            {test.resumeLabel}
+            {t('home.resumeMeta', {
+              answered: test.resumeAnswered ?? 0,
+              total: test.resumeTotal,
+              time: formatClock(test.resumeRemainingSec ?? 0),
+            })}
           </Text>
         ) : null}
       </View>
 
-      <Pressable accessibilityRole="button" accessibilityLabel="Davom ettirish" onPress={onPress}>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('home.continueLabel')} onPress={onPress}>
         <ActionSurface style={[styles.play, elevation.actionSm]}>
           <PlayIcon size={18} color={colors.onAction} />
         </ActionSurface>

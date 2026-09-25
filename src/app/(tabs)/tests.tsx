@@ -6,23 +6,29 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ListFilter } from 'lucide-react-native';
 import { useTests } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
-import { applyCatalog, filterLabels, filterOrder, modeOptions, practiceItems } from '@/features/catalog/model/filters';
+import { applyCatalog, filterLabels, filterOrder, modeLabels, practiceItems } from '@/features/catalog/model/filters';
 import type { CatalogFilter, CatalogMode, CatalogSort, PracticeItem } from '@/features/catalog/model/filters';
 import { PracticeCard } from '@/features/catalog/ui/PracticeCard';
 import { SearchField } from '@/features/catalog/ui/SearchField';
 import { TestCard } from '@/features/catalog/ui/TestCard';
+import { useI18n } from '@/shared/i18n';
+import type { TKey } from '@/shared/i18n';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Chip, Dot, IconButton, Radio, SegmentedControl, Sheet, SkeletonCard, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
-const sortOptions: { value: CatalogSort; label: string }[] = [
-  { value: 'newest', label: 'Avval yangilari' },
-  { value: 'oldest', label: 'Avval eskilari' },
+const sortOptions: { value: CatalogSort; label: TKey }[] = [
+  { value: 'newest', label: 'catalog.newestFirst' },
+  { value: 'oldest', label: 'catalog.oldestFirst' },
 ];
+
+const modes: CatalogMode[] = ['full', 'sections'];
 
 export default function TestsScreen() {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
+  const modeOptions = useMemo(() => modes.map((value) => ({ value, label: t(modeLabels[value]) })), [t]);
   const insets = useSafeAreaInsets();
   const tests = useTests();
   const [mode, setMode] = useState<CatalogMode>('full');
@@ -59,8 +65,8 @@ export default function TestsScreen() {
   const header = (
     <View style={styles.header}>
       <View style={styles.titleRow}>
-        <Text variant="titleLg">Testlar</Text>
-        <IconButton accessibilityLabel="Saralash" onPress={() => setSortOpen(true)}>
+        <Text variant="titleLg">{t('catalog.title')}</Text>
+        <IconButton accessibilityLabel={t('catalog.sort')} onPress={() => setSortOpen(true)}>
           <ListFilter size={18} color={colors.textStrong} strokeWidth={1.6} />
           <View style={styles.filterDot}>
             <Dot color={colors.data} size={7} />
@@ -82,7 +88,7 @@ export default function TestsScreen() {
           {filterOrder.map((key) => (
             <Chip
               key={key}
-              label={key === 'all' ? `${filterLabels[key]} · ${tests.data?.length ?? 0}` : filterLabels[key]}
+              label={key === 'all' ? `${t(filterLabels[key])} · ${tests.data?.length ?? 0}` : t(filterLabels[key])}
               active={filter === key}
               onPress={() => setFilter(key)}
             />
@@ -127,16 +133,16 @@ export default function TestsScreen() {
             ) : tests.isError ? (
               <StateView
                 tone="error"
-                title="Xatolik"
-                message="Internetni tekshiring"
-                actionLabel="Qayta"
+                title={t('common.error')}
+                message={t('common.checkInternet')}
+                actionLabel={t('common.retry')}
                 onAction={() => tests.refetch()}
               />
             ) : (
               <StateView
-                title="Natija yo'q"
-                message="Boshqa filtr yoki so'z bilan qidiring"
-                actionLabel="Tozalash"
+                title={t('catalog.emptyTitle')}
+                message={t('catalog.emptyMessage')}
+                actionLabel={t('common.clear')}
                 onAction={() => {
                   setFilter('all');
                   setQuery('');
@@ -152,7 +158,7 @@ export default function TestsScreen() {
 
       <Sheet visible={sortOpen} onClose={() => setSortOpen(false)}>
         <Text variant="titleSheet" style={styles.sheetTitle}>
-          Saralash
+          {t('catalog.sort')}
         </Text>
         <View style={styles.sortList}>
           {sortOptions.map((option) => (
@@ -167,7 +173,7 @@ export default function TestsScreen() {
               style={styles.sortRow}
             >
               <Radio selected={sort === option.value} />
-              <Text variant="label">{option.label}</Text>
+              <Text variant="label">{t(option.label)}</Text>
             </Pressable>
           ))}
         </View>

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Pressable, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import { AiTile } from './AiTile';
@@ -7,19 +8,20 @@ import { AiTile } from './AiTile';
 export const AiReviewButton = memo<{ onPress: () => void }>(({ onPress }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="AI baho"
+      accessibilityLabel={t('result.aiScore')}
       onPress={onPress}
       style={({ pressed }) => [styles.button, elevation.segment, pressed && styles.pressed]}
     >
       <AiTile />
       <View style={styles.body}>
-        <Text variant="bodySmMedium">AI baho</Text>
+        <Text variant="bodySmMedium">{t('result.aiScore')}</Text>
         <Text variant="micro" color={colors.textSecondary} numberOfLines={1}>
-          Writing · Speaking
+          {t('result.aiScoreSections')}
         </Text>
       </View>
     </Pressable>

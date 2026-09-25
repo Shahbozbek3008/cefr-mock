@@ -4,7 +4,13 @@ import { PaymeLogo } from '@/shared/icons';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import type { PaymentMethod } from '../model/plans';
 
-const clickLogo = require('../../../../assets/brands/click.png');
+const LOGO_HEIGHT = 22;
+const CLICK_RATIO = 379 / 96;
+
+const clickLogos = {
+  light: require('../../../../assets/brands/click-light.png'),
+  dark: require('../../../../assets/brands/click-dark.png'),
+};
 
 export type PaymentOptionProps = {
   id: PaymentMethod;
@@ -15,7 +21,7 @@ export type PaymentOptionProps = {
 
 export const PaymentOption = memo<PaymentOptionProps>(({ id, title, selected, onSelect }) => {
   const styles = useStyles();
-  const { colors } = useTheme();
+  const { colors, scheme } = useTheme();
 
   return (
     <Pressable
@@ -26,9 +32,9 @@ export const PaymentOption = memo<PaymentOptionProps>(({ id, title, selected, on
       style={[styles.option, selected ? styles.selected : styles.idle]}
     >
       {id === 'click' ? (
-        <Image source={clickLogo} style={styles.clickLogo} />
+        <Image source={clickLogos[scheme]} style={styles.clickLogo} resizeMode="contain" />
       ) : (
-        <PaymeLogo height={20} color={colors.text} />
+        <PaymeLogo height={LOGO_HEIGHT} color={colors.text} />
       )}
     </Pressable>
   );
@@ -44,7 +50,7 @@ const useStyles = makeStyles(({ colors }) => ({
     backgroundColor: colors.surface,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: space[2.5],
+    justifyContent: 'center',
     paddingHorizontal: space[3.5],
   },
   idle: {
@@ -56,7 +62,7 @@ const useStyles = makeStyles(({ colors }) => ({
     borderColor: colors.selectedBorder,
   },
   clickLogo: {
-    width: 32,
-    height: 32,
+    width: LOGO_HEIGHT * CLICK_RATIO,
+    height: LOGO_HEIGHT,
   },
 }));

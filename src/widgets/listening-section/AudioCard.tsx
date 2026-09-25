@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { Lock } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { formatClock, usePlayback } from '@/shared/lib';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
@@ -19,6 +20,7 @@ export type AudioCardProps = {
 export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const { position, playing, progress } = usePlayback(durationSec, { autoPlay: true, onEnd: onEnded });
 
   return (
@@ -32,13 +34,13 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
             ringWidth={4}
           />
           <Text variant="captionMedium" color={playing ? colors.selectedText : colors.textSecondary}>
-            {playing ? 'Eshittirilmoqda' : 'Audio tugadi'}
+            {playing ? t('listening.playing') : t('listening.ended')}
           </Text>
         </View>
         <View style={styles.lock}>
           <Lock size={11} color={colors.textSecondary} strokeWidth={2.2} />
           <Text variant="microMedium" color={colors.textSecondary}>
-            Real rejim
+            {t('listening.realMode')}
           </Text>
         </View>
       </View>
@@ -53,7 +55,7 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
       <Waveform bars={bars} progress={progress} playhead />
 
       <Text variant="caption" color={colors.textSecondary}>
-        Audio bir marta eshittiriladi — pauza va qaytarish o'chirilgan.
+        {t('listening.onceNote')}
       </Text>
     </Card>
   );

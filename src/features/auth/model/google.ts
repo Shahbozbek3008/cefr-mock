@@ -7,16 +7,17 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import type { User } from '@/entities/user/model';
+import type { TKey } from '@/shared/i18n';
 import { googleConfig } from '@/shared/config/google';
 
 const DEVELOPER_ERROR = '10';
 
 const messages = {
-  generic: "Google orqali kirib bo'lmadi. Qayta urinib ko'ring.",
-  notConfigured: 'Google kirish hali sozlanmagan. Client ID va SHA-1 ni tekshiring.',
-  playServices: 'Qurilmada Google Play xizmatlari mavjud emas yoki eskirgan.',
-  inProgress: 'Kirish jarayoni allaqachon boshlangan.',
-};
+  generic: 'auth.googleErrors.generic',
+  notConfigured: 'auth.googleErrors.notConfigured',
+  playServices: 'auth.googleErrors.playServices',
+  inProgress: 'auth.googleErrors.inProgress',
+} as const satisfies Record<string, TKey>;
 
 let configured = false;
 
@@ -31,9 +32,9 @@ const ensureConfigured = () => {
 };
 
 export type GoogleSignInResult =
-  { status: 'success'; user: User } | { status: 'cancelled' } | { status: 'error'; message: string };
+  { status: 'success'; user: User } | { status: 'cancelled' } | { status: 'error'; message: TKey };
 
-const errorMessage = (error: unknown) => {
+const errorMessage = (error: unknown): TKey => {
   if (!isErrorWithCode(error)) return messages.generic;
   if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) return messages.playServices;
   if (error.code === statusCodes.IN_PROGRESS) return messages.inProgress;
@@ -74,7 +75,7 @@ export const signOutFromGoogle = async () => {
   await GoogleSignin.signOut().catch(() => null);
 };
 
-export const useGoogleSignIn = (onSuccess: (user: User) => void, onError: (message: string) => void) => {
+export const useGoogleSignIn = (onSuccess: (user: User) => void, onError: (message: TKey) => void) => {
   const [loading, setLoading] = useState(false);
 
   const signIn = useCallback(async () => {

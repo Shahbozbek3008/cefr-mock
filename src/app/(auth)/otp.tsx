@@ -13,11 +13,13 @@ import {
   useCountdown,
 } from '@/features/auth/model';
 import { OtpField } from '@/features/auth/ui/OtpField';
+import { useI18n } from '@/shared/i18n';
 import { hitSlop, useTheme } from '@/shared/theme';
 import { IconButton, Screen, Text } from '@/shared/ui';
 
 export default function OtpScreen() {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const params = useLocalSearchParams<{ phone?: string }>();
   const phone = params.phone ?? '';
   const [code, setCode] = useState('');
@@ -43,19 +45,19 @@ export default function OtpScreen() {
     <Screen paddingHorizontal={24}>
       <KeyboardAvoidingView behavior="padding" style={styles.flex}>
         <View style={styles.topBar}>
-          <IconButton accessibilityLabel="Orqaga" onPress={router.back} style={styles.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={router.back} style={styles.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         </View>
 
         <View style={styles.content}>
           <View style={styles.intro}>
-            <Text variant="titleXl">Kodni kiriting</Text>
+            <Text variant="titleXl">{t('auth.otpTitle')}</Text>
             <Text variant="labelRelaxed" color={colors.textSecondary}>
-              6 xonali kod <Text variant="monoField">{`${PHONE_PREFIX} ${formatPhone(phone)}`}</Text> raqamiga
-              yuborildi.{' '}
+              {t('auth.otpSentPrefix')} <Text variant="monoField">{`${PHONE_PREFIX} ${formatPhone(phone)}`}</Text>
+              {t('auth.otpSentSuffix') ? ` ${t('auth.otpSentSuffix')}` : '.'}{' '}
               <Text variant="labelMedium" color={colors.link} onPress={router.back}>
-                O'zgartirish
+                {t('auth.change')}
               </Text>
             </Text>
           </View>
@@ -72,7 +74,7 @@ export default function OtpScreen() {
           >
             <RotateCcw size={15} color={colors.textSecondary} strokeWidth={1.6} />
             <Text variant="bodySm" color={colors.textSecondary}>
-              Qayta yuborish
+              {t('auth.resend')}
             </Text>
             {finished ? null : (
               <Text variant="monoSm" color={colors.text}>

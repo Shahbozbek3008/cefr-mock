@@ -10,6 +10,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
+import { useI18n } from '@/shared/i18n';
 import { useKeyboardLift } from '@/shared/lib';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, SegmentedControl, Text } from '@/shared/ui';
@@ -18,15 +19,12 @@ import { QuestionPanel } from './QuestionPanel';
 
 type ViewMode = 'text' | 'both' | 'questions';
 
-const modeOptions = [
-  { value: 'text', label: 'Matn' },
-  { value: 'both', label: 'Ikkalasi' },
-  { value: 'questions', label: 'Savollar' },
-] as const;
+const modes: ViewMode[] = ['text', 'both', 'questions'];
 
 export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const parts = test.reading;
   const questions = useMemo(() => parts.flatMap((p) => p.questions), [parts]);
@@ -88,10 +86,15 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
             onClose={controls.requestExit}
           />
           <View style={styles.tools}>
-            <SegmentedControl options={modeOptions} value={mode} onChange={setMode} style={styles.modes} />
+            <SegmentedControl
+              options={modes.map((value) => ({ value, label: t(`reading.modes.${value}`) }))}
+              value={mode}
+              onChange={setMode}
+              style={styles.modes}
+            />
             <Pressable
               accessibilityRole="switch"
-              accessibilityLabel="Serif shrift"
+              accessibilityLabel={t('reading.serif')}
               accessibilityState={{ checked: serif }}
               onPress={() => setSerif((value) => !value)}
               style={[styles.fontToggle, serif && styles.fontToggleActive]}
@@ -120,7 +123,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
       <SessionFooter tone="solid">
         <View style={styles.actions}>
           <IconButton
-            accessibilityLabel="Oldingi savol"
+            accessibilityLabel={t('session.previousQuestion')}
             shape="square"
             tone="outline"
             disabled={index === 0}
@@ -130,14 +133,14 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
           </IconButton>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Savollar ro'yxati"
+            accessibilityLabel={t('session.questionList')}
             onPress={() => setGridOpen(true)}
             style={styles.overview}
           >
             <View style={styles.overviewLabel}>
               <LayoutGrid size={17} color={colors.textStrong} strokeWidth={1.5} />
               <Text variant="bodySm" color={colors.textStrong}>
-                Savollar
+                {t('session.questions')}
               </Text>
             </View>
             <Text variant="monoCallout" color={colors.textSecondary}>
@@ -148,7 +151,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
             </Text>
           </Pressable>
           <Button
-            accessibilityLabel={index === questions.length - 1 ? 'Yakunlash' : 'Keyingi savol'}
+            accessibilityLabel={index === questions.length - 1 ? t('common.finish') : t('session.nextQuestion')}
             size="M"
             icon={<ChevronRight size={18} color={colors.onAction} strokeWidth={1.75} />}
             onPress={goNext}

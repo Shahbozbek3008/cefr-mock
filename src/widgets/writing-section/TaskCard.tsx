@@ -1,17 +1,19 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import type { WritingTask } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 
 export const TaskCard = memo<{ task: WritingTask }>(({ task }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card radius={radius.lg} style={styles.compact}>
       <Text variant="monoNano" color={colors.textTertiary} style={styles.label}>
-        TASK
+        {t('writing.task')}
       </Text>
       <Text variant="bodySmRelaxed" color={colors.textStrong} style={styles.prompt}>
         {task.prompt}
@@ -25,6 +27,7 @@ TaskCard.displayName = 'TaskCard';
 export const TaskBrief = memo<{ task: WritingTask }>(({ task }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card radius={radius.card} style={styles.brief}>
@@ -35,15 +38,15 @@ export const TaskBrief = memo<{ task: WritingTask }>(({ task }) => {
       <View style={styles.requirements}>
         <View style={styles.requirement}>
           <Text variant="callout" color={colors.textSecondary}>
-            Minimal hajm
+            {t('writing.minVolume')}
           </Text>
-          <Text variant="monoCallout">{`${task.minWords} so'z`}</Text>
+          <Text variant="monoCallout">{t('units.words', { count: task.minWords })}</Text>
         </View>
         <View style={styles.requirement}>
           <Text variant="callout" color={colors.textSecondary}>
-            Tavsiya etilgan
+            {t('writing.recommended')}
           </Text>
-          <Text variant="monoCallout">{`${task.targetWords} so'z`}</Text>
+          <Text variant="monoCallout">{t('units.words', { count: task.targetWords })}</Text>
         </View>
       </View>
     </Card>

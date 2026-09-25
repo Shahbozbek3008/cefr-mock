@@ -8,11 +8,13 @@ import type { TargetLevel } from '@/entities/user/model';
 import { levelOptions } from '@/features/onboarding/model';
 import { LevelCard } from '@/features/onboarding/ui/LevelCard';
 import { StepHeader } from '@/features/onboarding/ui/StepHeader';
+import { useI18n } from '@/shared/i18n';
 import { useTheme } from '@/shared/theme';
 import { Button, ProgressSteps, Screen, Text } from '@/shared/ui';
 
 export default function LevelScreen() {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { edit } = useLocalSearchParams<{ edit?: string }>();
   const targetLevel = useUserStore((state) => state.targetLevel);
@@ -33,17 +35,12 @@ export default function LevelScreen() {
       <View style={styles.topBar}>
         <ProgressSteps total={3} current={1} />
         <Text variant="bodySm" color={colors.textSecondary}>
-          O'tkazish
+          {t('onboarding.skip')}
         </Text>
       </View>
 
       <View style={styles.content}>
-        <StepHeader
-          step={1}
-          total={3}
-          title="Qaysi darajani maqsad qilgansiz?"
-          subtitle="Mashqlar va tavsiyalar shu darajaga moslanadi. Keyin o'zgartirish mumkin."
-        />
+        <StepHeader step={1} total={3} title={t('onboarding.level.title')} subtitle={t('onboarding.level.subtitle')} />
 
         <View style={styles.options}>
           {levelOptions.map((option) => (
@@ -54,14 +51,14 @@ export default function LevelScreen() {
         <View style={styles.hint}>
           <Info size={16} color={colors.textSecondary} strokeWidth={1.6} />
           <Text variant="calloutRelaxed" color={colors.textSecondary} style={styles.hintText}>
-            Ko'pchilik universitetlar B2 (51+) talab qiladi.
+            {t('onboarding.level.hint')}
           </Text>
         </View>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
         <Button
-          label="Davom etish"
+          label={t('common.continue')}
           disabled={targetLevel === null}
           onPress={onContinue}
           trailingIcon={

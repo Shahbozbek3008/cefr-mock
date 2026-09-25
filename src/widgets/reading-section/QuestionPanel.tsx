@@ -2,14 +2,9 @@ import { memo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { GapInput, McqOptions, TfngChoices, useAnswer } from '@/entities/attempt';
 import type { Question } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Tag, Text } from '@/shared/ui';
-
-const kindLabels: Record<Question['kind'], string> = {
-  tfng: 'True · False · Not given',
-  mcq: 'Variantni tanlang',
-  gap: "Bitta so'z yozing",
-};
 
 const Dot = memo<{ id: string; current: boolean }>(({ id, current }) => {
   const styles = useStyles();
@@ -29,6 +24,7 @@ export type QuestionPanelProps = {
 const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question, siblings }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <>
@@ -36,7 +32,7 @@ const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question
         <View style={styles.kind}>
           <Tag label={`Q${question.number}`} tone="lime" size="md" mono />
           <Text variant="callout" color={colors.textSecondary}>
-            {kindLabels[question.kind]}
+            {t(`reading.kinds.${question.kind}`)}
           </Text>
         </View>
         <View style={styles.dots}>

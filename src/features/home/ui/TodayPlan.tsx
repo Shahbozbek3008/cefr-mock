@@ -1,8 +1,10 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { Check } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Card, Text } from '@/shared/ui';
+import { sectionTitles } from '@/entities/test';
 import type { PlanItem } from '../model/plan';
 
 export type TodayPlanProps = {
@@ -13,15 +15,16 @@ export type TodayPlanProps = {
 export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const done = items.filter((i) => i.done).length;
   const minutes = items.reduce((sum, i) => sum + i.minutes, 0);
 
   return (
     <View style={styles.section}>
       <View style={styles.header}>
-        <Text variant="labelMedium">Bugungi mashq</Text>
+        <Text variant="labelMedium">{t('home.todayPlan')}</Text>
         <Text variant="monoSm" color={colors.textSecondary}>
-          {`${done}/${items.length} · ${minutes} daq`}
+          {t('home.planSummary', { done, total: items.length, minutes })}
         </Text>
       </View>
 
@@ -37,13 +40,17 @@ export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
             )}
             <View style={styles.body}>
               <Text variant="label" color={item.done ? colors.textTertiary : colors.text}>
-                {item.title}
+                {`${sectionTitles[item.section]} · ${item.part}`}
               </Text>
               <Text variant="caption" color={item.done ? colors.textTertiary : colors.textSecondary}>
-                {item.meta}
+                {item.total
+                  ? t('home.planCorrect', { minutes: item.minutes, correct: item.correct ?? 0, total: item.total })
+                  : t('home.planAi', { minutes: item.minutes })}
               </Text>
             </View>
-            {item.done ? null : <Button label="Boshlash" variant="soft" size="S" onPress={() => onStart(item)} />}
+            {item.done ? null : (
+              <Button label={t('common.start')} variant="soft" size="S" onPress={() => onStart(item)} />
+            )}
           </View>
         ))}
       </Card>

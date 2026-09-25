@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Defs, Pattern, Rect } from 'react-native-svg';
 import type { SpeakingQuestion } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 
@@ -9,6 +10,7 @@ const IMAGE_HEIGHT = 170;
 
 const Placeholder = memo<{ caption: string }>(({ caption }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <View style={styles.image}>
@@ -22,7 +24,7 @@ const Placeholder = memo<{ caption: string }>(({ caption }) => {
         <Rect width="100%" height="100%" fill="url(#stripes)" />
       </Svg>
       <Text variant="monoXs" color={colors.textTertiary}>
-        {`rasm · ${caption}`}
+        {t('speaking.image', { caption })}
       </Text>
     </View>
   );

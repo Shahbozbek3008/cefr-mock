@@ -8,6 +8,7 @@ import { sectionOrder, useTest } from '@/entities/test';
 import { RulesList } from '@/features/test-intro/ui/RulesList';
 import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
 import { TestStats } from '@/features/test-intro/ui/TestStats';
+import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Tag, Text, TopBar } from '@/shared/ui';
 
@@ -15,6 +16,7 @@ const FOOTER_SPACE = size.buttonL + space[6];
 
 export default function TestIntroScreen() {
   const { colors } = useTheme();
+  const { t, monthYear } = useI18n();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const test = useTest(id);
@@ -33,7 +35,7 @@ export default function TestIntroScreen() {
     <Screen>
       <TopBar
         left={
-          <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={router.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -47,20 +49,20 @@ export default function TestIntroScreen() {
           <>
             <View style={styles.intro}>
               <View style={styles.tags}>
-                <Tag label="To'liq mock" tone="lime" />
-                <Tag label="Real rejim" tone="neutral" />
+                <Tag label={t('testIntro.fullMock')} tone="lime" />
+                <Tag label={t('testIntro.realMode')} tone="neutral" />
               </View>
               <Text variant="titleXl">{test.data.title}</Text>
               <Text variant="bodySm" color={colors.textSecondary}>
-                {test.data.format}
+                {t('testIntro.officialFormat', { period: monthYear(test.data.format.month, test.data.format.year) })}
               </Text>
             </View>
 
             <TestStats
               items={[
-                { value: test.data.durationLabel, label: 'soat' },
-                { value: String(test.data.sectionsCount), label: "bo'lim" },
-                { value: test.data.scoreRange, label: 'ball' },
+                { value: test.data.durationLabel, label: t('testIntro.hours') },
+                { value: String(test.data.sectionsCount), label: t('testIntro.sectionsCount') },
+                { value: test.data.scoreRange, label: t('testIntro.score') },
               ]}
             />
 
@@ -71,9 +73,9 @@ export default function TestIntroScreen() {
         ) : test.isError ? (
           <StateView
             tone="error"
-            title="Xatolik"
-            message="Internetni tekshiring"
-            actionLabel="Qayta"
+            title={t('common.error')}
+            message={t('common.checkInternet')}
+            actionLabel={t('common.retry')}
             onAction={() => test.refetch()}
           />
         ) : (
@@ -86,7 +88,7 @@ export default function TestIntroScreen() {
 
       <View style={[styles.footer, { bottom: insets.bottom + space[3] }]}>
         <Button
-          label={resuming ? 'Davom ettirish' : 'Testni boshlash'}
+          label={t(resuming ? 'common.resume' : 'testIntro.start')}
           disabled={!test.data}
           onPress={onStart}
           trailingIcon={

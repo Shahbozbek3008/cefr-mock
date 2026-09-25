@@ -4,14 +4,15 @@ import { Sparkles } from 'lucide-react-native';
 import type { AnswerReview, ReviewStatus } from '@/entities/result';
 import type { Question } from '@/entities/test';
 import { PlayIcon } from '@/shared/icons';
+import { useI18n } from '@/shared/i18n';
 import { formatClock } from '@/shared/lib';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Tag, TagTone, Text } from '@/shared/ui';
 
-const statusTags: Record<ReviewStatus, { label: string; tone: TagTone }> = {
-  correct: { label: "To'g'ri", tone: 'success' },
-  wrong: { label: 'Xato', tone: 'error' },
-  empty: { label: 'Javobsiz', tone: 'neutral' },
+const statusTones: Record<ReviewStatus, TagTone> = {
+  correct: 'success',
+  wrong: 'error',
+  empty: 'neutral',
 };
 
 const answerText = (question: Question, value: string) => {
@@ -54,17 +55,22 @@ export type AnswerDetailProps = {
 export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
   const styles = useStyles();
   const { colors } = useTheme();
-  const tag = statusTags[item.status];
+  const { t } = useI18n();
 
   return (
     <Card level="strong" style={styles.card}>
       <View style={styles.header}>
-        <Tag label={`Q${item.number} · ${tag.label}`} tone={tag.tone} size="md" mono />
+        <Tag
+          label={`Q${item.number} · ${t(`review.status.${item.status}`)}`}
+          tone={statusTones[item.status]}
+          size="md"
+          mono
+        />
         {item.audioAt !== undefined ? (
           <View style={styles.audio}>
             <PlayIcon size={12} color={colors.selectedText} />
             <Text variant="captionMedium" color={colors.selectedText}>
-              {`${formatClock(item.audioAt)} dan tinglash`}
+              {t('review.listenFrom', { time: formatClock(item.audioAt) })}
             </Text>
           </View>
         ) : null}
@@ -74,16 +80,20 @@ export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
 
       <View style={styles.answers}>
         {item.status === 'correct' ? (
-          <AnswerBox label="Sizning javob" value={answerText(question, item.yourAnswer)} tone="success" />
+          <AnswerBox label={t('review.yourAnswer')} value={answerText(question, item.yourAnswer)} tone="success" />
         ) : (
           <>
             <AnswerBox
-              label="Sizning javob"
+              label={t('review.yourAnswer')}
               value={answerText(question, item.yourAnswer)}
               tone={item.status === 'wrong' ? 'error' : 'neutral'}
               struck={item.status === 'wrong'}
             />
-            <AnswerBox label="To'g'ri javob" value={answerText(question, item.correctAnswer)} tone="success" />
+            <AnswerBox
+              label={t('review.correctAnswer')}
+              value={answerText(question, item.correctAnswer)}
+              tone="success"
+            />
           </>
         )}
       </View>

@@ -1,19 +1,20 @@
 import type { SectionKind, TestSummary } from '@/entities/test';
+import type { TKey } from '@/shared/i18n';
 
 export type CatalogMode = 'full' | 'sections';
 export type CatalogFilter = 'all' | 'free' | 'new' | 'completed';
 export type CatalogSort = 'newest' | 'oldest';
 
-export const modeOptions = [
-  { value: 'full', label: "To'liq mock" },
-  { value: 'sections', label: "Bo'lim mashqlari" },
-] as const;
+export const modeLabels: Record<CatalogMode, TKey> = {
+  full: 'catalog.fullMock',
+  sections: 'catalog.sectionPractice',
+};
 
-export const filterLabels: Record<CatalogFilter, string> = {
-  all: 'Barchasi',
-  free: 'Bepul',
-  new: 'Boshlanmagan',
-  completed: 'Tugatilgan',
+export const filterLabels: Record<CatalogFilter, TKey> = {
+  all: 'catalog.filters.all',
+  free: 'catalog.filters.free',
+  new: 'catalog.filters.new',
+  completed: 'catalog.filters.completed',
 };
 
 export const filterOrder: CatalogFilter[] = ['all', 'free', 'new', 'completed'];
@@ -29,23 +30,22 @@ const predicates: Record<CatalogFilter, (t: TestSummary) => boolean> = {
 
 export const applyCatalog = (tests: TestSummary[], filter: CatalogFilter, query: string, sort: CatalogSort) => {
   const q = query.trim().toLowerCase();
-  const list = tests.filter(
-    (t) => predicates[filter](t) && (q === '' || `${t.title} ${t.subtitle}`.toLowerCase().includes(q)),
-  );
+  const list = tests.filter((t) => predicates[filter](t) && (q === '' || t.title.toLowerCase().includes(q)));
   const byNumber = [...list].sort((x, y) => y.number - x.number);
   return sort === 'newest' ? byNumber.sort((x, y) => statusRank[x.status] - statusRank[y.status]) : byNumber.reverse();
 };
 
 export type PracticeItem = {
   kind: SectionKind;
-  title: string;
-  detail: string;
-  minutes: string;
+  parts: number;
+  questions?: number;
+  minutes: number;
+  approx?: boolean;
 };
 
 export const practiceItems: PracticeItem[] = [
-  { kind: 'listening', title: 'Listening mashqlari', detail: '6 qism · 35 savol', minutes: '35 daq' },
-  { kind: 'reading', title: 'Reading mashqlari', detail: '5 qism · 35 savol', minutes: '60 daq' },
-  { kind: 'writing', title: 'Writing mashqlari', detail: '2 topshiriq · AI baho', minutes: '60 daq' },
-  { kind: 'speaking', title: 'Speaking mashqlari', detail: '3 qism · AI baho', minutes: '~15 daq' },
+  { kind: 'listening', parts: 6, questions: 35, minutes: 35 },
+  { kind: 'reading', parts: 5, questions: 35, minutes: 60 },
+  { kind: 'writing', parts: 2, minutes: 60 },
+  { kind: 'speaking', parts: 3, minutes: 15, approx: true },
 ];

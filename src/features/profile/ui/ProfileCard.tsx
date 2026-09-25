@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { radius, space, useTheme } from '@/shared/theme';
 import { Avatar, Button, Card, Tag, Text } from '@/shared/ui';
 
@@ -13,6 +14,7 @@ export type ProfileCardProps = {
 
 export const ProfileCard = memo<ProfileCardProps>(({ name, contact, monoContact, isPro, onUpgrade }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card level="raised" radius={radius.cardLg} style={styles.card}>
@@ -26,7 +28,7 @@ export const ProfileCard = memo<ProfileCardProps>(({ name, contact, monoContact,
       {isPro ? (
         <Tag label="Pro" tone="pro" size="md" />
       ) : (
-        <Button label="Pro olish" variant="soft" size="S" onPress={onUpgrade} />
+        <Button label={t('profile.upgrade')} variant="soft" size="S" onPress={onUpgrade} />
       )}
     </Card>
   );

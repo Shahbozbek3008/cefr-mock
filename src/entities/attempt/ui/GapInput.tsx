@@ -1,5 +1,6 @@
 import { Ref, memo, useState } from 'react';
 import { TextInput, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { useAnswer, useAttemptStore } from '../model/store';
 import { makeStyles, radius, space, type, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
@@ -15,6 +16,7 @@ export type GapInputProps = {
 export const GapInput = memo<GapInputProps>(({ questionId, number, variant = 'inline', onFocus, ref }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const value = useAnswer(questionId);
   const setAnswer = useAttemptStore((s) => s.setAnswer);
   const [focused, setFocused] = useState(false);
@@ -45,11 +47,11 @@ export const GapInput = memo<GapInputProps>(({ questionId, number, variant = 'in
         autoCapitalize="none"
         autoCorrect={false}
         allowFontScaling={false}
-        placeholder={inline ? undefined : 'Javobingiz'}
+        placeholder={inline ? undefined : t('session.answerPlaceholder')}
         placeholderTextColor={colors.textTertiary}
         selectionColor={colors.selectedBorder}
         cursorColor={colors.selectedBorder}
-        accessibilityLabel={`Savol ${number} javobi`}
+        accessibilityLabel={t('session.answerOf', { number })}
         style={[styles.input, filled && !focused && styles.inputFilled]}
       />
     </View>

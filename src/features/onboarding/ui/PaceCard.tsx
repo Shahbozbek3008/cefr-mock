@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { radius, useTheme } from '@/shared/theme';
 import { CheckBadge, SelectCard, Text } from '@/shared/ui';
 import type { PaceOption } from '../model';
@@ -12,19 +13,20 @@ export type PaceCardProps = {
 
 export const PaceCard = memo<PaceCardProps>(({ option, selected, onSelect }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <SelectCard
       selected={selected}
       onPress={() => onSelect(option.minutes)}
-      accessibilityLabel={`${option.title} ${option.minutes} daqiqa`}
+      accessibilityLabel={t('onboarding.pace.minutesA11y', { title: t(option.title), count: option.minutes })}
       style={styles.card}
     >
       <Text
         variant={selected ? 'captionMedium' : 'caption'}
         color={selected ? colors.selectedText : colors.textSecondary}
       >
-        {option.title}
+        {t(option.title)}
       </Text>
 
       <View style={styles.value}>

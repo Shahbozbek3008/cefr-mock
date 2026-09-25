@@ -1,5 +1,6 @@
 import { memo, useCallback, useRef } from 'react';
 import { GestureResponderEvent, Pressable, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme, useThemePreference } from '@/shared/theme';
 import type { ThemePreference } from '@/shared/theme';
 import { Radio, Sheet, Text } from '@/shared/ui';
@@ -16,6 +17,7 @@ export type ThemeSheetProps = {
 export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const preference = useThemePreference((s) => s.preference);
   const { prepare, apply } = useThemeSwitch();
   const pending = useRef<{ preference: ThemePreference; origin: Origin; ready: Promise<boolean> } | null>(null);
@@ -47,30 +49,30 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
   return (
     <Sheet visible={visible} onClose={onClose} onHidden={onHidden}>
       <View style={styles.intro}>
-        <Text variant="titleSheet">Tema</Text>
+        <Text variant="titleSheet">{t('theme.title')}</Text>
         <Text variant="labelRelaxed" color={colors.textSecondary}>
-          Tizim tanlansa, ilova telefon sozlamasiga moslashadi.
+          {t('theme.subtitle')}
         </Text>
       </View>
 
       <View style={styles.options}>
         {themeOptions.map((option) => {
-          const selected = option.value === preference;
+          const selected = option === preference;
           return (
             <Pressable
-              key={option.value}
+              key={option}
               accessibilityRole="radio"
               accessibilityState={{ selected }}
-              accessibilityLabel={option.label}
-              onPress={(event) => select(option.value, event)}
+              accessibilityLabel={t(`theme.${option}`)}
+              onPress={(event) => select(option, event)}
               style={styles.option}
             >
               <View style={[styles.frame, selected && styles.frameSelected]}>
-                <ThemePreview preference={option.value} />
+                <ThemePreview preference={option} />
               </View>
               <View style={styles.label}>
                 <Radio selected={selected} />
-                <Text variant={selected ? 'bodySmMedium' : 'bodySm'}>{option.label}</Text>
+                <Text variant={selected ? 'bodySmMedium' : 'bodySm'}>{t(`theme.${option}`)}</Text>
               </View>
             </Pressable>
           );

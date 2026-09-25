@@ -8,12 +8,14 @@ import type { DailyMinutes } from '@/entities/user/model';
 import { paceOptions } from '@/features/onboarding/model';
 import { PaceCard } from '@/features/onboarding/ui/PaceCard';
 import { StepHeader } from '@/features/onboarding/ui/StepHeader';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Button, Card, IconButton, ProgressSteps, Screen, Switch, Text } from '@/shared/ui';
 
 export default function PaceScreen() {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const dailyMinutes = useUserStore((state) => state.dailyMinutes);
   const setDailyMinutes = useUserStore((state) => state.setDailyMinutes);
@@ -31,19 +33,14 @@ export default function PaceScreen() {
   return (
     <Screen paddingHorizontal={24}>
       <View style={styles.topBar}>
-        <IconButton accessibilityLabel="Orqaga" onPress={router.back} style={styles.back}>
+        <IconButton accessibilityLabel={t('common.back')} onPress={router.back} style={styles.back}>
           <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
         </IconButton>
         <ProgressSteps total={3} current={3} />
       </View>
 
       <View style={styles.content}>
-        <StepHeader
-          step={3}
-          total={3}
-          title="Kuniga qancha vaqt ajrata olasiz?"
-          subtitle="Kichik, lekin muntazam mashg'ulot eng yaxshi natija beradi."
-        />
+        <StepHeader step={3} total={3} title={t('onboarding.pace.title')} subtitle={t('onboarding.pace.subtitle')} />
 
         <View style={styles.grid}>
           {paceOptions.map((option) => (
@@ -61,18 +58,22 @@ export default function PaceScreen() {
             <Bell size={17} color={colors.textStrong} strokeWidth={1.5} />
           </View>
           <View style={styles.reminderBody}>
-            <Text variant="label">Kunlik eslatma</Text>
+            <Text variant="label">{t('onboarding.pace.reminder')}</Text>
             <Text variant="monoSm" color={colors.textSecondary}>
               20:00
             </Text>
           </View>
-          <Switch value={reminderEnabled} onValueChange={setReminderEnabled} accessibilityLabel="Kunlik eslatma" />
+          <Switch
+            value={reminderEnabled}
+            onValueChange={setReminderEnabled}
+            accessibilityLabel={t('onboarding.pace.reminder')}
+          />
         </Card>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
         <Button
-          label="Rejani yaratish"
+          label={t('onboarding.pace.create')}
           disabled={dailyMinutes === null}
           onPress={onCreatePlan}
           trailingIcon={

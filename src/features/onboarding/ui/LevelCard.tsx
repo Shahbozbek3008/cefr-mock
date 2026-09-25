@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { CheckBadge, SelectCard, Text } from '@/shared/ui';
 import type { LevelOption } from '../model';
@@ -13,6 +14,7 @@ export type LevelCardProps = {
 export const LevelCard = memo<LevelCardProps>(({ option, selected, onSelect }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <SelectCard
@@ -32,7 +34,7 @@ export const LevelCard = memo<LevelCardProps>(({ option, selected, onSelect }) =
           {option.title}
         </Text>
         <Text variant="bodySm" color={selected ? colors.selectedText : colors.textSecondary}>
-          {option.description}
+          {t(`onboarding.level.${option.level}`)}
         </Text>
       </View>
 

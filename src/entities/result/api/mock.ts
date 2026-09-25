@@ -73,7 +73,7 @@ export const buildMockResults = async (): Promise<TestResult[]> => {
         { kind: 'writing', title: 'Writing', score: 52, delta: -1, focus: true },
         { kind: 'speaking', title: 'Speaking', score: 62, delta: 0 },
       ],
-      recommendation: { title: 'C1 gacha 7 ball', detail: "Writing Task 2 — eng tez o'sish nuqtasi" },
+      recommendation: { level: 'C1', points: 7, focus: 'Writing Task 2' },
       answers: { ...listening11, ...reading11 },
     },
     {
@@ -90,7 +90,7 @@ export const buildMockResults = async (): Promise<TestResult[]> => {
         { kind: 'writing', title: 'Writing', score: 53, delta: 1, focus: true },
         { kind: 'speaking', title: 'Speaking', score: 62, delta: 1 },
       ],
-      recommendation: { title: 'C1 gacha 11 ball', detail: "Reading Part 4 — eng tez o'sish nuqtasi" },
+      recommendation: { level: 'C1', points: 11, focus: 'Reading Part 4' },
       answers: { ...listening10, ...reading10 },
     },
   ];
@@ -168,7 +168,11 @@ export const progressByPeriod: Record<ProgressPeriod, ProgressData> = {
     delta: 5,
     testsCount: 3,
     values: [53, 54, 58],
-    axis: ['1-sen', '12-sen', '22-sen'],
+    axis: [
+      { month: 8, day: 1 },
+      { month: 8, day: 12 },
+      { month: 8, day: 22 },
+    ],
     sections: [
       { title: 'Listening', score: 61, delta: 3 },
       { title: 'Reading', score: 57, delta: 5 },
@@ -182,7 +186,7 @@ export const progressByPeriod: Record<ProgressPeriod, ProgressData> = {
     delta: 14,
     testsCount: 8,
     values: [44, 46, 45, 49, 50, 53, 54, 58],
-    axis: ['iyul', 'avg', 'sen'],
+    axis: [{ month: 6 }, { month: 7 }, { month: 8 }],
     sections: [
       { title: 'Listening', score: 61, delta: 9 },
       { title: 'Reading', score: 57, delta: 12 },
@@ -196,7 +200,7 @@ export const progressByPeriod: Record<ProgressPeriod, ProgressData> = {
     delta: 19,
     testsCount: 11,
     values: [39, 41, 44, 46, 45, 49, 50, 53, 54, 58],
-    axis: ['may', 'iyul', 'sen'],
+    axis: [{ month: 4 }, { month: 6 }, { month: 8 }],
     sections: [
       { title: 'Listening', score: 61, delta: 14 },
       { title: 'Reading', score: 57, delta: 17 },

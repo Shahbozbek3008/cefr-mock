@@ -8,6 +8,7 @@ import { CriteriaList } from '@/features/ai-review/ui/CriteriaList';
 import { ErrorsCard } from '@/features/ai-review/ui/ErrorsCard';
 import { ImprovedSheet } from '@/features/ai-review/ui/ImprovedSheet';
 import { ScoreHero } from '@/features/ai-review/ui/ScoreHero';
+import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
 
@@ -15,6 +16,7 @@ const FOOTER_SPACE = size.buttonL + space[3];
 
 export default function WritingReviewScreen() {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const review = useWritingReview(id);
@@ -26,7 +28,7 @@ export default function WritingReviewScreen() {
       <TopBar
         centered
         left={
-          <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={router.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -34,7 +36,7 @@ export default function WritingReviewScreen() {
           <>
             <Text variant="bodySmMedium">AI Writing bahosi</Text>
             <Text variant="caption" color={colors.textSecondary}>
-              {data ? `${data.taskLabel} · ${data.words} so'z` : ' '}
+              {data ? t('aiReview.writingMeta', { task: data.taskLabel, count: data.words }) : ' '}
             </Text>
           </>
         }
@@ -48,7 +50,7 @@ export default function WritingReviewScreen() {
         {data ? (
           <>
             <ScoreHero
-              label="Writing ball"
+              label={t('aiReview.writingScore')}
               score={data.score}
               verdict={`${data.level} · ${data.levelNote}`}
               summary={data.summary}
@@ -59,9 +61,9 @@ export default function WritingReviewScreen() {
         ) : review.isError ? (
           <StateView
             tone="error"
-            title="Xatolik"
-            message="AI bahosi yuklanmadi"
-            actionLabel="Qayta"
+            title={t('common.error')}
+            message={t('aiReview.loadFailed')}
+            actionLabel={t('common.retry')}
             onAction={() => review.refetch()}
           />
         ) : (
@@ -75,7 +77,7 @@ export default function WritingReviewScreen() {
 
       <View style={[styles.footer, { bottom: insets.bottom + space[3] }]}>
         <Button
-          label="Yaxshilangan variantni ko'rish"
+          label={t('aiReview.showImproved')}
           disabled={!data}
           onPress={() => setImprovedOpen(true)}
           trailingIcon={

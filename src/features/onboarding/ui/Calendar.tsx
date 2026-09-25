@@ -2,9 +2,10 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, radius, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
-import { buildMonthGrid, isOfficialExamDay, monthLabels, weekdayLabels } from '../model/calendar';
+import { buildMonthGrid, isOfficialExamDay } from '../model/calendar';
 
 export type CalendarProps = {
   value: string | null;
@@ -14,6 +15,7 @@ export type CalendarProps = {
 export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t, dict, dayMonth, monthYear } = useI18n();
   const initial = useMemo(() => (value ? new Date(`${value}T00:00:00`) : new Date()), [value]);
   const [year, setYear] = useState(initial.getFullYear());
   const [month, setMonth] = useState(initial.getMonth());
@@ -43,11 +45,11 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
   return (
     <Card level="raised" radius={radius.cardLg} style={styles.card}>
       <View style={styles.header}>
-        <Text variant="titleSm">{`${monthLabels[month]} ${year}`}</Text>
+        <Text variant="titleSm">{monthYear(month, year)}</Text>
         <View style={styles.nav}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Oldingi oy"
+            accessibilityLabel={t('onboarding.date.previousMonth')}
             hitSlop={hitSlop}
             onPress={goPrev}
             style={styles.navButton}
@@ -56,7 +58,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
           </Pressable>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Keyingi oy"
+            accessibilityLabel={t('onboarding.date.nextMonth')}
             hitSlop={hitSlop}
             onPress={goNext}
             style={styles.navButton}
@@ -67,7 +69,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
       </View>
 
       <View style={styles.grid}>
-        {weekdayLabels.map((label) => (
+        {dict.date.weekdaysShort.map((label) => (
           <View key={label} style={styles.weekday}>
             <Text variant="micro" color={colors.textTertiary}>
               {label}
@@ -89,7 +91,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
               key={iso}
               accessibilityRole="button"
               accessibilityState={{ selected }}
-              accessibilityLabel={`${cell.day}-${monthLabels[month]}`}
+              accessibilityLabel={cell.iso ? dayMonth(cell.iso) : undefined}
               onPress={() => onChange(iso)}
               style={styles.cell}
             >
@@ -115,7 +117,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
       <View style={styles.legend}>
         <View style={styles.dotStatic} />
         <Text variant="caption" color={colors.textSecondary}>
-          Rasmiy imtihon kunlari
+          {t('onboarding.date.officialDays')}
         </Text>
       </View>
     </Card>

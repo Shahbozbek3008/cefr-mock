@@ -58,10 +58,7 @@ export const buildResult = (
     total,
     delta: previous ? total - previous.total : 0,
     sections,
-    recommendation: {
-      title: gap ? `${gap.level} gacha ${gap.points} ball` : 'Eng yuqori daraja',
-      detail: `${weakest.title} — eng tez o'sish nuqtasi`,
-    },
+    recommendation: { level: gap?.level ?? null, points: gap?.points ?? 0, focus: weakest.title },
     answers: attempt.answers,
   };
 };

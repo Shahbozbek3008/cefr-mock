@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { makeStyles, radius, space, useTheme } from '../theme';
+import { useI18n } from '../i18n';
 import { formatClock, useSecondsLeft } from '../lib';
 import { Dot } from './Dot';
 import { Text } from './Text';
@@ -22,11 +23,12 @@ const toneFor = (seconds: number, warnAt: number): TimerTone => {
 export const StaticTimerPill = memo<{ seconds: number; tone: TimerTone }>(({ seconds, tone }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <View
       accessibilityRole="timer"
-      accessibilityLabel={`Qolgan vaqt ${formatClock(seconds)}`}
+      accessibilityLabel={t('session.remainingA11y', { time: formatClock(seconds) })}
       style={[styles.pill, styles[tone]]}
     >
       {tone === 'normal' ? <Dot color={colors.data} /> : null}

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAttemptStore } from '@/entities/attempt';
 import type { Highlight } from '@/entities/attempt';
 import type { PassageParagraph, ReadingPart } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { font, gradientDirection, space, useTheme } from '@/shared/theme';
 import { Text, useToast } from '@/shared/ui';
 import { HighlightToolbar, highlightTone } from './HighlightToolbar';
@@ -58,6 +59,7 @@ Paragraph.displayName = 'Paragraph';
 
 export const Passage = memo<PassageProps>(({ part, serif, bottomInset }) => {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const highlights = useAttemptStore((s) => s.highlights[part.id] ?? EMPTY);
   const toggleHighlight = useAttemptStore((s) => s.toggleHighlight);
   const showToast = useToast((s) => s.show);
@@ -73,8 +75,8 @@ export const Passage = memo<PassageProps>(({ part, serif, bottomInset }) => {
 
   const note = useCallback(() => {
     setSelected(null);
-    showToast({ message: "Izohlar keyingi versiyada qo'shiladi" });
-  }, [showToast]);
+    showToast({ message: t('reading.notesSoon') });
+  }, [showToast, t]);
 
   return (
     <View style={styles.area}>

@@ -7,11 +7,13 @@ import { CriteriaTiles } from '@/features/ai-review/ui/CriteriaTiles';
 import { MarkedText } from '@/features/ai-review/ui/MarkedText';
 import { PlaybackCard } from '@/features/ai-review/ui/PlaybackCard';
 import { TipList } from '@/features/ai-review/ui/TipList';
+import { useI18n } from '@/shared/i18n';
 import { space, useTheme } from '@/shared/theme';
 import { Card, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
 
 export default function SpeakingReviewScreen() {
   const { colors } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const review = useSpeakingReview(id);
@@ -22,7 +24,7 @@ export default function SpeakingReviewScreen() {
       <TopBar
         centered
         left={
-          <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={router.back}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -30,7 +32,7 @@ export default function SpeakingReviewScreen() {
           <>
             <Text variant="bodySmMedium">AI Speaking bahosi</Text>
             <Text variant="caption" color={colors.textSecondary}>
-              {data ? `${data.part} · ${data.durationSec} soniya` : ' '}
+              {data ? t('aiReview.speakingMeta', { part: data.part, count: data.durationSec }) : ' '}
             </Text>
           </>
         }
@@ -49,7 +51,7 @@ export default function SpeakingReviewScreen() {
               <View style={styles.transcriptHeader}>
                 <Text variant="bodySmMedium">Transkript</Text>
                 <Text variant="monoXs" color={colors.textTertiary}>
-                  {`${data.words} so'z · ${data.wpm} wpm`}
+                  {t('aiReview.transcriptMeta', { words: data.words, wpm: data.wpm })}
                 </Text>
               </View>
               <MarkedText segments={data.segments} grammarTone="warning" />
@@ -59,9 +61,9 @@ export default function SpeakingReviewScreen() {
         ) : review.isError ? (
           <StateView
             tone="error"
-            title="Xatolik"
-            message="AI bahosi yuklanmadi"
-            actionLabel="Qayta"
+            title={t('common.error')}
+            message={t('aiReview.loadFailed')}
+            actionLabel={t('common.retry')}
             onAction={() => review.refetch()}
           />
         ) : (

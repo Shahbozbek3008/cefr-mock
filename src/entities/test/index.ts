@@ -10,6 +10,7 @@ export type {
   SectionMeta,
   SpeakingQuestion,
   TestDetail,
+  TestFormat,
   TestStatus,
   TestSummary,
   TfngQuestion,
@@ -17,4 +18,4 @@ export type {
 } from './model/types';
 export { fetchTest, fetchTests, testKeys, useTest, useTests } from './api/queries';
 export { delay } from './api/mock';
-export { sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';
+export { sectionDetailKeys, sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';

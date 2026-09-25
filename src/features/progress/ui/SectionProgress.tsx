@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import type { ProgressData } from '@/entities/result';
+import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE } from '@/shared/lib';
 import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Card, Delta, Dot, ProgressBar, Text } from '@/shared/ui';
@@ -13,11 +14,12 @@ export type SectionProgressProps = {
 export const SectionProgress = memo<SectionProgressProps>(({ sections, periodLabel }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Card style={styles.card}>
       <View style={styles.header}>
-        <Text variant="bodySmMedium">Bo'limlar</Text>
+        <Text variant="bodySmMedium">{t('progress.sections')}</Text>
         <Text variant="caption" color={colors.textSecondary}>
           {periodLabel}
         </Text>

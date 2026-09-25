@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { ArrowDown, ArrowUp } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, levelFor, levelNames, levelThresholds } from '@/shared/lib';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
@@ -16,6 +17,7 @@ export type ResultGaugeProps = {
 export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
   const level = levelFor(total);
   const DeltaIcon = delta < 0 ? ArrowDown : ArrowUp;
   const deltaTone = delta < 0 ? colors.error : colors.success;
@@ -27,7 +29,7 @@ export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
         <View style={styles.score}>
           <Text variant="displayXl">{total}</Text>
           <Text variant="monoSm" color={colors.textTertiary}>
-            {`/ ${MAX_SCORE} ball`}
+            {t('result.points', { max: MAX_SCORE })}
           </Text>
         </View>
       </View>

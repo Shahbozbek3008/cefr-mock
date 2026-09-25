@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Pressable, View } from 'react-native';
+import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Sheet, Text } from '@/shared/ui';
 import type { SectionStats } from '../model/stats';
@@ -33,11 +34,12 @@ const Legend = ({ color, value, label }: { color: string; value: number; label: 
 const NumberCell = ({ number, tone, onPress }: { number: number; tone: 'error' | 'warning'; onPress: () => void }) => {
   const styles = useStyles();
   const { colors } = useTheme();
+  const { t } = useI18n();
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Savol ${number}`}
+      accessibilityLabel={t('session.question', { number })}
       onPress={onPress}
       style={[styles.cell, tone === 'error' ? styles.cellError : styles.cellWarning]}
     >
@@ -52,6 +54,7 @@ export const FinishSheet = memo<FinishSheetProps>(
   ({ visible, title, message, stats, loading = false, onReview, onFinish, onClose }) => {
     const styles = useStyles();
     const { colors } = useTheme();
+    const { t } = useI18n();
     const firstPending = stats?.emptyNumbers[0] ?? stats?.flaggedNumbers[0];
     const hasPending = firstPending !== undefined;
     const segments = stats
@@ -82,9 +85,9 @@ export const FinishSheet = memo<FinishSheetProps>(
               ))}
             </View>
             <View style={styles.legend}>
-              <Legend color={colors.data} value={stats.answered} label="javob" />
-              <Legend color={colors.warning[500]} value={stats.flagged} label="belgilangan" />
-              <Legend color={colors.error[500]} value={stats.empty} label="javobsiz" />
+              <Legend color={colors.data} value={stats.answered} label={t('session.statAnswered')} />
+              <Legend color={colors.warning[500]} value={stats.flagged} label={t('session.statFlagged')} />
+              <Legend color={colors.error[500]} value={stats.empty} label={t('session.statEmpty')} />
             </View>
           </View>
         ) : null}
@@ -103,14 +106,14 @@ export const FinishSheet = memo<FinishSheetProps>(
         <View style={styles.actions}>
           {hasPending ? (
             <Button
-              label={stats?.empty ? 'Javobsizlarga qaytish' : 'Belgilanganlarga qaytish'}
+              label={stats?.empty ? t('session.backToEmpty') : t('session.backToFlagged')}
               trailingText={String(stats?.empty || stats?.flagged)}
               size="M"
               onPress={() => onReview(firstPending)}
             />
           ) : null}
           <Button
-            label={hasPending ? 'Baribir yakunlash' : 'Yakunlash'}
+            label={hasPending ? t('session.finishAnyway') : t('common.finish')}
             variant={hasPending ? 'muted' : 'primary'}
             size="M"
             loading={loading}

@@ -10,12 +10,15 @@ import { isPhoneComplete, useGoogleSignIn } from '@/features/auth/model';
 import { PhoneField } from '@/features/auth/ui/PhoneField';
 import { SocialButton } from '@/features/auth/ui/SocialButton';
 import { AppleIcon, GoogleIcon } from '@/shared/icons';
+import { useI18n } from '@/shared/i18n';
+import type { TKey } from '@/shared/i18n';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Button, HeroSurface, Screen, Text, useToast } from '@/shared/ui';
 
 export default function PhoneScreen() {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const [digits, setDigits] = useState('');
 
@@ -31,7 +34,10 @@ export default function PhoneScreen() {
     [setUser],
   );
 
-  const onGoogleError = useCallback((message: string) => showToast({ message, tone: 'error' }), [showToast]);
+  const onGoogleError = useCallback(
+    (message: TKey) => showToast({ message: t(message), tone: 'error' }),
+    [showToast, t],
+  );
 
   const google = useGoogleSignIn(onGoogleUser, onGoogleError);
 
@@ -55,16 +61,16 @@ export default function PhoneScreen() {
           </HeroSurface>
 
           <View style={styles.intro}>
-            <Text variant="titleXl">Xush kelibsiz</Text>
+            <Text variant="titleXl">{t('auth.welcome')}</Text>
             <Text variant="labelRelaxed" color={colors.textSecondary}>
-              Telefon raqamingizni kiriting — SMS orqali tasdiqlash kodi yuboramiz.
+              {t('auth.phoneIntro')}
             </Text>
           </View>
 
           <PhoneField value={digits} onChange={setDigits} />
 
           <Button
-            label="SMS kod olish"
+            label={t('auth.requestCode')}
             disabled={!complete}
             onPress={onRequestCode}
             trailingIcon={
@@ -75,20 +81,20 @@ export default function PhoneScreen() {
           <View style={styles.divider}>
             <View style={styles.line} />
             <Text variant="caption" color={colors.textTertiary}>
-              yoki
+              {t('auth.or')}
             </Text>
             <View style={styles.line} />
           </View>
 
           <View style={styles.social}>
             <SocialButton
-              label="Google bilan davom etish"
+              label={t('auth.google')}
               icon={<GoogleIcon />}
               loading={google.loading}
               onPress={google.signIn}
             />
             <SocialButton
-              label="Apple bilan davom etish"
+              label={t('auth.apple')}
               icon={<AppleIcon color={colors.surface} />}
               tone="dark"
               onPress={() => undefined}
@@ -98,15 +104,15 @@ export default function PhoneScreen() {
 
         <View style={[styles.legal, { paddingBottom: insets.bottom + 12 }]}>
           <Text variant="captionRelaxed" color={colors.textTertiary}>
-            Davom etish orqali{' '}
+            {t('auth.legalPrefix')}{' '}
             <Text variant="captionRelaxed" color={colors.textStrong}>
-              Foydalanish shartlari
+              {t('auth.terms')}
             </Text>{' '}
-            va{' '}
+            {t('auth.and')}{' '}
             <Text variant="captionRelaxed" color={colors.textStrong}>
-              Maxfiylik siyosati
+              {t('auth.privacy')}
             </Text>
-            ga rozilik bildirasiz.
+            {t('auth.legalSuffix')}
           </Text>
         </View>
       </KeyboardAvoidingView>

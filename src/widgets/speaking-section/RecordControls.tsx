@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Pressable, View } from 'react-native';
 import { ArrowRight, Check, Mic, RotateCcw } from 'lucide-react-native';
+import { useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import type { RecorderPhase } from './useAnswerRecorder';
 
@@ -18,6 +19,7 @@ export type RecordControlsProps = {
 export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onRecord, onStop, onNext }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
+  const { t } = useI18n();
   const canRestart = phase === 'recording' || phase === 'done';
   const mainDisabled = phase === 'pending' || phase === 'done' || phase === 'denied';
 
@@ -25,7 +27,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
     <View style={styles.row}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Qayta yozish"
+        accessibilityLabel={t('speaking.restart')}
         disabled={!canRestart}
         hitSlop={hitSlop}
         onPress={onRestart}
@@ -36,7 +38,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={phase === 'recording' ? "Yozishni to'xtatish" : 'Yozishni boshlash'}
+        accessibilityLabel={t(phase === 'recording' ? 'speaking.stop' : 'speaking.record')}
         disabled={mainDisabled}
         onPress={phase === 'recording' ? onStop : onRecord}
         style={[styles.main, elevation.record]}
@@ -50,7 +52,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Keyingi savol"
+        accessibilityLabel={t('session.nextQuestion')}
         hitSlop={hitSlop}
         onPress={onNext}
         style={[styles.side, elevation.hairline]}
