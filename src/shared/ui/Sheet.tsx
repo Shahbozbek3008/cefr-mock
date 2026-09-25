@@ -1,6 +1,6 @@
 import { ReactNode, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { LayoutChangeEvent, Modal, Platform, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,35 +13,56 @@ export type SheetProps = {
   children: ReactNode;
 };
 
-const OFFSCREEN = 600;
+const decelerate = Easing.bezier(...motion.curve.decelerate);
+const accelerate = Easing.bezier(...motion.curve.accelerate);
 
 export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children }) => {
   const styles = useStyles();
   const { elevation } = useTheme();
   const insets = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
   const [mounted, setMounted] = useState(visible);
-  const translate = useSharedValue(OFFSCREEN);
+  const translate = useSharedValue(screenHeight);
   const backdrop = useSharedValue(0);
+  const distance = useRef(screenHeight);
+  const opened = useRef(false);
   const hiddenRef = useRef(onHidden);
   hiddenRef.current = onHidden;
+  const bottom = Math.max(insets.bottom, space[2]);
 
   const hide = useCallback(() => {
+    opened.current = false;
     setMounted(false);
     hiddenRef.current?.();
   }, []);
 
+  const onLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      distance.current = event.nativeEvent.layout.height + bottom;
+      if (!visible || opened.current) return;
+      opened.current = true;
+      translate.value = distance.current;
+      translate.value = withTiming(0, { duration: motion.sheetIn, easing: decelerate });
+      backdrop.value = withTiming(1, { duration: motion.sheetIn, easing: decelerate });
+    },
+    [backdrop, bottom, translate, visible],
+  );
+
   useEffect(() => {
     if (visible) {
+      if (opened.current) {
+        translate.value = withTiming(0, { duration: motion.sheetIn, easing: decelerate });
+        backdrop.value = withTiming(1, { duration: motion.sheetIn, easing: decelerate });
+      }
       setMounted(true);
-      backdrop.value = withTiming(1, { duration: motion.base });
-      translate.value = withSpring(0, motion.spring);
       return;
     }
-    backdrop.value = withTiming(0, { duration: motion.base });
-    translate.value = withTiming(OFFSCREEN, { duration: motion.base }, (finished) => {
+    if (!mounted) return;
+    backdrop.value = withTiming(0, { duration: motion.sheetOut, easing: accelerate });
+    translate.value = withTiming(distance.current, { duration: motion.sheetOut, easing: accelerate }, (finished) => {
       if (finished) scheduleOnRN(hide);
     });
-  }, [visible, backdrop, translate, hide]);
+  }, [visible, mounted, backdrop, translate, hide]);
 
   const sheetStyle = useAnimatedStyle(() => ({ transform: [{ translateY: translate.value }] }));
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdrop.value }));
@@ -62,7 +83,7 @@ export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children })
         <Pressable accessibilityLabel="Yopish" style={[StyleSheet.absoluteFill, styles.backdrop]} onPress={close} />
       </Animated.View>
 
-      <Animated.View style={[styles.sheet, elevation.sheet, { bottom: Math.max(insets.bottom, space[2]) }, sheetStyle]}>
+      <Animated.View onLayout={onLayout} style={[styles.sheet, elevation.sheet, { bottom }, sheetStyle]}>
         <View style={styles.grabber} />
         {children}
       </Animated.View>

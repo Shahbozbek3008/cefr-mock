@@ -17,8 +17,8 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const preference = useThemePreference((s) => s.preference);
-  const switchTheme = useThemeSwitch();
-  const pending = useRef<{ preference: ThemePreference; origin: Origin } | null>(null);
+  const { prepare, apply } = useThemeSwitch();
+  const pending = useRef<{ preference: ThemePreference; origin: Origin; ready: Promise<boolean> } | null>(null);
 
   const select = useCallback(
     (value: ThemePreference, event: GestureResponderEvent) => {
@@ -26,17 +26,23 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
         onClose();
         return;
       }
-      pending.current = { preference: value, origin: { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY } };
+      pending.current = {
+        preference: value,
+        origin: { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY },
+        ready: prepare(value),
+      };
       onClose();
     },
-    [onClose, preference],
+    [onClose, prepare, preference],
   );
 
-  const onHidden = useCallback(() => {
+  const onHidden = useCallback(async () => {
     const next = pending.current;
     pending.current = null;
-    if (next) switchTheme(next.preference, next.origin);
-  }, [switchTheme]);
+    if (!next) return;
+    await next.ready;
+    apply(next.preference, next.origin);
+  }, [apply]);
 
   return (
     <Sheet visible={visible} onClose={onClose} onHidden={onHidden}>

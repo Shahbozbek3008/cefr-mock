@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useCallback, useContext, useRef, useState } from 'react';
-import { Image, StyleSheet, View, useColorScheme, useWindowDimensions } from 'react-native';
+import { ReactNode, createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View, useColorScheme, useWindowDimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { captureRef } from 'react-native-view-shot';
@@ -8,17 +8,16 @@ import type { ThemePreference } from '@/shared/theme';
 
 export type Origin = { x: number; y: number };
 
-type Snapshot = { before: string; after?: string; origin: Origin };
+type Snapshot = { uri: string; origin: Origin | null };
 
-type ThemeSwitch = (preference: ThemePreference, origin: Origin) => Promise<void>;
+type ThemeSwitch = {
+  prepare: (preference: ThemePreference) => Promise<boolean>;
+  apply: (preference: ThemePreference, origin: Origin) => void;
+};
 
-const REVEAL_MS = 520;
-const SETTLE_MS = 60;
+const COLLAPSE_MS = 480;
 
 const ThemeSwitchContext = createContext<ThemeSwitch | null>(null);
-
-const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 export const useThemeSwitch = () => {
   const context = useContext(ThemeSwitchContext);
@@ -33,97 +32,98 @@ export const ThemeTransitionProvider = ({ children }: { children: ReactNode }) =
   const { width, height } = useWindowDimensions();
   const rootRef = useRef<View>(null);
   const loadedRef = useRef<(() => void) | null>(null);
+  const uriRef = useRef<string | null>(null);
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const radius = useSharedValue(0);
 
-  const show = useCallback(
-    (next: Snapshot) =>
-      new Promise<void>((resolve) => {
-        loadedRef.current = resolve;
-        setSnapshot(next);
-      }),
-    [],
-  );
+  const finish = useCallback(() => {
+    uriRef.current = null;
+    setSnapshot(null);
+  }, []);
 
   const onLoaded = useCallback(() => {
     loadedRef.current?.();
     loadedRef.current = null;
   }, []);
 
-  const finish = useCallback(() => setSnapshot(null), []);
-
-  const switchTheme = useCallback<ThemeSwitch>(
-    async (preference, origin) => {
+  const prepare = useCallback(
+    async (preference: ThemePreference) => {
       const current = resolveScheme(useThemePreference.getState().preference, system);
-      if (resolveScheme(preference, system) === current || !rootRef.current) {
+      if (resolveScheme(preference, system) === current || !rootRef.current) return false;
+
+      try {
+        const uri = await captureRef(rootRef, { format: 'jpg', quality: 0.9, result: 'tmpfile' });
+        radius.value = Math.hypot(width, height);
+        await new Promise<void>((resolve) => {
+          loadedRef.current = resolve;
+          uriRef.current = uri;
+          setSnapshot({ uri, origin: null });
+        });
+        return true;
+      } catch {
+        finish();
+        return false;
+      }
+    },
+    [finish, height, radius, system, width],
+  );
+
+  const apply = useCallback(
+    (preference: ThemePreference, origin: Origin) => {
+      const uri = uriRef.current;
+      if (!uri) {
         setPreference(preference);
         return;
       }
 
-      try {
-        const before = await captureRef(rootRef, { format: 'png', result: 'tmpfile' });
-        await show({ before, origin });
-        setPreference(preference);
-        await nextFrame();
-        await nextFrame();
-        await wait(SETTLE_MS);
-        const after = await captureRef(rootRef, { format: 'png', result: 'tmpfile' });
-        radius.value = 0;
-        await show({ before, after, origin });
+      radius.value = Math.hypot(Math.max(origin.x, width - origin.x), Math.max(origin.y, height - origin.y));
+      setSnapshot({ uri, origin });
+      setPreference(preference);
 
-        const target = Math.hypot(Math.max(origin.x, width - origin.x), Math.max(origin.y, height - origin.y));
-        radius.value = withTiming(target, { duration: REVEAL_MS, easing: Easing.bezier(0.4, 0, 0.2, 1) }, (done) => {
+      requestAnimationFrame(() => {
+        radius.value = withTiming(0, { duration: COLLAPSE_MS, easing: Easing.bezier(0.4, 0, 0.2, 1) }, (done) => {
           if (done) scheduleOnRN(finish);
         });
-      } catch {
-        setPreference(preference);
-        finish();
-      }
+      });
     },
-    [finish, height, radius, setPreference, show, system, width],
+    [finish, height, radius, setPreference, width],
   );
 
-  const origin = snapshot?.origin ?? { x: 0, y: 0 };
+  const value = useMemo(() => ({ prepare, apply }), [prepare, apply]);
+  const origin = snapshot?.origin;
+  const ox = origin?.x ?? 0;
+  const oy = origin?.y ?? 0;
 
   const circleStyle = useAnimatedStyle(() => ({
-    left: origin.x - radius.value,
-    top: origin.y - radius.value,
+    left: ox - radius.value,
+    top: oy - radius.value,
     width: radius.value * 2,
     height: radius.value * 2,
     borderRadius: radius.value,
   }));
 
-  const revealStyle = useAnimatedStyle(() => ({
-    left: radius.value - origin.x,
-    top: radius.value - origin.y,
+  const frameStyle = useAnimatedStyle(() => ({
+    left: radius.value - ox,
+    top: radius.value - oy,
   }));
 
   return (
-    <ThemeSwitchContext.Provider value={switchTheme}>
+    <ThemeSwitchContext.Provider value={value}>
       <View ref={rootRef} collapsable={false} style={[styles.root, { backgroundColor: colors.bg }]}>
         {children}
       </View>
 
       {snapshot ? (
-        <View style={StyleSheet.absoluteFill}>
-          <Image
-            source={{ uri: snapshot.before }}
-            fadeDuration={0}
-            onLoad={snapshot.after ? undefined : onLoaded}
-            onError={snapshot.after ? undefined : onLoaded}
-            style={[styles.frame, { width, height }]}
-          />
-          {snapshot.after ? (
-            <Animated.View style={[styles.circle, circleStyle]}>
-              <Animated.Image
-                source={{ uri: snapshot.after }}
-                fadeDuration={0}
-                onLoad={onLoaded}
-                onError={onLoaded}
-                style={[styles.frame, { width, height }, revealStyle]}
-              />
-            </Animated.View>
-          ) : null}
+        <View pointerEvents={origin ? 'auto' : 'none'} style={[StyleSheet.absoluteFill, !origin && styles.hidden]}>
+          <Animated.View style={[styles.circle, circleStyle]}>
+            <Animated.Image
+              source={{ uri: snapshot.uri }}
+              fadeDuration={0}
+              onLoad={onLoaded}
+              onError={onLoaded}
+              style={[styles.frame, { width, height }, frameStyle]}
+            />
+          </Animated.View>
         </View>
       ) : null}
     </ThemeSwitchContext.Provider>
@@ -134,10 +134,11 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
+  hidden: {
+    opacity: 0,
+  },
   frame: {
     position: 'absolute',
-    left: 0,
-    top: 0,
   },
   circle: {
     position: 'absolute',

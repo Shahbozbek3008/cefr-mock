@@ -60,8 +60,12 @@ export const size = {
 export const motion = {
   fast: 140,
   base: 220,
-  sheet: 320,
-  spring: { damping: 26, stiffness: 300 },
+  sheetIn: 300,
+  sheetOut: 220,
+  curve: {
+    decelerate: [0.32, 0.72, 0, 1],
+    accelerate: [0.4, 0, 1, 1],
+  },
 } as const;
 
 export const hitSlop = { top: 8, bottom: 8, left: 8, right: 8 } as const;
