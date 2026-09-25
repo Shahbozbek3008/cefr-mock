@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { ArrowDown, ArrowUp } from 'lucide-react-native';
 import { MAX_SCORE, levelFor, levelNames, levelThresholds } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 import { GaugeArc } from '@/shared/ui/charts';
 
@@ -14,9 +14,11 @@ export type ResultGaugeProps = {
 };
 
 export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const level = levelFor(total);
   const DeltaIcon = delta < 0 ? ArrowDown : ArrowUp;
-  const deltaTone = delta < 0 ? light.error : light.success;
+  const deltaTone = delta < 0 ? colors.error : colors.success;
 
   return (
     <Card level="strong" radius={radius.hero} style={styles.card}>
@@ -24,7 +26,7 @@ export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
         <GaugeArc value={total} max={MAX_SCORE} marks={marks} activeLabel={level} />
         <View style={styles.score}>
           <Text variant="displayXl">{total}</Text>
-          <Text variant="monoSm" color={light.textTertiary}>
+          <Text variant="monoSm" color={colors.textTertiary}>
             {`/ ${MAX_SCORE} ball`}
           </Text>
         </View>
@@ -32,7 +34,7 @@ export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
 
       <View style={styles.tags}>
         <View style={styles.level}>
-          <Text variant="calloutMedium" color={light.selectedText}>
+          <Text variant="calloutMedium" color={colors.selectedText}>
             {`${level} · ${levelNames[level]}`}
           </Text>
         </View>
@@ -51,7 +53,7 @@ export const ResultGauge = memo<ResultGaugeProps>(({ total, delta }) => {
 
 ResultGauge.displayName = 'ResultGauge';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     alignItems: 'center',
     paddingTop: space[4.5],
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     height: 28,
     paddingHorizontal: space[3],
     borderRadius: radius.pill,
-    backgroundColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
     justifyContent: 'center',
   },
   delta: {
@@ -91,4 +93,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space[1],
   },
-});
+}));

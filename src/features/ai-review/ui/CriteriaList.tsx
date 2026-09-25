@@ -1,11 +1,13 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import type { Criterion } from '@/entities/result';
-import { light, space } from '@/shared/theme';
+import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Card, ProgressBar, Text } from '@/shared/ui';
 import { weakestLabel } from '../model/criteria';
 
 export const CriteriaList = memo<{ criteria: Criterion[] }>(({ criteria }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const weakest = weakestLabel(criteria);
 
   return (
@@ -17,12 +19,12 @@ export const CriteriaList = memo<{ criteria: Criterion[] }>(({ criteria }) => {
           </Text>
           <ProgressBar
             value={c.score / c.max}
-            color={c.label === weakest ? light.warning[500] : light.data}
+            color={c.label === weakest ? colors.warning[500] : colors.data}
             style={styles.bar}
           />
           <Text variant="monoCallout" style={styles.score}>
             {c.score}
-            <Text variant="monoCallout" color={light.textTertiary}>
+            <Text variant="monoCallout" color={colors.textTertiary}>
               {`/${c.max}`}
             </Text>
           </Text>
@@ -34,7 +36,7 @@ export const CriteriaList = memo<{ criteria: Criterion[] }>(({ criteria }) => {
 
 CriteriaList.displayName = 'CriteriaList';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     paddingVertical: space[1],
     paddingHorizontal: space[4],
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: light.divider,
+    borderBottomColor: colors.divider,
   },
   label: {
     flex: 1,
@@ -59,4 +61,4 @@ const styles = StyleSheet.create({
     width: 36,
     textAlign: 'right',
   },
-});
+}));

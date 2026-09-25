@@ -1,10 +1,10 @@
 import { memo, useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CircleCheck, TriangleAlert, WifiOff } from 'lucide-react-native';
 import { create } from 'zustand';
-import { elevation, hitSlop, light, radius, space } from '../theme';
+import { hitSlop, makeStyles, radius, space, useTheme } from '../theme';
 import { Text } from './Text';
 
 type ToastTone = 'info' | 'success' | 'offline' | 'error';
@@ -26,13 +26,15 @@ export const useToast = create<ToastState>((set) => ({
 }));
 
 const icons = {
-  info: { Icon: CircleCheck, color: light.data },
-  success: { Icon: CircleCheck, color: light.success[500] },
-  offline: { Icon: WifiOff, color: light.warning[500] },
-  error: { Icon: TriangleAlert, color: light.error[500] },
+  info: CircleCheck,
+  success: CircleCheck,
+  offline: WifiOff,
+  error: TriangleAlert,
 } as const;
 
 export const ToastHost = memo(() => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const insets = useSafeAreaInsets();
   const message = useToast((s) => s.message);
   const tone = useToast((s) => s.tone);
@@ -48,7 +50,13 @@ export const ToastHost = memo(() => {
 
   if (!message) return null;
 
-  const { Icon, color } = icons[tone];
+  const Icon = icons[tone];
+  const color = {
+    info: colors.data,
+    success: colors.success[500],
+    offline: colors.warning[500],
+    error: colors.error[500],
+  }[tone];
 
   return (
     <Animated.View
@@ -69,7 +77,7 @@ export const ToastHost = memo(() => {
             hide();
           }}
         >
-          <Text variant="calloutMedium" color={light.link}>
+          <Text variant="calloutMedium" color={colors.link}>
             {actionLabel}
           </Text>
         </Pressable>
@@ -80,14 +88,14 @@ export const ToastHost = memo(() => {
 
 ToastHost.displayName = 'ToastHost';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   toast: {
     position: 'absolute',
     left: space[4],
     right: space[4],
     minHeight: 52,
     borderRadius: radius.button,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space[3],
@@ -97,4 +105,4 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
   },
-});
+}));

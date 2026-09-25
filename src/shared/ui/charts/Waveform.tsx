@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
-import { light } from '../../theme';
+import { View, ViewStyle } from 'react-native';
+import { makeStyles, useTheme } from '../../theme';
 
 export type WaveformProps = {
   bars: readonly number[];
@@ -13,7 +13,11 @@ export type WaveformProps = {
 };
 
 export const Waveform = memo<WaveformProps>(
-  ({ bars, progress, height = 36, color = light.data, track = light.border, playhead = false, style }) => {
+  ({ bars, progress, height = 36, color, track, playhead = false, style }) => {
+    const styles = useStyles();
+    const { colors } = useTheme();
+    const fill = color ?? colors.data;
+    const rest = track ?? colors.border;
     const filled = Math.round(bars.length * progress);
 
     return (
@@ -25,7 +29,7 @@ export const Waveform = memo<WaveformProps>(
               styles.bar,
               {
                 height: `${Math.max(0.08, Math.min(1, bar)) * 100}%`,
-                backgroundColor: index < filled ? color : track,
+                backgroundColor: index < filled ? fill : rest,
               },
             ]}
           />
@@ -38,7 +42,7 @@ export const Waveform = memo<WaveformProps>(
 
 Waveform.displayName = 'Waveform';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,6 +58,6 @@ const styles = StyleSheet.create({
     bottom: -4,
     width: 2,
     borderRadius: 1,
-    backgroundColor: light.selectedText,
+    backgroundColor: colors.selectedText,
   },
-});
+}));

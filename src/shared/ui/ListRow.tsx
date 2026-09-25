@@ -1,7 +1,7 @@
 import { ReactNode, memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
-import { light, space } from '../theme';
+import { makeStyles, space, useTheme } from '../theme';
 import { IconTile } from './IconTile';
 import { Text } from './Text';
 
@@ -17,43 +17,49 @@ export type ListRowProps = {
 };
 
 export const ListRow = memo<ListRowProps>(
-  ({ icon, title, value, trailing, chevron = true, divider = false, height = 56, onPress }) => (
-    <Pressable
-      accessibilityRole={onPress ? 'button' : undefined}
-      disabled={!onPress}
-      onPress={onPress}
-      style={({ pressed }) => [styles.row, { height }, divider && styles.divider, pressed && styles.pressed]}
-    >
-      {icon ? <IconTile size={32}>{icon}</IconTile> : null}
-      <Text variant="label" style={styles.title}>
-        {title}
-      </Text>
-      {value ? (
-        <Text variant="bodySm" color={light.textSecondary}>
-          {value}
+  ({ icon, title, value, trailing, chevron = true, divider = false, height = 56, onPress }) => {
+    const styles = useStyles();
+    const { colors } = useTheme();
+
+    return (
+      <Pressable
+        accessibilityRole={onPress ? 'button' : undefined}
+        disabled={!onPress}
+        onPress={onPress}
+        style={({ pressed }) => [styles.row, { height }, divider && styles.divider, pressed && styles.pressed]}
+      >
+        {icon ? <IconTile size={32}>{icon}</IconTile> : null}
+        <Text variant="label" style={styles.title}>
+          {title}
         </Text>
-      ) : null}
-      {trailing}
-      {chevron && !trailing ? <ChevronRight size={16} color={light.borderStrong} strokeWidth={1.75} /> : null}
-    </Pressable>
-  ),
+        {value ? (
+          <Text variant="bodySm" color={colors.textSecondary}>
+            {value}
+          </Text>
+        ) : null}
+        {trailing}
+        {chevron && !trailing ? <ChevronRight size={16} color={colors.borderStrong} strokeWidth={1.75} /> : null}
+      </Pressable>
+    );
+  },
 );
 
 ListRow.displayName = 'ListRow';
 
-export const ListGroup = memo<{ children: ReactNode }>(({ children }) => (
-  <View style={styles.group}>{children}</View>
-));
+export const ListGroup = memo<{ children: ReactNode }>(({ children }) => {
+  const styles = useStyles();
+  return <View style={styles.group}>{children}</View>;
+});
 
 ListGroup.displayName = 'ListGroup';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   group: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderRadius: 22,
     paddingHorizontal: space[4],
     borderWidth: 1,
-    borderColor: light.hairlineSoft,
+    borderColor: colors.hairlineSoft,
   },
   row: {
     flexDirection: 'row',
@@ -62,7 +68,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: light.divider,
+    borderBottomColor: colors.divider,
   },
   title: {
     flex: 1,
@@ -70,4 +76,4 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.6,
   },
-});
+}));

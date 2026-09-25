@@ -1,11 +1,13 @@
 import { memo } from 'react';
-import { StyleSheet } from 'react-native';
+
 import { Flag } from 'lucide-react-native';
 import { useAttemptStore, useIsFlagged } from '../model/store';
-import { light } from '@/shared/theme';
+import { makeStyles, useTheme } from '@/shared/theme';
 import { IconButton } from '@/shared/ui';
 
 export const FlagButton = memo<{ questionId: string }>(({ questionId }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const flagged = useIsFlagged(questionId);
   const toggleFlag = useAttemptStore((s) => s.toggleFlag);
 
@@ -19,8 +21,8 @@ export const FlagButton = memo<{ questionId: string }>(({ questionId }) => {
     >
       <Flag
         size={18}
-        color={flagged ? light.warning.text : light.textStrong}
-        fill={flagged ? light.warning[500] : 'transparent'}
+        color={flagged ? colors.warning.text : colors.textStrong}
+        fill={flagged ? colors.warning[500] : 'transparent'}
         strokeWidth={1.6}
       />
     </IconButton>
@@ -29,9 +31,9 @@ export const FlagButton = memo<{ questionId: string }>(({ questionId }) => {
 
 FlagButton.displayName = 'FlagButton';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flagged: {
-    backgroundColor: light.warning.bg,
-    borderColor: light.warning.border,
+    backgroundColor: colors.warning.bg,
+    borderColor: colors.warning.border,
   },
-});
+}));

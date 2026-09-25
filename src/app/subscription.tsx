@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Check, X } from 'lucide-react-native';
@@ -7,12 +7,14 @@ import { features, formatSum, paymentMethods, plans } from '@/features/subscript
 import type { PaymentMethod, PlanId } from '@/features/subscription/model/plans';
 import { PaymentOption } from '@/features/subscription/ui/PaymentOption';
 import { PlanCard } from '@/features/subscription/ui/PlanCard';
-import { light, size, space } from '@/shared/theme';
+import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, Tag, Text, TopBar, useToast } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + 72;
 
 export default function SubscriptionScreen() {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [planId, setPlanId] = useState<PlanId>('quarterly');
   const [method, setMethod] = useState<PaymentMethod>('click');
@@ -30,7 +32,7 @@ export default function SubscriptionScreen() {
       <TopBar
         left={
           <IconButton accessibilityLabel="Yopish" onPress={router.back}>
-            <X size={17} color={light.textStrong} strokeWidth={1.6} />
+            <X size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
       />
@@ -48,9 +50,9 @@ export default function SubscriptionScreen() {
           {features.map((feature) => (
             <View key={feature} style={styles.feature}>
               <View style={styles.featureIcon}>
-                <Check size={11} color={light.selectedText} strokeWidth={2.8} />
+                <Check size={11} color={colors.selectedText} strokeWidth={2.8} />
               </View>
-              <Text variant="bodySm" color={light.textStrong}>
+              <Text variant="bodySm" color={colors.textStrong}>
                 {feature}
               </Text>
             </View>
@@ -64,7 +66,7 @@ export default function SubscriptionScreen() {
         </View>
 
         <View style={styles.payment}>
-          <Text variant="callout" color={light.textSecondary} style={styles.paymentLabel}>
+          <Text variant="callout" color={colors.textSecondary} style={styles.paymentLabel}>
             To'lov usuli
           </Text>
           <View style={styles.methods}>
@@ -77,7 +79,7 @@ export default function SubscriptionScreen() {
 
       <View style={[styles.footer, { bottom: insets.bottom + space[3] }]}>
         <Button label={`${formatSum(plan.price)} so'm to'lash`} trailingText={methodTitle} onPress={onPay} />
-        <Text variant="micro" color={light.textTertiary} center>
+        <Text variant="micro" color={colors.textTertiary} center>
           Istalgan vaqt bekor qilish mumkin
         </Text>
       </View>
@@ -85,7 +87,7 @@ export default function SubscriptionScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   content: {
     paddingTop: space[4],
     gap: space[4],
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -130,4 +132,4 @@ const styles = StyleSheet.create({
     right: size.screenPadding,
     gap: space[2],
   },
-});
+}));

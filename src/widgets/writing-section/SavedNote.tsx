@@ -2,13 +2,14 @@ import { memo, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Check } from 'lucide-react-native';
 import { useAttemptStore } from '@/entities/attempt';
-import { light, space } from '@/shared/theme';
+import { space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import { savedLabel } from './draft';
 
 const REFRESH_MS = 5000;
 
 export const SavedNote = memo(() => {
+  const { colors } = useTheme();
   const savedAt = useAttemptStore((s) => s.writingSavedAt);
   const [now, setNow] = useState(Date.now);
 
@@ -20,8 +21,8 @@ export const SavedNote = memo(() => {
 
   return (
     <View style={styles.row}>
-      <Check size={14} color={light.textSecondary} strokeWidth={2} />
-      <Text variant="caption" color={light.textSecondary}>
+      <Check size={14} color={colors.textSecondary} strokeWidth={2} />
+      <Text variant="caption" color={colors.textSecondary}>
         {savedLabel(savedAt, now)}
       </Text>
     </View>

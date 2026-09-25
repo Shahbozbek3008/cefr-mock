@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, Bell, ChevronLeft } from 'lucide-react-native';
@@ -8,10 +8,12 @@ import type { DailyMinutes } from '@/entities/user/model';
 import { paceOptions } from '@/features/onboarding/model';
 import { PaceCard } from '@/features/onboarding/ui/PaceCard';
 import { StepHeader } from '@/features/onboarding/ui/StepHeader';
-import { light, radius } from '@/shared/theme';
+import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Button, Card, IconButton, ProgressSteps, Screen, Switch, Text } from '@/shared/ui';
 
 export default function PaceScreen() {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const dailyMinutes = useUserStore((state) => state.dailyMinutes);
   const setDailyMinutes = useUserStore((state) => state.setDailyMinutes);
@@ -19,10 +21,7 @@ export default function PaceScreen() {
   const setReminderEnabled = useUserStore((state) => state.setReminderEnabled);
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
 
-  const onSelect = useCallback(
-    (minutes: DailyMinutes) => setDailyMinutes(minutes),
-    [setDailyMinutes],
-  );
+  const onSelect = useCallback((minutes: DailyMinutes) => setDailyMinutes(minutes), [setDailyMinutes]);
 
   const onCreatePlan = useCallback(() => {
     completeOnboarding();
@@ -33,7 +32,7 @@ export default function PaceScreen() {
     <Screen paddingHorizontal={24}>
       <View style={styles.topBar}>
         <IconButton accessibilityLabel="Orqaga" onPress={router.back} style={styles.back}>
-          <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+          <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
         </IconButton>
         <ProgressSteps total={3} current={3} />
       </View>
@@ -59,19 +58,15 @@ export default function PaceScreen() {
 
         <Card style={styles.reminder}>
           <View style={styles.reminderIcon}>
-            <Bell size={17} color={light.textStrong} strokeWidth={1.5} />
+            <Bell size={17} color={colors.textStrong} strokeWidth={1.5} />
           </View>
           <View style={styles.reminderBody}>
             <Text variant="label">Kunlik eslatma</Text>
-            <Text variant="monoSm" color={light.textSecondary}>
+            <Text variant="monoSm" color={colors.textSecondary}>
               20:00
             </Text>
           </View>
-          <Switch
-            value={reminderEnabled}
-            onValueChange={setReminderEnabled}
-            accessibilityLabel="Kunlik eslatma"
-          />
+          <Switch value={reminderEnabled} onValueChange={setReminderEnabled} accessibilityLabel="Kunlik eslatma" />
         </Card>
       </View>
 
@@ -83,7 +78,7 @@ export default function PaceScreen() {
           trailingIcon={
             <ArrowRight
               size={18}
-              color={dailyMinutes === null ? light.disabledText : light.onAction}
+              color={dailyMinutes === null ? colors.disabledText : colors.onAction}
               strokeWidth={1.75}
             />
           }
@@ -93,7 +88,7 @@ export default function PaceScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   topBar: {
     height: 44,
     flexDirection: 'row',
@@ -125,7 +120,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 11,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -135,4 +130,4 @@ const styles = StyleSheet.create({
   footer: {
     paddingTop: 12,
   },
-});
+}));

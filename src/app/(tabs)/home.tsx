@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLatestResult } from '@/entities/result';
@@ -13,11 +13,12 @@ import { HomeHeader } from '@/features/home/ui/HomeHeader';
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
 import { daysUntil } from '@/shared/lib';
-import { light, size, space } from '@/shared/theme';
+import { makeStyles, size, space } from '@/shared/theme';
 import { SkeletonCard, StateView, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 export default function HomeScreen() {
+  const styles = useStyles();
   const insets = useSafeAreaInsets();
   const user = useUserStore((s) => s.user);
   const examDate = useUserStore((s) => s.examDate);
@@ -31,7 +32,10 @@ export default function HomeScreen() {
 
   const onResume = useCallback(() => {
     if (!resume) return;
-    router.push({ pathname: '/test/[id]/[section]', params: { id: resume.id, section: resume.resumeSection ?? 'listening' } });
+    router.push({
+      pathname: '/test/[id]/[section]',
+      params: { id: resume.id, section: resume.resumeSection ?? 'listening' },
+    });
   }, [resume]);
 
   const onStartPlan = useCallback((item: PlanItem) => {
@@ -56,7 +60,13 @@ export default function HomeScreen() {
       {latest.isPending ? (
         <SkeletonCard lines={4} />
       ) : latest.isError ? (
-        <StateView tone="error" title="Xatolik" message="Internetni tekshiring" actionLabel="Qayta" onAction={() => latest.refetch()} />
+        <StateView
+          tone="error"
+          title="Xatolik"
+          message="Internetni tekshiring"
+          actionLabel="Qayta"
+          onAction={() => latest.refetch()}
+        />
       ) : (
         <ExamHero
           daysLeft={examDate ? daysUntil(examDate) : null}
@@ -78,13 +88,13 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   content: {
     paddingHorizontal: size.screenPadding,
     gap: space[3],
   },
-});
+}));

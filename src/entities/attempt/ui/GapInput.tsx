@@ -1,7 +1,7 @@
 import { Ref, memo, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { useAnswer, useAttemptStore } from '../model/store';
-import { elevation, light, radius, space, type } from '@/shared/theme';
+import { makeStyles, radius, space, type, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 export type GapInputProps = {
@@ -13,13 +13,15 @@ export type GapInputProps = {
 };
 
 export const GapInput = memo<GapInputProps>(({ questionId, number, variant = 'inline', onFocus, ref }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const value = useAnswer(questionId);
   const setAnswer = useAttemptStore((s) => s.setAnswer);
   const [focused, setFocused] = useState(false);
 
   const filled = value.trim() !== '';
   const inline = variant === 'inline';
-  const numberColor = focused ? light.data : filled ? light.dataSoft : light.textTertiary;
+  const numberColor = focused ? colors.data : filled ? colors.dataSoft : colors.textTertiary;
 
   return (
     <View
@@ -44,9 +46,9 @@ export const GapInput = memo<GapInputProps>(({ questionId, number, variant = 'in
         autoCorrect={false}
         allowFontScaling={false}
         placeholder={inline ? undefined : 'Javobingiz'}
-        placeholderTextColor={light.textTertiary}
-        selectionColor={light.selectedBorder}
-        cursorColor={light.selectedBorder}
+        placeholderTextColor={colors.textTertiary}
+        selectionColor={colors.selectedBorder}
+        cursorColor={colors.selectedBorder}
         accessibilityLabel={`Savol ${number} javobi`}
         style={[styles.input, filled && !focused && styles.inputFilled]}
       />
@@ -56,7 +58,7 @@ export const GapInput = memo<GapInputProps>(({ questionId, number, variant = 'in
 
 GapInput.displayName = 'GapInput';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   inline: {
     width: 124,
     height: 40,
@@ -75,28 +77,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: space[3.5],
   },
   empty: {
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   filled: {
-    backgroundColor: light.selectedBg,
+    backgroundColor: colors.selectedBg,
     borderWidth: 1,
-    borderColor: light.dataMuted,
+    borderColor: colors.dataMuted,
   },
   focused: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1.5,
-    borderColor: light.selectedBorder,
+    borderColor: colors.selectedBorder,
   },
   input: {
     ...type.label,
     flex: 1,
-    color: light.text,
+    color: colors.text,
     padding: 0,
   },
   inputFilled: {
     ...type.labelMedium,
-    color: light.selectedText,
+    color: colors.selectedText,
   },
-});
+}));

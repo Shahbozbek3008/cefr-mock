@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { light, radius, space } from '@/shared/theme';
+import { Pressable, View } from 'react-native';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Sheet, Text } from '@/shared/ui';
 import type { SectionStats } from '../model/stats';
 
@@ -15,38 +15,50 @@ export type FinishSheetProps = {
   onClose: () => void;
 };
 
-const Legend = ({ color, value, label }: { color: string; value: number; label: string }) => (
-  <View style={styles.legendItem}>
-    <View style={[styles.swatch, { backgroundColor: color }]} />
-    <Text variant="monoCallout">{value}</Text>
-    <Text variant="callout" color={light.textSecondary}>
-      {label}
-    </Text>
-  </View>
-);
+const Legend = ({ color, value, label }: { color: string; value: number; label: string }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
 
-const NumberCell = ({ number, tone, onPress }: { number: number; tone: 'error' | 'warning'; onPress: () => void }) => (
-  <Pressable
-    accessibilityRole="button"
-    accessibilityLabel={`Savol ${number}`}
-    onPress={onPress}
-    style={[styles.cell, tone === 'error' ? styles.cellError : styles.cellWarning]}
-  >
-    <Text variant="monoCallout" color={tone === 'error' ? light.error.text : light.warning.text}>
-      {number}
-    </Text>
-  </Pressable>
-);
+  return (
+    <View style={styles.legendItem}>
+      <View style={[styles.swatch, { backgroundColor: color }]} />
+      <Text variant="monoCallout">{value}</Text>
+      <Text variant="callout" color={colors.textSecondary}>
+        {label}
+      </Text>
+    </View>
+  );
+};
+
+const NumberCell = ({ number, tone, onPress }: { number: number; tone: 'error' | 'warning'; onPress: () => void }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Savol ${number}`}
+      onPress={onPress}
+      style={[styles.cell, tone === 'error' ? styles.cellError : styles.cellWarning]}
+    >
+      <Text variant="monoCallout" color={tone === 'error' ? colors.error.text : colors.warning.text}>
+        {number}
+      </Text>
+    </Pressable>
+  );
+};
 
 export const FinishSheet = memo<FinishSheetProps>(
   ({ visible, title, message, stats, loading = false, onReview, onFinish, onClose }) => {
+    const styles = useStyles();
+    const { colors } = useTheme();
     const firstPending = stats?.emptyNumbers[0] ?? stats?.flaggedNumbers[0];
     const hasPending = firstPending !== undefined;
     const segments = stats
       ? [
-          { value: stats.answered, color: light.data },
-          { value: stats.flagged, color: light.warning[500] },
-          { value: stats.empty, color: light.error[500] },
+          { value: stats.answered, color: colors.data },
+          { value: stats.flagged, color: colors.warning[500] },
+          { value: stats.empty, color: colors.error[500] },
         ].filter((segment) => segment.value > 0)
       : [];
 
@@ -54,7 +66,7 @@ export const FinishSheet = memo<FinishSheetProps>(
       <Sheet visible={visible} onClose={onClose}>
         <View style={styles.intro}>
           <Text variant="titleSheet">{title}</Text>
-          <Text variant="labelRelaxed" color={light.textSecondary}>
+          <Text variant="labelRelaxed" color={colors.textSecondary}>
             {message}
           </Text>
         </View>
@@ -70,9 +82,9 @@ export const FinishSheet = memo<FinishSheetProps>(
               ))}
             </View>
             <View style={styles.legend}>
-              <Legend color={light.data} value={stats.answered} label="javob" />
-              <Legend color={light.warning[500]} value={stats.flagged} label="belgilangan" />
-              <Legend color={light.error[500]} value={stats.empty} label="javobsiz" />
+              <Legend color={colors.data} value={stats.answered} label="javob" />
+              <Legend color={colors.warning[500]} value={stats.flagged} label="belgilangan" />
+              <Legend color={colors.error[500]} value={stats.empty} label="javobsiz" />
             </View>
           </View>
         ) : null}
@@ -112,7 +124,7 @@ export const FinishSheet = memo<FinishSheetProps>(
 
 FinishSheet.displayName = 'FinishSheet';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   intro: {
     gap: space[2],
     paddingHorizontal: space[1],
@@ -160,14 +172,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cellError: {
-    backgroundColor: light.error.bg,
-    borderColor: light.error.border,
+    backgroundColor: colors.error.bg,
+    borderColor: colors.error.border,
   },
   cellWarning: {
-    backgroundColor: light.warning.bg,
-    borderColor: light.warning.border,
+    backgroundColor: colors.warning.bg,
+    borderColor: colors.warning.border,
   },
   actions: {
     gap: space[2],
   },
-});
+}));

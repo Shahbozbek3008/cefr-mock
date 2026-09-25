@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { light, radius, space } from '../theme';
+import { Pressable } from 'react-native';
+import { makeStyles, radius, space, useTheme } from '../theme';
 import { CheckBadge } from './CheckBadge';
 import { Text } from './Text';
 
@@ -10,29 +10,34 @@ export type ChoiceTileProps = {
   onPress: () => void;
 };
 
-export const ChoiceTile = memo<ChoiceTileProps>(({ label, selected, onPress }) => (
-  <Pressable
-    accessibilityRole="radio"
-    accessibilityState={{ selected }}
-    accessibilityLabel={label}
-    onPress={onPress}
-    style={[styles.tile, selected ? styles.selected : styles.idle]}
-  >
-    <Text
-      variant={selected ? 'bodySmMedium' : 'bodySm'}
-      color={selected ? light.selectedText : light.text}
-      numberOfLines={1}
-      style={styles.label}
+export const ChoiceTile = memo<ChoiceTileProps>(({ label, selected, onPress }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={[styles.tile, selected ? styles.selected : styles.idle]}
     >
-      {label}
-    </Text>
-    {selected ? <CheckBadge size={18} /> : null}
-  </Pressable>
-));
+      <Text
+        variant={selected ? 'bodySmMedium' : 'bodySm'}
+        color={selected ? colors.selectedText : colors.text}
+        numberOfLines={1}
+        style={styles.label}
+      >
+        {label}
+      </Text>
+      {selected ? <CheckBadge size={18} /> : null}
+    </Pressable>
+  );
+});
 
 ChoiceTile.displayName = 'ChoiceTile';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   tile: {
     flex: 1,
     height: 50,
@@ -43,16 +48,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: space[3],
   },
   idle: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   selected: {
-    backgroundColor: light.selectedBg,
+    backgroundColor: colors.selectedBg,
     borderWidth: 1.5,
-    borderColor: light.selectedBorder,
+    borderColor: colors.selectedBorder,
   },
   label: {
     flex: 1,
   },
-});
+}));

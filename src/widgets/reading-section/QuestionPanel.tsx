@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { GapInput, McqOptions, TfngChoices, useAnswer } from '@/entities/attempt';
 import type { Question } from '@/entities/test';
-import { elevation, light, radius, size, space } from '@/shared/theme';
+import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Tag, Text } from '@/shared/ui';
 
 const kindLabels: Record<Question['kind'], string> = {
@@ -12,6 +12,7 @@ const kindLabels: Record<Question['kind'], string> = {
 };
 
 const Dot = memo<{ id: string; current: boolean }>(({ id, current }) => {
+  const styles = useStyles();
   const answered = useAnswer(id).trim() !== '';
   return <View style={[styles.dot, current && styles.dotCurrent, (answered || current) && styles.dotFilled]} />;
 });
@@ -25,33 +26,40 @@ export type QuestionPanelProps = {
   bottomInset: number;
 };
 
-const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question, siblings }) => (
-  <>
-    <View style={styles.header}>
-      <View style={styles.kind}>
-        <Tag label={`Q${question.number}`} tone="lime" size="md" mono />
-        <Text variant="callout" color={light.textSecondary}>
-          {kindLabels[question.kind]}
-        </Text>
-      </View>
-      <View style={styles.dots}>
-        {siblings.map((q) => (
-          <Dot key={q.id} id={q.id} current={q.id === question.id} />
-        ))}
-      </View>
-    </View>
+const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question, siblings }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
 
-    <Text variant="body">{question.prompt}</Text>
+  return (
+    <>
+      <View style={styles.header}>
+        <View style={styles.kind}>
+          <Tag label={`Q${question.number}`} tone="lime" size="md" mono />
+          <Text variant="callout" color={colors.textSecondary}>
+            {kindLabels[question.kind]}
+          </Text>
+        </View>
+        <View style={styles.dots}>
+          {siblings.map((q) => (
+            <Dot key={q.id} id={q.id} current={q.id === question.id} />
+          ))}
+        </View>
+      </View>
 
-    {question.kind === 'tfng' ? <TfngChoices questionId={question.id} /> : null}
-    {question.kind === 'mcq' ? <McqOptions question={question} /> : null}
-    {question.kind === 'gap' ? <GapInput questionId={question.id} number={question.number} variant="field" /> : null}
-  </>
-));
+      <Text variant="body">{question.prompt}</Text>
+
+      {question.kind === 'tfng' ? <TfngChoices questionId={question.id} /> : null}
+      {question.kind === 'mcq' ? <McqOptions question={question} /> : null}
+      {question.kind === 'gap' ? <GapInput questionId={question.id} number={question.number} variant="field" /> : null}
+    </>
+  );
+});
 
 PanelBody.displayName = 'PanelBody';
 
 export const QuestionPanel = memo<QuestionPanelProps>(({ question, siblings, expanded, bottomInset }) => {
+  const styles = useStyles();
+  const { elevation } = useTheme();
   const contentStyle = [styles.content, { paddingBottom: bottomInset + space[4] }];
 
   return (
@@ -76,9 +84,9 @@ export const QuestionPanel = memo<QuestionPanelProps>(({ question, siblings, exp
 
 QuestionPanel.displayName = 'QuestionPanel';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   panel: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
     paddingTop: space[2.5],
@@ -91,7 +99,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 5,
     borderRadius: 3,
-    backgroundColor: light.border,
+    backgroundColor: colors.border,
   },
   content: {
     paddingTop: space[3],
@@ -116,12 +124,12 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: light.border,
+    backgroundColor: colors.border,
   },
   dotCurrent: {
     width: 14,
   },
   dotFilled: {
-    backgroundColor: light.data,
+    backgroundColor: colors.data,
   },
-});
+}));

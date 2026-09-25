@@ -1,26 +1,27 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { light, palette } from '../theme';
+import { View } from 'react-native';
+import { makeStyles, palette } from '../theme';
 
 export type ProgressStepsProps = {
   total: number;
   current: number;
 };
 
-export const ProgressSteps = memo<ProgressStepsProps>(({ total, current }) => (
-  <View style={styles.row}>
-    {Array.from({ length: total }, (_, index) => (
-      <View
-        key={index}
-        style={[styles.step, index < current ? styles.done : styles.pending]}
-      />
-    ))}
-  </View>
-));
+export const ProgressSteps = memo<ProgressStepsProps>(({ total, current }) => {
+  const styles = useStyles();
+
+  return (
+    <View style={styles.row}>
+      {Array.from({ length: total }, (_, index) => (
+        <View key={index} style={[styles.step, index < current ? styles.done : styles.pending]} />
+      ))}
+    </View>
+  );
+});
 
 ProgressSteps.displayName = 'ProgressSteps';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: {
     flex: 1,
     flexDirection: 'row',
@@ -35,6 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: palette.primary[600],
   },
   pending: {
-    backgroundColor: light.border,
+    backgroundColor: colors.border,
   },
-});
+}));

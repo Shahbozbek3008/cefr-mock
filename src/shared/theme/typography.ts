@@ -17,12 +17,7 @@ const androidFix: TextStyle = Platform.select<TextStyle>({
 
 const em = (value: number, size: number) => Number((value * size).toFixed(2));
 
-const make = (
-  fontFamily: string,
-  fontSize: number,
-  lineHeight: number,
-  tracking = 0,
-): TextStyle => ({
+const make = (fontFamily: string, fontSize: number, lineHeight: number, tracking = 0): TextStyle => ({
   fontFamily,
   fontSize,
   lineHeight,

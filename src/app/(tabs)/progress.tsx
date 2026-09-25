@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useProgress } from '@/entities/result';
@@ -7,7 +7,7 @@ import type { HistoryItem, ProgressPeriod } from '@/entities/result';
 import { HistoryList } from '@/features/progress/ui/HistoryList';
 import { ScoreChartCard } from '@/features/progress/ui/ScoreChartCard';
 import { SectionProgress } from '@/features/progress/ui/SectionProgress';
-import { hitSlop, light, size, space } from '@/shared/theme';
+import { hitSlop, makeStyles, size, space, useTheme } from '@/shared/theme';
 import { SegmentedControl, SkeletonCard, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
@@ -24,6 +24,8 @@ const periodLabels: Record<ProgressPeriod, string> = {
 };
 
 export default function ProgressScreen() {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [period, setPeriod] = useState<ProgressPeriod>('3m');
   const progress = useProgress(period);
@@ -53,7 +55,7 @@ export default function ProgressScreen() {
           <View style={styles.historyHeader}>
             <Text variant="labelMedium">Tarix</Text>
             <Pressable accessibilityRole="button" hitSlop={hitSlop} onPress={() => router.navigate('/(tabs)/tests')}>
-              <Text variant="calloutMedium" color={light.link}>
+              <Text variant="calloutMedium" color={colors.link}>
                 Barchasi
               </Text>
             </Pressable>
@@ -78,10 +80,10 @@ export default function ProgressScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   content: {
     paddingHorizontal: size.screenPadding,
@@ -100,4 +102,4 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     paddingHorizontal: space[1],
   },
-});
+}));

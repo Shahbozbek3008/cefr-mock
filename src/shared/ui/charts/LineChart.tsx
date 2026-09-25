@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import Svg, { Circle, Line, Polygon, Polyline, Text as SvgText } from 'react-native-svg';
-import { font, light } from '../../theme';
+import { font, useTheme } from '../../theme';
 
 export type LineChartGuide = { value: number; label: string; strong?: boolean };
 
@@ -17,6 +17,7 @@ const BASE = 150;
 const PAD_X = 12;
 
 export const LineChart = memo<LineChartProps>(({ values, guides, domain, height = 136 }) => {
+  const { colors } = useTheme();
   const [min, max] = domain;
 
   const points = useMemo(() => {
@@ -41,7 +42,7 @@ export const LineChart = memo<LineChartProps>(({ values, guides, domain, height 
           x2={VW}
           y1={toY(g.value)}
           y2={toY(g.value)}
-          stroke={g.strong ? light.borderStrong : light.border}
+          stroke={g.strong ? colors.borderStrong : colors.border}
           strokeDasharray="3 4"
         />
       ))}
@@ -53,24 +54,24 @@ export const LineChart = memo<LineChartProps>(({ values, guides, domain, height 
           textAnchor="end"
           fontFamily={font.mono}
           fontSize={9}
-          fill={light.textTertiary}
+          fill={colors.textTertiary}
         >
           {g.label}
         </SvgText>
       ))}
-      <Polygon points={area} fill={light.data} fillOpacity={0.08} />
+      <Polygon points={area} fill={colors.data} fillOpacity={0.08} />
       <Polyline
         points={line}
         fill="none"
-        stroke={light.data}
+        stroke={colors.data}
         strokeWidth={2.2}
         strokeLinejoin="round"
         strokeLinecap="round"
       />
       {points.slice(0, -1).map((p, i) => (
-        <Circle key={i} cx={p.x} cy={p.y} r={2.5} fill={light.data} />
+        <Circle key={i} cx={p.x} cy={p.y} r={2.5} fill={colors.data} />
       ))}
-      <Circle cx={last.x} cy={last.y} r={5} fill={light.surface} stroke={light.data} strokeWidth={2.5} />
+      <Circle cx={last.x} cy={last.y} r={5} fill={colors.surface} stroke={colors.data} strokeWidth={2.5} />
     </Svg>
   );
 });

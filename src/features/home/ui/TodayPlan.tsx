@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Check } from 'lucide-react-native';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Card, Text } from '@/shared/ui';
 import type { PlanItem } from '../model/plan';
 
@@ -11,6 +11,8 @@ export type TodayPlanProps = {
 };
 
 export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const done = items.filter((i) => i.done).length;
   const minutes = items.reduce((sum, i) => sum + i.minutes, 0);
 
@@ -18,7 +20,7 @@ export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
     <View style={styles.section}>
       <View style={styles.header}>
         <Text variant="labelMedium">Bugungi mashq</Text>
-        <Text variant="monoSm" color={light.textSecondary}>
+        <Text variant="monoSm" color={colors.textSecondary}>
           {`${done}/${items.length} · ${minutes} daq`}
         </Text>
       </View>
@@ -28,22 +30,20 @@ export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
           <View key={item.id} style={[styles.row, index > 0 && styles.divider]}>
             {item.done ? (
               <View style={styles.checkDone}>
-                <Check size={13} color={light.onAction} strokeWidth={3} />
+                <Check size={13} color={colors.onAction} strokeWidth={3} />
               </View>
             ) : (
               <View style={styles.checkEmpty} />
             )}
             <View style={styles.body}>
-              <Text variant="label" color={item.done ? light.textTertiary : light.text}>
+              <Text variant="label" color={item.done ? colors.textTertiary : colors.text}>
                 {item.title}
               </Text>
-              <Text variant="caption" color={item.done ? light.textTertiary : light.textSecondary}>
+              <Text variant="caption" color={item.done ? colors.textTertiary : colors.textSecondary}>
                 {item.meta}
               </Text>
             </View>
-            {item.done ? null : (
-              <Button label="Boshlash" variant="soft" size="S" onPress={() => onStart(item)} />
-            )}
+            {item.done ? null : <Button label="Boshlash" variant="soft" size="S" onPress={() => onStart(item)} />}
           </View>
         ))}
       </Card>
@@ -53,7 +53,7 @@ export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
 
 TodayPlan.displayName = 'TodayPlan';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   section: {
     gap: space[2.5],
   },
@@ -75,13 +75,13 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderTopWidth: 1,
-    borderTopColor: light.divider,
+    borderTopColor: colors.divider,
   },
   checkDone: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: light.action,
+    backgroundColor: colors.action,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 1.5,
-    borderColor: light.dataSoft,
+    borderColor: colors.dataSoft,
   },
   body: {
     flex: 1,
   },
-});
+}));

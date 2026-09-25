@@ -8,12 +8,13 @@ import { sectionOrder, useTest } from '@/entities/test';
 import { RulesList } from '@/features/test-intro/ui/RulesList';
 import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
 import { TestStats } from '@/features/test-intro/ui/TestStats';
-import { light, size, space } from '@/shared/theme';
+import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Tag, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + space[6];
 
 export default function TestIntroScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const test = useTest(id);
@@ -33,7 +34,7 @@ export default function TestIntroScreen() {
       <TopBar
         left={
           <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
-            <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+            <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
       />
@@ -50,7 +51,7 @@ export default function TestIntroScreen() {
                 <Tag label="Real rejim" tone="neutral" />
               </View>
               <Text variant="titleXl">{test.data.title}</Text>
-              <Text variant="bodySm" color={light.textSecondary}>
+              <Text variant="bodySm" color={colors.textSecondary}>
                 {test.data.format}
               </Text>
             </View>
@@ -89,7 +90,7 @@ export default function TestIntroScreen() {
           disabled={!test.data}
           onPress={onStart}
           trailingIcon={
-            <ArrowRight size={18} color={test.data ? light.onAction : light.disabledText} strokeWidth={1.75} />
+            <ArrowRight size={18} color={test.data ? colors.onAction : colors.disabledText} strokeWidth={1.75} />
           }
         />
       </View>

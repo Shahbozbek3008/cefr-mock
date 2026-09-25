@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { light, radius, space } from '../theme';
+import { Pressable } from 'react-native';
+import { makeStyles, radius, space, useTheme } from '../theme';
 import { Text } from './Text';
 
 export type ChipProps = {
@@ -9,22 +9,27 @@ export type ChipProps = {
   onPress?: () => void;
 };
 
-export const Chip = memo<ChipProps>(({ label, active = false, onPress }) => (
-  <Pressable
-    accessibilityRole="button"
-    accessibilityState={{ selected: active }}
-    onPress={onPress}
-    style={[styles.chip, active ? styles.active : styles.idle]}
-  >
-    <Text variant={active ? 'calloutMedium' : 'callout'} color={active ? light.selectedText : light.text}>
-      {label}
-    </Text>
-  </Pressable>
-));
+export const Chip = memo<ChipProps>(({ label, active = false, onPress }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected: active }}
+      onPress={onPress}
+      style={[styles.chip, active ? styles.active : styles.idle]}
+    >
+      <Text variant={active ? 'calloutMedium' : 'callout'} color={active ? colors.selectedText : colors.text}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+});
 
 Chip.displayName = 'Chip';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   chip: {
     height: 34,
     paddingHorizontal: space[3.5],
@@ -32,11 +37,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   idle: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   active: {
-    backgroundColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
   },
-});
+}));

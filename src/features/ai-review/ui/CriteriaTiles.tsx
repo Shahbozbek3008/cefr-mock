@@ -1,31 +1,33 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import type { Criterion } from '@/entities/result';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { ProgressBar, Text } from '@/shared/ui';
 import { weakestLabel } from '../model/criteria';
 
 export const CriteriaTiles = memo<{ criteria: Criterion[] }>(({ criteria }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const weakest = weakestLabel(criteria);
 
   return (
     <View style={styles.grid}>
       {criteria.map((c) => (
         <View key={c.label} style={styles.tile}>
-          <Text variant="caption" color={light.textSecondary}>
+          <Text variant="caption" color={colors.textSecondary}>
             {c.label}
           </Text>
           <Text variant="statMd">
             {c.score}
-            <Text variant="monoXs" color={light.textTertiary}>
+            <Text variant="monoXs" color={colors.textTertiary}>
               {` /${c.max}`}
             </Text>
           </Text>
           <ProgressBar
             value={c.score / c.max}
             height={3}
-            track={light.skeleton}
-            color={c.label === weakest ? light.warning[500] : light.data}
+            track={colors.skeleton}
+            color={c.label === weakest ? colors.warning[500] : colors.data}
           />
         </View>
       ))}
@@ -35,7 +37,7 @@ export const CriteriaTiles = memo<{ criteria: Criterion[] }>(({ criteria }) => {
 
 CriteriaTiles.displayName = 'CriteriaTiles';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -45,9 +47,9 @@ const styles = StyleSheet.create({
     flexBasis: '47%',
     flexGrow: 1,
     borderRadius: radius.button,
-    backgroundColor: light.surfaceMuted,
+    backgroundColor: colors.surfaceMuted,
     paddingVertical: space[3],
     paddingHorizontal: space[3.5],
     gap: space[1.5],
   },
-});
+}));

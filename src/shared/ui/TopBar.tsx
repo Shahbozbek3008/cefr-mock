@@ -10,15 +10,15 @@ export type TopBarProps = {
   style?: ViewStyle;
 };
 
-export const TopBar = memo<TopBarProps>(({ left, center, right, centered = false, style }) => (
-  <View style={[styles.bar, style]}>
-    {left ? <View style={styles.side}>{left}</View> : null}
-    <View style={[styles.center, centered && styles.centered]}>{center}</View>
-    {right !== undefined ? (
-      <View style={[styles.side, centered && styles.sideFixed]}>{right}</View>
-    ) : null}
-  </View>
-));
+export const TopBar = memo<TopBarProps>(({ left, center, right, centered = false, style }) => {
+  return (
+    <View style={[styles.bar, style]}>
+      {left ? <View style={styles.side}>{left}</View> : null}
+      <View style={[styles.center, centered && styles.centered]}>{center}</View>
+      {right !== undefined ? <View style={[styles.side, centered && styles.sideFixed]}>{right}</View> : null}
+    </View>
+  );
+});
 
 TopBar.displayName = 'TopBar';
 

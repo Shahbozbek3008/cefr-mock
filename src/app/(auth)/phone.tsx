@@ -1,11 +1,5 @@
 import { useCallback, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
@@ -13,10 +7,12 @@ import { isPhoneComplete } from '@/features/auth/model';
 import { PhoneField } from '@/features/auth/ui/PhoneField';
 import { SocialButton } from '@/features/auth/ui/SocialButton';
 import { AppleIcon, GoogleIcon } from '@/shared/icons';
-import { elevation, light, radius } from '@/shared/theme';
+import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Button, HeroSurface, Screen, Text } from '@/shared/ui';
 
 export default function PhoneScreen() {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const insets = useSafeAreaInsets();
   const [digits, setDigits] = useState('');
 
@@ -29,24 +25,21 @@ export default function PhoneScreen() {
 
   return (
     <Screen paddingHorizontal={24}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={styles.flex}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
         <ScrollView
           contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           <HeroSurface style={[styles.logo, elevation.hero]}>
-            <Text variant="titleLogo" color={light.onHero}>
+            <Text variant="titleLogo" color={colors.onHero}>
               C
             </Text>
           </HeroSurface>
 
           <View style={styles.intro}>
             <Text variant="titleXl">Xush kelibsiz</Text>
-            <Text variant="labelRelaxed" color={light.textSecondary}>
+            <Text variant="labelRelaxed" color={colors.textSecondary}>
               Telefon raqamingizni kiriting — SMS orqali tasdiqlash kodi yuboramiz.
             </Text>
           </View>
@@ -58,45 +51,32 @@ export default function PhoneScreen() {
             disabled={!complete}
             onPress={onRequestCode}
             trailingIcon={
-              <ArrowRight
-                size={18}
-                color={complete ? light.onAction : light.disabledText}
-                strokeWidth={1.75}
-              />
+              <ArrowRight size={18} color={complete ? colors.onAction : colors.disabledText} strokeWidth={1.75} />
             }
           />
 
           <View style={styles.divider}>
             <View style={styles.line} />
-            <Text variant="caption" color={light.textTertiary}>
+            <Text variant="caption" color={colors.textTertiary}>
               yoki
             </Text>
             <View style={styles.line} />
           </View>
 
           <View style={styles.social}>
-            <SocialButton
-              label="Google bilan davom etish"
-              icon={<GoogleIcon />}
-              onPress={() => undefined}
-            />
-            <SocialButton
-              label="Apple bilan davom etish"
-              icon={<AppleIcon />}
-              tone="dark"
-              onPress={() => undefined}
-            />
+            <SocialButton label="Google bilan davom etish" icon={<GoogleIcon />} onPress={() => undefined} />
+            <SocialButton label="Apple bilan davom etish" icon={<AppleIcon color={colors.surface} />} tone="dark" onPress={() => undefined} />
           </View>
         </ScrollView>
 
         <View style={[styles.legal, { paddingBottom: insets.bottom + 12 }]}>
-          <Text variant="captionRelaxed" color={light.textTertiary}>
+          <Text variant="captionRelaxed" color={colors.textTertiary}>
             Davom etish orqali{' '}
-            <Text variant="captionRelaxed" color={light.textStrong}>
+            <Text variant="captionRelaxed" color={colors.textStrong}>
               Foydalanish shartlari
             </Text>{' '}
             va{' '}
-            <Text variant="captionRelaxed" color={light.textStrong}>
+            <Text variant="captionRelaxed" color={colors.textStrong}>
               Maxfiylik siyosati
             </Text>
             ga rozilik bildirasiz.
@@ -107,7 +87,7 @@ export default function PhoneScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flex: {
     flex: 1,
   },
@@ -134,7 +114,7 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: light.border,
+    backgroundColor: colors.border,
   },
   social: {
     gap: 10,
@@ -142,4 +122,4 @@ const styles = StyleSheet.create({
   legal: {
     paddingTop: 12,
   },
-});
+}));

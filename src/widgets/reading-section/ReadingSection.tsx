@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react-native';
 import { QuestionGridSheet, useAttemptStore } from '@/entities/attempt';
@@ -9,7 +9,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
-import { light, radius, size, space } from '@/shared/theme';
+import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, SegmentedControl, Text } from '@/shared/ui';
 import { Passage } from './Passage';
 import { QuestionPanel } from './QuestionPanel';
@@ -23,6 +23,8 @@ const modeOptions = [
 ] as const;
 
 export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const parts = test.reading;
   const questions = useMemo(() => parts.flatMap((p) => p.questions), [parts]);
@@ -90,7 +92,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
             onPress={() => setSerif((value) => !value)}
             style={[styles.fontToggle, serif && styles.fontToggleActive]}
           >
-            <Text variant="serifLabel" color={serif ? light.selectedText : light.text} style={styles.fontLabel}>
+            <Text variant="serifLabel" color={serif ? colors.selectedText : colors.text} style={styles.fontLabel}>
               Aa
             </Text>
           </Pressable>
@@ -119,7 +121,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
             disabled={index === 0}
             onPress={goPrev}
           >
-            <ChevronLeft size={18} color={index === 0 ? light.disabledText : light.textStrong} strokeWidth={1.6} />
+            <ChevronLeft size={18} color={index === 0 ? colors.disabledText : colors.textStrong} strokeWidth={1.6} />
           </IconButton>
           <Pressable
             accessibilityRole="button"
@@ -128,14 +130,14 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
             style={styles.overview}
           >
             <View style={styles.overviewLabel}>
-              <LayoutGrid size={17} color={light.textStrong} strokeWidth={1.5} />
-              <Text variant="bodySm" color={light.textStrong}>
+              <LayoutGrid size={17} color={colors.textStrong} strokeWidth={1.5} />
+              <Text variant="bodySm" color={colors.textStrong}>
                 Savollar
               </Text>
             </View>
-            <Text variant="monoCallout" color={light.textSecondary}>
+            <Text variant="monoCallout" color={colors.textSecondary}>
               {question.number}
-              <Text variant="monoCallout" color={light.textTertiary}>
+              <Text variant="monoCallout" color={colors.textTertiary}>
                 {`/${questions.length}`}
               </Text>
             </Text>
@@ -143,7 +145,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
           <Button
             accessibilityLabel={index === questions.length - 1 ? 'Yakunlash' : 'Keyingi savol'}
             size="M"
-            icon={<ChevronRight size={18} color={light.onAction} strokeWidth={1.75} />}
+            icon={<ChevronRight size={18} color={colors.onAction} strokeWidth={1.75} />}
             onPress={goNext}
           />
         </View>
@@ -164,10 +166,10 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
 
 ReadingSection.displayName = 'ReadingSection';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   top: {
     paddingHorizontal: size.screenPadding,
@@ -184,15 +186,15 @@ const styles = StyleSheet.create({
     width: 44,
     height: 36,
     borderRadius: radius.input,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.hairline,
+    borderColor: colors.hairline,
     alignItems: 'center',
     justifyContent: 'center',
   },
   fontToggleActive: {
-    backgroundColor: light.chipActiveBg,
-    borderColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
+    borderColor: colors.chipActiveBg,
   },
   fontLabel: {
     fontWeight: '500',
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: size.buttonM,
     borderRadius: radius.button,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -216,4 +218,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space[2],
   },
-});
+}));

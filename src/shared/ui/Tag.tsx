@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { light, radius, space, TypeToken } from '../theme';
+import { Colors, radius, space, TypeToken, useTheme } from '../theme';
 import { HeroSurface } from './HeroSurface';
 import { Text } from './Text';
 
@@ -8,11 +8,12 @@ export type TagTone = 'lime' | 'neutral' | 'muted' | 'success' | 'warning' | 'er
 
 type TagSize = 'xs' | 'sm' | 'md';
 
-const metrics: Record<TagSize, { height: number; radius: number; padding: number; text: TypeToken; mono: TypeToken }> = {
-  xs: { height: 20, radius: radius.xs, padding: 7, text: 'nanoMedium', mono: 'monoNano' },
-  sm: { height: 22, radius: radius.chip, padding: space[2], text: 'microMedium', mono: 'monoXs' },
-  md: { height: 24, radius: radius.tag, padding: space[2], text: 'captionMedium', mono: 'monoSmMedium' },
-};
+const metrics: Record<TagSize, { height: number; radius: number; padding: number; text: TypeToken; mono: TypeToken }> =
+  {
+    xs: { height: 20, radius: radius.xs, padding: 7, text: 'nanoMedium', mono: 'monoNano' },
+    sm: { height: 22, radius: radius.chip, padding: space[2], text: 'microMedium', mono: 'monoXs' },
+    md: { height: 24, radius: radius.tag, padding: space[2], text: 'captionMedium', mono: 'monoSmMedium' },
+  };
 
 export type TagProps = {
   label: string;
@@ -23,16 +24,18 @@ export type TagProps = {
   style?: ViewStyle;
 };
 
-const tones: Record<Exclude<TagTone, 'pro'>, { bg: string; fg: string }> = {
-  lime: { bg: light.chipActiveBg, fg: light.selectedText },
-  neutral: { bg: light.surfaceMuted, fg: light.textSecondary },
-  muted: { bg: light.bg, fg: light.textSecondary },
-  success: { bg: light.success.bg, fg: light.success.text },
-  warning: { bg: light.warning.bg, fg: light.warning.text },
-  error: { bg: light.error.bg, fg: light.error.text },
-};
+const toneFor = (colors: Colors, tone: Exclude<TagTone, 'pro'>) =>
+  ({
+    lime: { bg: colors.chipActiveBg, fg: colors.selectedText },
+    neutral: { bg: colors.surfaceMuted, fg: colors.textSecondary },
+    muted: { bg: colors.bg, fg: colors.textSecondary },
+    success: { bg: colors.success.bg, fg: colors.success.text },
+    warning: { bg: colors.warning.bg, fg: colors.warning.text },
+    error: { bg: colors.error.bg, fg: colors.error.text },
+  })[tone];
 
 export const Tag = memo<TagProps>(({ label, tone = 'neutral', size = 'sm', mono = false, icon, style }) => {
+  const { colors } = useTheme();
   const m = metrics[size];
   const variant = mono ? m.mono : m.text;
   const shape = [styles.tag, { height: m.height, borderRadius: m.radius, paddingHorizontal: m.padding }, style];
@@ -40,14 +43,14 @@ export const Tag = memo<TagProps>(({ label, tone = 'neutral', size = 'sm', mono 
   if (tone === 'pro') {
     return (
       <HeroSurface style={shape}>
-        <Text variant={variant} color={light.onHero}>
+        <Text variant={variant} color={colors.onHero}>
           {label}
         </Text>
       </HeroSurface>
     );
   }
 
-  const t = tones[tone];
+  const t = toneFor(colors, tone);
 
   return (
     <View style={[shape, { backgroundColor: t.bg }]}>

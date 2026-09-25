@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
 import { FlagButton, QuestionNavigator, useAttemptStore } from '@/entities/attempt';
@@ -10,7 +10,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
-import { light, size, space } from '@/shared/theme';
+import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button } from '@/shared/ui';
 import { AudioCard } from './AudioCard';
 import { McqCard } from './McqCard';
@@ -20,6 +20,8 @@ const NAVIGATOR_HEIGHT = 34;
 const FOOTER_SPACE = NAVIGATOR_HEIGHT + size.buttonM + space[3] * 2;
 
 export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const parts = test.listening;
   const questions = useMemo(() => parts.flatMap((p) => p.questions), [parts]);
@@ -148,7 +150,7 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
             size="M"
             grow
             onPress={goNext}
-            trailingIcon={<ArrowRight size={18} color={light.onAction} strokeWidth={1.75} />}
+            trailingIcon={<ArrowRight size={18} color={colors.onAction} strokeWidth={1.75} />}
           />
         </View>
       </SessionFooter>
@@ -160,10 +162,10 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
 
 ListeningSection.displayName = 'ListeningSection';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   header: {
     paddingHorizontal: size.screenPadding,
@@ -177,4 +179,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: space[2.5],
   },
-});
+}));

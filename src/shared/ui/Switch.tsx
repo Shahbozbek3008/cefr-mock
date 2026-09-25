@@ -1,12 +1,7 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useDerivedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import { elevation, light, motion } from '../theme';
+import { Pressable } from 'react-native';
+import Animated, { interpolateColor, useAnimatedStyle, useDerivedValue, withTiming } from 'react-native-reanimated';
+import { makeStyles, motion, useTheme } from '../theme';
 
 export type SwitchProps = {
   value: boolean;
@@ -20,22 +15,16 @@ const THUMB = 24;
 const PADDING = 3;
 
 export const Switch = memo<SwitchProps>(({ value, onValueChange, accessibilityLabel }) => {
-  const progress = useDerivedValue(() =>
-    withTiming(value ? 1 : 0, { duration: motion.base }),
-  );
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
+  const progress = useDerivedValue(() => withTiming(value ? 1 : 0, { duration: motion.base }));
 
   const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      progress.value,
-      [0, 1],
-      [light.borderStrong, light.action],
-    ),
+    backgroundColor: interpolateColor(progress.value, [0, 1], [colors.borderStrong, colors.action]),
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: progress.value * (TRACK_WIDTH - THUMB - PADDING * 2) },
-    ],
+    transform: [{ translateX: progress.value * (TRACK_WIDTH - THUMB - PADDING * 2) }],
   }));
 
   return (
@@ -54,7 +43,7 @@ export const Switch = memo<SwitchProps>(({ value, onValueChange, accessibilityLa
 
 Switch.displayName = 'Switch';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   track: {
     width: TRACK_WIDTH,
     height: TRACK_HEIGHT,
@@ -66,6 +55,6 @@ const styles = StyleSheet.create({
     width: THUMB,
     height: THUMB,
     borderRadius: THUMB / 2,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
   },
-});
+}));

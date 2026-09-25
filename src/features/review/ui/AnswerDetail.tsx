@@ -1,11 +1,11 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Sparkles } from 'lucide-react-native';
 import type { AnswerReview, ReviewStatus } from '@/entities/result';
 import type { Question } from '@/entities/test';
 import { PlayIcon } from '@/shared/icons';
 import { formatClock } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Tag, TagTone, Text } from '@/shared/ui';
 
 const statusTags: Record<ReviewStatus, { label: string; tone: TagTone }> = {
@@ -23,18 +23,20 @@ const answerText = (question: Question, value: string) => {
 
 const AnswerBox = memo<{ label: string; value: string; tone: 'success' | 'error' | 'neutral'; struck?: boolean }>(
   ({ label, value, tone, struck = false }) => {
-    const colors =
+    const styles = useStyles();
+    const { colors } = useTheme();
+    const swatch =
       tone === 'success'
-        ? { bg: light.success.bg, fg: light.success.text }
+        ? { bg: colors.success.bg, fg: colors.success.text }
         : tone === 'error'
-          ? { bg: light.error.bg, fg: light.error.text }
-          : { bg: light.bg, fg: light.textSecondary };
+          ? { bg: colors.error.bg, fg: colors.error.text }
+          : { bg: colors.bg, fg: colors.textSecondary };
     return (
-      <View style={[styles.box, { backgroundColor: colors.bg }]}>
-        <Text variant="micro" color={colors.fg}>
+      <View style={[styles.box, { backgroundColor: swatch.bg }]}>
+        <Text variant="micro" color={swatch.fg}>
           {label}
         </Text>
-        <Text variant={tone === 'success' ? 'monoMedium' : 'mono'} color={colors.fg} style={struck && styles.struck}>
+        <Text variant={tone === 'success' ? 'monoMedium' : 'mono'} color={swatch.fg} style={struck && styles.struck}>
           {value}
         </Text>
       </View>
@@ -50,6 +52,8 @@ export type AnswerDetailProps = {
 };
 
 export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const tag = statusTags[item.status];
 
   return (
@@ -58,8 +62,8 @@ export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
         <Tag label={`Q${item.number} · ${tag.label}`} tone={tag.tone} size="md" mono />
         {item.audioAt !== undefined ? (
           <View style={styles.audio}>
-            <PlayIcon size={12} color={light.selectedText} />
-            <Text variant="captionMedium" color={light.selectedText}>
+            <PlayIcon size={12} color={colors.selectedText} />
+            <Text variant="captionMedium" color={colors.selectedText}>
               {`${formatClock(item.audioAt)} dan tinglash`}
             </Text>
           </View>
@@ -86,8 +90,8 @@ export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
 
       {item.explanation ? (
         <View style={styles.explanation}>
-          <Sparkles size={15} color={light.data} strokeWidth={1.6} style={styles.sparkles} />
-          <Text variant="calloutRelaxed" color={light.textStrong} style={styles.explanationText}>
+          <Sparkles size={15} color={colors.data} strokeWidth={1.6} style={styles.sparkles} />
+          <Text variant="calloutRelaxed" color={colors.textStrong} style={styles.explanationText}>
             {item.explanation}
           </Text>
         </View>
@@ -98,7 +102,7 @@ export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
 
 AnswerDetail.displayName = 'AnswerDetail';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     padding: space[4],
     gap: space[3.5],
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     gap: space[2.5],
     paddingTop: space[3],
     borderTopWidth: 1,
-    borderTopColor: light.divider,
+    borderTopColor: colors.divider,
   },
   sparkles: {
     marginTop: 2,
@@ -140,4 +144,4 @@ const styles = StyleSheet.create({
   explanationText: {
     flex: 1,
   },
-});
+}));

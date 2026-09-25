@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
@@ -8,7 +8,7 @@ import { sectionTitles, useTest } from '@/entities/test';
 import type { ListeningPart } from '@/entities/test';
 import { AnswerDetail } from '@/features/review/ui/AnswerDetail';
 import { ReviewGrid } from '@/features/review/ui/ReviewGrid';
-import { light, radius, size, space } from '@/shared/theme';
+import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SegmentedControl, SkeletonCard, Text, TopBar } from '@/shared/ui';
 
 type Tab = 'listening' | 'reading' | 'writing' | 'speaking';
@@ -26,6 +26,8 @@ const audioMarks = (parts: ListeningPart[]): Record<number, number> =>
   Object.assign({}, ...parts.map((part) => part.audioAt));
 
 export default function ReviewScreen() {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const result = useResult(id);
@@ -77,13 +79,13 @@ export default function ReviewScreen() {
         centered
         left={
           <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
-            <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+            <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
         center={
           <>
             <Text variant="bodySmMedium">Batafsil tahlil</Text>
-            <Text variant="caption" color={light.textSecondary}>
+            <Text variant="caption" color={colors.textSecondary}>
               {test.data ? `Mock #${test.data.number} · ${sectionTitles[tab]}` : ' '}
             </Text>
           </>
@@ -100,9 +102,9 @@ export default function ReviewScreen() {
         {review && current && question ? (
           <>
             <View style={styles.summary}>
-              <Summary value={review.correct} label="to'g'ri" color={light.success.text} />
-              <Summary value={review.wrong} label="xato" color={light.error.text} />
-              <Summary value={review.empty} label="javobsiz" color={light.text} />
+              <Summary value={review.correct} label="to'g'ri" color={colors.success.text} />
+              <Summary value={review.wrong} label="xato" color={colors.error.text} />
+              <Summary value={review.empty} label="javobsiz" color={colors.text} />
             </View>
             <ReviewGrid items={review.items} selectedId={current.questionId} onSelect={setSelectedId} />
             <AnswerDetail item={current} question={question} />
@@ -123,7 +125,7 @@ export default function ReviewScreen() {
           disabled={position <= 0}
           onPress={() => step(-1)}
         >
-          <ChevronLeft size={18} color={position <= 0 ? light.disabledText : light.textStrong} strokeWidth={1.6} />
+          <ChevronLeft size={18} color={position <= 0 ? colors.disabledText : colors.textStrong} strokeWidth={1.6} />
         </IconButton>
         <Pressable
           accessibilityRole="switch"
@@ -132,17 +134,17 @@ export default function ReviewScreen() {
           onPress={() => setOnlyWrong((value) => !value)}
           style={styles.mode}
         >
-          <Text variant="bodySm" color={light.textStrong}>
+          <Text variant="bodySm" color={colors.textStrong}>
             {`${modeLabel} · `}
           </Text>
-          <Text variant="mono" color={light.textStrong}>
+          <Text variant="mono" color={colors.textStrong}>
             {counter}
           </Text>
         </Pressable>
         <Button
           accessibilityLabel="Keyingi"
           size="M"
-          icon={<ChevronRight size={18} color={light.onAction} strokeWidth={1.75} />}
+          icon={<ChevronRight size={18} color={colors.onAction} strokeWidth={1.75} />}
           disabled={position >= navigable.length - 1}
           onPress={() => step(1)}
         />
@@ -151,16 +153,20 @@ export default function ReviewScreen() {
   );
 }
 
-const Summary = ({ value, label, color }: { value: number; label: string; color: string }) => (
-  <Text variant="callout" color={light.textSecondary}>
-    <Text variant="monoCalloutMedium" color={color}>
-      {value}
-    </Text>
-    {` ${label}`}
-  </Text>
-);
+const Summary = ({ value, label, color }: { value: number; label: string; color: string }) => {
+  const { colors } = useTheme();
 
-const styles = StyleSheet.create({
+  return (
+    <Text variant="callout" color={colors.textSecondary}>
+      <Text variant="monoCalloutMedium" color={color}>
+        {value}
+      </Text>
+      {` ${label}`}
+    </Text>
+  );
+};
+
+const useStyles = makeStyles(({ colors }) => ({
   content: {
     paddingTop: space[3.5],
     gap: space[3.5],
@@ -181,11 +187,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: size.buttonM,
     borderRadius: radius.button,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));

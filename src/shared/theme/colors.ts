@@ -1,4 +1,9 @@
+import { Platform } from 'react-native';
 import { palette } from './palette';
+
+type Widen<T> = T extends string ? string : { [K in keyof T]: Widen<T[K]> };
+
+const byPlatform = (ios: string, android: string) => Platform.select({ ios, default: android });
 
 export const light = {
   bg: palette.neutral[25],
@@ -17,6 +22,9 @@ export const light = {
   divider: palette.neutral[50],
   hairline: 'rgba(20,22,30,0.06)',
   hairlineSoft: 'rgba(20,22,30,0.05)',
+  glass: byPlatform(palette.white.a82, palette.white.a92),
+  glassDense: byPlatform(palette.white.a86, palette.white.a92),
+  popover: palette.white.a92,
   action: palette.primary[700],
   actionPressed: palette.primary[800],
   onAction: palette.neutral.white,
@@ -45,22 +53,56 @@ export const light = {
   overlay: palette.overlay,
   onHero: palette.neutral.white,
   onHeroMuted: palette.white.a72,
-} as const;
+};
 
-export const dark = {
-  ...light,
-  bg: '#101113',
-  surface: '#1B1C20',
-  surfaceMuted: '#23242A',
-  surfaceSubtle: '#2A2B31',
-  text: '#ECECEF',
-  textReading: '#ECECEF',
-  textStrong: '#ECECEF',
-  textSecondary: '#9FA1A9',
-  textTertiary: '#7C7E86',
-  border: '#2A2B31',
-  divider: '#24252B',
-  data: '#87ADE4',
-} as const;
+export type Colors = Widen<typeof light>;
 
-export type Colors = typeof light;
+export const dark: Colors = {
+  bg: '#0E1621',
+  bgClear: 'rgba(14,22,33,0)',
+  surface: '#17212B',
+  surfaceMuted: '#1E2C3A',
+  surfaceSubtle: '#242F3D',
+  skeleton: '#2A3746',
+  text: '#F5F5F5',
+  textReading: '#E9EDF1',
+  textStrong: '#DCE3EA',
+  textSecondary: '#93A3B4',
+  textTertiary: '#708499',
+  border: '#2B3A4A',
+  borderStrong: '#3A4B5D',
+  divider: '#1F2B38',
+  hairline: 'rgba(255,255,255,0.06)',
+  hairlineSoft: 'rgba(255,255,255,0.05)',
+  glass: byPlatform('rgba(23,33,43,0.82)', 'rgba(23,33,43,0.94)'),
+  glassDense: byPlatform('rgba(23,33,43,0.86)', 'rgba(23,33,43,0.94)'),
+  popover: 'rgba(36,47,61,0.96)',
+  action: palette.primary[700],
+  actionPressed: palette.primary[800],
+  onAction: palette.neutral.white,
+  actionHighlight: palette.white.a14,
+  actionGradient: [palette.primary.gradTop, palette.primary.gradBottom],
+  focusRing: 'rgba(148,213,60,0.22)',
+  selectedBg: '#1D2F20',
+  selectedBorder: '#6DB323',
+  selectedText: '#A5DC6C',
+  chipActiveBg: '#233A24',
+  link: '#A5DC6C',
+  data: '#6AB3F3',
+  dataSoft: '#5288C1',
+  dataMuted: '#2B5278',
+  dataTrack: '#242F3D',
+  hero: ['#35699E', '#22466F'],
+  avatar: ['#233A24', '#2D4A28'],
+  aiTile: ['#233A24', '#2B5278'],
+  success: { 500: '#4FBF8A', bg: '#16302A', text: '#7FD9AB' },
+  warning: { 500: '#E1A447', bg: '#352A15', border: '#5A4520', text: '#F0C36D', ring: 'rgba(225,164,71,0.3)' },
+  error: { 500: '#E5645A', bg: '#3A1F22', border: '#5E2D30', text: '#FF9189', ring: 'rgba(229,100,90,0.25)' },
+  highlight: '#5C4E1B',
+  streak: palette.streak,
+  disabledBg: '#242F3D',
+  disabledText: '#5B6B7B',
+  overlay: 'rgba(0,0,0,0.5)',
+  onHero: palette.neutral.white,
+  onHeroMuted: palette.white.a72,
+};

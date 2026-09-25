@@ -1,12 +1,6 @@
 import { fetchTest } from '@/entities/test';
 import type { Question } from '@/entities/test';
-import type {
-  ProgressData,
-  ProgressPeriod,
-  SpeakingReview,
-  TestResult,
-  WritingReview,
-} from '../model/types';
+import type { ProgressData, ProgressPeriod, SpeakingReview, TestResult, WritingReview } from '../model/types';
 
 const wrongValue = (q: Question, override?: string) => {
   if (override) return override;
@@ -18,11 +12,7 @@ const wrongValue = (q: Question, override?: string) => {
   return 'unknown';
 };
 
-const simulateAnswers = async (
-  wrong: Record<number, string | undefined>,
-  empty: number[],
-  prefix: 'l' | 'r',
-) => {
+const simulateAnswers = async (wrong: Record<number, string | undefined>, empty: number[], prefix: 'l' | 'r') => {
   const detail = await fetchTest('t11');
   const parts = prefix === 'l' ? detail.listening : detail.reading;
   const answers: Record<string, string> = {};
@@ -38,12 +28,34 @@ const simulateAnswers = async (
 export const buildMockResults = async (): Promise<TestResult[]> => {
   const [listening11, reading11] = await Promise.all([
     simulateAnswers({ 3: undefined, 10: '45', 13: '15', 21: undefined, 30: 'garden' }, [6], 'l'),
-    simulateAnswers({ 4: 'money', 9: undefined, 16: undefined, 23: 'True', 25: 'False', 29: undefined, 31: undefined }, [34], 'r'),
+    simulateAnswers(
+      { 4: 'money', 9: undefined, 16: undefined, 23: 'True', 25: 'False', 29: undefined, 31: undefined },
+      [34],
+      'r',
+    ),
   ]);
 
   const [listening10, reading10] = await Promise.all([
-    simulateAnswers({ 2: undefined, 3: undefined, 10: '45', 13: '15', 17: undefined, 21: undefined, 30: 'garden' }, [6, 35], 'l'),
-    simulateAnswers({ 4: 'money', 9: undefined, 12: undefined, 16: undefined, 23: 'True', 25: 'False', 29: undefined, 31: undefined, 33: undefined }, [34, 35], 'r'),
+    simulateAnswers(
+      { 2: undefined, 3: undefined, 10: '45', 13: '15', 17: undefined, 21: undefined, 30: 'garden' },
+      [6, 35],
+      'l',
+    ),
+    simulateAnswers(
+      {
+        4: 'money',
+        9: undefined,
+        12: undefined,
+        16: undefined,
+        23: 'True',
+        25: 'False',
+        29: undefined,
+        31: undefined,
+        33: undefined,
+      },
+      [34, 35],
+      'r',
+    ),
   ]);
 
   return [
@@ -129,7 +141,7 @@ export const speakingReview: SpeakingReview = {
     { text: 'Um…', mark: 'filler' },
     { text: ' People ' },
     { text: 'is buying', mark: 'grammar' },
-    { text: ' fresh vegetables and they look quite happy. I think people go to places like this because it\'s ' },
+    { text: " fresh vegetables and they look quite happy. I think people go to places like this because it's " },
     { text: 'more affordable', mark: 'good' },
     { text: ' than supermarkets…' },
   ],
@@ -139,7 +151,10 @@ export const speakingReview: SpeakingReview = {
     { tone: 'good', text: 'Fikr aniq, misollar mavzuga mos.' },
     { tone: 'warn', text: '"Um" pauzalarni kamaytiring — "Well, …" bilan boshlang.' },
   ],
-  waveform: [0.4, 0.65, 0.5, 0.8, 0.35, 0.7, 0.9, 0.55, 0.45, 0.75, 0.6, 0.3, 0.85, 0.5, 0.65, 0.4, 0.7, 0.55, 0.35, 0.6, 0.45, 0.8, 0.5, 0.4, 0.65, 0.3],
+  waveform: [
+    0.4, 0.65, 0.5, 0.8, 0.35, 0.7, 0.9, 0.55, 0.45, 0.75, 0.6, 0.3, 0.85, 0.5, 0.65, 0.4, 0.7, 0.55, 0.35, 0.6, 0.45,
+    0.8, 0.5, 0.4, 0.65, 0.3,
+  ],
 };
 
 const history = [

@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { sectionIcons } from '@/entities/test';
 import type { SectionScore } from '@/entities/result';
 import { MAX_SCORE, levelThresholds } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Delta, IconTile, ProgressBar, Text } from '@/shared/ui';
 
 const B2 = levelThresholds[1].min;
@@ -13,52 +13,60 @@ export type SectionsOverviewProps = {
   onPress: () => void;
 };
 
-export const SectionsOverview = memo<SectionsOverviewProps>(({ sections, onPress }) => (
-  <Card radius={radius.cardLg}>
-    <View style={styles.header}>
-      <Text variant="labelMedium">Bo'limlar</Text>
-      <View style={styles.legend}>
-        <View style={styles.legendLine} />
-        <Text variant="caption" color={light.textSecondary}>
-          {`B2 chegarasi · ${B2}`}
-        </Text>
-      </View>
-    </View>
+export const SectionsOverview = memo<SectionsOverviewProps>(({ sections, onPress }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
 
-    <Pressable accessibilityRole="button" onPress={onPress} style={styles.grid}>
-      {sections.map((section, index) => {
-        const Icon = sectionIcons[section.kind];
-        const weak = Boolean(section.focus);
-        return (
-          <View key={section.kind} style={[styles.column, index === 0 ? styles.first : styles.rest]}>
-            <IconTile background={weak ? light.warning.bg : light.bg}>
-              <Icon size={16} color={weak ? light.warning.text : light.textStrong} strokeWidth={1.6} />
-            </IconTile>
-            <View style={styles.stat}>
-              <View style={styles.valueRow}>
-                <Text variant="statMd">{section.score}</Text>
-                <Delta value={section.delta} />
+  return (
+    <Card radius={radius.cardLg}>
+      <View style={styles.header}>
+        <Text variant="labelMedium">Bo'limlar</Text>
+        <View style={styles.legend}>
+          <View style={styles.legendLine} />
+          <Text variant="caption" color={colors.textSecondary}>
+            {`B2 chegarasi · ${B2}`}
+          </Text>
+        </View>
+      </View>
+
+      <Pressable accessibilityRole="button" onPress={onPress} style={styles.grid}>
+        {sections.map((section, index) => {
+          const Icon = sectionIcons[section.kind];
+          const weak = Boolean(section.focus);
+          return (
+            <View key={section.kind} style={[styles.column, index === 0 ? styles.first : styles.rest]}>
+              <IconTile background={weak ? colors.warning.bg : colors.bg}>
+                <Icon size={16} color={weak ? colors.warning.text : colors.textStrong} strokeWidth={1.6} />
+              </IconTile>
+              <View style={styles.stat}>
+                <View style={styles.valueRow}>
+                  <Text variant="statMd">{section.score}</Text>
+                  <Delta value={section.delta} />
+                </View>
+                <Text
+                  variant={weak ? 'microMedium' : 'micro'}
+                  color={weak ? colors.warning.text : colors.textSecondary}
+                >
+                  {section.title}
+                </Text>
               </View>
-              <Text variant={weak ? 'microMedium' : 'micro'} color={weak ? light.warning.text : light.textSecondary}>
-                {section.title}
-              </Text>
+              <ProgressBar
+                value={section.score / MAX_SCORE}
+                height={3}
+                color={weak ? colors.warning[500] : colors.data}
+                marker={B2 / MAX_SCORE}
+              />
             </View>
-            <ProgressBar
-              value={section.score / MAX_SCORE}
-              height={3}
-              color={weak ? light.warning[500] : light.data}
-              marker={B2 / MAX_SCORE}
-            />
-          </View>
-        );
-      })}
-    </Pressable>
-  </Card>
-));
+          );
+        })}
+      </Pressable>
+    </Card>
+  );
+});
 
 SectionsOverview.displayName = 'SectionsOverview';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -75,7 +83,7 @@ const styles = StyleSheet.create({
   legendLine: {
     width: 10,
     height: 1.5,
-    backgroundColor: light.borderStrong,
+    backgroundColor: colors.borderStrong,
   },
   grid: {
     flexDirection: 'row',
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
   rest: {
     paddingLeft: space[3],
     borderLeftWidth: 1,
-    borderLeftColor: light.divider,
+    borderLeftColor: colors.divider,
   },
   stat: {
     gap: 3,
@@ -103,4 +111,4 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     gap: 5,
   },
-});
+}));

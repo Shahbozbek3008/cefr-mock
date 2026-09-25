@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { light, radius, space } from '../theme';
+import { View } from 'react-native';
+import { makeStyles, radius, space, useTheme } from '../theme';
 import { formatClock, useSecondsLeft } from '../lib';
 import { Dot } from './Dot';
 import { Text } from './Text';
@@ -19,25 +19,27 @@ const toneFor = (seconds: number, warnAt: number): TimerTone => {
   return 'normal';
 };
 
-const textColor: Record<TimerTone, string> = {
-  normal: light.text,
-  warning: light.warning.text,
-  danger: light.error.text,
-};
+export const StaticTimerPill = memo<{ seconds: number; tone: TimerTone }>(({ seconds, tone }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
 
-export const StaticTimerPill = memo<{ seconds: number; tone: TimerTone }>(({ seconds, tone }) => (
-  <View
-    accessibilityRole="timer"
-    accessibilityLabel={`Qolgan vaqt ${formatClock(seconds)}`}
-    style={[styles.pill, styles[tone]]}
-  >
-    {tone === 'normal' ? <Dot color={light.data} /> : null}
-    {tone === 'warning' ? <Dot color={light.warning[500]} ring={light.warning.ring} /> : null}
-    <Text variant="monoMedium" color={textColor[tone]}>
-      {formatClock(seconds)}
-    </Text>
-  </View>
-));
+  return (
+    <View
+      accessibilityRole="timer"
+      accessibilityLabel={`Qolgan vaqt ${formatClock(seconds)}`}
+      style={[styles.pill, styles[tone]]}
+    >
+      {tone === 'normal' ? <Dot color={colors.data} /> : null}
+      {tone === 'warning' ? <Dot color={colors.warning[500]} ring={colors.warning.ring} /> : null}
+      <Text
+        variant="monoMedium"
+        color={{ normal: colors.text, warning: colors.warning.text, danger: colors.error.text }[tone]}
+      >
+        {formatClock(seconds)}
+      </Text>
+    </View>
+  );
+});
 
 StaticTimerPill.displayName = 'StaticTimerPill';
 
@@ -48,7 +50,7 @@ export const TimerPill = memo<TimerPillProps>(({ endsAt, warnAt = 300, onExpire 
 
 TimerPill.displayName = 'TimerPill';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   pill: {
     height: 34,
     paddingHorizontal: space[3],
@@ -58,16 +60,16 @@ const styles = StyleSheet.create({
     gap: 7,
   },
   normal: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.hairline,
+    borderColor: colors.hairline,
   },
   warning: {
-    backgroundColor: light.warning.bg,
+    backgroundColor: colors.warning.bg,
     borderWidth: 1,
-    borderColor: light.warning.border,
+    borderColor: colors.warning.border,
   },
   danger: {
-    backgroundColor: light.error.bg,
+    backgroundColor: colors.error.bg,
   },
-});
+}));

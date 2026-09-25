@@ -8,19 +8,17 @@ import type { TargetLevel } from '@/entities/user/model';
 import { levelOptions } from '@/features/onboarding/model';
 import { LevelCard } from '@/features/onboarding/ui/LevelCard';
 import { StepHeader } from '@/features/onboarding/ui/StepHeader';
-import { light } from '@/shared/theme';
+import { useTheme } from '@/shared/theme';
 import { Button, ProgressSteps, Screen, Text } from '@/shared/ui';
 
 export default function LevelScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { edit } = useLocalSearchParams<{ edit?: string }>();
   const targetLevel = useUserStore((state) => state.targetLevel);
   const setTargetLevel = useUserStore((state) => state.setTargetLevel);
 
-  const onSelect = useCallback(
-    (level: TargetLevel) => setTargetLevel(level),
-    [setTargetLevel],
-  );
+  const onSelect = useCallback((level: TargetLevel) => setTargetLevel(level), [setTargetLevel]);
 
   const onContinue = useCallback(() => {
     if (edit) {
@@ -34,7 +32,7 @@ export default function LevelScreen() {
     <Screen paddingHorizontal={24}>
       <View style={styles.topBar}>
         <ProgressSteps total={3} current={1} />
-        <Text variant="bodySm" color={light.textSecondary}>
+        <Text variant="bodySm" color={colors.textSecondary}>
           O'tkazish
         </Text>
       </View>
@@ -49,18 +47,13 @@ export default function LevelScreen() {
 
         <View style={styles.options}>
           {levelOptions.map((option) => (
-            <LevelCard
-              key={option.level}
-              option={option}
-              selected={targetLevel === option.level}
-              onSelect={onSelect}
-            />
+            <LevelCard key={option.level} option={option} selected={targetLevel === option.level} onSelect={onSelect} />
           ))}
         </View>
 
         <View style={styles.hint}>
-          <Info size={16} color={light.textSecondary} strokeWidth={1.6} />
-          <Text variant="calloutRelaxed" color={light.textSecondary} style={styles.hintText}>
+          <Info size={16} color={colors.textSecondary} strokeWidth={1.6} />
+          <Text variant="calloutRelaxed" color={colors.textSecondary} style={styles.hintText}>
             Ko'pchilik universitetlar B2 (51+) talab qiladi.
           </Text>
         </View>
@@ -74,7 +67,7 @@ export default function LevelScreen() {
           trailingIcon={
             <ArrowRight
               size={18}
-              color={targetLevel === null ? light.disabledText : light.onAction}
+              color={targetLevel === null ? colors.disabledText : colors.onAction}
               strokeWidth={1.75}
             />
           }

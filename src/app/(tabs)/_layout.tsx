@@ -1,12 +1,14 @@
 import { Tabs } from 'expo-router';
-import { light } from '@/shared/theme';
+import { useTheme } from '@/shared/theme';
 import { TabBar } from '@/widgets/tab-bar';
 
 export default function TabsLayout() {
+  const { colors } = useTheme();
+
   return (
     <Tabs
       tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: light.bg } }}
+      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.bg } }}
     >
       <Tabs.Screen name="home" />
       <Tabs.Screen name="tests" />

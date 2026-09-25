@@ -1,57 +1,54 @@
 import { memo } from 'react';
 import { TextStyle } from 'react-native';
 import type { TextSegment } from '@/entities/result';
-import { light } from '@/shared/theme';
+import { Colors, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 type Mark = NonNullable<TextSegment['mark']>;
 
-const markStyles: Record<Mark, TextStyle> = {
-  grammar: {
-    backgroundColor: light.error.bg,
-    textDecorationLine: 'underline',
-    textDecorationColor: light.error[500],
-  },
-  lexis: {
-    backgroundColor: light.warning.bg,
-    textDecorationLine: 'underline',
-    textDecorationColor: light.warning[500],
-  },
-  filler: {
-    color: light.textTertiary,
-  },
-  good: {
-    backgroundColor: light.chipActiveBg,
-    textDecorationLine: 'underline',
-    textDecorationColor: light.data,
-  },
-};
+const underline = (background: string, line: string): TextStyle => ({
+  backgroundColor: background,
+  textDecorationLine: 'underline',
+  textDecorationColor: line,
+});
+
+const markStyle = (colors: Colors, mark: Mark, grammarTone: 'error' | 'warning'): TextStyle =>
+  ({
+    grammar: underline(colors[grammarTone].bg, colors[grammarTone][500]),
+    lexis: underline(colors.warning.bg, colors.warning[500]),
+    filler: { color: colors.textTertiary },
+    good: underline(colors.chipActiveBg, colors.data),
+  })[mark];
 
 export type MarkedTextProps = {
   segments: TextSegment[];
-  overrides?: Partial<Record<Mark, TextStyle>>;
+  grammarTone?: 'error' | 'warning';
   onMarkPress?: (text: string) => void;
 };
 
-export const MarkedText = memo<MarkedTextProps>(({ segments, overrides, onMarkPress }) => (
-  <Text variant="readingSm" color={light.textReading}>
-    {segments.map((segment, index) =>
-      segment.mark ? (
-        <Text
-          key={index}
-          variant="readingSm"
-          color={light.textReading}
-          suppressHighlighting
-          onPress={onMarkPress ? () => onMarkPress(segment.text) : undefined}
-          style={[markStyles[segment.mark], overrides?.[segment.mark]]}
-        >
-          {segment.text}
-        </Text>
-      ) : (
-        segment.text
-      ),
-    )}
-  </Text>
-));
+export const MarkedText = memo<MarkedTextProps>(({ segments, grammarTone = 'error', onMarkPress }) => {
+  const { colors } = useTheme();
+
+  return (
+    <Text variant="readingSm" color={colors.textReading}>
+      {segments.map((segment, index) =>
+        segment.mark ? (
+          <Text
+            key={index}
+            variant="readingSm"
+            color={colors.textReading}
+            suppressHighlighting
+            onPress={onMarkPress ? () => onMarkPress(segment.text) : undefined}
+            style={markStyle(colors, segment.mark, grammarTone)}
+          >
+            {segment.text}
+          </Text>
+        ) : (
+          segment.text
+        ),
+      )}
+    </Text>
+  );
+});
 
 MarkedText.displayName = 'MarkedText';

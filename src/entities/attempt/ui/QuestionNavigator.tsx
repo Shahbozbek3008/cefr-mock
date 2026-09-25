@@ -12,16 +12,18 @@ export type QuestionNavigatorProps = {
   onSelect: (id: string) => void;
 };
 
-export const QuestionNavigator = memo<QuestionNavigatorProps>(({ questions, currentId, onSelect }) => (
-  <View style={styles.row}>
-    {questions.map((q) => (
-      <QuestionCell key={q.id} id={q.id} number={q.number} current={q.id === currentId} onPress={onSelect} />
-    ))}
-    {Array.from({ length: Math.max(0, SLOTS - questions.length) }, (_, index) => (
-      <View key={index} style={styles.spacer} />
-    ))}
-  </View>
-));
+export const QuestionNavigator = memo<QuestionNavigatorProps>(({ questions, currentId, onSelect }) => {
+  return (
+    <View style={styles.row}>
+      {questions.map((q) => (
+        <QuestionCell key={q.id} id={q.id} number={q.number} current={q.id === currentId} onPress={onSelect} />
+      ))}
+      {Array.from({ length: Math.max(0, SLOTS - questions.length) }, (_, index) => (
+        <View key={index} style={styles.spacer} />
+      ))}
+    </View>
+  );
+});
 
 QuestionNavigator.displayName = 'QuestionNavigator';
 

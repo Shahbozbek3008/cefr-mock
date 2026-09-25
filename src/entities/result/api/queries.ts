@@ -36,8 +36,7 @@ export const fetchSpeakingReview = () => delay(speakingReview, 500);
 
 export const useResults = () => useQuery({ queryKey: resultKeys.all, queryFn: fetchResults });
 
-export const useResult = (id: string) =>
-  useQuery({ queryKey: resultKeys.detail(id), queryFn: () => fetchResult(id) });
+export const useResult = (id: string) => useQuery({ queryKey: resultKeys.detail(id), queryFn: () => fetchResult(id) });
 
 export const useLatestResult = () => {
   const query = useResults();
@@ -51,4 +50,8 @@ export const useSpeakingReview = (id: string) =>
   useQuery({ queryKey: resultKeys.speaking(id), queryFn: fetchSpeakingReview });
 
 export const useProgress = (period: ProgressPeriod) =>
-  useQuery({ queryKey: resultKeys.progress(period), queryFn: () => delay(progressByPeriod[period], 250), placeholderData: (prev) => prev });
+  useQuery({
+    queryKey: resultKeys.progress(period),
+    queryFn: () => delay(progressByPeriod[period], 250),
+    placeholderData: (prev) => prev,
+  });

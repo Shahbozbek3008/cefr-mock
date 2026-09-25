@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAttemptStore } from '@/entities/attempt';
 import type { Highlight } from '@/entities/attempt';
 import type { PassageParagraph, ReadingPart } from '@/entities/test';
-import { font, gradientDirection, light, space } from '@/shared/theme';
+import { font, gradientDirection, space, useTheme } from '@/shared/theme';
 import { Text, useToast } from '@/shared/ui';
-import { HighlightToolbar, highlightColors } from './HighlightToolbar';
+import { HighlightToolbar, highlightTone } from './HighlightToolbar';
 
 const TOOLBAR_TOP = 56;
 const TOOLBAR_LEFT = 72;
@@ -25,26 +25,27 @@ const Paragraph = memo<{
   serif: boolean;
   onLongPress: (label: string) => void;
 }>(({ paragraph, highlight, serif, onLongPress }) => {
-  const fill = highlight ? { backgroundColor: highlightColors[highlight.color].fill } : undefined;
+  const { colors } = useTheme();
+  const fill = highlight ? { backgroundColor: highlightTone(colors, highlight.color).fill } : undefined;
   const phrase = paragraph.highlight;
   const [before, after] = phrase ? paragraph.text.split(phrase) : [paragraph.text, ''];
 
   return (
     <Pressable onLongPress={() => onLongPress(paragraph.label)} delayLongPress={300} style={styles.paragraph}>
-      <Text variant="monoXs" color={light.textTertiary} style={styles.label}>
+      <Text variant="monoXs" color={colors.textTertiary} style={styles.label}>
         {paragraph.label}
       </Text>
-      <Text variant="reading" color={light.textReading} style={[styles.text, serif && styles.serif]}>
+      <Text variant="reading" color={colors.textReading} style={[styles.text, serif && styles.serif]}>
         {phrase && fill ? (
           <>
             {before}
-            <Text variant="reading" color={light.textReading} style={[fill, serif && styles.serif]}>
+            <Text variant="reading" color={colors.textReading} style={[fill, serif && styles.serif]}>
               {phrase}
             </Text>
             {after}
           </>
         ) : (
-          <Text variant="reading" color={light.textReading} style={[fill, serif && styles.serif]}>
+          <Text variant="reading" color={colors.textReading} style={[fill, serif && styles.serif]}>
             {paragraph.text}
           </Text>
         )}
@@ -56,6 +57,7 @@ const Paragraph = memo<{
 Paragraph.displayName = 'Paragraph';
 
 export const Passage = memo<PassageProps>(({ part, serif, bottomInset }) => {
+  const { colors } = useTheme();
   const highlights = useAttemptStore((s) => s.highlights[part.id] ?? EMPTY);
   const toggleHighlight = useAttemptStore((s) => s.toggleHighlight);
   const showToast = useToast((s) => s.show);
@@ -110,7 +112,7 @@ export const Passage = memo<PassageProps>(({ part, serif, bottomInset }) => {
       </ScrollView>
       <LinearGradient
         pointerEvents="none"
-        colors={[light.bgClear, light.bg]}
+        colors={[colors.bgClear, colors.bg]}
         start={gradientDirection.vertical.start}
         end={gradientDirection.vertical.end}
         style={[styles.fade, { bottom: bottomInset }]}

@@ -12,17 +12,19 @@ export type McqCardProps = {
   onLayout: (id: string, y: number) => void;
 };
 
-export const McqCard = memo<McqCardProps>(({ question, current, onAnswer, onLayout }) => (
-  <Card
-    radius={radius.cardLg}
-    style={styles.card}
-    onLayout={(event) => onLayout(question.id, event.nativeEvent.layout.y)}
-  >
-    <Tag label={`Q${question.number}`} tone={current ? 'lime' : 'neutral'} size="md" mono />
-    <Text variant="labelMedium">{question.prompt}</Text>
-    <McqOptions question={question} onAnswer={onAnswer} />
-  </Card>
-));
+export const McqCard = memo<McqCardProps>(({ question, current, onAnswer, onLayout }) => {
+  return (
+    <Card
+      radius={radius.cardLg}
+      style={styles.card}
+      onLayout={(event) => onLayout(question.id, event.nativeEvent.layout.y)}
+    >
+      <Tag label={`Q${question.number}`} tone={current ? 'lime' : 'neutral'} size="md" mono />
+      <Text variant="labelMedium">{question.prompt}</Text>
+      <McqOptions question={question} onAnswer={onAnswer} />
+    </Card>
+  );
+});
 
 McqCard.displayName = 'McqCard';
 

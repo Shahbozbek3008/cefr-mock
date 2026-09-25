@@ -104,5 +104,4 @@ export const buildTestDetail = (summary: TestSummary): TestDetail => ({
   speaking: speakingQuestions,
 });
 
-export const delay = <T,>(value: T, ms = 400) =>
-  new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
+export const delay = <T>(value: T, ms = 400) => new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));

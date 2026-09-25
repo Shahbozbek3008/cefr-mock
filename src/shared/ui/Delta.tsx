@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { light, TypeToken } from '../theme';
+import { TypeToken, useTheme } from '../theme';
 import { Text } from './Text';
 
 export type DeltaProps = {
@@ -8,7 +8,8 @@ export type DeltaProps = {
 };
 
 export const Delta = memo<DeltaProps>(({ value, variant = 'monoNano' }) => {
-  const color = value > 0 ? light.success.text : value < 0 ? light.error.text : light.textTertiary;
+  const { colors } = useTheme();
+  const color = value > 0 ? colors.success.text : value < 0 ? colors.error.text : colors.textTertiary;
   const label = value > 0 ? `+${value}` : value < 0 ? `−${Math.abs(value)}` : '0';
 
   return (

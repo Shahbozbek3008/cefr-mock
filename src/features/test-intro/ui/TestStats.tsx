@@ -1,28 +1,33 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { light, radius, space } from '@/shared/theme';
+import { View } from 'react-native';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 
 export type TestStatsProps = {
   items: readonly { value: string; label: string }[];
 };
 
-export const TestStats = memo<TestStatsProps>(({ items }) => (
-  <Card radius={radius.xl} style={styles.card}>
-    {items.map((item, index) => (
-      <View key={item.label} style={[styles.cell, index > 0 && styles.divider]}>
-        <Text variant="monoMd">{item.value}</Text>
-        <Text variant="caption" color={light.textSecondary}>
-          {item.label}
-        </Text>
-      </View>
-    ))}
-  </Card>
-));
+export const TestStats = memo<TestStatsProps>(({ items }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
+    <Card radius={radius.xl} style={styles.card}>
+      {items.map((item, index) => (
+        <View key={item.label} style={[styles.cell, index > 0 && styles.divider]}>
+          <Text variant="monoMd">{item.value}</Text>
+          <Text variant="caption" color={colors.textSecondary}>
+            {item.label}
+          </Text>
+        </View>
+      ))}
+    </Card>
+  );
+});
 
 TestStats.displayName = 'TestStats';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     flexDirection: 'row',
   },
@@ -34,6 +39,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderLeftWidth: 1,
-    borderLeftColor: light.divider,
+    borderLeftColor: colors.divider,
   },
-});
+}));

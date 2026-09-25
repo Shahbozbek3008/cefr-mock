@@ -4,7 +4,7 @@ import { Tabs } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChartLine, House, Layers, LucideIcon, UserRound } from 'lucide-react-native';
-import { elevation, light, palette, radius, size, space } from '@/shared/theme';
+import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0];
@@ -19,19 +19,21 @@ const items: Record<string, { label: string; Icon: LucideIcon }> = {
 export const TAB_BAR_SPACE = size.tabBar + size.tabBarGap * 2;
 
 export const TabBar = memo(({ state, navigation }: TabBarProps) => {
+  const styles = useStyles();
+  const { colors, elevation, scheme } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.bar, elevation.tabBar, { bottom: insets.bottom + size.tabBarGap }]}>
       {Platform.OS === 'ios' ? (
-        <BlurView intensity={40} tint="light" style={[StyleSheet.absoluteFill, styles.blur]} />
+        <BlurView intensity={40} tint={scheme} style={[StyleSheet.absoluteFill, styles.blur]} />
       ) : null}
       <View style={[StyleSheet.absoluteFill, styles.fill]} />
       {state.routes.map((route, index) => {
         const item = items[route.name];
         if (!item) return null;
         const focused = state.index === index;
-        const color = focused ? light.selectedText : light.textSecondary;
+        const color = focused ? colors.selectedText : colors.textSecondary;
 
         const onPress = () => {
           const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
@@ -60,7 +62,7 @@ export const TabBar = memo(({ state, navigation }: TabBarProps) => {
 
 TabBar.displayName = 'TabBar';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   bar: {
     position: 'absolute',
     left: space[4],
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: space[1.5],
     borderWidth: 1,
-    borderColor: light.hairline,
+    borderColor: colors.hairline,
   },
   blur: {
     borderRadius: radius.cardLg,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   },
   fill: {
     borderRadius: radius.cardLg,
-    backgroundColor: Platform.OS === 'ios' ? palette.white.a82 : palette.white.a92,
+    backgroundColor: colors.glass,
   },
   item: {
     flex: 1,
@@ -88,6 +90,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
   },
   itemActive: {
-    backgroundColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
   },
-});
+}));

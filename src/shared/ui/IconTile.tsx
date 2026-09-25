@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { light, radius } from '../theme';
+import { radius, useTheme } from '../theme';
 
 export type IconTileProps = {
   children: ReactNode;
@@ -11,11 +11,21 @@ export type IconTileProps = {
 
 const radii = { 32: radius.sm, 36: radius.tile, 44: radius.md } as const;
 
-export const IconTile = memo<IconTileProps>(({ children, size = 32, background = light.bg, style }) => (
-  <View style={[styles.tile, { width: size, height: size, borderRadius: radii[size], backgroundColor: background }, style]}>
-    {children}
-  </View>
-));
+export const IconTile = memo<IconTileProps>(({ children, size = 32, background, style }) => {
+  const { colors } = useTheme();
+
+  return (
+    <View
+      style={[
+        styles.tile,
+        { width: size, height: size, borderRadius: radii[size], backgroundColor: background ?? colors.bg },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
+});
 
 IconTile.displayName = 'IconTile';
 

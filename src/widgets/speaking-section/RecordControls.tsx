@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { ArrowRight, Check, Mic, RotateCcw } from 'lucide-react-native';
-import { elevation, hitSlop, light, radius, space } from '@/shared/theme';
+import { hitSlop, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import type { RecorderPhase } from './useAnswerRecorder';
 
 const SIDE = 52;
@@ -16,6 +16,8 @@ export type RecordControlsProps = {
 };
 
 export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onRecord, onStop, onNext }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const canRestart = phase === 'recording' || phase === 'done';
   const mainDisabled = phase === 'pending' || phase === 'done' || phase === 'denied';
 
@@ -29,7 +31,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
         onPress={onRestart}
         style={[styles.side, elevation.hairline]}
       >
-        <RotateCcw size={19} color={canRestart ? light.textStrong : light.textTertiary} strokeWidth={1.6} />
+        <RotateCcw size={19} color={canRestart ? colors.textStrong : colors.textTertiary} strokeWidth={1.6} />
       </Pressable>
 
       <Pressable
@@ -40,9 +42,9 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
         style={[styles.main, elevation.record]}
       >
         {phase === 'recording' ? <View style={styles.stop} /> : null}
-        {phase === 'done' ? <Check size={28} color={light.success[500]} strokeWidth={2} /> : null}
+        {phase === 'done' ? <Check size={28} color={colors.success[500]} strokeWidth={2} /> : null}
         {phase === 'prep' || phase === 'pending' || phase === 'denied' ? (
-          <Mic size={28} color={phase === 'prep' ? light.error[500] : light.textTertiary} strokeWidth={1.6} />
+          <Mic size={28} color={phase === 'prep' ? colors.error[500] : colors.textTertiary} strokeWidth={1.6} />
         ) : null}
       </Pressable>
 
@@ -53,7 +55,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
         onPress={onNext}
         style={[styles.side, elevation.hairline]}
       >
-        <ArrowRight size={19} color={light.textStrong} strokeWidth={1.6} />
+        <ArrowRight size={19} color={colors.textStrong} strokeWidth={1.6} />
       </Pressable>
     </View>
   );
@@ -61,7 +63,7 @@ export const RecordControls = memo<RecordControlsProps>(({ phase, onRestart, onR
 
 RecordControls.displayName = 'RecordControls';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     width: SIDE,
     height: SIDE,
     borderRadius: SIDE / 2,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     width: MAIN,
     height: MAIN,
     borderRadius: MAIN / 2,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -88,6 +90,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: radius.segment,
-    backgroundColor: light.error[500],
+    backgroundColor: colors.error[500],
   },
-});
+}));

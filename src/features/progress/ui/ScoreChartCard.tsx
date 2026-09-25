@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ProgressData } from '@/entities/result';
 import { levelThresholds } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { radius, space, useTheme } from '@/shared/theme';
 import { Card, Tag, Text } from '@/shared/ui';
 import { LineChart } from '@/shared/ui/charts';
 
@@ -13,34 +13,38 @@ const guides = [
 
 const DOMAIN = [33.84, 69.15] as const;
 
-export const ScoreChartCard = memo<{ data: ProgressData }>(({ data }) => (
-  <Card level="strong" radius={radius.cardLg} style={styles.card}>
-    <View style={styles.top}>
-      <View style={styles.summary}>
-        <Text variant="caption" color={light.textSecondary}>
-          Umumiy ball
-        </Text>
-        <View style={styles.valueRow}>
-          <Text variant="displaySm">{data.total}</Text>
-          <Tag label={`${data.delta >= 0 ? '+' : '−'}${Math.abs(data.delta)}`} tone="success" mono />
+export const ScoreChartCard = memo<{ data: ProgressData }>(({ data }) => {
+  const { colors } = useTheme();
+
+  return (
+    <Card level="strong" radius={radius.cardLg} style={styles.card}>
+      <View style={styles.top}>
+        <View style={styles.summary}>
+          <Text variant="caption" color={colors.textSecondary}>
+            Umumiy ball
+          </Text>
+          <View style={styles.valueRow}>
+            <Text variant="displaySm">{data.total}</Text>
+            <Tag label={`${data.delta >= 0 ? '+' : '−'}${Math.abs(data.delta)}`} tone="success" mono />
+          </View>
         </View>
-      </View>
-      <Text variant="monoXs" color={light.textTertiary}>
-        {`${data.testsCount} test`}
-      </Text>
-    </View>
-
-    <LineChart values={data.values} guides={guides} domain={DOMAIN} />
-
-    <View style={styles.axis}>
-      {data.axis.map((label) => (
-        <Text key={label} variant="monoNano" color={light.textTertiary}>
-          {label}
+        <Text variant="monoXs" color={colors.textTertiary}>
+          {`${data.testsCount} test`}
         </Text>
-      ))}
-    </View>
-  </Card>
-));
+      </View>
+
+      <LineChart values={data.values} guides={guides} domain={DOMAIN} />
+
+      <View style={styles.axis}>
+        {data.axis.map((label) => (
+          <Text key={label} variant="monoNano" color={colors.textTertiary}>
+            {label}
+          </Text>
+        ))}
+      </View>
+    </Card>
+  );
+});
 
 ScoreChartCard.displayName = 'ScoreChartCard';
 

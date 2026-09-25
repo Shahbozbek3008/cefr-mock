@@ -1,15 +1,10 @@
 import { memo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
 import type { Correction, TextSegment } from '@/entities/result';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
 import { MarkedText } from './MarkedText';
-
-const legend = [
-  { label: 'Grammar', color: light.error[500] },
-  { label: "Lug'at", color: light.warning[500] },
-];
 
 export type ErrorsCardProps = {
   segments: TextSegment[];
@@ -17,6 +12,12 @@ export type ErrorsCardProps = {
 };
 
 export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+  const legend = [
+    { label: 'Grammar', color: colors.error[500] },
+    { label: "Lug'at", color: colors.warning[500] },
+  ];
   const [active, setActive] = useState(corrections[0]?.from);
   const correction = corrections.find((c) => c.from === active);
 
@@ -28,7 +29,7 @@ export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
           {legend.map((item) => (
             <View key={item.label} style={styles.legendItem}>
               <View style={[styles.swatch, { backgroundColor: item.color }]} />
-              <Text variant="micro" color={light.textSecondary}>
+              <Text variant="micro" color={colors.textSecondary}>
                 {item.label}
               </Text>
             </View>
@@ -41,15 +42,15 @@ export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
       {correction ? (
         <View style={styles.correction}>
           <View style={styles.swap}>
-            <Text variant="monoCallout" color={light.error.text} style={styles.struck}>
+            <Text variant="monoCallout" color={colors.error.text} style={styles.struck}>
               {correction.from}
             </Text>
-            <ArrowRight size={13} color={light.textStrong} strokeWidth={1.6} />
-            <Text variant="monoCalloutMedium" color={light.success.text}>
+            <ArrowRight size={13} color={colors.textStrong} strokeWidth={1.6} />
+            <Text variant="monoCalloutMedium" color={colors.success.text}>
               {correction.to}
             </Text>
           </View>
-          <Text variant="caption" color={light.textSecondary}>
+          <Text variant="caption" color={colors.textSecondary}>
             {correction.note}
           </Text>
         </View>
@@ -60,7 +61,7 @@ export const ErrorsCard = memo<ErrorsCardProps>(({ segments, corrections }) => {
 
 ErrorsCard.displayName = 'ErrorsCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     padding: space[4],
     gap: space[2.5],
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   correction: {
     borderRadius: radius.md,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     paddingVertical: space[2.5],
     paddingHorizontal: space[3],
     gap: space[1],
@@ -99,4 +100,4 @@ const styles = StyleSheet.create({
   struck: {
     textDecorationLine: 'line-through',
   },
-});
+}));

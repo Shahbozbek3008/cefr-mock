@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { ChevronRight, Lock } from 'lucide-react-native';
 import { sectionOrder, sectionTitles } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Button, Card, IconTile, Tag, Text } from '@/shared/ui';
 import { ProgressRing } from '@/shared/ui/charts';
 
@@ -12,38 +12,45 @@ export type TestCardProps = {
   onPress: (test: TestSummary) => void;
 };
 
-const NewCard = ({ test }: { test: TestSummary }) => (
-  <Card level="raised" style={styles.newCard}>
-    <View style={styles.newTop}>
-      <View style={styles.newInfo}>
-        <View style={styles.tags}>
-          {test.isNew ? <Tag label="Yangi" tone="lime" /> : null}
-          {test.isFree ? <Tag label="Bepul" tone="neutral" /> : null}
-        </View>
-        <Text variant="heading" style={styles.newTitle}>
-          {test.title}
-        </Text>
-        <Text variant="callout" color={light.textSecondary}>
-          {test.subtitle}
-        </Text>
-      </View>
-      <Text variant="monoSm" color={light.textTertiary}>
-        {test.durationLabel}
-      </Text>
-    </View>
-    <View style={styles.tags}>
-      {sectionOrder.map((kind) => (
-        <View key={kind} style={styles.sectionTag}>
-          <Text variant="micro" color={light.textSecondary}>
-            {sectionTitles[kind]}
+const NewCard = ({ test }: { test: TestSummary }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
+    <Card level="raised" style={styles.newCard}>
+      <View style={styles.newTop}>
+        <View style={styles.newInfo}>
+          <View style={styles.tags}>
+            {test.isNew ? <Tag label="Yangi" tone="lime" /> : null}
+            {test.isFree ? <Tag label="Bepul" tone="neutral" /> : null}
+          </View>
+          <Text variant="heading" style={styles.newTitle}>
+            {test.title}
+          </Text>
+          <Text variant="callout" color={colors.textSecondary}>
+            {test.subtitle}
           </Text>
         </View>
-      ))}
-    </View>
-  </Card>
-);
+        <Text variant="monoSm" color={colors.textTertiary}>
+          {test.durationLabel}
+        </Text>
+      </View>
+      <View style={styles.tags}>
+        {sectionOrder.map((kind) => (
+          <View key={kind} style={styles.sectionTag}>
+            <Text variant="micro" color={colors.textSecondary}>
+              {sectionTitles[kind]}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </Card>
+  );
+};
 
 const RowCard = ({ test, onPress }: TestCardProps) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const leading =
     test.status === 'in_progress' ? (
       <ProgressRing value={test.progress ?? 0}>
@@ -51,16 +58,16 @@ const RowCard = ({ test, onPress }: TestCardProps) => {
       </ProgressRing>
     ) : test.status === 'completed' ? (
       <View style={styles.scoreTile}>
-        <Text variant="labelMedium" color={light.success.text}>
+        <Text variant="labelMedium" color={colors.success.text}>
           {test.score}
         </Text>
-        <Text variant="pico" color={light.success[500]}>
+        <Text variant="pico" color={colors.success[500]}>
           {test.level}
         </Text>
       </View>
     ) : (
       <IconTile size={44}>
-        <Lock size={18} color={light.textSecondary} strokeWidth={1.6} />
+        <Lock size={18} color={colors.textSecondary} strokeWidth={1.6} />
       </IconTile>
     );
 
@@ -68,7 +75,7 @@ const RowCard = ({ test, onPress }: TestCardProps) => {
     test.status === 'in_progress' ? (
       <Button label="Davom" variant="soft" size="S" onPress={() => onPress(test)} />
     ) : test.status === 'completed' ? (
-      <ChevronRight size={18} color={light.textTertiary} strokeWidth={1.75} />
+      <ChevronRight size={18} color={colors.textTertiary} strokeWidth={1.75} />
     ) : (
       <Tag label="Pro" tone="pro" />
     );
@@ -78,7 +85,7 @@ const RowCard = ({ test, onPress }: TestCardProps) => {
       {leading}
       <View style={styles.rowBody}>
         <Text variant="titleSm">{test.title}</Text>
-        <Text variant="callout" color={light.textSecondary}>
+        <Text variant="callout" color={colors.textSecondary}>
           {test.subtitle}
         </Text>
       </View>
@@ -95,7 +102,7 @@ export const TestCard = memo<TestCardProps>(({ test, onPress }) => (
 
 TestCard.displayName = 'TestCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   newCard: {
     padding: space[4],
     gap: space[3],
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     height: 24,
     paddingHorizontal: space[2],
     borderRadius: radius.chip,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     justifyContent: 'center',
   },
   rowCard: {
@@ -137,8 +144,8 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.md,
-    backgroundColor: light.success.bg,
+    backgroundColor: colors.success.bg,
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));

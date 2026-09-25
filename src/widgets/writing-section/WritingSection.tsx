@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
 import { useAttemptStore } from '@/entities/attempt';
@@ -9,7 +9,7 @@ import { SectionTimer } from '@/features/test-session/ui/SectionTimer';
 import { SessionFooter } from '@/features/test-session/ui/SessionFooter';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
-import { light, size, space } from '@/shared/theme';
+import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button, ConfirmSheet, SegmentedControl } from '@/shared/ui';
 import { countWords, useDrafts } from './draft';
 import { Editor } from './Editor';
@@ -36,6 +36,8 @@ const AnswerPane = memo<{ task: WritingTask; text: string; onChange: (taskId: st
 AnswerPane.displayName = 'AnswerPane';
 
 export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const tasks = test.writing;
   const controls = useSessionControls(test, 'writing');
@@ -101,7 +103,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
               label="Topshirish"
               size="M"
               onPress={submit}
-              trailingIcon={<ArrowRight size={18} color={light.onAction} strokeWidth={1.75} />}
+              trailingIcon={<ArrowRight size={18} color={colors.onAction} strokeWidth={1.75} />}
             />
           </View>
         </View>
@@ -123,10 +125,10 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
 
 WritingSection.displayName = 'WritingSection';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   body: {
     flex: 1,
@@ -143,4 +145,4 @@ const styles = StyleSheet.create({
   primary: {
     flex: 1.3,
   },
-});
+}));

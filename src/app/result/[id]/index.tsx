@@ -11,7 +11,7 @@ import { RecommendationCard } from '@/features/result/ui/RecommendationCard';
 import { ResultGauge } from '@/features/result/ui/ResultGauge';
 import { SectionScoreCard } from '@/features/result/ui/SectionScoreCard';
 import { MAX_SCORE, levelFor } from '@/shared/lib';
-import { gradientDirection, light, size, space } from '@/shared/theme';
+import { gradientDirection, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonM + space[3] * 2;
@@ -23,6 +23,7 @@ const reviewRoutes = {
 } as const;
 
 export default function ResultScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { id, from } = useLocalSearchParams<{ id: string; from?: string }>();
   const result = useResult(id);
@@ -55,14 +56,14 @@ export default function ResultScreen() {
         centered
         left={
           <IconButton accessibilityLabel="Yopish" onPress={close}>
-            <X size={17} color={light.textStrong} strokeWidth={1.6} />
+            <X size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
         center={
           data ? (
             <>
               <Text variant="bodySmMedium">{data.title}</Text>
-              <Text variant="monoXs" color={light.textTertiary}>
+              <Text variant="monoXs" color={colors.textTertiary}>
                 {`${data.dateLabel} · ${data.durationLabel}`}
               </Text>
             </>
@@ -70,7 +71,7 @@ export default function ResultScreen() {
         }
         right={
           <IconButton accessibilityLabel="Ulashish" onPress={share} disabled={!data}>
-            <ShareIcon size={16} color={light.textStrong} strokeWidth={1.6} />
+            <ShareIcon size={16} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
       />
@@ -110,7 +111,7 @@ export default function ResultScreen() {
       </ScrollView>
 
       <LinearGradient
-        colors={[light.bgClear, light.bg]}
+        colors={[colors.bgClear, colors.bg]}
         locations={[0, 0.26]}
         start={gradientDirection.vertical.start}
         end={gradientDirection.vertical.end}
@@ -126,7 +127,7 @@ export default function ResultScreen() {
             disabled={!data}
             onPress={() => openReview('review')}
             trailingIcon={
-              <ArrowRight size={18} color={data ? light.onAction : light.disabledText} strokeWidth={1.75} />
+              <ArrowRight size={18} color={data ? colors.onAction : colors.disabledText} strokeWidth={1.75} />
             }
           />
         </View>

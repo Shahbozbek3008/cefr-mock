@@ -8,12 +8,13 @@ import { CriteriaList } from '@/features/ai-review/ui/CriteriaList';
 import { ErrorsCard } from '@/features/ai-review/ui/ErrorsCard';
 import { ImprovedSheet } from '@/features/ai-review/ui/ImprovedSheet';
 import { ScoreHero } from '@/features/ai-review/ui/ScoreHero';
-import { light, size, space } from '@/shared/theme';
+import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + space[3];
 
 export default function WritingReviewScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const review = useWritingReview(id);
@@ -26,13 +27,13 @@ export default function WritingReviewScreen() {
         centered
         left={
           <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
-            <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+            <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
         center={
           <>
             <Text variant="bodySmMedium">AI Writing bahosi</Text>
-            <Text variant="caption" color={light.textSecondary}>
+            <Text variant="caption" color={colors.textSecondary}>
               {data ? `${data.taskLabel} · ${data.words} so'z` : ' '}
             </Text>
           </>
@@ -77,7 +78,9 @@ export default function WritingReviewScreen() {
           label="Yaxshilangan variantni ko'rish"
           disabled={!data}
           onPress={() => setImprovedOpen(true)}
-          trailingIcon={<ArrowRight size={18} color={data ? light.onAction : light.disabledText} strokeWidth={1.75} />}
+          trailingIcon={
+            <ArrowRight size={18} color={data ? colors.onAction : colors.disabledText} strokeWidth={1.75} />
+          }
         />
       </View>
 

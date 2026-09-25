@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { sectionIcons, sectionTitles } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
-import { elevation, light, radius, space } from '@/shared/theme';
+import { radius, space, useTheme } from '@/shared/theme';
 import { ActionSurface, Card, Text } from '@/shared/ui';
 import { ProgressRing } from '@/shared/ui/charts';
 import { PlayIcon } from '@/shared/icons';
@@ -13,22 +13,23 @@ export type ContinueCardProps = {
 };
 
 export const ContinueCard = memo<ContinueCardProps>(({ test, onPress }) => {
+  const { colors, elevation } = useTheme();
   const section = test.resumeSection ?? 'listening';
   const Icon = sectionIcons[section];
 
   return (
     <Card level="raised" radius={radius.cardLg} style={styles.card}>
       <ProgressRing value={test.progress ?? 0}>
-        <Icon size={17} color={light.textStrong} strokeWidth={1.5} />
+        <Icon size={17} color={colors.textStrong} strokeWidth={1.5} />
       </ProgressRing>
 
       <View style={styles.body}>
-        <Text variant="caption" color={light.textSecondary}>
+        <Text variant="caption" color={colors.textSecondary}>
           Davom ettirish
         </Text>
         <Text variant="labelMedium">{`Mock #${test.number} · ${sectionTitles[section]}`}</Text>
         {test.resumeLabel ? (
-          <Text variant="monoXs" color={light.textTertiary}>
+          <Text variant="monoXs" color={colors.textTertiary}>
             {test.resumeLabel}
           </Text>
         ) : null}
@@ -36,7 +37,7 @@ export const ContinueCard = memo<ContinueCardProps>(({ test, onPress }) => {
 
       <Pressable accessibilityRole="button" accessibilityLabel="Davom ettirish" onPress={onPress}>
         <ActionSurface style={[styles.play, elevation.actionSm]}>
-          <PlayIcon size={18} color={light.onAction} />
+          <PlayIcon size={18} color={colors.onAction} />
         </ActionSurface>
       </Pressable>
     </Card>

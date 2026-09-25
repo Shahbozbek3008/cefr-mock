@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { light, radius } from '@/shared/theme';
+import { View } from 'react-native';
+import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { CheckBadge, SelectCard, Text } from '@/shared/ui';
 import type { LevelOption } from '../model';
 
@@ -10,47 +10,46 @@ export type LevelCardProps = {
   onSelect: (level: LevelOption['level']) => void;
 };
 
-export const LevelCard = memo<LevelCardProps>(({ option, selected, onSelect }) => (
-  <SelectCard
-    selected={selected}
-    onPress={() => onSelect(option.level)}
-    accessibilityLabel={`${option.level} ${option.title}`}
-    style={styles.card}
-  >
-    <View style={[styles.badge, selected ? styles.badgeSelected : styles.badgeIdle]}>
-      <Text
-        variant="titleBadge"
-        color={selected ? light.onAction : light.text}
-      >
-        {option.level}
-      </Text>
-    </View>
+export const LevelCard = memo<LevelCardProps>(({ option, selected, onSelect }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
 
-    <View style={styles.body}>
-      <Text variant="titleSm" color={selected ? light.selectedText : light.text}>
-        {option.title}
-      </Text>
-      <Text
-        variant="bodySm"
-        color={selected ? light.selectedText : light.textSecondary}
-      >
-        {option.description}
-      </Text>
-    </View>
+  return (
+    <SelectCard
+      selected={selected}
+      onPress={() => onSelect(option.level)}
+      accessibilityLabel={`${option.level} ${option.title}`}
+      style={styles.card}
+    >
+      <View style={[styles.badge, selected ? styles.badgeSelected : styles.badgeIdle]}>
+        <Text variant="titleBadge" color={selected ? colors.onAction : colors.text}>
+          {option.level}
+        </Text>
+      </View>
 
-    {selected ? (
-      <CheckBadge />
-    ) : (
-      <Text variant="monoSm" color={light.textTertiary}>
-        {option.range}
-      </Text>
-    )}
-  </SelectCard>
-));
+      <View style={styles.body}>
+        <Text variant="titleSm" color={selected ? colors.selectedText : colors.text}>
+          {option.title}
+        </Text>
+        <Text variant="bodySm" color={selected ? colors.selectedText : colors.textSecondary}>
+          {option.description}
+        </Text>
+      </View>
+
+      {selected ? (
+        <CheckBadge />
+      ) : (
+        <Text variant="monoSm" color={colors.textTertiary}>
+          {option.range}
+        </Text>
+      )}
+    </SelectCard>
+  );
+});
 
 LevelCard.displayName = 'LevelCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -66,13 +65,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeIdle: {
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   badgeSelected: {
-    backgroundColor: light.action,
+    backgroundColor: colors.action,
   },
   body: {
     flex: 1,
     gap: 2,
   },
-});
+}));

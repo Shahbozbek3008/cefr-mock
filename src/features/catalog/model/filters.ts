@@ -33,9 +33,7 @@ export const applyCatalog = (tests: TestSummary[], filter: CatalogFilter, query:
     (t) => predicates[filter](t) && (q === '' || `${t.title} ${t.subtitle}`.toLowerCase().includes(q)),
   );
   const byNumber = [...list].sort((x, y) => y.number - x.number);
-  return sort === 'newest'
-    ? byNumber.sort((x, y) => statusRank[x.status] - statusRank[y.status])
-    : byNumber.reverse();
+  return sort === 'newest' ? byNumber.sort((x, y) => statusRank[x.status] - statusRank[y.status]) : byNumber.reverse();
 };
 
 export type PracticeItem = {

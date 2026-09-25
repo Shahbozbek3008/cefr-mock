@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { light, radius, space } from '@/shared/theme';
+import { radius, space, useTheme } from '@/shared/theme';
 import { Avatar, Button, Card, Tag, Text } from '@/shared/ui';
 
 export type ProfileCardProps = {
@@ -10,22 +10,26 @@ export type ProfileCardProps = {
   onUpgrade: () => void;
 };
 
-export const ProfileCard = memo<ProfileCardProps>(({ name, phone, isPro, onUpgrade }) => (
-  <Card level="raised" radius={radius.cardLg} style={styles.card}>
-    <Avatar name={name} size={56} />
-    <View style={styles.body}>
-      <Text variant="heading">{name}</Text>
-      <Text variant="monoSm" color={light.textSecondary}>
-        {phone}
-      </Text>
-    </View>
-    {isPro ? (
-      <Tag label="Pro" tone="pro" size="md" />
-    ) : (
-      <Button label="Pro olish" variant="soft" size="S" onPress={onUpgrade} />
-    )}
-  </Card>
-));
+export const ProfileCard = memo<ProfileCardProps>(({ name, phone, isPro, onUpgrade }) => {
+  const { colors } = useTheme();
+
+  return (
+    <Card level="raised" radius={radius.cardLg} style={styles.card}>
+      <Avatar name={name} size={56} />
+      <View style={styles.body}>
+        <Text variant="heading">{name}</Text>
+        <Text variant="monoSm" color={colors.textSecondary}>
+          {phone}
+        </Text>
+      </View>
+      {isPro ? (
+        <Tag label="Pro" tone="pro" size="md" />
+      ) : (
+        <Button label="Pro olish" variant="soft" size="S" onPress={onUpgrade} />
+      )}
+    </Card>
+  );
+});
 
 ProfileCard.displayName = 'ProfileCard';
 

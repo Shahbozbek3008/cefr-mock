@@ -1,6 +1,6 @@
 import { memo, useCallback, useRef, useState } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { light, radius } from '@/shared/theme';
+import { Pressable, TextInput, View } from 'react-native';
+import { makeStyles, radius } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import { OTP_LENGTH, sanitizeDigits } from '../model';
 
@@ -11,13 +11,11 @@ export type OtpFieldProps = {
 };
 
 export const OtpField = memo<OtpFieldProps>(({ value, onChange, autoFocus = true }) => {
+  const styles = useStyles();
   const inputRef = useRef<TextInput>(null);
   const [focused, setFocused] = useState(false);
 
-  const onChangeText = useCallback(
-    (text: string) => onChange(sanitizeDigits(text, OTP_LENGTH)),
-    [onChange],
-  );
+  const onChangeText = useCallback((text: string) => onChange(sanitizeDigits(text, OTP_LENGTH)), [onChange]);
 
   const focus = useCallback(() => inputRef.current?.focus(), []);
 
@@ -29,21 +27,8 @@ export const OtpField = memo<OtpFieldProps>(({ value, onChange, autoFocus = true
           const active = focused && index === value.length;
 
           return (
-            <View
-              key={index}
-              style={[
-                styles.cell,
-                char ? styles.filled : styles.empty,
-                active && styles.active,
-              ]}
-            >
-              {char ? (
-                <Text variant="monoXl">
-                  {char}
-                </Text>
-              ) : active ? (
-                <View style={styles.caret} />
-              ) : null}
+            <View key={index} style={[styles.cell, char ? styles.filled : styles.empty, active && styles.active]}>
+              {char ? <Text variant="monoXl">{char}</Text> : active ? <View style={styles.caret} /> : null}
             </View>
           );
         })}
@@ -69,7 +54,7 @@ export const OtpField = memo<OtpFieldProps>(({ value, onChange, autoFocus = true
 
 OtpField.displayName = 'OtpField';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: {
     flexDirection: 'row',
     gap: 8,
@@ -82,22 +67,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   empty: {
-    backgroundColor: light.surfaceMuted,
+    backgroundColor: colors.surfaceMuted,
   },
   filled: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   active: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1.5,
-    borderColor: light.selectedBorder,
+    borderColor: colors.selectedBorder,
   },
   caret: {
     width: 1.5,
     height: 26,
-    backgroundColor: light.selectedBorder,
+    backgroundColor: colors.selectedBorder,
   },
   hidden: {
     position: 'absolute',
@@ -105,4 +90,4 @@ const styles = StyleSheet.create({
     height: 1,
     width: 1,
   },
-});
+}));

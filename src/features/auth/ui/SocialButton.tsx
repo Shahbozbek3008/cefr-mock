@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
-import { Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { light, radius, size } from '@/shared/theme';
+import { Pressable, ViewStyle } from 'react-native';
+import { makeStyles, radius, size, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 export type SocialButtonProps = {
@@ -10,28 +10,24 @@ export type SocialButtonProps = {
   tone?: 'light' | 'dark';
 };
 
-export const SocialButton = memo<SocialButtonProps>(
-  ({ label, icon, onPress, tone = 'light' }) => (
+export const SocialButton = memo<SocialButtonProps>(({ label, icon, onPress, tone = 'light' }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+
+  return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        tone === 'dark' ? styles.dark : styles.light,
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [styles.button, tone === 'dark' ? styles.dark : styles.light, pressed && styles.pressed]}
     >
       {icon}
-      <Text
-        variant="labelMedium"
-        color={tone === 'dark' ? light.surface : light.text}
-      >
+      <Text variant="labelMedium" color={tone === 'dark' ? colors.surface : colors.text}>
         {label}
       </Text>
     </Pressable>
-  ),
-);
+  );
+});
 
 SocialButton.displayName = 'SocialButton';
 
@@ -44,17 +40,17 @@ const base: ViewStyle = {
   paddingHorizontal: 18,
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   button: base,
   light: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   dark: {
-    backgroundColor: light.text,
+    backgroundColor: colors.text,
   },
   pressed: {
     opacity: 0.85,
   },
-});
+}));

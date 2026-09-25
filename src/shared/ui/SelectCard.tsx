@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
-import { elevation, light, radius } from '../theme';
+import { Pressable, View, ViewStyle } from 'react-native';
+import { makeStyles, radius, useTheme } from '../theme';
 
 export type SelectCardProps = {
   selected: boolean;
@@ -10,40 +10,38 @@ export type SelectCardProps = {
   style?: ViewStyle;
 };
 
-export const SelectCard = memo<SelectCardProps>(
-  ({ selected, onPress, children, accessibilityLabel, style }) => (
+export const SelectCard = memo<SelectCardProps>(({ selected, onPress, children, accessibilityLabel, style }) => {
+  const styles = useStyles();
+  const { elevation } = useTheme();
+
+  return (
     <Pressable
       accessibilityRole="radio"
       accessibilityState={{ selected }}
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}
-      style={[
-        styles.card,
-        selected ? styles.selected : styles.idle,
-        selected && elevation.selected,
-        style,
-      ]}
+      style={[styles.card, selected ? styles.selected : styles.idle, selected && elevation.selected, style]}
     >
       {children}
     </Pressable>
-  ),
-);
+  );
+});
 
 SelectCard.displayName = 'SelectCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     borderRadius: radius.card,
     padding: 16,
   },
   idle: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   selected: {
-    backgroundColor: light.selectedBg,
+    backgroundColor: colors.selectedBg,
     borderWidth: 1.5,
-    borderColor: light.selectedBorder,
+    borderColor: colors.selectedBorder,
   },
-});
+}));

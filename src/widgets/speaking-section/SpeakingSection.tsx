@@ -1,12 +1,12 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAttemptStore } from '@/entities/attempt';
 import type { SpeakingQuestion, TestDetail } from '@/entities/test';
 import { useSessionControls } from '@/features/test-session/model/useSessionControls';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
-import { light, size, space } from '@/shared/theme';
+import { makeStyles, size, space } from '@/shared/theme';
 import { SegmentProgress, StateView, StaticTimerPill } from '@/shared/ui';
 import { PromptCard } from './PromptCard';
 import { RecordControls } from './RecordControls';
@@ -24,6 +24,7 @@ type QuestionViewProps = {
 };
 
 const QuestionView = memo<QuestionViewProps>(({ question, index, total, onClose, onNext }) => {
+  const styles = useStyles();
   const insets = useSafeAreaInsets();
   const setRecording = useAttemptStore((s) => s.setRecording);
   const onSaved = useCallback((uri: string) => setRecording(question.id, uri), [question.id, setRecording]);
@@ -109,10 +110,10 @@ export const SpeakingSection = memo<{ test: TestDetail }>(({ test }) => {
 
 SpeakingSection.displayName = 'SpeakingSection';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: {
     flex: 1,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   content: {
     paddingHorizontal: size.screenPadding,
@@ -123,4 +124,4 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-});
+}));

@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Lock } from 'lucide-react-native';
 import { formatClock, usePlayback } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
 import { Waveform } from '@/shared/ui/charts';
 
@@ -17,6 +17,8 @@ export type AudioCardProps = {
 };
 
 export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
   const { position, playing, progress } = usePlayback(durationSec, { autoPlay: true, onEnd: onEnded });
 
   return (
@@ -24,18 +26,18 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
       <View style={styles.header}>
         <View style={styles.status}>
           <Dot
-            color={playing ? light.data : light.textTertiary}
+            color={playing ? colors.data : colors.textTertiary}
             size={8}
-            ring={playing ? light.focusRing : undefined}
+            ring={playing ? colors.focusRing : undefined}
             ringWidth={4}
           />
-          <Text variant="captionMedium" color={playing ? light.selectedText : light.textSecondary}>
+          <Text variant="captionMedium" color={playing ? colors.selectedText : colors.textSecondary}>
             {playing ? 'Eshittirilmoqda' : 'Audio tugadi'}
           </Text>
         </View>
         <View style={styles.lock}>
-          <Lock size={11} color={light.textSecondary} strokeWidth={2.2} />
-          <Text variant="microMedium" color={light.textSecondary}>
+          <Lock size={11} color={colors.textSecondary} strokeWidth={2.2} />
+          <Text variant="microMedium" color={colors.textSecondary}>
             Real rejim
           </Text>
         </View>
@@ -43,14 +45,14 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
 
       <View style={styles.time}>
         <Text variant="monoTimer">{formatClock(position)}</Text>
-        <Text variant="mono" color={light.textTertiary}>
+        <Text variant="mono" color={colors.textTertiary}>
           {`/ ${formatClock(durationSec)}`}
         </Text>
       </View>
 
       <Waveform bars={bars} progress={progress} playhead />
 
-      <Text variant="caption" color={light.textSecondary}>
+      <Text variant="caption" color={colors.textSecondary}>
         Audio bir marta eshittiriladi — pauza va qaytarish o'chirilgan.
       </Text>
     </Card>
@@ -59,7 +61,7 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
 
 AudioCard.displayName = 'AudioCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     padding: space[4.5],
     gap: space[4],
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     height: 24,
     paddingHorizontal: 9,
     borderRadius: radius.pill,
-    backgroundColor: light.surfaceMuted,
+    backgroundColor: colors.surfaceMuted,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
@@ -88,4 +90,4 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     gap: space[2],
   },
-});
+}));

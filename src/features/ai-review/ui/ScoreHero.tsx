@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Sparkles } from 'lucide-react-native';
 import { MAX_SCORE } from '@/shared/lib';
-import { elevation, light, palette, radius, space } from '@/shared/theme';
+import { palette, radius, space, useTheme } from '@/shared/theme';
 import { HeroSurface, Text } from '@/shared/ui';
 
 export type ScoreHeroProps = {
@@ -12,34 +12,38 @@ export type ScoreHeroProps = {
   summary: string;
 };
 
-export const ScoreHero = memo<ScoreHeroProps>(({ label, score, verdict, summary }) => (
-  <HeroSurface style={[styles.card, elevation.hero]}>
-    <View style={styles.score}>
-      <Text variant="caption" color={light.onHeroMuted}>
-        {label}
-      </Text>
-      <View style={styles.value}>
-        <Text variant="displayMd" color={light.onHero}>
-          {score}
+export const ScoreHero = memo<ScoreHeroProps>(({ label, score, verdict, summary }) => {
+  const { colors, elevation } = useTheme();
+
+  return (
+    <HeroSurface style={[styles.card, elevation.hero]}>
+      <View style={styles.score}>
+        <Text variant="caption" color={colors.onHeroMuted}>
+          {label}
         </Text>
-        <Text variant="monoCallout" color={palette.white.a60}>
-          {`/${MAX_SCORE}`}
+        <View style={styles.value}>
+          <Text variant="displayMd" color={colors.onHero}>
+            {score}
+          </Text>
+          <Text variant="monoCallout" color={palette.white.a60}>
+            {`/${MAX_SCORE}`}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.body}>
+        <View style={styles.verdict}>
+          <Sparkles size={14} color={colors.onHero} strokeWidth={1.6} />
+          <Text variant="calloutMedium" color={colors.onHero}>
+            {verdict}
+          </Text>
+        </View>
+        <Text variant="callout" color={palette.white.a88}>
+          {summary}
         </Text>
       </View>
-    </View>
-    <View style={styles.body}>
-      <View style={styles.verdict}>
-        <Sparkles size={14} color={light.onHero} strokeWidth={1.6} />
-        <Text variant="calloutMedium" color={light.onHero}>
-          {verdict}
-        </Text>
-      </View>
-      <Text variant="callout" color={palette.white.a88}>
-        {summary}
-      </Text>
-    </View>
-  </HeroSurface>
-));
+    </HeroSurface>
+  );
+});
 
 ScoreHero.displayName = 'ScoreHero';
 

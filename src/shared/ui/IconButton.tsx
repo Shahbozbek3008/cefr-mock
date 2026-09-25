@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
-import { Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { hitSlop, light, radius, size } from '../theme';
+import { Pressable, ViewStyle } from 'react-native';
+import { hitSlop, makeStyles, radius, size } from '../theme';
 
 export type IconButtonProps = {
   children: ReactNode;
@@ -13,37 +13,33 @@ export type IconButtonProps = {
 };
 
 export const IconButton = memo<IconButtonProps>(
-  ({
-    children,
-    onPress,
-    accessibilityLabel,
-    shape = 'circle',
-    tone = 'surface',
-    disabled = false,
-    style,
-  }) => (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
-      accessibilityState={{ disabled }}
-      disabled={disabled}
-      hitSlop={hitSlop}
-      onPress={onPress}
-      style={({ pressed }) => [
-        shape === 'circle' ? styles.circle : styles.square,
-        styles[tone],
-        pressed && styles.pressed,
-        style,
-      ]}
-    >
-      {children}
-    </Pressable>
-  ),
+  ({ children, onPress, accessibilityLabel, shape = 'circle', tone = 'surface', disabled = false, style }) => {
+    const styles = useStyles();
+
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        accessibilityState={{ disabled }}
+        disabled={disabled}
+        hitSlop={hitSlop}
+        onPress={onPress}
+        style={({ pressed }) => [
+          shape === 'circle' ? styles.circle : styles.square,
+          styles[tone],
+          pressed && styles.pressed,
+          style,
+        ]}
+      >
+        {children}
+      </Pressable>
+    );
+  },
 );
 
 IconButton.displayName = 'IconButton';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   circle: {
     width: size.iconButton,
     height: size.iconButton,
@@ -59,19 +55,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   surface: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.hairline,
+    borderColor: colors.hairline,
   },
   outline: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   muted: {
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
   },
   pressed: {
     opacity: 0.7,
   },
-});
+}));

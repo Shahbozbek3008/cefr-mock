@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
-import { light } from '../theme';
+import { useTheme } from '../theme';
 import { HeroSurface } from './HeroSurface';
 import { Text } from './Text';
 
@@ -9,16 +9,17 @@ export type AvatarProps = {
   size?: 40 | 56;
 };
 
-export const Avatar = memo<AvatarProps>(({ name, size = 40 }) => (
-  <HeroSurface
-    colors={light.avatar}
-    style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }]}
-  >
-    <Text variant={size === 56 ? 'titleMd' : 'labelMedium'} color={light.selectedText}>
-      {name.trim().charAt(0).toUpperCase()}
-    </Text>
-  </HeroSurface>
-));
+export const Avatar = memo<AvatarProps>(({ name, size = 40 }) => {
+  const { colors } = useTheme();
+
+  return (
+    <HeroSurface colors={colors.avatar} style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }]}>
+      <Text variant={size === 56 ? 'titleMd' : 'labelMedium'} color={colors.selectedText}>
+        {name.trim().charAt(0).toUpperCase()}
+      </Text>
+    </HeroSurface>
+  );
+});
 
 Avatar.displayName = 'Avatar';
 

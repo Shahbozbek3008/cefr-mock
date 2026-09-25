@@ -1,6 +1,6 @@
 import { ReactNode, memo } from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { elevation, light, radius as radii } from '../theme';
+import { LayoutChangeEvent, StyleProp, View, ViewStyle } from 'react-native';
+import { makeStyles, radius as radii } from '../theme';
 
 export type CardProps = {
   children: ReactNode;
@@ -10,22 +10,26 @@ export type CardProps = {
   onLayout?: (event: LayoutChangeEvent) => void;
 };
 
-const levels = {
-  line: [elevation.hairline, { borderColor: light.hairlineSoft }],
-  raised: [elevation.card],
-  strong: [elevation.cardStrong],
-} as const;
+export const Card = memo<CardProps>(({ children, level = 'line', radius = radii.card, style, onLayout }) => {
+  const styles = useStyles();
 
-export const Card = memo<CardProps>(({ children, level = 'line', radius = radii.card, style, onLayout }) => (
-  <View style={[styles.card, { borderRadius: radius }, ...levels[level], style]} onLayout={onLayout}>
-    {children}
-  </View>
-));
+  return (
+    <View style={[styles.card, styles[level], { borderRadius: radius }, style]} onLayout={onLayout}>
+      {children}
+    </View>
+  );
+});
 
 Card.displayName = 'Card';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, elevation }) => ({
   card: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
   },
-});
+  line: {
+    ...elevation.hairline,
+    borderColor: colors.hairlineSoft,
+  },
+  raised: elevation.card,
+  strong: elevation.cardStrong,
+}));

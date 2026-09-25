@@ -7,17 +7,11 @@ import { CriteriaTiles } from '@/features/ai-review/ui/CriteriaTiles';
 import { MarkedText } from '@/features/ai-review/ui/MarkedText';
 import { PlaybackCard } from '@/features/ai-review/ui/PlaybackCard';
 import { TipList } from '@/features/ai-review/ui/TipList';
-import { light, space } from '@/shared/theme';
+import { space, useTheme } from '@/shared/theme';
 import { Card, IconButton, Screen, SkeletonCard, StateView, Text, TopBar } from '@/shared/ui';
 
-const transcriptMarks = {
-  grammar: {
-    backgroundColor: light.warning.bg,
-    textDecorationColor: light.warning[500],
-  },
-};
-
 export default function SpeakingReviewScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const review = useSpeakingReview(id);
@@ -29,13 +23,13 @@ export default function SpeakingReviewScreen() {
         centered
         left={
           <IconButton accessibilityLabel="Orqaga" onPress={router.back}>
-            <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+            <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
         center={
           <>
             <Text variant="bodySmMedium">AI Speaking bahosi</Text>
-            <Text variant="caption" color={light.textSecondary}>
+            <Text variant="caption" color={colors.textSecondary}>
               {data ? `${data.part} · ${data.durationSec} soniya` : ' '}
             </Text>
           </>
@@ -54,11 +48,11 @@ export default function SpeakingReviewScreen() {
             <Card style={styles.transcript}>
               <View style={styles.transcriptHeader}>
                 <Text variant="bodySmMedium">Transkript</Text>
-                <Text variant="monoXs" color={light.textTertiary}>
+                <Text variant="monoXs" color={colors.textTertiary}>
                   {`${data.words} so'z · ${data.wpm} wpm`}
                 </Text>
               </View>
-              <MarkedText segments={data.segments} overrides={transcriptMarks} />
+              <MarkedText segments={data.segments} grammarTone="warning" />
             </Card>
             <TipList tips={data.tips} />
           </>

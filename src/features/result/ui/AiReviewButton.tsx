@@ -1,35 +1,40 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { elevation, light, radius, size, space } from '@/shared/theme';
+import { Pressable, View } from 'react-native';
+import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import { AiTile } from './AiTile';
 
-export const AiReviewButton = memo<{ onPress: () => void }>(({ onPress }) => (
-  <Pressable
-    accessibilityRole="button"
-    accessibilityLabel="AI baho"
-    onPress={onPress}
-    style={({ pressed }) => [styles.button, elevation.segment, pressed && styles.pressed]}
-  >
-    <AiTile />
-    <View style={styles.body}>
-      <Text variant="bodySmMedium">AI baho</Text>
-      <Text variant="micro" color={light.textSecondary} numberOfLines={1}>
-        Writing · Speaking
-      </Text>
-    </View>
-  </Pressable>
-));
+export const AiReviewButton = memo<{ onPress: () => void }>(({ onPress }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="AI baho"
+      onPress={onPress}
+      style={({ pressed }) => [styles.button, elevation.segment, pressed && styles.pressed]}
+    >
+      <AiTile />
+      <View style={styles.body}>
+        <Text variant="bodySmMedium">AI baho</Text>
+        <Text variant="micro" color={colors.textSecondary} numberOfLines={1}>
+          Writing · Speaking
+        </Text>
+      </View>
+    </Pressable>
+  );
+});
 
 AiReviewButton.displayName = 'AiReviewButton';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   button: {
     height: size.buttonM,
     borderRadius: radius.button,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space[2.5],
@@ -42,4 +47,4 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.85,
   },
-});
+}));

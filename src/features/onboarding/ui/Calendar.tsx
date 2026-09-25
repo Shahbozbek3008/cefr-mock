@@ -1,15 +1,10 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
-import { elevation, hitSlop, light, radius } from '@/shared/theme';
+import { hitSlop, makeStyles, radius, useTheme } from '@/shared/theme';
 import { Card, Text } from '@/shared/ui';
-import {
-  buildMonthGrid,
-  isOfficialExamDay,
-  monthLabels,
-  weekdayLabels,
-} from '../model/calendar';
+import { buildMonthGrid, isOfficialExamDay, monthLabels, weekdayLabels } from '../model/calendar';
 
 export type CalendarProps = {
   value: string | null;
@@ -17,6 +12,8 @@ export type CalendarProps = {
 };
 
 export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const initial = useMemo(() => (value ? new Date(`${value}T00:00:00`) : new Date()), [value]);
   const [year, setYear] = useState(initial.getFullYear());
   const [month, setMonth] = useState(initial.getMonth());
@@ -55,7 +52,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
             onPress={goPrev}
             style={styles.navButton}
           >
-            <ChevronLeft size={15} color={light.textSecondary} strokeWidth={1.75} />
+            <ChevronLeft size={15} color={colors.textSecondary} strokeWidth={1.75} />
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -64,7 +61,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
             onPress={goNext}
             style={styles.navButton}
           >
-            <ChevronRight size={15} color={light.textSecondary} strokeWidth={1.75} />
+            <ChevronRight size={15} color={colors.textSecondary} strokeWidth={1.75} />
           </Pressable>
         </View>
       </View>
@@ -72,7 +69,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
       <View style={styles.grid}>
         {weekdayLabels.map((label) => (
           <View key={label} style={styles.weekday}>
-            <Text variant="micro" color={light.textTertiary}>
+            <Text variant="micro" color={colors.textTertiary}>
               {label}
             </Text>
           </View>
@@ -99,17 +96,13 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
               <View style={styles.dayWrap}>
                 {selected ? (
                   <LinearGradient
-                    colors={light.actionGradient}
+                    colors={colors.actionGradient}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                     style={[styles.daySelected, elevation.actionSm]}
                   />
                 ) : null}
-                <Text
-                  variant="mono"
-                  color={selected ? light.onAction : light.text}
-                  style={styles.dayText}
-                >
+                <Text variant="mono" color={selected ? colors.onAction : colors.text} style={styles.dayText}>
                   {cell.day}
                 </Text>
                 {official && !selected ? <View style={styles.dot} /> : null}
@@ -121,7 +114,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
 
       <View style={styles.legend}>
         <View style={styles.dotStatic} />
-        <Text variant="caption" color={light.textSecondary}>
+        <Text variant="caption" color={colors.textSecondary}>
           Rasmiy imtihon kunlari
         </Text>
       </View>
@@ -131,7 +124,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
 
 Calendar.displayName = 'Calendar';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     padding: 18,
     gap: 14,
@@ -149,7 +142,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: radius.sm,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -194,13 +187,13 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: light.dataSoft,
+    backgroundColor: colors.dataSoft,
   },
   dotStatic: {
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: light.dataSoft,
+    backgroundColor: colors.dataSoft,
   },
   legend: {
     flexDirection: 'row',
@@ -208,6 +201,6 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: light.divider,
+    borderTopColor: colors.divider,
   },
-});
+}));

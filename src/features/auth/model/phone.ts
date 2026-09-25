@@ -8,8 +8,7 @@ export const formatPhone = (digits: string) => {
   return parts.filter(Boolean).join(' ');
 };
 
-export const sanitizeDigits = (value: string, max: number) =>
-  value.replace(/\D/g, '').slice(0, max);
+export const sanitizeDigits = (value: string, max: number) => value.replace(/\D/g, '').slice(0, max);
 
 export const isPhoneComplete = (digits: string) => digits.length === PHONE_DIGITS;
 

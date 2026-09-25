@@ -1,7 +1,7 @@
 import { ReactNode, memo, useCallback } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { elevation, light, motion, radius, size, space, TypeToken } from '../theme';
+import { Colors, makeStyles, motion, radius, size, space, TypeToken, useTheme } from '../theme';
 import { ActionSurface } from './ActionSurface';
 import { Text } from './Text';
 
@@ -30,23 +30,15 @@ const metrics: Record<Size, { height: number; radius: number; padding: number; t
   S: { height: 32, radius: radius.sm, padding: space[3], text: 'calloutMedium' },
 };
 
-const surfaces: Record<Variant, ViewStyle> = {
-  primary: { backgroundColor: light.action },
-  secondary: { backgroundColor: light.surface, borderWidth: 1, borderColor: light.border },
-  soft: { backgroundColor: light.chipActiveBg },
-  muted: { backgroundColor: light.bg },
-  tertiary: { backgroundColor: 'transparent' },
-  destructive: { backgroundColor: light.error.bg },
-};
-
-const textColors: Record<Variant, string> = {
-  primary: light.onAction,
-  secondary: light.text,
-  soft: light.selectedText,
-  muted: light.textStrong,
-  tertiary: light.link,
-  destructive: light.error.text,
-};
+const textColor = (colors: Colors, variant: Variant) =>
+  ({
+    primary: colors.onAction,
+    secondary: colors.text,
+    soft: colors.selectedText,
+    muted: colors.textStrong,
+    tertiary: colors.link,
+    destructive: colors.error.text,
+  })[variant];
 
 export const Button = memo<ButtonProps>(
   ({
@@ -64,11 +56,13 @@ export const Button = memo<ButtonProps>(
     grow = false,
     style,
   }) => {
+    const styles = useStyles();
+    const { colors, elevation } = useTheme();
     const scale = useSharedValue(1);
     const pressed = useSharedValue(0);
     const inactive = disabled || loading;
     const m = metrics[sizeKey];
-    const color = inactive ? light.disabledText : textColors[variant];
+    const color = inactive ? colors.disabledText : textColor(colors, variant);
     const iconOnly = icon !== undefined && !label;
 
     const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
@@ -110,7 +104,9 @@ export const Button = memo<ButtonProps>(
           {gradient ? (
             <>
               <ActionSurface style={[StyleSheet.absoluteFill, { borderRadius: m.radius }]} />
-              <Animated.View style={[StyleSheet.absoluteFill, styles.pressed, { borderRadius: m.radius }, pressedStyle]} />
+              <Animated.View
+                style={[StyleSheet.absoluteFill, styles.pressed, { borderRadius: m.radius }, pressedStyle]}
+              />
               <View style={[StyleSheet.absoluteFill, styles.highlight, { borderRadius: m.radius }]} />
             </>
           ) : (
@@ -118,7 +114,7 @@ export const Button = memo<ButtonProps>(
               style={[
                 StyleSheet.absoluteFill,
                 { borderRadius: m.radius },
-                inactive ? styles.disabled : surfaces[variant],
+                inactive ? styles.disabled : styles[variant],
               ]}
             />
           )}
@@ -158,7 +154,7 @@ export const Button = memo<ButtonProps>(
 
 Button.displayName = 'Button';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   grow: {
     flexGrow: 1,
     flexBasis: 0,
@@ -166,15 +162,35 @@ const styles = StyleSheet.create({
   shell: {
     overflow: 'visible',
   },
+  primary: {
+    backgroundColor: colors.action,
+  },
+  secondary: {
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  soft: {
+    backgroundColor: colors.chipActiveBg,
+  },
+  muted: {
+    backgroundColor: colors.bg,
+  },
+  tertiary: {
+    backgroundColor: 'transparent',
+  },
+  destructive: {
+    backgroundColor: colors.error.bg,
+  },
   disabled: {
-    backgroundColor: light.disabledBg,
+    backgroundColor: colors.disabledBg,
   },
   pressed: {
-    backgroundColor: light.actionPressed,
+    backgroundColor: colors.actionPressed,
   },
   highlight: {
     borderTopWidth: 1,
-    borderTopColor: light.actionHighlight,
+    borderTopColor: colors.actionHighlight,
   },
   content: {
     flex: 1,
@@ -192,4 +208,4 @@ const styles = StyleSheet.create({
   trailingText: {
     opacity: 0.75,
   },
-});
+}));

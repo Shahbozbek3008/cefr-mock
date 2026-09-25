@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Check, X } from 'lucide-react-native';
-import { light, palette, radius, space } from '../theme';
+import { Colors, makeStyles, palette, radius, space, useTheme } from '../theme';
 import { Text } from './Text';
 
 export type AnswerState = 'default' | 'selected' | 'correct' | 'incorrect';
@@ -13,29 +13,18 @@ export type AnswerOptionProps = {
   onPress?: () => void;
 };
 
-const surfaces: Record<AnswerState, ViewStyle> = {
-  default: { backgroundColor: light.surface, borderWidth: 1, borderColor: light.border },
-  selected: { backgroundColor: light.selectedBg, borderWidth: 1.5, borderColor: light.selectedBorder },
-  correct: { backgroundColor: light.success.bg, borderWidth: 1.5, borderColor: light.success[500] },
-  incorrect: { backgroundColor: light.error.bg, borderWidth: 1.5, borderColor: light.error[500] },
-};
-
-const badges: Record<AnswerState, { bg: string; fg: string }> = {
-  default: { bg: light.surfaceMuted, fg: light.textSecondary },
-  selected: { bg: light.action, fg: light.onAction },
-  correct: { bg: light.success[500], fg: palette.neutral.white },
-  incorrect: { bg: light.error[500], fg: palette.neutral.white },
-};
-
-const labelColors: Record<AnswerState, string> = {
-  default: light.text,
-  selected: light.selectedText,
-  correct: light.success.text,
-  incorrect: light.error.text,
-};
+const toneFor = (colors: Colors, state: AnswerState) =>
+  ({
+    default: { badgeBg: colors.surfaceMuted, badgeFg: colors.textSecondary, label: colors.text },
+    selected: { badgeBg: colors.action, badgeFg: colors.onAction, label: colors.selectedText },
+    correct: { badgeBg: colors.success[500], badgeFg: palette.neutral.white, label: colors.success.text },
+    incorrect: { badgeBg: colors.error[500], badgeFg: palette.neutral.white, label: colors.error.text },
+  })[state];
 
 export const AnswerOption = memo<AnswerOptionProps>(({ letter, label, state = 'default', onPress }) => {
-  const badge = badges[state];
+  const styles = useStyles();
+  const { colors } = useTheme();
+  const tone = toneFor(colors, state);
 
   return (
     <Pressable
@@ -44,20 +33,20 @@ export const AnswerOption = memo<AnswerOptionProps>(({ letter, label, state = 'd
       accessibilityLabel={`${letter}. ${label}`}
       disabled={!onPress}
       onPress={onPress}
-      style={[styles.option, surfaces[state]]}
+      style={[styles.option, styles[state]]}
     >
-      <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+      <View style={[styles.badge, { backgroundColor: tone.badgeBg }]}>
         {state === 'correct' ? (
-          <Check size={13} color={badge.fg} strokeWidth={3} />
+          <Check size={13} color={tone.badgeFg} strokeWidth={3} />
         ) : state === 'incorrect' ? (
-          <X size={13} color={badge.fg} strokeWidth={3} />
+          <X size={13} color={tone.badgeFg} strokeWidth={3} />
         ) : (
-          <Text variant="monoSm" color={badge.fg}>
+          <Text variant="monoSm" color={tone.badgeFg}>
             {letter}
           </Text>
         )}
       </View>
-      <Text variant={state === 'selected' ? 'labelMedium' : 'label'} color={labelColors[state]} style={styles.label}>
+      <Text variant={state === 'selected' ? 'labelMedium' : 'label'} color={tone.label} style={styles.label}>
         {label}
       </Text>
     </Pressable>
@@ -66,7 +55,7 @@ export const AnswerOption = memo<AnswerOptionProps>(({ letter, label, state = 'd
 
 AnswerOption.displayName = 'AnswerOption';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   option: {
     minHeight: 52,
     borderRadius: radius.button,
@@ -75,6 +64,26 @@ const styles = StyleSheet.create({
     gap: space[3],
     paddingHorizontal: space[3.5],
     paddingVertical: space[2.5],
+  },
+  default: {
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  selected: {
+    backgroundColor: colors.selectedBg,
+    borderWidth: 1.5,
+    borderColor: colors.selectedBorder,
+  },
+  correct: {
+    backgroundColor: colors.success.bg,
+    borderWidth: 1.5,
+    borderColor: colors.success[500],
+  },
+  incorrect: {
+    backgroundColor: colors.error.bg,
+    borderWidth: 1.5,
+    borderColor: colors.error[500],
   },
   badge: {
     width: 26,
@@ -86,4 +95,4 @@ const styles = StyleSheet.create({
   label: {
     flex: 1,
   },
-});
+}));

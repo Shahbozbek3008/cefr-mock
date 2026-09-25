@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import type { SpeakingQuestion } from '@/entities/test';
 import { formatClock } from '@/shared/lib';
-import { light, radius, space } from '@/shared/theme';
+import { Colors, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
 import { Waveform } from '@/shared/ui/charts';
 import type { RecorderPhase } from './useAnswerRecorder';
@@ -12,21 +12,14 @@ const idleBars = [
   0.7, 0.4,
 ];
 
-const statuses: Record<RecorderPhase, { label: string; color: string; ring?: string }> = {
-  pending: { label: 'Mikrofon tayyorlanmoqda', color: light.textTertiary },
-  prep: { label: 'Tayyorlaning', color: light.data, ring: light.focusRing },
-  recording: { label: 'Yozilmoqda', color: light.error[500], ring: light.error.ring },
-  done: { label: 'Yozib olindi', color: light.success[500] },
-  denied: { label: "Ruxsat yo'q", color: light.error[500] },
-};
-
-const labelColors: Record<RecorderPhase, string> = {
-  pending: light.textSecondary,
-  prep: light.selectedText,
-  recording: light.error.text,
-  done: light.success.text,
-  denied: light.error.text,
-};
+const statusFor = (colors: Colors, phase: RecorderPhase): { label: string; dot: string; text: string; ring?: string } =>
+  ({
+    pending: { label: 'Mikrofon tayyorlanmoqda', dot: colors.textTertiary, text: colors.textSecondary },
+    prep: { label: 'Tayyorlaning', dot: colors.data, text: colors.selectedText, ring: colors.focusRing },
+    recording: { label: 'Yozilmoqda', dot: colors.error[500], text: colors.error.text, ring: colors.error.ring },
+    done: { label: 'Yozib olindi', dot: colors.success[500], text: colors.success.text },
+    denied: { label: "Ruxsat yo'q", dot: colors.error[500], text: colors.error.text },
+  })[phase];
 
 export type RecorderCardProps = {
   question: SpeakingQuestion;
@@ -36,7 +29,9 @@ export type RecorderCardProps = {
 };
 
 export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed, bars }) => {
-  const status = statuses[phase];
+  const styles = useStyles();
+  const { colors } = useTheme();
+  const status = statusFor(colors, phase);
   const wave = useMemo(() => idleBars.map((idle, i) => bars[i] ?? idle), [bars]);
   const prepared = phase === 'recording' || phase === 'done';
 
@@ -44,12 +39,12 @@ export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed,
     <Card level="raised" radius={radius.cardLg} style={styles.card}>
       <View style={styles.header}>
         <View style={styles.status}>
-          <Dot color={status.color} size={8} ring={status.ring} ringWidth={4} />
-          <Text variant="calloutMedium" color={labelColors[phase]}>
+          <Dot color={status.dot} size={8} ring={status.ring} ringWidth={4} />
+          <Text variant="calloutMedium" color={status.text}>
             {status.label}
           </Text>
         </View>
-        <Text variant="monoCallout" color={light.textSecondary}>
+        <Text variant="monoCallout" color={colors.textSecondary}>
           {`${formatClock(elapsed)} / ${formatClock(question.answerSec)}`}
         </Text>
       </View>
@@ -58,12 +53,12 @@ export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed,
 
       <View style={styles.chips}>
         <View style={styles.chip}>
-          <Text variant="monoXs" color={light.textSecondary}>
+          <Text variant="monoXs" color={colors.textSecondary}>
             {`Tayyorlanish ${question.prepSec}s${prepared ? ' ✓' : ''}`}
           </Text>
         </View>
         <View style={styles.chip}>
-          <Text variant="monoXs" color={light.textSecondary}>
+          <Text variant="monoXs" color={colors.textSecondary}>
             {`Javob ${question.answerSec}s`}
           </Text>
         </View>
@@ -74,7 +69,7 @@ export const RecorderCard = memo<RecorderCardProps>(({ question, phase, elapsed,
 
 RecorderCard.displayName = 'RecorderCard';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: {
     padding: space[4.5],
     gap: space[3.5],
@@ -97,7 +92,7 @@ const styles = StyleSheet.create({
     height: 24,
     paddingHorizontal: space[2],
     borderRadius: radius.chip,
-    backgroundColor: light.bg,
+    backgroundColor: colors.bg,
     justifyContent: 'center',
   },
-});
+}));

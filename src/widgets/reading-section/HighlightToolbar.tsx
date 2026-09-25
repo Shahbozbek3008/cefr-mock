@@ -1,13 +1,16 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import type { Highlight } from '@/entities/attempt';
-import { elevation, light, palette, radius, space } from '@/shared/theme';
+import { Colors, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
-export const highlightColors: Record<Highlight['color'], { fill: string; ring: string }> = {
-  yellow: { fill: light.highlight, ring: light.warning[500] },
-  blue: { fill: light.dataMuted, ring: light.data },
-};
+const highlightOrder: Highlight['color'][] = ['yellow', 'blue'];
+
+export const highlightTone = (colors: Colors, color: Highlight['color']) =>
+  ({
+    yellow: { fill: colors.highlight, ring: colors.warning[500] },
+    blue: { fill: colors.dataMuted, ring: colors.data },
+  })[color];
 
 export type HighlightToolbarProps = {
   active?: Highlight['color'];
@@ -15,43 +18,48 @@ export type HighlightToolbarProps = {
   onNote: () => void;
 };
 
-export const HighlightToolbar = memo<HighlightToolbarProps>(({ active, onPick, onNote }) => (
-  <View style={[styles.toolbar, elevation.floating]}>
-    {(Object.keys(highlightColors) as Highlight['color'][]).map((color) => (
-      <Pressable
-        key={color}
-        accessibilityRole="button"
-        accessibilityLabel={color === 'yellow' ? 'Sariq bilan belgilash' : "Ko'k bilan belgilash"}
-        accessibilityState={{ selected: active === color }}
-        onPress={() => onPick(color)}
-        style={styles.swatchButton}
-      >
-        <View
-          style={[
-            styles.swatch,
-            { backgroundColor: highlightColors[color].fill },
-            active === color && [styles.swatchActive, { outlineColor: highlightColors[color].ring }],
-          ]}
-        />
+export const HighlightToolbar = memo<HighlightToolbarProps>(({ active, onPick, onNote }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
+
+  return (
+    <View style={[styles.toolbar, elevation.floating]}>
+      {highlightOrder.map((color) => (
+        <Pressable
+          key={color}
+          accessibilityRole="button"
+          accessibilityLabel={color === 'yellow' ? 'Sariq bilan belgilash' : "Ko'k bilan belgilash"}
+          accessibilityState={{ selected: active === color }}
+          onPress={() => onPick(color)}
+          style={styles.swatchButton}
+        >
+          <View
+            style={[
+              styles.swatch,
+              { backgroundColor: highlightTone(colors, color).fill },
+              active === color && [styles.swatchActive, { outlineColor: highlightTone(colors, color).ring }],
+            ]}
+          />
+        </Pressable>
+      ))}
+      <View style={styles.divider} />
+      <Pressable accessibilityRole="button" onPress={onNote} style={styles.note}>
+        <Text variant="callout" color={colors.textStrong}>
+          Izoh
+        </Text>
       </Pressable>
-    ))}
-    <View style={styles.divider} />
-    <Pressable accessibilityRole="button" onPress={onNote} style={styles.note}>
-      <Text variant="callout" color={light.textStrong}>
-        Izoh
-      </Text>
-    </Pressable>
-  </View>
-));
+    </View>
+  );
+});
 
 HighlightToolbar.displayName = 'HighlightToolbar';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   toolbar: {
     position: 'absolute',
     height: 40,
     borderRadius: radius.md,
-    backgroundColor: palette.white.a92,
+    backgroundColor: colors.popover,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space[0.5],
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
   },
   swatchActive: {
     borderWidth: 2,
-    borderColor: light.surface,
+    borderColor: colors.surface,
     outlineWidth: 1.5,
     outlineStyle: 'solid',
   },
@@ -80,11 +88,11 @@ const styles = StyleSheet.create({
     width: 1,
     height: 18,
     marginHorizontal: space[1],
-    backgroundColor: light.surfaceSubtle,
+    backgroundColor: colors.surfaceSubtle,
   },
   note: {
     height: 32,
     paddingHorizontal: space[2.5],
     justifyContent: 'center',
   },
-});
+}));

@@ -67,8 +67,7 @@ export const useAttemptStore = create<AttemptData & AttemptActions>()(
         set((state) => ({
           completed: state.completed.includes(section) ? state.completed : [...state.completed, section],
         })),
-      setAnswer: (questionId, value) =>
-        set((state) => ({ answers: { ...state.answers, [questionId]: value } })),
+      setAnswer: (questionId, value) => set((state) => ({ answers: { ...state.answers, [questionId]: value } })),
       toggleFlag: (questionId) =>
         set((state) => ({
           flags: state.flags.includes(questionId)
@@ -86,10 +85,8 @@ export const useAttemptStore = create<AttemptData & AttemptActions>()(
         }),
       setWriting: (taskId, text) =>
         set((state) => ({ writing: { ...state.writing, [taskId]: text }, writingSavedAt: Date.now() })),
-      setRecording: (questionId, uri) =>
-        set((state) => ({ recordings: { ...state.recordings, [questionId]: uri } })),
-      setPosition: (section, index) =>
-        set((state) => ({ position: { ...state.position, [section]: index } })),
+      setRecording: (questionId, uri) => set((state) => ({ recordings: { ...state.recordings, [questionId]: uri } })),
+      setPosition: (section, index) => set((state) => ({ position: { ...state.position, [section]: index } })),
       reset: () => set(empty),
     }),
     {

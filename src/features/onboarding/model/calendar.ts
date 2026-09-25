@@ -22,8 +22,7 @@ export type CalendarCell = {
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
-export const toIso = (year: number, month: number, day: number) =>
-  `${year}-${pad(month + 1)}-${pad(day)}`;
+export const toIso = (year: number, month: number, day: number) => `${year}-${pad(month + 1)}-${pad(day)}`;
 
 export const buildMonthGrid = (year: number, month: number): CalendarCell[] => {
   const firstDay = new Date(year, month, 1).getDay();
@@ -46,4 +45,3 @@ export const isOfficialExamDay = (iso: string) => {
   const day = Number(iso.slice(8, 10));
   return day % 8 === 1;
 };
-

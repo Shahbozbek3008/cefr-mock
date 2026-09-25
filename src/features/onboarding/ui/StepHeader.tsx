@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { light } from '@/shared/theme';
+import { useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 export type StepHeaderProps = {
@@ -10,19 +10,21 @@ export type StepHeaderProps = {
   subtitle: string;
 };
 
-export const StepHeader = memo<StepHeaderProps>(({ step, total, title, subtitle }) => (
-  <View style={styles.container}>
-    <Text variant="monoXs" color={light.textTertiary}>
-      {`${String(step).padStart(2, '0')} / ${String(total).padStart(2, '0')}`}
-    </Text>
-    <Text variant="titleXl">
-      {title}
-    </Text>
-    <Text variant="labelRelaxed" color={light.textSecondary}>
-      {subtitle}
-    </Text>
-  </View>
-));
+export const StepHeader = memo<StepHeaderProps>(({ step, total, title, subtitle }) => {
+  const { colors } = useTheme();
+
+  return (
+    <View style={styles.container}>
+      <Text variant="monoXs" color={colors.textTertiary}>
+        {`${String(step).padStart(2, '0')} / ${String(total).padStart(2, '0')}`}
+      </Text>
+      <Text variant="titleXl">{title}</Text>
+      <Text variant="labelRelaxed" color={colors.textSecondary}>
+        {subtitle}
+      </Text>
+    </View>
+  );
+});
 
 StepHeader.displayName = 'StepHeader';
 

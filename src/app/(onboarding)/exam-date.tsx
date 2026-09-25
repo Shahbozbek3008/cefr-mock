@@ -7,10 +7,11 @@ import { useUserStore } from '@/entities/user/model';
 import { Calendar } from '@/features/onboarding/ui/Calendar';
 import { StepHeader } from '@/features/onboarding/ui/StepHeader';
 import { daysUntil } from '@/shared/lib';
-import { hitSlop, light, radius } from '@/shared/theme';
+import { hitSlop, radius, useTheme } from '@/shared/theme';
 import { Button, Card, IconButton, ProgressSteps, Screen, Text } from '@/shared/ui';
 
 export default function ExamDateScreen() {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { edit } = useLocalSearchParams<{ edit?: string }>();
   const examDate = useUserStore((state) => state.examDate);
@@ -35,27 +36,20 @@ export default function ExamDateScreen() {
     <Screen paddingHorizontal={24}>
       <View style={styles.topBar}>
         <IconButton accessibilityLabel="Orqaga" onPress={router.back} style={styles.back}>
-          <ChevronLeft size={17} color={light.textStrong} strokeWidth={1.6} />
+          <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
         </IconButton>
         <ProgressSteps total={3} current={2} />
       </View>
 
       <View style={styles.content}>
-        <StepHeader
-          step={2}
-          total={3}
-          title="Imtihon qachon?"
-          subtitle="Tayyorgarlik rejasini sanaga qarab tuzamiz."
-        />
+        <StepHeader step={2} total={3} title="Imtihon qachon?" subtitle="Tayyorgarlik rejasini sanaga qarab tuzamiz." />
 
         <Calendar value={examDate} onChange={setExamDate} />
 
         {remaining !== null ? (
           <Card style={styles.summary}>
-            <Text variant="monoLg">
-              {remaining}
-            </Text>
-            <Text variant="bodySm" color={light.textSecondary} style={styles.summaryText}>
+            <Text variant="monoLg">{remaining}</Text>
+            <Text variant="bodySm" color={colors.textSecondary} style={styles.summaryText}>
               kun qoldi · haftasiga ~5 soat tavsiya etiladi
             </Text>
           </Card>
@@ -70,18 +64,13 @@ export default function ExamDateScreen() {
           trailingIcon={
             <ArrowRight
               size={18}
-              color={examDate === null ? light.disabledText : light.onAction}
+              color={examDate === null ? colors.disabledText : colors.onAction}
               strokeWidth={1.75}
             />
           }
         />
-        <Pressable
-          accessibilityRole="button"
-          hitSlop={hitSlop}
-          onPress={onSkip}
-          style={styles.skip}
-        >
-          <Text variant="labelMedium" color={light.link}>
+        <Pressable accessibilityRole="button" hitSlop={hitSlop} onPress={onSkip} style={styles.skip}>
+          <Text variant="labelMedium" color={colors.link}>
             Sanani hali bilmayman
           </Text>
         </Pressable>

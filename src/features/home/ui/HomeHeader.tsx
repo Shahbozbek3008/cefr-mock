@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Bell } from 'lucide-react-native';
 import { formatLongDate } from '@/shared/lib';
-import { elevation, light, space } from '@/shared/theme';
+import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Avatar, IconButton, Text } from '@/shared/ui';
 
 export type HomeHeaderProps = {
@@ -11,25 +11,30 @@ export type HomeHeaderProps = {
   onBellPress: () => void;
 };
 
-export const HomeHeader = memo<HomeHeaderProps>(({ name, hasNotifications, onBellPress }) => (
-  <View style={styles.row}>
-    <Avatar name={name} />
-    <View style={styles.text}>
-      <Text variant="caption" color={light.textSecondary}>
-        {formatLongDate(new Date())}
-      </Text>
-      <Text variant="titleBadge">{`Salom, ${name}`}</Text>
+export const HomeHeader = memo<HomeHeaderProps>(({ name, hasNotifications, onBellPress }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
+
+  return (
+    <View style={styles.row}>
+      <Avatar name={name} />
+      <View style={styles.text}>
+        <Text variant="caption" color={colors.textSecondary}>
+          {formatLongDate(new Date())}
+        </Text>
+        <Text variant="titleBadge">{`Salom, ${name}`}</Text>
+      </View>
+      <IconButton accessibilityLabel="Bildirishnomalar" onPress={onBellPress} style={elevation.segment}>
+        <Bell size={19} color={colors.textStrong} strokeWidth={1.5} />
+        {hasNotifications ? <View style={styles.badge} /> : null}
+      </IconButton>
     </View>
-    <IconButton accessibilityLabel="Bildirishnomalar" onPress={onBellPress} style={elevation.segment}>
-      <Bell size={19} color={light.textStrong} strokeWidth={1.5} />
-      {hasNotifications ? <View style={styles.badge} /> : null}
-    </IconButton>
-  </View>
-));
+  );
+});
 
 HomeHeader.displayName = 'HomeHeader';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -46,8 +51,8 @@ const styles = StyleSheet.create({
     width: 11,
     height: 11,
     borderRadius: 5.5,
-    backgroundColor: light.streak,
+    backgroundColor: colors.streak,
     borderWidth: 2,
-    borderColor: light.surface,
+    borderColor: colors.surface,
   },
-});
+}));

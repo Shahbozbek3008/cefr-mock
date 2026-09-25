@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useAnswer, useIsFlagged } from '../model/store';
-import { elevation, light, radius } from '@/shared/theme';
+import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
 export type QuestionCellProps = {
@@ -13,9 +13,11 @@ export type QuestionCellProps = {
 };
 
 export const QuestionCell = memo<QuestionCellProps>(({ id, number, current, size = 'sm', onPress }) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const answered = useAnswer(id).trim() !== '';
   const flagged = useIsFlagged(id);
-  const color = current ? light.onAction : answered ? light.selectedText : light.textSecondary;
+  const color = current ? colors.onAction : answered ? colors.selectedText : colors.textSecondary;
 
   return (
     <Pressable
@@ -38,7 +40,7 @@ export const QuestionCell = memo<QuestionCellProps>(({ id, number, current, size
 
 QuestionCell.displayName = 'QuestionCell';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   sm: {
     flex: 1,
     height: 34,
@@ -54,15 +56,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   current: {
-    backgroundColor: light.action,
+    backgroundColor: colors.action,
   },
   answered: {
-    backgroundColor: light.chipActiveBg,
+    backgroundColor: colors.chipActiveBg,
   },
   empty: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   flag: {
     position: 'absolute',
@@ -71,8 +73,8 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     borderRadius: 6.5,
-    backgroundColor: light.warning[500],
+    backgroundColor: colors.warning[500],
     borderWidth: 2,
-    borderColor: light.surface,
+    borderColor: colors.surface,
   },
-});
+}));

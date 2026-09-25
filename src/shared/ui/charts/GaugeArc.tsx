@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import Svg, { Circle, G, Line, Path, Text as SvgText } from 'react-native-svg';
-import { font, light } from '../../theme';
+import { font, useTheme } from '../../theme';
 
 export type GaugeMark = { value: number; label: string };
 
@@ -23,6 +23,7 @@ const point = (fraction: number, radius: number) => {
 };
 
 export const GaugeArc = memo<GaugeArcProps>(({ value, max, marks, activeLabel }) => {
+  const { colors } = useTheme();
   const fraction = Math.max(0, Math.min(1, value / max));
   const start = point(0, R);
   const finish = point(1, R);
@@ -33,14 +34,14 @@ export const GaugeArc = memo<GaugeArcProps>(({ value, max, marks, activeLabel })
       <Path
         d={`M${start.x} ${start.y} A${R} ${R} 0 0 1 ${finish.x} ${finish.y}`}
         fill="none"
-        stroke={light.dataTrack}
+        stroke={colors.dataTrack}
         strokeWidth={12}
         strokeLinecap="round"
       />
       <Path
         d={`M${start.x} ${start.y} A${R} ${R} 0 0 1 ${end.x} ${end.y}`}
         fill="none"
-        stroke={light.data}
+        stroke={colors.data}
         strokeWidth={12}
         strokeLinecap="round"
       />
@@ -52,21 +53,21 @@ export const GaugeArc = memo<GaugeArcProps>(({ value, max, marks, activeLabel })
         const active = mark.label === activeLabel;
         return (
           <G key={mark.label}>
-            <Line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke={light.surface} strokeWidth={3} />
+            <Line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke={colors.surface} strokeWidth={3} />
             <SvgText
               x={label.x}
               y={label.y + 3}
               textAnchor="middle"
               fontFamily={active ? font.monoMedium : font.mono}
               fontSize={10}
-              fill={active ? light.selectedText : light.textTertiary}
+              fill={active ? colors.selectedText : colors.textTertiary}
             >
               {mark.label}
             </SvgText>
           </G>
         );
       })}
-      <Circle cx={end.x} cy={end.y} r={9} fill={light.surface} stroke={light.selectedText} strokeWidth={3} />
+      <Circle cx={end.x} cy={end.y} r={9} fill={colors.surface} stroke={colors.selectedText} strokeWidth={3} />
     </Svg>
   );
 });

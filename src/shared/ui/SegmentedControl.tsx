@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
-import { elevation, light, radius, TypeToken } from '../theme';
+import { Pressable, View, ViewStyle } from 'react-native';
+import { makeStyles, radius, TypeToken, useTheme } from '../theme';
 import { Text } from './Text';
 
 export type SegmentedControlProps<T extends string> = {
@@ -14,7 +14,10 @@ export type SegmentedControlProps<T extends string> = {
 
 type Size = 'sm' | 'compact' | 'md' | 'lg';
 
-const metrics: Record<Size, { height: number; pad: number; track: number; seg: number; text: TypeToken; active: TypeToken }> = {
+const metrics: Record<
+  Size,
+  { height: number; pad: number; track: number; seg: number; text: TypeToken; active: TypeToken }
+> = {
   sm: { height: 32, pad: 3, track: radius.sm, seg: radius.tag, text: 'caption', active: 'captionMedium' },
   compact: { height: 36, pad: 3, track: radius.input, seg: radius.segment, text: 'caption', active: 'captionMedium' },
   md: { height: 36, pad: 3, track: radius.input, seg: radius.segment, text: 'callout', active: 'calloutMedium' },
@@ -29,17 +32,14 @@ const SegmentedControlBase = <T extends string>({
   fit = false,
   style,
 }: SegmentedControlProps<T>) => {
+  const styles = useStyles();
+  const { colors, elevation } = useTheme();
   const m = metrics[size];
 
   return (
     <View
       accessibilityRole="tablist"
-      style={[
-        styles.track,
-        { height: m.height, padding: m.pad, borderRadius: m.track },
-        fit && styles.fit,
-        style,
-      ]}
+      style={[styles.track, { height: m.height, padding: m.pad, borderRadius: m.track }, fit && styles.fit, style]}
     >
       {options.map((option) => {
         const active = option.value === value;
@@ -57,7 +57,7 @@ const SegmentedControlBase = <T extends string>({
               active && elevation.segment,
             ]}
           >
-            <Text variant={active ? m.active : m.text} color={active ? light.text : light.textSecondary}>
+            <Text variant={active ? m.active : m.text} color={active ? colors.text : colors.textSecondary}>
               {option.label}
             </Text>
           </Pressable>
@@ -69,10 +69,10 @@ const SegmentedControlBase = <T extends string>({
 
 export const SegmentedControl = memo(SegmentedControlBase) as typeof SegmentedControlBase;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   track: {
     flexDirection: 'row',
-    backgroundColor: light.surfaceSubtle,
+    backgroundColor: colors.surfaceSubtle,
   },
   fit: {
     alignSelf: 'flex-start',
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   active: {
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
   },
-});
+}));

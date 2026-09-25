@@ -1,14 +1,18 @@
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Sparkles } from 'lucide-react-native';
-import { light, radius } from '@/shared/theme';
+import { radius, useTheme } from '@/shared/theme';
 import { HeroSurface } from '@/shared/ui';
 
-export const AiTile = memo(() => (
-  <HeroSurface colors={light.aiTile} style={styles.tile}>
-    <Sparkles size={16} color={light.selectedText} strokeWidth={1.6} />
-  </HeroSurface>
-));
+export const AiTile = memo(() => {
+  const { colors } = useTheme();
+
+  return (
+    <HeroSurface colors={colors.aiTile} style={styles.tile}>
+      <Sparkles size={16} color={colors.selectedText} strokeWidth={1.6} />
+    </HeroSurface>
+  );
+});
 
 AiTile.displayName = 'AiTile';
 

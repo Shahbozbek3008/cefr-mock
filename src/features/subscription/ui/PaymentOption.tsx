@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { font, light, palette, radius, size, space } from '@/shared/theme';
+import { Pressable, View } from 'react-native';
+import { font, makeStyles, palette, radius, size, space } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 import type { PaymentMethod } from '../model/plans';
 
@@ -12,31 +12,35 @@ export type PaymentOptionProps = {
   onSelect: (id: PaymentMethod) => void;
 };
 
-export const PaymentOption = memo<PaymentOptionProps>(({ id, title, letter, selected, onSelect }) => (
-  <Pressable
-    accessibilityRole="radio"
-    accessibilityState={{ selected }}
-    accessibilityLabel={title}
-    onPress={() => onSelect(id)}
-    style={[styles.option, selected ? styles.selected : styles.idle]}
-  >
-    <View style={[styles.logo, { backgroundColor: palette.brand[id] }]}>
-      <Text variant="microMedium" color={palette.neutral.white} style={styles.letter}>
-        {letter}
-      </Text>
-    </View>
-    <Text variant="labelMedium">{title}</Text>
-  </Pressable>
-));
+export const PaymentOption = memo<PaymentOptionProps>(({ id, title, letter, selected, onSelect }) => {
+  const styles = useStyles();
+
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      accessibilityLabel={title}
+      onPress={() => onSelect(id)}
+      style={[styles.option, selected ? styles.selected : styles.idle]}
+    >
+      <View style={[styles.logo, { backgroundColor: palette.brand[id] }]}>
+        <Text variant="microMedium" color={palette.neutral.white} style={styles.letter}>
+          {letter}
+        </Text>
+      </View>
+      <Text variant="labelMedium">{title}</Text>
+    </Pressable>
+  );
+});
 
 PaymentOption.displayName = 'PaymentOption';
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   option: {
     flex: 1,
     height: size.buttonM,
     borderRadius: radius.button,
-    backgroundColor: light.surface,
+    backgroundColor: colors.surface,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space[2.5],
@@ -44,11 +48,11 @@ const styles = StyleSheet.create({
   },
   idle: {
     borderWidth: 1,
-    borderColor: light.border,
+    borderColor: colors.border,
   },
   selected: {
     borderWidth: 1.5,
-    borderColor: light.selectedBorder,
+    borderColor: colors.selectedBorder,
   },
   logo: {
     width: 28,
@@ -60,4 +64,4 @@ const styles = StyleSheet.create({
   letter: {
     fontFamily: font.semibold,
   },
-});
+}));

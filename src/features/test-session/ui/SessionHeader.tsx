@@ -1,7 +1,7 @@
 import { ReactNode, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { X } from 'lucide-react-native';
-import { light, size, space } from '@/shared/theme';
+import { size, space, useTheme } from '@/shared/theme';
 import { IconButton, SegmentProgress, Text } from '@/shared/ui';
 
 export type SessionHeaderProps = {
@@ -13,34 +13,38 @@ export type SessionHeaderProps = {
   onClose: () => void;
 };
 
-export const SessionHeader = memo<SessionHeaderProps>(({ title, counter, subtitle, progress, timer, onClose }) => (
-  <View style={styles.bar}>
-    <IconButton accessibilityLabel="Testdan chiqish" onPress={onClose}>
-      <X size={17} color={light.textStrong} strokeWidth={1.6} />
-    </IconButton>
+export const SessionHeader = memo<SessionHeaderProps>(({ title, counter, subtitle, progress, timer, onClose }) => {
+  const { colors } = useTheme();
 
-    <View style={[styles.center, progress && styles.centerProgress]}>
-      <View style={styles.titleRow}>
-        <Text variant="bodySmMedium">{title}</Text>
-        {counter ? (
-          <Text variant="monoSm" color={light.textTertiary}>
-            {counter}
+  return (
+    <View style={styles.bar}>
+      <IconButton accessibilityLabel="Testdan chiqish" onPress={onClose}>
+        <X size={17} color={colors.textStrong} strokeWidth={1.6} />
+      </IconButton>
+
+      <View style={[styles.center, progress && styles.centerProgress]}>
+        <View style={styles.titleRow}>
+          <Text variant="bodySmMedium">{title}</Text>
+          {counter ? (
+            <Text variant="monoSm" color={colors.textTertiary}>
+              {counter}
+            </Text>
+          ) : null}
+        </View>
+        {subtitle ? (
+          <Text variant="caption" color={colors.textSecondary}>
+            {subtitle}
           </Text>
         ) : null}
+        {progress ? (
+          <SegmentProgress total={progress.total} completed={progress.completed} currentProgress={progress.current} />
+        ) : null}
       </View>
-      {subtitle ? (
-        <Text variant="caption" color={light.textSecondary}>
-          {subtitle}
-        </Text>
-      ) : null}
-      {progress ? (
-        <SegmentProgress total={progress.total} completed={progress.completed} currentProgress={progress.current} />
-      ) : null}
-    </View>
 
-    {timer}
-  </View>
-));
+      {timer}
+    </View>
+  );
+});
 
 SessionHeader.displayName = 'SessionHeader';
 

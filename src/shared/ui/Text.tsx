@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
-import { light, type, TypeToken } from '../theme';
+import { type, TypeToken, useTheme } from '../theme';
 
 export type TextProps = RNTextProps & {
   variant?: TypeToken;
@@ -9,21 +9,23 @@ export type TextProps = RNTextProps & {
   tabular?: boolean;
 };
 
-export const Text = memo<TextProps>(
-  ({ variant = 'body', color = light.text, center, tabular, style, ...rest }) => (
+export const Text = memo<TextProps>(({ variant = 'body', color, center, tabular, style, ...rest }) => {
+  const { colors } = useTheme();
+
+  return (
     <RNText
       allowFontScaling={false}
       style={[
         type[variant],
-        { color },
+        { color: color ?? colors.text },
         center && styles.center,
         tabular && styles.tabular,
         style,
       ]}
       {...rest}
     />
-  ),
-);
+  );
+});
 
 Text.displayName = 'Text';
 
