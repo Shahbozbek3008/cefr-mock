@@ -1,4 +1,5 @@
 import { Platform, ViewStyle } from 'react-native';
+import { palette } from './palette';
 
 type Layer = { x: number; y: number; blur: number; spread: number; color: string };
 
@@ -78,18 +79,18 @@ export const elevation = {
   ),
 
   action: shadow(
-    [{ x: 0, y: 10, blur: 22, spread: -10, color: 'rgba(114,188,37,0.45)' }],
-    ios('#72BC25', 0.45, 11, 10),
+    [{ x: 0, y: 10, blur: 22, spread: -10, color: palette.primary.glow }],
+    ios(palette.primary[800], 0.35, 11, 10),
   ),
 
   actionSm: shadow(
-    [{ x: 0, y: 6, blur: 14, spread: -6, color: 'rgba(114,188,37,0.45)' }],
-    ios('#72BC25', 0.45, 7, 6),
+    [{ x: 0, y: 6, blur: 14, spread: -6, color: palette.primary.glow }],
+    ios(palette.primary[800], 0.35, 7, 6),
   ),
 
   actionXs: shadow(
-    [{ x: 0, y: 4, blur: 10, spread: -4, color: 'rgba(114,188,37,0.45)' }],
-    ios('#72BC25', 0.45, 5, 4),
+    [{ x: 0, y: 4, blur: 10, spread: -4, color: palette.primary.glow }],
+    ios(palette.primary[800], 0.35, 5, 4),
   ),
 
   selected: shadow(

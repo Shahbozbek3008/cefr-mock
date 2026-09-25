@@ -65,20 +65,24 @@ export const Button = memo<ButtonProps>(
     style,
   }) => {
     const scale = useSharedValue(1);
+    const pressed = useSharedValue(0);
     const inactive = disabled || loading;
     const m = metrics[sizeKey];
     const color = inactive ? light.disabledText : textColors[variant];
     const iconOnly = icon !== undefined && !label;
 
     const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+    const pressedStyle = useAnimatedStyle(() => ({ opacity: pressed.value }));
 
     const onPressIn = useCallback(() => {
       scale.value = withTiming(0.985, { duration: motion.fast });
-    }, [scale]);
+      pressed.value = withTiming(1, { duration: motion.fast });
+    }, [pressed, scale]);
 
     const onPressOut = useCallback(() => {
       scale.value = withTiming(1, { duration: motion.fast });
-    }, [scale]);
+      pressed.value = withTiming(0, { duration: motion.fast });
+    }, [pressed, scale]);
 
     const gradient = variant === 'primary' && !inactive;
 
@@ -104,7 +108,11 @@ export const Button = memo<ButtonProps>(
           ]}
         >
           {gradient ? (
-            <ActionSurface style={[StyleSheet.absoluteFill, { borderRadius: m.radius }]} />
+            <>
+              <ActionSurface style={[StyleSheet.absoluteFill, { borderRadius: m.radius }]} />
+              <Animated.View style={[StyleSheet.absoluteFill, styles.pressed, { borderRadius: m.radius }, pressedStyle]} />
+              <View style={[StyleSheet.absoluteFill, styles.highlight, { borderRadius: m.radius }]} />
+            </>
           ) : (
             <View
               style={[
@@ -160,6 +168,13 @@ const styles = StyleSheet.create({
   },
   disabled: {
     backgroundColor: light.disabledBg,
+  },
+  pressed: {
+    backgroundColor: light.actionPressed,
+  },
+  highlight: {
+    borderTopWidth: 1,
+    borderTopColor: light.actionHighlight,
   },
   content: {
     flex: 1,
