@@ -1,53 +1,30 @@
-import { memo, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { GestureResponderEvent, Pressable, View } from 'react-native';
 import { useI18n } from '@/shared/i18n';
-import { makeStyles, radius, space, useTheme, useThemePreference } from '@/shared/theme';
+import { makeStyles, motion, radius, space, useTheme, useThemePreference } from '@/shared/theme';
 import type { ThemePreference } from '@/shared/theme';
 import { Radio, Sheet, Text } from '@/shared/ui';
 import { themeOptions } from '../model/options';
 import { ThemePreview } from './ThemePreview';
 import { useThemeSwitch } from './ThemeTransitionProvider';
-import type { Origin } from './ThemeTransitionProvider';
 
 export type ThemeSheetProps = {
   visible: boolean;
   onClose: () => void;
 };
 
-export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
+type OptionsProps = {
+  preference: ThemePreference;
+  onSelect: (value: ThemePreference, event: GestureResponderEvent) => void;
+};
+
+const ThemeOptions = ({ preference, onSelect }: OptionsProps) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const preference = useThemePreference((s) => s.preference);
-  const { prepare, apply } = useThemeSwitch();
-  const pending = useRef<{ preference: ThemePreference; origin: Origin; ready: Promise<boolean> } | null>(null);
-
-  const select = useCallback(
-    (value: ThemePreference, event: GestureResponderEvent) => {
-      if (value === preference) {
-        onClose();
-        return;
-      }
-      pending.current = {
-        preference: value,
-        origin: { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY },
-        ready: prepare(value),
-      };
-      onClose();
-    },
-    [onClose, prepare, preference],
-  );
-
-  const onHidden = useCallback(async () => {
-    const next = pending.current;
-    pending.current = null;
-    if (!next) return;
-    await next.ready;
-    apply(next.preference, next.origin);
-  }, [apply]);
 
   return (
-    <Sheet visible={visible} onClose={onClose} onHidden={onHidden}>
+    <>
       <View style={styles.intro}>
         <Text variant="titleSheet">{t('theme.title')}</Text>
         <Text variant="labelRelaxed" color={colors.textSecondary}>
@@ -64,7 +41,7 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
               accessibilityRole="radio"
               accessibilityState={{ selected }}
               accessibilityLabel={t(`theme.${option}`)}
-              onPress={(event) => select(option, event)}
+              onPress={(event) => onSelect(option, event)}
               style={styles.option}
             >
               <View style={[styles.frame, selected && styles.frameSelected]}>
@@ -78,6 +55,35 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
           );
         })}
       </View>
+    </>
+  );
+};
+
+export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
+  const preference = useThemePreference((s) => s.preference);
+  const { capture, apply, release } = useThemeSwitch();
+  const [shown, setShown] = useState(preference);
+
+  useEffect(() => {
+    if (!visible) return;
+    setShown(useThemePreference.getState().preference);
+    const timer = setTimeout(capture, motion.sheetIn);
+    return () => clearTimeout(timer);
+  }, [capture, visible]);
+
+  const select = useCallback(
+    (value: ThemePreference, event: GestureResponderEvent) => {
+      onClose();
+      if (value === preference) return;
+      setShown(value);
+      apply(value, { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
+    },
+    [apply, onClose, preference],
+  );
+
+  return (
+    <Sheet visible={visible} onClose={onClose} onHidden={release}>
+      <ThemeOptions preference={shown} onSelect={select} />
     </Sheet>
   );
 });

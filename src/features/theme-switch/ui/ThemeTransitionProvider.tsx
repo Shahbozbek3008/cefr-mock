@@ -11,8 +11,9 @@ export type Origin = { x: number; y: number };
 type Snapshot = { uri: string; origin: Origin | null };
 
 type ThemeSwitch = {
-  prepare: (preference: ThemePreference) => Promise<boolean>;
+  capture: () => void;
   apply: (preference: ThemePreference, origin: Origin) => void;
+  release: () => void;
 };
 
 const COLLAPSE_MS = 480;
@@ -32,12 +33,14 @@ export const ThemeTransitionProvider = ({ children }: { children: ReactNode }) =
   const { width, height } = useWindowDimensions();
   const rootRef = useRef<View>(null);
   const loadedRef = useRef<(() => void) | null>(null);
-  const uriRef = useRef<string | null>(null);
+  const pendingRef = useRef<Promise<string | null> | null>(null);
+  const runningRef = useRef(false);
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const radius = useSharedValue(0);
 
   const finish = useCallback(() => {
-    uriRef.current = null;
+    pendingRef.current = null;
+    runningRef.current = false;
     setSnapshot(null);
   }, []);
 
@@ -46,32 +49,38 @@ export const ThemeTransitionProvider = ({ children }: { children: ReactNode }) =
     loadedRef.current = null;
   }, []);
 
-  const prepare = useCallback(
-    async (preference: ThemePreference) => {
-      const current = resolveScheme(useThemePreference.getState().preference, system);
-      if (resolveScheme(preference, system) === current || !rootRef.current) return false;
-
-      try {
-        const uri = await captureRef(rootRef, { format: 'jpg', quality: 0.9, result: 'tmpfile' });
-        radius.value = Math.hypot(width, height);
-        await new Promise<void>((resolve) => {
-          loadedRef.current = resolve;
-          uriRef.current = uri;
+  const capture = useCallback(() => {
+    if (pendingRef.current || runningRef.current || !rootRef.current) return;
+    radius.value = Math.hypot(width, height);
+    const pending = captureRef(rootRef, { format: 'jpg', quality: 0.9, result: 'tmpfile' })
+      .then((uri) => {
+        if (pendingRef.current !== pending) return null;
+        return new Promise<string>((resolve) => {
+          loadedRef.current = () => resolve(uri);
           setSnapshot({ uri, origin: null });
         });
-        return true;
-      } catch {
-        finish();
-        return false;
-      }
-    },
-    [finish, height, radius, system, width],
-  );
+      })
+      .catch(() => null);
+    pendingRef.current = pending;
+  }, [height, radius, width]);
+
+  const release = useCallback(() => {
+    if (!runningRef.current) finish();
+  }, [finish]);
 
   const apply = useCallback(
-    (preference: ThemePreference, origin: Origin) => {
-      const uri = uriRef.current;
+    async (preference: ThemePreference, origin: Origin) => {
+      const current = resolveScheme(useThemePreference.getState().preference, system);
+      if (resolveScheme(preference, system) === current) {
+        setPreference(preference);
+        return;
+      }
+
+      capture();
+      runningRef.current = true;
+      const uri = await pendingRef.current;
       if (!uri) {
+        finish();
         setPreference(preference);
         return;
       }
@@ -86,10 +95,10 @@ export const ThemeTransitionProvider = ({ children }: { children: ReactNode }) =
         });
       });
     },
-    [finish, height, radius, setPreference, width],
+    [capture, finish, height, radius, setPreference, system, width],
   );
 
-  const value = useMemo(() => ({ prepare, apply }), [prepare, apply]);
+  const value = useMemo(() => ({ capture, apply, release }), [capture, apply, release]);
   const origin = snapshot?.origin;
   const ox = origin?.x ?? 0;
   const oy = origin?.y ?? 0;

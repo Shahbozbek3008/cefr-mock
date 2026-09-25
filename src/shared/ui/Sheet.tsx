@@ -4,7 +4,7 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from '
 import { scheduleOnRN } from 'react-native-worklets';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { makeStyles, motion, radius, space, useTheme } from '../theme';
+import { SchemeLock, makeStyles, motion, radius, space, useLiveScheme, useTheme } from '../theme';
 import { useI18n } from '../i18n';
 
 export type SheetProps = {
@@ -17,7 +17,7 @@ export type SheetProps = {
 const decelerate = Easing.bezier(...motion.curve.decelerate);
 const accelerate = Easing.bezier(...motion.curve.accelerate);
 
-export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children }) => {
+const SheetBody = ({ visible, onClose, onHidden, children }: SheetProps) => {
   const styles = useStyles();
   const { elevation } = useTheme();
   const { t } = useI18n();
@@ -94,6 +94,18 @@ export const Sheet = memo<SheetProps>(({ visible, onClose, onHidden, children })
         {children}
       </Animated.View>
     </Modal>
+  );
+};
+
+export const Sheet = memo<SheetProps>((props) => {
+  const live = useLiveScheme();
+  const scheme = useRef(live);
+  if (props.visible) scheme.current = live;
+
+  return (
+    <SchemeLock value={scheme.current}>
+      <SheetBody {...props} />
+    </SchemeLock>
   );
 });
 
