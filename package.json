@@ -18,7 +18,8 @@
     "start:cloud": "node scripts/start-cloud.js",
     "db:seed": "node scripts/generate-test-seed.mjs",
     "db:push": "npx supabase db push",
-    "functions:deploy": "npx supabase functions deploy"
+    "functions:deploy": "npx supabase functions deploy",
+    "proxy:deploy": "npx wrangler deploy --config proxy/wrangler.toml"
   },
   "dependencies": {
     "@expo-google-fonts/manrope": "^0.4.2",
