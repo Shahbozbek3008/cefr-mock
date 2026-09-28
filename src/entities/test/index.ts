@@ -18,5 +18,14 @@ export type {
   TfngQuestion,
   WritingTask,
 } from './model/types';
-export { fetchTest, fetchTestKeys, fetchTests, testKeys, useTest, useTestKeys, useTests } from './api/queries';
+export {
+  fetchTest,
+  fetchTestKeys,
+  fetchTests,
+  listeningAudioUrl,
+  testKeys,
+  useTest,
+  useTestKeys,
+  useTests,
+} from './api/queries';
 export { sectionDetailKeys, sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';

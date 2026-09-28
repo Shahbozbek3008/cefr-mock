@@ -131,7 +131,8 @@ export default function NotificationsScreen() {
         message={t('notifications.clearMessage')}
         confirmLabel={t('notifications.clear')}
         cancelLabel={t('common.cancel')}
-        destructive
+        tone="destructive"
+        icon={Trash}
         onConfirm={onClear}
         onClose={() => setConfirmOpen(false)}
       />

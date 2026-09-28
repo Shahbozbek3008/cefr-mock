@@ -15,7 +15,9 @@ export type Database = {
         Row: {
           id: string;
           phone: string | null;
-          name: string | null;
+          first_name: string | null;
+          last_name: string | null;
+          avatar_path: string | null;
           target_level: string | null;
           exam_date: string | null;
           daily_minutes: number | null;
@@ -27,7 +29,9 @@ export type Database = {
         };
         Insert: { [_ in never]: never };
         Update: {
-          name?: string | null;
+          first_name?: string | null;
+          last_name?: string | null;
+          avatar_path?: string | null;
           target_level?: string | null;
           exam_date?: string | null;
           daily_minutes?: number | null;

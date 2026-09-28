@@ -34,6 +34,8 @@ export type { SwitchProps } from './Switch';
 export { Tag } from './Tag';
 export type { TagTone } from './Tag';
 export { Text } from './Text';
+export { TextField } from './TextField';
+export type { TextFieldProps } from './TextField';
 export type { TextProps } from './Text';
 export { StaticTimerPill, TimerPill } from './TimerPill';
 export type { TimerTone } from './TimerPill';

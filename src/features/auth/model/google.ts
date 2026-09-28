@@ -58,7 +58,10 @@ export const signInWithGoogle = async (): Promise<GoogleSignInResult> => {
       status: 'success',
       user: {
         id: user.id,
+        firstName: user.givenName ?? '',
+        lastName: user.familyName ?? '',
         name: user.name ?? user.givenName ?? user.email,
+        avatarUrl: user.photo,
         email: user.email,
         provider: 'google',
         isPro: false,

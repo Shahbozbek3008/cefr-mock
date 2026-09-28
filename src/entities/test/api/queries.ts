@@ -135,6 +135,8 @@ export const fetchTestKeys = async (id: string): Promise<AnswerKeys> => {
   return (data?.keys ?? {}) as unknown as AnswerKeys;
 };
 
+export const listeningAudioUrl = (file: string) => supabase.storage.from('listening').getPublicUrl(file).data.publicUrl;
+
 export const useTests = () => useQuery({ queryKey: testKeys.all, queryFn: fetchTests });
 
 export const useTest = (id: string) =>

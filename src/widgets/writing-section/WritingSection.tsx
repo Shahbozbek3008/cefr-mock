@@ -129,6 +129,7 @@ export const WritingSection = memo<{ test: TestDetail }>(({ test }) => {
         message={t('writing.shortMessage', { items: shortWarning ?? '' })}
         confirmLabel={t('writing.submitAnyway')}
         cancelLabel={t('writing.keepWriting')}
+        tone="warning"
         onConfirm={confirmShort}
         onClose={() => setShortWarning(null)}
       />

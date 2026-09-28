@@ -7,18 +7,19 @@ import { Avatar, IconButton, Text } from '@/shared/ui';
 
 export type HomeHeaderProps = {
   name: string;
+  avatarUrl: string | null;
   hasNotifications: boolean;
   onBellPress: () => void;
 };
 
-export const HomeHeader = memo<HomeHeaderProps>(({ name, hasNotifications, onBellPress }) => {
+export const HomeHeader = memo<HomeHeaderProps>(({ name, avatarUrl, hasNotifications, onBellPress }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
   const { t, longDate } = useI18n();
 
   return (
     <View style={styles.row}>
-      <Avatar name={name} />
+      <Avatar name={name || '?'} uri={avatarUrl} />
       <View style={styles.text}>
         <Text variant="caption" color={colors.textSecondary}>
           {longDate(new Date())}

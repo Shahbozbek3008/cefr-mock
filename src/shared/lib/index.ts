@@ -5,7 +5,6 @@ export { useSecondsLeft } from './useSecondsLeft';
 export { MAX_SCORE, levelFor, levelNames, levelThresholds, nextLevelGap, toScaled } from './level';
 export type { Level } from './level';
 export { daysUntil, formatShortDate } from './date';
-export { usePlayback } from './usePlayback';
 export { useKeyboardLift } from './useKeyboardLift';
 export { useRefresh } from './useRefresh';
 export { useScrollHeader } from './useScrollHeader';

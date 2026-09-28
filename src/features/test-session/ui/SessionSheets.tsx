@@ -1,4 +1,5 @@
 import { memo, useCallback } from 'react';
+import { DoorOpen } from 'lucide-react-native';
 import { sectionOrder, sectionTitles } from '@/entities/test';
 import { useI18n } from '@/shared/i18n';
 import { ConfirmSheet } from '@/shared/ui';
@@ -36,6 +37,8 @@ export const SessionSheets = memo<SessionSheetsProps>(({ controls, onReview }) =
         message={t('session.exitMessage')}
         confirmLabel={t('common.exit')}
         cancelLabel={t('common.continue')}
+        tone="destructive"
+        icon={DoorOpen}
         onConfirm={controls.confirmExit}
         onClose={controls.closeExit}
       />

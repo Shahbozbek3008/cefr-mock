@@ -4,6 +4,9 @@ import { mmkvStorage } from '@/shared/lib';
 import type { Profile } from '../api/profile';
 import type { DailyMinutes, OnboardingState, TargetLevel, User } from './types';
 
+export const fullName = ({ firstName, lastName }: Pick<Profile, 'firstName' | 'lastName'>) =>
+  [firstName, lastName].filter(Boolean).join(' ');
+
 type UserStore = OnboardingState & {
   user: User | null;
   onboardingCompleted: boolean;
@@ -40,7 +43,10 @@ export const useUserStore = create<UserStore>()(
         set({
           user: {
             id: profile.id,
-            name: profile.name,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            name: fullName(profile),
+            avatarUrl: profile.avatarUrl,
             provider: 'phone',
             phone: profile.phone ?? undefined,
             isPro: profile.isPro,

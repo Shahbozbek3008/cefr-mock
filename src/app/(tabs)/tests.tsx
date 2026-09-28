@@ -206,11 +206,11 @@ const useStyles = makeStyles(({ colors }) => ({
     paddingBottom: space[3.5],
   },
   chipsScroll: {
-    marginRight: -size.screenPadding,
+    marginHorizontal: -size.screenPadding,
   },
   chips: {
     gap: space[1.5],
-    paddingRight: size.screenPadding,
+    paddingHorizontal: size.screenPadding,
   },
   separator: {
     height: space[2.5],

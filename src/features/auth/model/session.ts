@@ -44,7 +44,7 @@ export const loadAccount = async () => {
   await updateProfile(patch);
   const merged = { ...profile, ...patch };
   useUserStore.getState().applyProfile(merged);
-  return { needsName: merged.name === '' };
+  return { needsName: merged.firstName === '' };
 };
 
 export const verifyCode = async (digits: string, code: string) => {

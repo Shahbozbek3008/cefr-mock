@@ -25,6 +25,7 @@ export type ListeningPart = {
   emphasis?: string;
   title?: string;
   durationSec: number;
+  audio?: string;
   audioAt?: Record<number, number>;
   questions: Question[];
 };

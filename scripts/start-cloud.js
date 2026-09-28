@@ -84,7 +84,7 @@ const main = async () => {
     console.log('Telefonda CEFR Mock -> Scan QR Code, yoki shu manzilni kiritib Connect');
     console.log('');
 
-    expo = spawn('npx', ['expo', 'start', '--dev-client', '--port', String(PORT)], {
+    expo = spawn('npx', ['expo', 'start', '--dev-client', '--port', String(PORT), ...process.argv.slice(2)], {
       stdio: 'inherit',
       shell: true,
       env: { ...process.env, EXPO_PACKAGER_PROXY_URL: url },

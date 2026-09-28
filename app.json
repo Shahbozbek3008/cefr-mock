@@ -56,6 +56,14 @@
         {
           "microphonePermission": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Profil rasmini tanlash uchun galereyaga ruxsat kerak.",
+          "cameraPermission": "Profil rasmini olish uchun kameraga ruxsat kerak.",
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {

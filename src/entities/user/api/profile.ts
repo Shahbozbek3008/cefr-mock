@@ -1,11 +1,15 @@
 import { ensureOk, requireUserId, supabase, unwrap } from '@/shared/api';
 import type { Database, Tables } from '@/shared/api';
 import type { DailyMinutes, TargetLevel } from '../model/types';
+import { avatarUrl } from './avatar';
 
 export type Profile = {
   id: string;
   phone: string | null;
-  name: string;
+  firstName: string;
+  lastName: string;
+  avatarPath: string | null;
+  avatarUrl: string | null;
   targetLevel: TargetLevel | null;
   examDate: string | null;
   dailyMinutes: DailyMinutes | null;
@@ -14,7 +18,10 @@ export type Profile = {
 };
 
 export type ProfilePatch = Partial<
-  Pick<Profile, 'name' | 'targetLevel' | 'examDate' | 'dailyMinutes' | 'reminderEnabled'> & { pushToken: string | null }
+  Pick<
+    Profile,
+    'firstName' | 'lastName' | 'avatarPath' | 'targetLevel' | 'examDate' | 'dailyMinutes' | 'reminderEnabled'
+  > & { pushToken: string | null }
 >;
 
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
@@ -22,7 +29,10 @@ type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 const toProfile = (row: Tables<'profiles'>): Profile => ({
   id: row.id,
   phone: row.phone,
-  name: row.name ?? '',
+  firstName: row.first_name ?? '',
+  lastName: row.last_name ?? '',
+  avatarPath: row.avatar_path,
+  avatarUrl: row.avatar_path ? avatarUrl(row.avatar_path) : null,
   targetLevel: row.target_level as TargetLevel | null,
   examDate: row.exam_date,
   dailyMinutes: row.daily_minutes as DailyMinutes | null,
@@ -30,9 +40,13 @@ const toProfile = (row: Tables<'profiles'>): Profile => ({
   isPro: row.is_pro,
 });
 
+const clean = (value: string) => value.trim().replace(/\s+/g, ' ') || null;
+
 const toUpdate = (patch: ProfilePatch): ProfileUpdate => {
   const update: ProfileUpdate = {};
-  if (patch.name !== undefined) update.name = patch.name.trim() || null;
+  if (patch.firstName !== undefined) update.first_name = clean(patch.firstName);
+  if (patch.lastName !== undefined) update.last_name = clean(patch.lastName);
+  if (patch.avatarPath !== undefined) update.avatar_path = patch.avatarPath;
   if (patch.targetLevel !== undefined) update.target_level = patch.targetLevel;
   if (patch.examDate !== undefined) update.exam_date = patch.examDate;
   if (patch.dailyMinutes !== undefined) update.daily_minutes = patch.dailyMinutes;

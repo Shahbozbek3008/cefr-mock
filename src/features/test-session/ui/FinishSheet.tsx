@@ -106,16 +106,21 @@ export const FinishSheet = memo<FinishSheetProps>(
         <View style={styles.actions}>
           {hasPending ? (
             <Button
-              label={stats?.empty ? t('session.backToEmpty') : t('session.backToFlagged')}
+              label={t('session.goBack')}
+              accessibilityLabel={stats?.empty ? t('session.backToEmpty') : t('session.backToFlagged')}
               trailingText={String(stats?.empty || stats?.flagged)}
+              variant="secondary"
               size="M"
+              align="center"
+              grow
               onPress={() => onReview(firstPending)}
             />
           ) : null}
           <Button
             label={hasPending ? t('session.finishAnyway') : t('common.finish')}
-            variant={hasPending ? 'muted' : 'primary'}
             size="M"
+            align="center"
+            grow
             loading={loading}
             onPress={onFinish}
           />
@@ -183,6 +188,7 @@ const useStyles = makeStyles(({ colors }) => ({
     borderColor: colors.warning.border,
   },
   actions: {
-    gap: space[2],
+    flexDirection: 'row',
+    gap: space[2.5],
   },
 }));

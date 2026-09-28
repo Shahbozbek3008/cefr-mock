@@ -1,40 +1,40 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router } from 'expo-router';
 import { ArrowRight } from 'lucide-react-native';
-import { updateProfile, useUserStore } from '@/entities/user/model';
+import { fetchProfile, updateProfile, useUserStore } from '@/entities/user/model';
 import { authErrorKey } from '@/features/auth/model';
 import { useI18n } from '@/shared/i18n';
-import { makeStyles, radius, size, space, type, useTheme } from '@/shared/theme';
-import { Button, Screen, Text, useToast } from '@/shared/ui';
+import { makeStyles, space, useTheme } from '@/shared/theme';
+import { Button, Screen, Text, TextField, useToast } from '@/shared/ui';
 
 const MIN_LENGTH = 2;
-const MAX_LENGTH = 60;
+const MAX_LENGTH = 40;
 
 export default function NameScreen() {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [saving, setSaving] = useState(false);
+  const lastNameRef = useRef<TextInput>(null);
   const showToast = useToast((s) => s.show);
-  const valid = name.trim().length >= MIN_LENGTH;
+  const valid = firstName.trim().length >= MIN_LENGTH;
 
   const save = useCallback(async () => {
     if (!valid || saving) return;
     setSaving(true);
     try {
-      const value = name.trim();
-      await updateProfile({ name: value });
-      const { user, setUser } = useUserStore.getState();
-      if (user) setUser({ ...user, name: value });
+      await updateProfile({ firstName, lastName });
+      useUserStore.getState().applyProfile(await fetchProfile());
       router.replace('/(tabs)/home');
     } catch (error) {
       setSaving(false);
       showToast({ message: t(authErrorKey(error)), tone: 'error' });
     }
-  }, [name, saving, showToast, t, valid]);
+  }, [firstName, lastName, saving, showToast, t, valid]);
 
   return (
     <Screen paddingHorizontal={24}>
@@ -47,21 +47,34 @@ export default function NameScreen() {
             </Text>
           </View>
 
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder={t('auth.namePlaceholder')}
-            placeholderTextColor={colors.textTertiary}
-            selectionColor={colors.selectedBorder}
-            maxLength={MAX_LENGTH}
-            autoFocus
-            autoCapitalize="words"
-            autoComplete="name"
-            textContentType="name"
-            returnKeyType="done"
-            onSubmitEditing={save}
-            style={styles.input}
-          />
+          <View style={styles.fields}>
+            <TextField
+              label={t('profileEdit.firstName')}
+              value={firstName}
+              onChangeText={setFirstName}
+              placeholder={t('profileEdit.firstNamePlaceholder')}
+              maxLength={MAX_LENGTH}
+              autoFocus
+              autoCapitalize="words"
+              autoComplete="given-name"
+              textContentType="givenName"
+              returnKeyType="next"
+              onSubmitEditing={() => lastNameRef.current?.focus()}
+            />
+            <TextField
+              inputRef={lastNameRef}
+              label={t('profileEdit.lastName')}
+              value={lastName}
+              onChangeText={setLastName}
+              placeholder={t('profileEdit.lastNamePlaceholder')}
+              maxLength={MAX_LENGTH}
+              autoCapitalize="words"
+              autoComplete="family-name"
+              textContentType="familyName"
+              returnKeyType="done"
+              onSubmitEditing={save}
+            />
+          </View>
         </View>
 
         <Button
@@ -79,7 +92,7 @@ export default function NameScreen() {
   );
 }
 
-const useStyles = makeStyles(({ colors }) => ({
+const useStyles = makeStyles(() => ({
   flex: {
     flex: 1,
   },
@@ -91,15 +104,8 @@ const useStyles = makeStyles(({ colors }) => ({
   intro: {
     gap: space[2.5],
   },
-  input: {
-    ...type.body,
-    height: size.fieldL,
-    borderRadius: radius.input,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    paddingHorizontal: space[4],
-    color: colors.text,
+  fields: {
+    gap: space[4],
   },
   cta: {
     marginBottom: space[4],

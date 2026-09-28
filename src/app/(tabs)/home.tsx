@@ -35,7 +35,7 @@ export default function HomeScreen() {
   const { scrollY, onScroll } = useScrollHeader();
 
   const resume = useMemo(() => tests.data?.find((t) => t.status === 'in_progress'), [tests.data]);
-  const firstName = user?.name.split(' ')[0] ?? '';
+  const firstName = user?.firstName ?? '';
 
   const onResume = useCallback(() => {
     if (!resume) return;
@@ -52,7 +52,12 @@ export default function HomeScreen() {
   return (
     <View style={styles.screen}>
       <HeaderSurface scrollY={scrollY}>
-        <HomeHeader name={firstName} hasNotifications={unread > 0} onBellPress={() => router.push('/notifications')} />
+        <HomeHeader
+          name={firstName}
+          avatarUrl={user?.avatarUrl ?? null}
+          hasNotifications={unread > 0}
+          onBellPress={() => router.push('/notifications')}
+        />
       </HeaderSurface>
       <Animated.ScrollView
         onScroll={onScroll}

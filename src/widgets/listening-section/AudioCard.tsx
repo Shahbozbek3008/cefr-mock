@@ -1,8 +1,9 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { View } from 'react-native';
+import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { Lock } from 'lucide-react-native';
 import { useI18n } from '@/shared/i18n';
-import { formatClock, usePlayback } from '@/shared/lib';
+import { formatClock } from '@/shared/lib';
 import { makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
 import { Waveform } from '@/shared/ui/charts';
@@ -13,28 +14,54 @@ const bars = [
 ];
 
 export type AudioCardProps = {
+  uri: string;
   durationSec: number;
   onEnded: () => void;
 };
 
-export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
+export const AudioCard = memo<AudioCardProps>(({ uri, durationSec, onEnded }) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const { position, playing, progress } = usePlayback(durationSec, { autoPlay: true, onEnd: onEnded });
+  const player = useAudioPlayer({ uri });
+  const status = useAudioPlayerStatus(player);
+  const started = useRef(false);
+  const endedRef = useRef(onEnded);
+  endedRef.current = onEnded;
+
+  const duration = status.duration || durationSec;
+  const position = Math.min(status.currentTime, duration);
+  const progress = duration > 0 ? position / duration : 0;
+  const finished = started.current && !status.playing && position >= duration - 0.5;
+  const active = status.isLoaded && !finished;
+  const label = !status.isLoaded ? 'common.loading' : finished ? 'listening.ended' : 'listening.playing';
+
+  useEffect(() => {
+    setAudioModeAsync({ playsInSilentMode: true, allowsRecording: false }).catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    if (!status.isLoaded || started.current) return;
+    started.current = true;
+    player.play();
+  }, [player, status.isLoaded]);
+
+  useEffect(() => {
+    if (status.didJustFinish) endedRef.current();
+  }, [status.didJustFinish]);
 
   return (
     <Card level="strong" radius={radius.hero} style={styles.card}>
       <View style={styles.header}>
         <View style={styles.status}>
           <Dot
-            color={playing ? colors.data : colors.textTertiary}
+            color={active ? colors.data : colors.textTertiary}
             size={8}
-            ring={playing ? colors.focusRing : undefined}
+            ring={active ? colors.focusRing : undefined}
             ringWidth={4}
           />
-          <Text variant="captionMedium" color={playing ? colors.selectedText : colors.textSecondary}>
-            {playing ? t('listening.playing') : t('listening.ended')}
+          <Text variant="captionMedium" color={active ? colors.selectedText : colors.textSecondary}>
+            {t(label)}
           </Text>
         </View>
         <View style={styles.lock}>
@@ -48,7 +75,7 @@ export const AudioCard = memo<AudioCardProps>(({ durationSec, onEnded }) => {
       <View style={styles.time}>
         <Text variant="monoTimer">{formatClock(position)}</Text>
         <Text variant="mono" color={colors.textTertiary}>
-          {`/ ${formatClock(durationSec)}`}
+          {`/ ${formatClock(duration)}`}
         </Text>
       </View>
 

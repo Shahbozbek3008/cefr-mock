@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Bell, Calendar, CircleHelp, Globe, Moon, Sun, Target } from 'lucide-react-native';
+import { Bell, Calendar, CircleHelp, Globe, LogOut, Moon, Sun, Target } from 'lucide-react-native';
 import { useUserStore } from '@/entities/user/model';
 import type { User } from '@/entities/user/model';
 import { PHONE_PREFIX, formatPhone, signOut } from '@/features/auth/model';
@@ -56,9 +56,11 @@ export default function ProfileScreen() {
       >
         <ProfileCard
           name={user?.name ?? ''}
+          avatarUrl={user?.avatarUrl ?? null}
           contact={contactOf(user)}
           monoContact={Boolean(user?.phone)}
           isPro={user?.isPro ?? false}
+          onEdit={() => router.push('/edit-profile')}
           onUpgrade={() => router.push('/subscription')}
         />
 
@@ -136,7 +138,8 @@ export default function ProfileScreen() {
         message={t('profile.signOutMessage')}
         confirmLabel={t('common.exit')}
         cancelLabel={t('common.stay')}
-        destructive
+        tone="destructive"
+        icon={LogOut}
         onConfirm={onSignOut}
         onClose={() => setConfirmOpen(false)}
       />

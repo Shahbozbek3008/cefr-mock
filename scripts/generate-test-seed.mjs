@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +6,8 @@ import ts from 'typescript';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const seedDir = join(root, 'supabase', 'seed');
-const output = join(root, 'supabase', 'migrations', '20260928000002_seed_tests.sql');
+const output = join(root, 'supabase', 'migrations', process.argv[2] ?? '20260928000002_seed_tests.sql');
+const manifestPath = join(seedDir, 'audio', 'manifest.json');
 const require = createRequire(import.meta.url);
 
 const load = (file) => {
@@ -23,7 +24,14 @@ const { listeningParts, readingParts, writingTasks, speakingQuestions } = load('
 const { seedTests, sectionMinutes } = load('tests.ts');
 
 const stripQuestion = ({ answer, explanation, ...question }) => question;
-const stripParts = (parts) => parts.map((part) => ({ ...part, questions: part.questions.map(stripQuestion) }));
+const audio = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
+
+const withAudio = (part) =>
+  audio[part.id]
+    ? { ...part, audio: audio[part.id].file, durationSec: audio[part.id].durationSec, audioAt: audio[part.id].audioAt }
+    : part;
+
+const stripParts = (parts) => parts.map((part) => ({ ...withAudio(part), questions: part.questions.map(stripQuestion) }));
 const countQuestions = (parts) => parts.reduce((sum, part) => sum + part.questions.length, 0);
 
 const keys = Object.fromEntries(

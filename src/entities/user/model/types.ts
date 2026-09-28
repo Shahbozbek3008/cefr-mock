@@ -6,7 +6,10 @@ export type AuthProvider = 'phone' | 'google';
 
 export type User = {
   id: string;
+  firstName: string;
+  lastName: string;
   name: string;
+  avatarUrl: string | null;
   provider: AuthProvider;
   phone?: string;
   email?: string;

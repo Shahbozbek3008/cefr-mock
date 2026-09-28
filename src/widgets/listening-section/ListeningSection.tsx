@@ -5,6 +5,7 @@ import type { KeyboardAwareScrollViewRef } from 'react-native-keyboard-controlle
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
 import { FlagButton, QuestionNavigator, useAttemptStore } from '@/entities/attempt';
+import { listeningAudioUrl } from '@/entities/test';
 import type { TestDetail } from '@/entities/test';
 import { useSessionControls } from '@/features/test-session/model/useSessionControls';
 import { InstructionBlock } from '@/features/test-session/ui/InstructionBlock';
@@ -122,7 +123,14 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <AudioCard key={part.id} durationSec={part.durationSec} onEnded={onAudioEnded} />
+        {part.audio ? (
+          <AudioCard
+            key={part.id}
+            uri={listeningAudioUrl(part.audio)}
+            durationSec={part.durationSec}
+            onEnded={onAudioEnded}
+          />
+        ) : null}
         <InstructionBlock range={`${first}–${last}`} instruction={part.instruction} emphasis={part.emphasis} />
         {part.title ? (
           <NotesCard
