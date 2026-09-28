@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { mmkvStorage } from '@/shared/lib';
+import type { Profile } from '../api/profile';
 import type { DailyMinutes, OnboardingState, TargetLevel, User } from './types';
 
 type UserStore = OnboardingState & {
@@ -12,6 +13,7 @@ type UserStore = OnboardingState & {
   setReminderEnabled: (enabled: boolean) => void;
   completeOnboarding: () => void;
   setUser: (user: User) => void;
+  applyProfile: (profile: Profile) => void;
   signOut: () => void;
 };
 
@@ -34,6 +36,21 @@ export const useUserStore = create<UserStore>()(
       setReminderEnabled: (reminderEnabled) => set({ reminderEnabled }),
       completeOnboarding: () => set({ onboardingCompleted: true }),
       setUser: (user) => set({ user }),
+      applyProfile: (profile) =>
+        set({
+          user: {
+            id: profile.id,
+            name: profile.name,
+            provider: 'phone',
+            phone: profile.phone ?? undefined,
+            isPro: profile.isPro,
+          },
+          targetLevel: profile.targetLevel,
+          examDate: profile.examDate,
+          dailyMinutes: profile.dailyMinutes,
+          reminderEnabled: profile.reminderEnabled,
+          onboardingCompleted: true,
+        }),
       signOut: () => set({ user: null }),
     }),
     {

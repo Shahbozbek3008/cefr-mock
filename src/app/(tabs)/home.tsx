@@ -35,7 +35,7 @@ export default function HomeScreen() {
   const { scrollY, onScroll } = useScrollHeader();
 
   const resume = useMemo(() => tests.data?.find((t) => t.status === 'in_progress'), [tests.data]);
-  const firstName = user?.name.split(' ')[0] ?? 'Aziza';
+  const firstName = user?.name.split(' ')[0] ?? '';
 
   const onResume = useCallback(() => {
     if (!resume) return;

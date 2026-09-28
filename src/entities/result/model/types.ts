@@ -16,6 +16,7 @@ export type TestResult = {
   id: string;
   testId: string;
   title: string;
+  createdAt: string;
   dateLabel: string;
   durationLabel: string;
   total: number;
@@ -23,6 +24,7 @@ export type TestResult = {
   sections: SectionScore[];
   recommendation: Recommendation;
   answers: Record<string, string>;
+  aiStatus: Partial<Record<AiReviewKind, AiReviewStatus>>;
 };
 
 export type ReviewStatus = 'correct' | 'wrong' | 'empty';
@@ -51,12 +53,16 @@ export type Criterion = { label: string; score: number; max: number };
 
 export type Correction = { from: string; to: string; note: string };
 
-export type WritingReview = {
-  taskLabel: string;
+export type AiReviewKind = 'writing' | 'speaking';
+
+export type AiReviewStatus = 'pending' | 'processing' | 'ready' | 'failed';
+
+export type WritingTaskReview = {
+  taskId: string;
+  label: string;
   words: number;
   score: number;
   level: string;
-  levelNote: string;
   summary: string;
   criteria: Criterion[];
   segments: TextSegment[];
@@ -64,15 +70,32 @@ export type WritingReview = {
   improved: string;
 };
 
-export type SpeakingReview = {
+export type WritingReview = {
+  score: number;
+  tasks: WritingTaskReview[];
+};
+
+export type SpeakingAnswer = {
+  questionId: string;
   part: string;
+  prompt: string;
+  path: string;
   durationSec: number;
-  criteria: Criterion[];
-  segments: TextSegment[];
   words: number;
   wpm: number;
+  segments: TextSegment[];
+};
+
+export type SpeakingReview = {
+  score: number;
+  criteria: Criterion[];
   tips: { tone: 'good' | 'warn'; text: string }[];
-  waveform: number[];
+  answers: SpeakingAnswer[];
+};
+
+export type AiReview<T> = {
+  status: AiReviewStatus;
+  review: T | null;
 };
 
 export type ProgressPeriod = '1m' | '3m' | 'all';

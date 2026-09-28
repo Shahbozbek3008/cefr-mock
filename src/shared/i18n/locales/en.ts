@@ -22,6 +22,9 @@ export const en: Dictionary = {
     comingSoon: 'This setting is coming in the next version',
     notSelected: 'Not set',
     loading: 'Loading',
+    configMissingTitle: 'Server is not configured',
+    configMissingMessage:
+      'Add EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY to the `.env` file and restart the app.',
   },
   units: {
     days: { one: '{{count}} day', other: '{{count}} days' },
@@ -107,6 +110,22 @@ export const en: Dictionary = {
     },
   },
   auth: {
+    nameTitle: "What's your name?",
+    nameSubtitle: 'Your name appears in your profile and results.',
+    namePlaceholder: 'Your name',
+    errors: {
+      invalid_code: 'Incorrect code. Please try again.',
+      code_expired: 'The code has expired. Request a new one.',
+      too_many_attempts: 'Too many attempts. Request a new code.',
+      too_many_requests: 'Please wait a moment and try again.',
+      sms_unavailable: 'SMS service is temporarily unavailable.',
+      invalid_phone: 'Invalid phone number.',
+      network_error: 'Check your internet connection.',
+      function_not_found: 'Server function not found. Check that the phone-auth function is deployed.',
+      server_error: 'Something went wrong on the server. Please try again shortly.',
+      not_configured: 'Server is not configured: Supabase values are missing in .env.',
+      unknown: 'Something went wrong. Please try again.',
+    },
     welcome: 'Welcome',
     phoneIntro: "Enter your phone number — we'll send a verification code by SMS.",
     phoneLabel: 'Phone number',
@@ -193,6 +212,8 @@ export const en: Dictionary = {
     loadFailed: "Couldn't load the test",
   },
   session: {
+    startFailed: "Couldn't start the test. Check your internet.",
+    submitFailed: "Couldn't submit your result. Check your internet and try again.",
     exitA11y: 'Exit test',
     remainingA11y: '{{time}} remaining',
     question: 'Question {{number}}',
@@ -306,6 +327,14 @@ export const en: Dictionary = {
     correctAnswer: 'Correct answer',
   },
   aiReview: {
+    checkingTitle: 'AI is reviewing',
+    checkingMessage: "This usually takes 1–2 minutes. We'll notify you when it's ready.",
+    failedMessage: "AI couldn't finish the review. Please try again.",
+    noAnswer: 'No answer was written for this task.',
+    noRecordings: 'No answers were recorded in the Speaking section.',
+    checkingShort: 'AI reviewing',
+    criteriaTitle: 'Criteria',
+    answers: 'Answers',
     writingTitle: 'AI Writing feedback',
     speakingTitle: 'AI Speaking feedback',
     writingMeta: '{{task}} · {{count}} words',
@@ -324,6 +353,9 @@ export const en: Dictionary = {
     pause: 'Pause',
   },
   progress: {
+    emptyTitle: 'No results yet',
+    emptyMessage: 'Take your first mock test — your results and progress will appear here.',
+    emptyAction: 'Start a test',
     title: 'Progress',
     periods: { '1m': '1 mo', '3m': '3 mo', all: 'All' },
     periodLabels: { '1m': 'Last month', '3m': 'Last 3 months', all: 'All time' },
@@ -398,7 +430,7 @@ export const en: Dictionary = {
       },
       aiReview: {
         title: 'AI review is ready',
-        body: 'Scores and corrections for Writing {{task}} are ready.',
+        body: 'AI scores and corrections for {{section}} are ready.',
       },
       reminder: {
         title: "Today's practice is waiting",

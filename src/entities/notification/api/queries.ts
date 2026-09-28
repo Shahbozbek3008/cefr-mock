@@ -1,24 +1,43 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { delay } from '@/entities/test';
+import type { TParams } from '@/shared/i18n';
+import { ensureOk, requireUserId, supabase, unwrap } from '@/shared/api';
+import type { Tables } from '@/shared/api';
 import type { AppNotification } from '../model/types';
-import { buildMockNotifications } from './mock';
 
 export const notificationKeys = {
   all: ['notifications'] as const,
 };
 
-let store: AppNotification[] | null = null;
-const source = () => {
-  store ??= buildMockNotifications();
-  return store;
+const toNotification = (row: Tables<'notifications'>): AppNotification => ({
+  id: row.id,
+  kind: row.kind,
+  params: row.params as TParams,
+  createdAt: row.created_at,
+  read: row.read,
+  url: row.url ?? undefined,
+});
+
+export const fetchNotifications = async () => {
+  const rows = unwrap(await supabase.from('notifications').select('*').order('created_at', { ascending: false }));
+  return rows.map(toNotification);
 };
 
-const update = (next: AppNotification[]) => {
-  store = next;
-  return delay(next, 150);
+const markRead = async (id: string) => {
+  ensureOk(await supabase.from('notifications').update({ read: true }).eq('id', id));
 };
 
-export const fetchNotifications = () => delay(source(), 450);
+const markAllRead = async () => {
+  ensureOk(await supabase.from('notifications').update({ read: true }).eq('read', false));
+};
+
+const clearAll = async () => {
+  ensureOk(
+    await supabase
+      .from('notifications')
+      .delete()
+      .eq('user_id', await requireUserId()),
+  );
+};
 
 export const useNotifications = () => useQuery({ queryKey: notificationKeys.all, queryFn: fetchNotifications });
 
@@ -27,21 +46,32 @@ export const useUnreadCount = () => {
   return data?.filter((item) => !item.read).length ?? 0;
 };
 
-const useNotificationMutation = (apply: (items: AppNotification[], id?: string) => AppNotification[]) => {
+const useNotificationMutation = <Variables>(
+  request: (variables: Variables) => Promise<void>,
+  apply: (items: AppNotification[], variables: Variables) => AppNotification[],
+) => {
   const client = useQueryClient();
   return useMutation({
-    mutationFn: (id?: string) => update(apply(source(), id)),
-    onMutate: (id?: string) => {
-      const current = client.getQueryData<AppNotification[]>(notificationKeys.all);
-      if (current) client.setQueryData(notificationKeys.all, apply(current, id));
+    mutationFn: request,
+    onMutate: async (variables: Variables) => {
+      await client.cancelQueries({ queryKey: notificationKeys.all });
+      const previous = client.getQueryData<AppNotification[]>(notificationKeys.all);
+      if (previous) client.setQueryData(notificationKeys.all, apply(previous, variables));
+      return { previous };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previous) client.setQueryData(notificationKeys.all, context.previous);
     },
     onSettled: () => client.invalidateQueries({ queryKey: notificationKeys.all }),
   });
 };
 
 export const useMarkRead = () =>
-  useNotificationMutation((items, id) => items.map((item) => (item.id === id ? { ...item, read: true } : item)));
+  useNotificationMutation(markRead, (items, id: string) =>
+    items.map((item) => (item.id === id ? { ...item, read: true } : item)),
+  );
 
-export const useMarkAllRead = () => useNotificationMutation((items) => items.map((item) => ({ ...item, read: true })));
+export const useMarkAllRead = () =>
+  useNotificationMutation(markAllRead, (items) => items.map((item) => ({ ...item, read: true })));
 
-export const useClearNotifications = () => useNotificationMutation(() => []);
+export const useClearNotifications = () => useNotificationMutation(clearAll, () => []);

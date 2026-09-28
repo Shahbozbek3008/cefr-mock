@@ -4,7 +4,9 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, Share as ShareIcon, X } from 'lucide-react-native';
-import { useResult } from '@/entities/result';
+import { isAiActive, useResult } from '@/entities/result';
+import type { AiReviewKind } from '@/entities/result';
+import { useAiReviewRequest } from '@/features/ai-review/model/useAiReviewRequest';
 import { AiReviewButton } from '@/features/result/ui/AiReviewButton';
 import { AiReviewSheet } from '@/features/result/ui/AiReviewSheet';
 import { RecommendationCard } from '@/features/result/ui/RecommendationCard';
@@ -52,6 +54,8 @@ export default function ResultScreen() {
   );
 
   const data = result.data;
+  const aiPending = Object.values(data?.aiStatus ?? {}).includes('pending');
+  useAiReviewRequest(id, aiPending ? 'pending' : undefined);
 
   return (
     <Screen>
@@ -88,7 +92,11 @@ export default function ResultScreen() {
             <ResultGauge total={data.total} delta={data.delta} />
             <View style={styles.grid}>
               {data.sections.map((section) => (
-                <SectionScoreCard key={section.kind} section={section} />
+                <SectionScoreCard
+                  key={section.kind}
+                  section={section}
+                  pending={isAiActive(data.aiStatus[section.kind as AiReviewKind])}
+                />
               ))}
             </View>
             <RecommendationCard

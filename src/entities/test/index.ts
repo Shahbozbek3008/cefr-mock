@@ -1,4 +1,6 @@
 export type {
+  AnswerKey,
+  AnswerKeys,
   Choice,
   GapQuestion,
   ListeningPart,
@@ -16,6 +18,5 @@ export type {
   TfngQuestion,
   WritingTask,
 } from './model/types';
-export { fetchTest, fetchTests, testKeys, useTest, useTests } from './api/queries';
-export { delay } from './api/mock';
+export { fetchTest, fetchTestKeys, fetchTests, testKeys, useTest, useTestKeys, useTests } from './api/queries';
 export { sectionDetailKeys, sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';

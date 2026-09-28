@@ -7,7 +7,8 @@ export { locales, useLocaleStore } from './store';
 export { translate } from './translate';
 export type { Dictionary, Locale, TKey, TParams } from './types';
 
-const parseDate = (value: Date | string) => (typeof value === 'string' ? new Date(`${value}T00:00:00`) : value);
+const parseDate = (value: Date | string) =>
+  typeof value === 'string' ? new Date(value.length === 10 ? `${value}T00:00:00` : value) : value;
 
 export const formatDayMonth = (locale: Locale, value: Date | string) => {
   const date = parseDate(value);

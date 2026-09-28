@@ -1,4 +1,7 @@
 export type {
+  AiReview,
+  AiReviewKind,
+  AiReviewStatus,
   AxisMark,
   Recommendation,
   AnswerReview,
@@ -10,18 +13,20 @@ export type {
   ReviewStatus,
   SectionReview,
   SectionScore,
+  SpeakingAnswer,
   SpeakingReview,
   TestResult,
   TextSegment,
   WritingReview,
+  WritingTaskReview,
 } from './model/types';
-export { useResultStore } from './model/store';
-export { buildReview, countCorrect, isCorrect } from './lib/review';
+export { buildReview, isCorrect } from './lib/review';
+export { buildProgress } from './lib/progress';
 export {
   fetchResult,
   fetchResults,
-  fetchSpeakingReview,
-  fetchWritingReview,
+  isAiActive,
+  requestAiReview,
   resultKeys,
   useLatestResult,
   useProgress,

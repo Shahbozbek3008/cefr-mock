@@ -22,6 +22,9 @@ export const ru: Dictionary = {
     comingSoon: 'Эта настройка появится в следующей версии',
     notSelected: 'Не выбрано',
     loading: 'Загрузка',
+    configMissingTitle: 'Сервер не настроен',
+    configMissingMessage:
+      'Добавьте EXPO_PUBLIC_SUPABASE_URL и EXPO_PUBLIC_SUPABASE_ANON_KEY в файл `.env` и перезапустите приложение.',
   },
   units: {
     days: { one: '{{count}} день', few: '{{count}} дня', many: '{{count}} дней', other: '{{count}} дня' },
@@ -107,6 +110,22 @@ export const ru: Dictionary = {
     },
   },
   auth: {
+    nameTitle: 'Как вас зовут?',
+    nameSubtitle: 'Имя будет показано в профиле и результатах.',
+    namePlaceholder: 'Ваше имя',
+    errors: {
+      invalid_code: 'Неверный код. Попробуйте ещё раз.',
+      code_expired: 'Срок действия кода истёк. Запросите новый.',
+      too_many_attempts: 'Слишком много попыток. Запросите новый код.',
+      too_many_requests: 'Подождите немного и попробуйте снова.',
+      sms_unavailable: 'SMS-сервис временно недоступен.',
+      invalid_phone: 'Неверный номер телефона.',
+      network_error: 'Проверьте подключение к интернету.',
+      function_not_found: 'Серверная функция не найдена. Проверьте, что функция phone-auth задеплоена.',
+      server_error: 'На сервере произошла ошибка. Попробуйте чуть позже.',
+      not_configured: 'Сервер не настроен: в файле .env нет значений Supabase.',
+      unknown: 'Что-то пошло не так. Попробуйте снова.',
+    },
     welcome: 'Добро пожаловать',
     phoneIntro: 'Введите номер телефона — мы отправим код подтверждения по SMS.',
     phoneLabel: 'Номер телефона',
@@ -193,6 +212,8 @@ export const ru: Dictionary = {
     loadFailed: 'Не удалось загрузить тест',
   },
   session: {
+    startFailed: 'Не удалось начать тест. Проверьте интернет.',
+    submitFailed: 'Не удалось отправить результат. Проверьте интернет и попробуйте снова.',
     exitA11y: 'Выйти из теста',
     remainingA11y: 'Осталось {{time}}',
     question: 'Вопрос {{number}}',
@@ -306,6 +327,14 @@ export const ru: Dictionary = {
     correctAnswer: 'Правильный ответ',
   },
   aiReview: {
+    checkingTitle: 'AI проверяет',
+    checkingMessage: 'Обычно это занимает 1–2 минуты. Мы пришлём уведомление, когда всё будет готово.',
+    failedMessage: 'AI не смог завершить проверку. Попробуйте ещё раз.',
+    noAnswer: 'Ответ на это задание не написан.',
+    noRecordings: 'В разделе Speaking нет записанных ответов.',
+    checkingShort: 'AI проверяет',
+    criteriaTitle: 'Критерии',
+    answers: 'Ответы',
     writingTitle: 'Оценка Writing (ИИ)',
     speakingTitle: 'Оценка Speaking (ИИ)',
     writingMeta: '{{task}} · {{count}} слов',
@@ -324,6 +353,9 @@ export const ru: Dictionary = {
     pause: 'Пауза',
   },
   progress: {
+    emptyTitle: 'Результатов пока нет',
+    emptyMessage: 'Пройдите первый mock-тест — здесь появятся ваши результаты и прогресс.',
+    emptyAction: 'Начать тест',
     title: 'Прогресс',
     periods: { '1m': '1 мес', '3m': '3 мес', all: 'Всё' },
     periodLabels: { '1m': 'За 1 месяц', '3m': 'За 3 месяца', all: 'За всё время' },
@@ -400,7 +432,7 @@ export const ru: Dictionary = {
       },
       aiReview: {
         title: 'AI-оценка готова',
-        body: 'Оценка и исправления по Writing {{task}} готовы.',
+        body: 'AI-оценка и исправления по {{section}} готовы.',
       },
       reminder: {
         title: 'Сегодняшняя практика ждёт',

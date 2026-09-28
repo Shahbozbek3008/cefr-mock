@@ -20,6 +20,9 @@ export const uz = {
     comingSoon: "Bu sozlama keyingi versiyada qo'shiladi",
     notSelected: 'Tanlanmagan',
     loading: 'Yuklanmoqda',
+    configMissingTitle: 'Server sozlanmagan',
+    configMissingMessage:
+      '`.env` fayliga EXPO_PUBLIC_SUPABASE_URL va EXPO_PUBLIC_SUPABASE_ANON_KEY qiymatlarini yozing va ilovani qayta ishga tushiring.',
   },
   units: {
     days: { one: '{{count}} kun', other: '{{count}} kun' },
@@ -105,6 +108,22 @@ export const uz = {
     },
   },
   auth: {
+    nameTitle: 'Ismingiz nima?',
+    nameSubtitle: "Ism profil va natijalarda ko'rinadi.",
+    namePlaceholder: 'Ismingiz',
+    errors: {
+      invalid_code: "Kod noto'g'ri. Qayta kiriting.",
+      code_expired: "Kod muddati tugagan. Yangi kod so'rang.",
+      too_many_attempts: "Urinishlar juda ko'p. Yangi kod so'rang.",
+      too_many_requests: "Biroz kuting va qayta urinib ko'ring.",
+      sms_unavailable: 'SMS xizmati vaqtincha ishlamayapti.',
+      invalid_phone: "Telefon raqam noto'g'ri.",
+      network_error: 'Internet aloqasini tekshiring.',
+      function_not_found: 'Server funksiyasi topilmadi. phone-auth funksiyasi deploy qilinganini tekshiring.',
+      server_error: "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
+      not_configured: "Server sozlanmagan: .env faylida Supabase qiymatlari yo'q.",
+      unknown: "Nimadir xato ketdi. Qayta urinib ko'ring.",
+    },
     welcome: 'Xush kelibsiz',
     phoneIntro: 'Telefon raqamingizni kiriting — SMS orqali tasdiqlash kodi yuboramiz.',
     phoneLabel: 'Telefon raqam',
@@ -191,6 +210,8 @@ export const uz = {
     loadFailed: 'Test yuklanmadi',
   },
   session: {
+    startFailed: "Testni boshlab bo'lmadi. Internetni tekshiring.",
+    submitFailed: "Natijani yuborib bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.",
     exitA11y: 'Testdan chiqish',
     remainingA11y: 'Qolgan vaqt {{time}}',
     question: 'Savol {{number}}',
@@ -304,6 +325,14 @@ export const uz = {
     correctAnswer: "To'g'ri javob",
   },
   aiReview: {
+    checkingTitle: 'AI tekshirmoqda',
+    checkingMessage: "Odatda 1–2 daqiqa davom etadi. Tayyor bo'lganda bildirishnoma yuboramiz.",
+    failedMessage: "AI baholashni yakunlay olmadi. Qayta urinib ko'ring.",
+    noAnswer: 'Bu topshiriqqa javob yozilmagan.',
+    noRecordings: "Speaking bo'limida javob yozib olinmagan.",
+    checkingShort: 'AI tekshirmoqda',
+    criteriaTitle: 'Mezonlar',
+    answers: 'Javoblar',
     writingTitle: 'AI Writing bahosi',
     speakingTitle: 'AI Speaking bahosi',
     writingMeta: "{{task}} · {{count}} so'z",
@@ -322,6 +351,9 @@ export const uz = {
     pause: "To'xtatish",
   },
   progress: {
+    emptyTitle: "Hali natija yo'q",
+    emptyMessage: "Birinchi mock testni ishlang — natijalaringiz va o'sishingiz shu yerda ko'rinadi.",
+    emptyAction: 'Testni boshlash',
     title: 'Progress',
     periods: { '1m': '1 oy', '3m': '3 oy', all: 'Hammasi' },
     periodLabels: { '1m': '1 oy ichida', '3m': '3 oy ichida', all: 'Barcha vaqt' },
@@ -396,7 +428,7 @@ export const uz = {
       },
       aiReview: {
         title: 'AI baho tayyor',
-        body: "Writing {{task}} bo'yicha baho va tuzatishlar tayyor.",
+        body: "{{section}} bo'yicha AI baho va tuzatishlar tayyor.",
       },
       reminder: {
         title: 'Bugungi mashq kutmoqda',

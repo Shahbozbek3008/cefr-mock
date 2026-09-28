@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ChevronLeft, RotateCcw } from 'lucide-react-native';
-import { useUserStore } from '@/entities/user/model';
 import {
   OTP_LENGTH,
   PHONE_PREFIX,
   RESEND_SECONDS,
+  authErrorKey,
   formatCountdown,
   formatPhone,
+  requestCode,
   useCountdown,
+  verifyCode,
 } from '@/features/auth/model';
 import { OtpField } from '@/features/auth/ui/OtpField';
 import { useI18n } from '@/shared/i18n';
 import { hitSlop, useTheme } from '@/shared/theme';
-import { IconButton, Screen, Text } from '@/shared/ui';
+import { IconButton, Screen, Text, useToast } from '@/shared/ui';
 
 export default function OtpScreen() {
   const { colors } = useTheme();
@@ -23,23 +25,42 @@ export default function OtpScreen() {
   const params = useLocalSearchParams<{ phone?: string }>();
   const phone = params.phone ?? '';
   const [code, setCode] = useState('');
+  const [verifying, setVerifying] = useState(false);
   const { remaining, restart, finished } = useCountdown(RESEND_SECONDS);
-  const setUser = useUserStore((state) => state.setUser);
+  const showToast = useToast((s) => s.show);
 
-  const onVerified = useCallback(() => {
-    setUser({
-      id: 'local',
-      name: 'Aziza Karimova',
-      provider: 'phone',
-      phone: `${PHONE_PREFIX}${phone}`,
-      isPro: false,
-    });
-    router.replace('/(tabs)/home');
-  }, [phone, setUser]);
+  const showError = useCallback(
+    (error: unknown) => showToast({ message: t(authErrorKey(error)), tone: 'error' }),
+    [showToast, t],
+  );
+
+  const verify = useCallback(
+    async (value: string) => {
+      setVerifying(true);
+      try {
+        const { needsName } = await verifyCode(phone, value);
+        router.replace(needsName ? '/(auth)/name' : '/(tabs)/home');
+      } catch (error) {
+        setCode('');
+        setVerifying(false);
+        showError(error);
+      }
+    },
+    [phone, showError],
+  );
+
+  const resend = useCallback(async () => {
+    restart();
+    try {
+      await requestCode(phone);
+    } catch (error) {
+      showError(error);
+    }
+  }, [phone, restart, showError]);
 
   useEffect(() => {
-    if (code.length === OTP_LENGTH) onVerified();
-  }, [code, onVerified]);
+    if (code.length === OTP_LENGTH && !verifying) verify(code);
+  }, [code, verify, verifying]);
 
   return (
     <Screen paddingHorizontal={24}>
@@ -62,26 +83,32 @@ export default function OtpScreen() {
             </Text>
           </View>
 
-          <OtpField value={code} onChange={setCode} />
+          <View pointerEvents={verifying ? 'none' : 'auto'} style={verifying && styles.dimmed}>
+            <OtpField value={code} onChange={setCode} />
+          </View>
 
-          <Pressable
-            accessibilityRole="button"
-            accessibilityState={{ disabled: !finished }}
-            disabled={!finished}
-            hitSlop={hitSlop}
-            onPress={restart}
-            style={styles.resend}
-          >
-            <RotateCcw size={15} color={colors.textSecondary} strokeWidth={1.6} />
-            <Text variant="bodySm" color={colors.textSecondary}>
-              {t('auth.resend')}
-            </Text>
-            {finished ? null : (
-              <Text variant="monoSm" color={colors.text}>
-                {formatCountdown(remaining)}
+          {verifying ? (
+            <ActivityIndicator color={colors.textSecondary} style={styles.resend} />
+          ) : (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !finished }}
+              disabled={!finished}
+              hitSlop={hitSlop}
+              onPress={resend}
+              style={styles.resend}
+            >
+              <RotateCcw size={15} color={colors.textSecondary} strokeWidth={1.6} />
+              <Text variant="bodySm" color={colors.textSecondary}>
+                {t('auth.resend')}
               </Text>
-            )}
-          </Pressable>
+              {finished ? null : (
+                <Text variant="monoSm" color={colors.text}>
+                  {formatCountdown(remaining)}
+                </Text>
+              )}
+            </Pressable>
+          )}
         </View>
       </KeyboardAvoidingView>
     </Screen>
@@ -110,7 +137,11 @@ const styles = StyleSheet.create({
   resend: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-start',
     gap: 8,
     height: 44,
+  },
+  dimmed: {
+    opacity: 0.5,
   },
 });

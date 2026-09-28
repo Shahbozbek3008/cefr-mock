@@ -1,46 +1,55 @@
 import { useCallback, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
-import { useAttemptStore } from '@/entities/attempt';
-import { fetchResults, fetchSpeakingReview, fetchWritingReview, resultKeys, useResultStore } from '@/entities/result';
-import { sectionOrder } from '@/entities/test';
+import { submitAttempt, useAttemptStore } from '@/entities/attempt';
+import { notificationKeys } from '@/entities/notification';
+import { requestAiReview, resultKeys } from '@/entities/result';
+import { sectionOrder, testKeys } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
+import { useI18n } from '@/shared/i18n';
 import { queryClient } from '@/shared/lib';
-import { buildResult } from './buildResult';
+import { useToast } from '@/shared/ui';
+import { flushAttempt } from './attemptSession';
+import { flushUploads } from './recordingUploads';
 
 const nextSection = (section: SectionKind) => sectionOrder[sectionOrder.indexOf(section) + 1] ?? null;
 
+const refreshAfterSubmit = () =>
+  Promise.all(
+    [resultKeys.all, testKeys.all, notificationKeys.all].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
+  );
+
 export const useSectionFlow = (test: TestDetail, section: SectionKind) => {
   const [finishing, setFinishing] = useState(false);
+  const showToast = useToast((s) => s.show);
+  const { t } = useI18n();
 
   const finish = useCallback(async () => {
-    const attempt = useAttemptStore.getState();
-    attempt.completeSection(section);
+    useAttemptStore.getState().completeSection(section);
 
     const next = nextSection(section);
     if (next) {
+      flushAttempt().catch(() => undefined);
       router.replace({ pathname: '/test/[id]/[section]', params: { id: test.id, section: next } });
       return;
     }
 
     setFinishing(true);
-    const [writing, speaking, previous] = await Promise.all([
-      fetchWritingReview(),
-      fetchSpeakingReview(),
-      fetchResults(),
-    ]);
-    const result = buildResult(
-      test,
-      { answers: attempt.answers, startedAt: attempt.startedAt },
-      { writing: writing.score, speaking: speaking.criteria },
-      previous[0],
-    );
-
-    useResultStore.getState().add(result);
-    await queryClient.invalidateQueries({ queryKey: resultKeys.all });
-    attempt.reset();
-    router.replace({ pathname: '/result/[id]', params: { id: result.id, from: 'test' } });
-  }, [section, test]);
+    try {
+      await flushUploads();
+      await flushAttempt();
+      const { attemptId } = useAttemptStore.getState();
+      if (!attemptId) throw new Error('attempt_missing');
+      const resultId = await submitAttempt(attemptId);
+      requestAiReview(resultId).catch(() => undefined);
+      await refreshAfterSubmit();
+      useAttemptStore.getState().reset();
+      router.replace({ pathname: '/result/[id]', params: { id: resultId, from: 'test' } });
+    } catch {
+      setFinishing(false);
+      showToast({ message: t('session.submitFailed'), tone: 'error' });
+    }
+  }, [section, showToast, t, test.id]);
 
   return { finish, finishing };
 };

@@ -3,6 +3,7 @@ import { Linking, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAttemptStore } from '@/entities/attempt';
 import type { SpeakingQuestion, TestDetail } from '@/entities/test';
+import { uploadAnswer } from '@/features/test-session/model/recordingUploads';
 import { useSessionControls } from '@/features/test-session/model/useSessionControls';
 import { SessionHeader } from '@/features/test-session/ui/SessionHeader';
 import { SessionSheets } from '@/features/test-session/ui/SessionSheets';
@@ -29,7 +30,13 @@ const QuestionView = memo<QuestionViewProps>(({ question, index, total, onClose,
   const insets = useSafeAreaInsets();
   const { t } = useI18n();
   const setRecording = useAttemptStore((s) => s.setRecording);
-  const onSaved = useCallback((uri: string) => setRecording(question.id, uri), [question.id, setRecording]);
+  const onSaved = useCallback(
+    (uri: string) => {
+      setRecording(question.id, uri);
+      uploadAnswer(question.id, uri);
+    },
+    [question.id, setRecording],
+  );
   const { phase, secondsLeft, elapsed, bars, start, stop, restart } = useAnswerRecorder(question, onSaved);
 
   const next = useCallback(async () => {

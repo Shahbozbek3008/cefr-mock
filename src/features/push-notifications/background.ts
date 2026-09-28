@@ -1,6 +1,5 @@
-import { setBackgroundMessageHandler } from '@react-native-firebase/messaging';
-import { messaging } from './model/messaging';
+import { loadFcm } from './model/messaging';
 
-const client = messaging();
+const fcm = loadFcm();
 
-if (client) setBackgroundMessageHandler(client, async () => undefined);
+if (fcm) fcm.api.setBackgroundMessageHandler(fcm.client, async () => undefined);

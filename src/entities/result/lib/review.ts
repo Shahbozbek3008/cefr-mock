@@ -1,27 +1,29 @@
-import type { Question } from '@/entities/test';
+import type { AnswerKey, AnswerKeys, Question } from '@/entities/test';
 import type { AnswerReview, SectionReview } from '../model/types';
 
 const normalize = (value: string) => value.trim().toLowerCase().replace(/\s+/g, ' ');
 
-export const isCorrect = (question: Question, value: string) =>
-  normalize(value) !== '' && normalize(value) === normalize(question.answer);
+export const isCorrect = (key: AnswerKey | undefined, value: string) =>
+  key !== undefined && normalize(value) !== '' && normalize(value) === normalize(key.answer);
 
 export const buildReview = (
   questions: Question[],
+  keys: AnswerKeys,
   answers: Record<string, string>,
   audioAt: Record<number, number> = {},
 ): SectionReview => {
   const items: AnswerReview[] = questions.map((q) => {
     const value = answers[q.id] ?? '';
-    const status = value.trim() === '' ? 'empty' : isCorrect(q, value) ? 'correct' : 'wrong';
+    const key = keys[q.id];
+    const status = value.trim() === '' ? 'empty' : isCorrect(key, value) ? 'correct' : 'wrong';
     return {
       questionId: q.id,
       number: q.number,
       status,
       prompt: q.prompt,
       yourAnswer: value,
-      correctAnswer: q.answer,
-      explanation: q.explanation,
+      correctAnswer: key?.answer ?? '',
+      explanation: key?.explanation,
       audioAt: audioAt[q.number],
     };
   });
@@ -33,6 +35,3 @@ export const buildReview = (
     empty: items.filter((i) => i.status === 'empty').length,
   };
 };
-
-export const countCorrect = (questions: Question[], answers: Record<string, string>) =>
-  questions.reduce((sum, q) => sum + (isCorrect(q, answers[q.id] ?? '') ? 1 : 0), 0);

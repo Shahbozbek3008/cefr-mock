@@ -6,12 +6,17 @@ import { MAX_SCORE, nextLevelGap } from '@/shared/lib';
 import { makeStyles, space, useTheme } from '@/shared/theme';
 import { Card, Delta, ProgressBar, Text } from '@/shared/ui';
 
-export const SectionScoreCard = memo<{ section: SectionScore }>(({ section }) => {
+export type SectionScoreCardProps = {
+  section: SectionScore;
+  pending?: boolean;
+};
+
+export const SectionScoreCard = memo<SectionScoreCardProps>(({ section, pending = false }) => {
   const styles = useStyles();
   const { colors, elevation } = useTheme();
   const { t } = useI18n();
   const gap = nextLevelGap(section.score);
-  const focus = Boolean(section.focus);
+  const focus = Boolean(section.focus) && !pending;
 
   return (
     <Card style={[styles.card, focus && [styles.focus, elevation.warningRing]]}>
@@ -19,11 +24,17 @@ export const SectionScoreCard = memo<{ section: SectionScore }>(({ section }) =>
         <Text variant="callout" color={colors.textSecondary}>
           {section.title}
         </Text>
-        <Delta value={section.delta} variant="monoXs" />
+        {pending ? null : <Delta value={section.delta} variant="monoXs" />}
       </View>
       <View style={[styles.row, styles.baseline]}>
-        <Text variant="statLg">{section.score}</Text>
-        {focus ? (
+        <Text variant="statLg" color={pending ? colors.textTertiary : colors.text}>
+          {pending ? '—' : section.score}
+        </Text>
+        {pending ? (
+          <Text variant="microMedium" color={colors.selectedText}>
+            {t('aiReview.checkingShort')}
+          </Text>
+        ) : focus ? (
           <Text variant="microMedium" color={colors.warning.text}>
             {t('result.focus')}
           </Text>
@@ -33,7 +44,10 @@ export const SectionScoreCard = memo<{ section: SectionScore }>(({ section }) =>
           </Text>
         )}
       </View>
-      <ProgressBar value={section.score / MAX_SCORE} color={focus ? colors.warning[500] : colors.dataSoft} />
+      <ProgressBar
+        value={pending ? 0 : section.score / MAX_SCORE}
+        color={focus ? colors.warning[500] : colors.dataSoft}
+      />
     </Card>
   );
 });

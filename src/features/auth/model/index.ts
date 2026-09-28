@@ -10,3 +10,5 @@ export {
 } from './phone';
 export { useCountdown } from './useCountdown';
 export { signInWithGoogle, signOutFromGoogle, useGoogleSignIn } from './google';
+export { authErrorKey, clearSession, loadAccount, requestCode, signOut, verifyCode } from './session';
+export { useAuthListener } from './useAuthListener';

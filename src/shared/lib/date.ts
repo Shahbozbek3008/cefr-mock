@@ -1,6 +1,7 @@
 const pad = (value: number) => String(value).padStart(2, '0');
 
-const parse = (value: Date | string) => (typeof value === 'string' ? new Date(`${value}T00:00:00`) : value);
+const parse = (value: Date | string) =>
+  typeof value === 'string' ? new Date(value.length === 10 ? `${value}T00:00:00` : value) : value;
 
 export const formatShortDate = (value: Date | string) => {
   const date = parse(value);

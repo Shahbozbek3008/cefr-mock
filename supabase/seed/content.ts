@@ -1,4 +1,4 @@
-import type { Choice, ListeningPart, Question, ReadingPart, SpeakingQuestion, WritingTask } from '../model/types';
+import type { Choice, ListeningPart, Question, ReadingPart, SpeakingQuestion, WritingTask } from './types';
 
 const options = (...texts: string[]): Choice[] => texts.map((text, i) => ({ key: String.fromCharCode(65 + i), text }));
 

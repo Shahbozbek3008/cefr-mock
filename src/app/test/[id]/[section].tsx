@@ -4,6 +4,7 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useAttemptStore } from '@/entities/attempt';
 import { sectionOrder, useTest } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
+import { useAttemptAutosave, useAttemptSession } from '@/features/test-session/model/attemptSession';
 import { SectionSkeleton } from '@/features/test-session/ui/SectionSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { space } from '@/shared/theme';
@@ -26,29 +27,32 @@ export default function SectionScreen() {
   const { id, section } = useLocalSearchParams<{ id: string; section: string }>();
   const test = useTest(id);
   const { t } = useI18n();
-  const start = useAttemptStore((s) => s.start);
+  const session = useAttemptSession(id);
   const enterSection = useAttemptStore((s) => s.enterSection);
   const minutes = test.data?.sections.find((s) => s.kind === section)?.minutes;
+  const ready = session.status === 'ready' && test.data !== undefined;
+
+  useAttemptAutosave(ready);
 
   useEffect(() => {
-    if (!isSection(section) || minutes === undefined) return;
-    start(id);
+    if (!ready || !isSection(section) || minutes === undefined) return;
     enterSection(section, minutes * 60);
-  }, [enterSection, id, minutes, section, start]);
+  }, [enterSection, minutes, ready, section]);
 
   if (!isSection(section)) return <Redirect href={{ pathname: '/test/[id]', params: { id } }} />;
 
-  if (!test.data) {
+  if (!ready || !test.data) {
+    const failed = test.isError || session.status === 'error';
     return (
       <Screen>
         <View style={styles.loading}>
-          {test.isError ? (
+          {failed ? (
             <StateView
               tone="error"
               title={t('common.error')}
-              message={t('testIntro.loadFailed')}
+              message={t(test.isError ? 'testIntro.loadFailed' : 'session.startFailed')}
               actionLabel={t('common.retry')}
-              onAction={() => test.refetch()}
+              onAction={() => (test.isError ? test.refetch() : session.retry())}
             />
           ) : (
             <SectionSkeleton />

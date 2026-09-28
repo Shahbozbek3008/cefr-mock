@@ -4,14 +4,12 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight } from 'lucide-react-native';
-import { useUserStore } from '@/entities/user/model';
-import type { User } from '@/entities/user/model';
-import { isPhoneComplete, useGoogleSignIn } from '@/features/auth/model';
+import { authErrorKey, isPhoneComplete, requestCode } from '@/features/auth/model';
 import { PhoneField } from '@/features/auth/ui/PhoneField';
 import { SocialButton } from '@/features/auth/ui/SocialButton';
-import { AppleIcon, GoogleIcon } from '@/shared/icons';
 import { useI18n } from '@/shared/i18n';
-import type { TKey } from '@/shared/i18n';
+import { errorCode } from '@/shared/api';
+import { AppleIcon, GoogleIcon } from '@/shared/icons';
 import { makeStyles, radius, useTheme } from '@/shared/theme';
 import { Button, HeroSurface, Screen, Text, useToast } from '@/shared/ui';
 
@@ -21,30 +19,29 @@ export default function PhoneScreen() {
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const [digits, setDigits] = useState('');
+  const [sending, setSending] = useState(false);
 
   const complete = isPhoneComplete(digits);
-  const setUser = useUserStore((s) => s.setUser);
   const showToast = useToast((s) => s.show);
 
-  const onGoogleUser = useCallback(
-    (user: User) => {
-      setUser(user);
-      router.replace('/(tabs)/home');
-    },
-    [setUser],
-  );
+  const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
 
-  const onGoogleError = useCallback(
-    (message: TKey) => showToast({ message: t(message), tone: 'error' }),
-    [showToast, t],
-  );
-
-  const google = useGoogleSignIn(onGoogleUser, onGoogleError);
-
-  const onRequestCode = useCallback(() => {
-    if (!complete) return;
-    router.push({ pathname: '/(auth)/otp', params: { phone: digits } });
-  }, [complete, digits]);
+  const onRequestCode = useCallback(async () => {
+    if (!complete || sending) return;
+    setSending(true);
+    try {
+      await requestCode(digits);
+      router.push({ pathname: '/(auth)/otp', params: { phone: digits } });
+    } catch (error) {
+      if (errorCode(error) === 'too_many_requests') {
+        router.push({ pathname: '/(auth)/otp', params: { phone: digits } });
+      } else {
+        showToast({ message: t(authErrorKey(error)), tone: 'error' });
+      }
+    } finally {
+      setSending(false);
+    }
+  }, [complete, digits, sending, showToast, t]);
 
   return (
     <Screen paddingHorizontal={24}>
@@ -72,6 +69,7 @@ export default function PhoneScreen() {
           <Button
             label={t('auth.requestCode')}
             disabled={!complete}
+            loading={sending}
             onPress={onRequestCode}
             trailingIcon={
               <ArrowRight size={18} color={complete ? colors.onAction : colors.disabledText} strokeWidth={1.75} />
@@ -87,17 +85,12 @@ export default function PhoneScreen() {
           </View>
 
           <View style={styles.social}>
-            <SocialButton
-              label={t('auth.google')}
-              icon={<GoogleIcon />}
-              loading={google.loading}
-              onPress={google.signIn}
-            />
+            <SocialButton label={t('auth.google')} icon={<GoogleIcon />} onPress={soon} />
             <SocialButton
               label={t('auth.apple')}
               icon={<AppleIcon color={colors.surface} />}
               tone="dark"
-              onPress={() => undefined}
+              onPress={soon}
             />
           </View>
         </ScrollView>

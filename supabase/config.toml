@@ -1,0 +1,7 @@
+project_id = "cefr-mock"
+
+[functions.phone-auth]
+verify_jwt = false
+
+[functions.ai-review]
+verify_jwt = false

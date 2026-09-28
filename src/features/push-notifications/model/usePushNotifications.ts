@@ -1,39 +1,36 @@
 import { useEffect } from 'react';
-import {
-  deleteToken,
-  getInitialNotification,
-  getToken,
-  onMessage,
-  onNotificationOpenedApp,
-  onTokenRefresh,
-} from '@react-native-firebase/messaging';
-import { useUserStore } from '@/entities/user/model';
+import { updateProfile, useUserStore } from '@/entities/user/model';
 import { translate, useI18n, useLocaleStore } from '@/shared/i18n';
 import { useToast } from '@/shared/ui';
-import { messaging, requestPushPermission } from './messaging';
+import { loadFcm, requestPushPermission } from './messaging';
 import { openMessage, routeOf } from './route';
 import { usePushStore } from './store';
+
+const saveToken = (token: string | null) => {
+  usePushStore.getState().setToken(token);
+  updateProfile({ pushToken: token }).catch(() => undefined);
+};
 
 const useTokenSync = () => {
   const enabled = useUserStore((s) => s.reminderEnabled);
   const setEnabled = useUserStore((s) => s.setReminderEnabled);
-  const setToken = usePushStore((s) => s.setToken);
   const showToast = useToast((s) => s.show);
 
   useEffect(() => {
-    const client = messaging();
-    if (!client) return;
+    const fcm = loadFcm();
+    if (!fcm) return;
+    const { api, client } = fcm;
 
     if (!enabled) {
       if (usePushStore.getState().token) {
-        deleteToken(client).catch(() => undefined);
-        setToken(null);
+        api.deleteToken(client).catch(() => undefined);
+        saveToken(null);
       }
       return;
     }
 
     let active = true;
-    requestPushPermission(client)
+    requestPushPermission(fcm)
       .then(async (allowed) => {
         if (!active) return;
         if (!allowed) {
@@ -42,26 +39,27 @@ const useTokenSync = () => {
           showToast({ message, tone: 'error' });
           return;
         }
-        setToken(await getToken(client));
+        saveToken(await api.getToken(client));
       })
       .catch(() => undefined);
 
-    const unsubscribe = onTokenRefresh(client, setToken);
+    const unsubscribe = api.onTokenRefresh(client, saveToken);
     return () => {
       active = false;
       unsubscribe();
     };
-  }, [enabled, setEnabled, setToken, showToast]);
+  }, [enabled, setEnabled, showToast]);
 };
 
 const useOpenedNotifications = () => {
   useEffect(() => {
-    const client = messaging();
-    if (!client) return;
-    getInitialNotification(client)
+    const fcm = loadFcm();
+    if (!fcm) return;
+    fcm.api
+      .getInitialNotification(fcm.client)
       .then(openMessage)
       .catch(() => undefined);
-    return onNotificationOpenedApp(client, openMessage);
+    return fcm.api.onNotificationOpenedApp(fcm.client, openMessage);
   }, []);
 };
 
@@ -70,9 +68,9 @@ const useForegroundMessages = () => {
   const { t } = useI18n();
 
   useEffect(() => {
-    const client = messaging();
-    if (!client) return;
-    return onMessage(client, (message) => {
+    const fcm = loadFcm();
+    if (!fcm) return;
+    return fcm.api.onMessage(fcm.client, (message) => {
       const text = message.notification?.body ?? message.notification?.title;
       if (!text) return;
       const href = routeOf(message);

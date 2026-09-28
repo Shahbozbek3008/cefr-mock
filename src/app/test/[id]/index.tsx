@@ -1,17 +1,18 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, ChevronLeft } from 'lucide-react-native';
 import { useAttemptStore } from '@/entities/attempt';
-import { sectionOrder, useTest } from '@/entities/test';
+import { sectionOrder, useTest, useTests } from '@/entities/test';
+import { beginAttempt } from '@/features/test-session/model/attemptSession';
 import { RulesList } from '@/features/test-intro/ui/RulesList';
 import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
 import { TestStats } from '@/features/test-intro/ui/TestStats';
 import { TestIntroSkeleton } from '@/features/test-intro/ui/TestIntroSkeleton';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
-import { Button, IconButton, Screen, StateView, Tag, Text, TopBar } from '@/shared/ui';
+import { Button, IconButton, Screen, StateView, Tag, Text, TopBar, useToast } from '@/shared/ui';
 
 const FOOTER_SPACE = size.buttonL + space[6];
 
@@ -21,16 +22,25 @@ export default function TestIntroScreen() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const test = useTest(id);
+  const tests = useTests();
   const attemptTestId = useAttemptStore((s) => s.testId);
-  const start = useAttemptStore((s) => s.start);
+  const showToast = useToast((s) => s.show);
+  const [starting, setStarting] = useState(false);
 
-  const resuming = attemptTestId === id;
+  const resuming = attemptTestId === id || tests.data?.find((item) => item.id === id)?.status === 'in_progress';
 
-  const onStart = useCallback(() => {
-    start(id);
-    const next = sectionOrder.find((kind) => !useAttemptStore.getState().completed.includes(kind)) ?? 'listening';
-    router.push({ pathname: '/test/[id]/[section]', params: { id, section: next } });
-  }, [id, start]);
+  const onStart = useCallback(async () => {
+    setStarting(true);
+    try {
+      const { completed } = await beginAttempt(id);
+      const next = sectionOrder.find((kind) => !completed.includes(kind)) ?? 'listening';
+      router.push({ pathname: '/test/[id]/[section]', params: { id, section: next } });
+    } catch {
+      showToast({ message: t('session.startFailed'), tone: 'error' });
+    } finally {
+      setStarting(false);
+    }
+  }, [id, showToast, t]);
 
   return (
     <Screen>
@@ -88,6 +98,7 @@ export default function TestIntroScreen() {
         <Button
           label={t(resuming ? 'common.resume' : 'testIntro.start')}
           disabled={!test.data}
+          loading={starting}
           onPress={onStart}
           trailingIcon={
             <ArrowRight size={18} color={test.data ? colors.onAction : colors.disabledText} strokeWidth={1.75} />

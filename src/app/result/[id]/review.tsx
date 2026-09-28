@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { buildReview, useResult } from '@/entities/result';
-import { sectionTitles, useTest } from '@/entities/test';
+import { sectionTitles, useTest, useTestKeys } from '@/entities/test';
 import type { ListeningPart } from '@/entities/test';
 import { AnswerDetail } from '@/features/review/ui/AnswerDetail';
 import { ReviewGrid } from '@/features/review/ui/ReviewGrid';
@@ -36,6 +36,7 @@ export default function ReviewScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const result = useResult(id);
   const test = useTest(result.data?.testId ?? '');
+  const keys = useTestKeys(result.data?.testId ?? '');
   const [tab, setTab] = useState<'listening' | 'reading'>('listening');
   const [onlyWrong, setOnlyWrong] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -43,10 +44,10 @@ export default function ReviewScreen() {
   const parts = test.data?.[tab];
   const questions = useMemo(() => parts?.flatMap((p) => p.questions) ?? [], [parts]);
   const review = useMemo(() => {
-    if (!test.data || !result.data) return null;
+    if (!test.data || !result.data || !keys.data) return null;
     const marks = tab === 'listening' ? audioMarks(test.data.listening) : {};
-    return buildReview(questions, result.data.answers, marks);
-  }, [questions, result.data, tab, test.data]);
+    return buildReview(questions, keys.data, result.data.answers, marks);
+  }, [keys.data, questions, result.data, tab, test.data]);
 
   const wrong = useMemo(() => review?.items.filter((i) => i.status !== 'correct') ?? [], [review]);
   const navigable = onlyWrong ? wrong : (review?.items ?? []);

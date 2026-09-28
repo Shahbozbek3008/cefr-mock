@@ -4,10 +4,9 @@ import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Bell, Calendar, CircleHelp, Globe, Moon, Sun, Target } from 'lucide-react-native';
-import { useAttemptStore } from '@/entities/attempt';
 import { useUserStore } from '@/entities/user/model';
 import type { User } from '@/entities/user/model';
-import { PHONE_PREFIX, formatPhone, signOutFromGoogle } from '@/features/auth/model';
+import { PHONE_PREFIX, formatPhone, signOut } from '@/features/auth/model';
 import { ProfileCard } from '@/features/profile/ui/ProfileCard';
 import { LanguageSheet } from '@/features/language-switch/ui/LanguageSheet';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
@@ -31,8 +30,6 @@ export default function ProfileScreen() {
   const targetLevel = useUserStore((s) => s.targetLevel);
   const reminderEnabled = useUserStore((s) => s.reminderEnabled);
   const setReminderEnabled = useUserStore((s) => s.setReminderEnabled);
-  const signOut = useUserStore((s) => s.signOut);
-  const resetAttempt = useAttemptStore((s) => s.reset);
   const showToast = useToast((s) => s.show);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { scrollY, onScroll } = useScrollHeader();
@@ -40,13 +37,11 @@ export default function ProfileScreen() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const preference = useThemePreference((s) => s.preference);
 
-  const onSignOut = useCallback(() => {
+  const onSignOut = useCallback(async () => {
     setConfirmOpen(false);
-    if (user?.provider === 'google') signOutFromGoogle();
-    resetAttempt();
-    signOut();
+    await signOut();
     router.replace('/(auth)/phone');
-  }, [resetAttempt, signOut, user?.provider]);
+  }, []);
 
   const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
 
@@ -60,7 +55,7 @@ export default function ProfileScreen() {
         showsVerticalScrollIndicator={false}
       >
         <ProfileCard
-          name={user?.name ?? 'Aziza Karimova'}
+          name={user?.name ?? ''}
           contact={contactOf(user)}
           monoContact={Boolean(user?.phone)}
           isPro={user?.isPro ?? false}

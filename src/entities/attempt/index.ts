@@ -1,5 +1,7 @@
-export { useAnswer, useAttemptStore, useIsFlagged } from './model/store';
-export type { Highlight } from './model/store';
+export { snapshotOf, useAnswer, useAttemptStore, useIsFlagged } from './model/store';
+export type { AttemptSnapshot, Highlight } from './model/store';
+export { openAttempt, saveAttempt, submitAttempt } from './api/attempts';
+export { recordingUrl, uploadRecording } from './api/recordings';
 export { FlagButton } from './ui/FlagButton';
 export { GapInput } from './ui/GapInput';
 export { McqOptions } from './ui/McqOptions';

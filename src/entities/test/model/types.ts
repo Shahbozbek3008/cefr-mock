@@ -6,9 +6,11 @@ type QuestionBase = {
   id: string;
   number: number;
   prompt: string;
-  answer: string;
-  explanation?: string;
 };
+
+export type AnswerKey = { answer: string; explanation?: string };
+
+export type AnswerKeys = Record<string, AnswerKey>;
 
 export type McqQuestion = QuestionBase & { kind: 'mcq'; options: Choice[] };
 export type GapQuestion = QuestionBase & { kind: 'gap' };

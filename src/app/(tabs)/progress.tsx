@@ -7,6 +7,7 @@ import { useProgress } from '@/entities/result';
 import type { HistoryItem, ProgressPeriod } from '@/entities/result';
 import { HistoryList } from '@/features/progress/ui/HistoryList';
 import { ScoreChartCard } from '@/features/progress/ui/ScoreChartCard';
+import { ProgressEmpty } from '@/features/progress/ui/ProgressEmpty';
 import { ProgressSkeleton } from '@/features/progress/ui/ProgressSkeleton';
 import { SectionProgress } from '@/features/progress/ui/SectionProgress';
 import { useI18n } from '@/shared/i18n';
@@ -60,6 +61,8 @@ export default function ProgressScreen() {
             </View>
             <HistoryList items={progress.data.history} onPress={onHistoryPress} />
           </>
+        ) : progress.isSuccess ? (
+          <ProgressEmpty onStart={() => router.navigate('/(tabs)/tests')} />
         ) : progress.isError ? (
           <StateView
             tone="error"

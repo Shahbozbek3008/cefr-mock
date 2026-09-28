@@ -1,57 +1,88 @@
 import { useQuery } from '@tanstack/react-query';
-import { delay } from '@/entities/test';
-import { useResultStore } from '../model/store';
-import type { ProgressPeriod, TestResult } from '../model/types';
-import { buildMockResults, progressByPeriod, speakingReview, writingReview } from './mock';
+import { useLocaleStore } from '@/shared/i18n';
+import { ApiError, invokeFunction, supabase, unwrap } from '@/shared/api';
+import { mapResults } from '../lib/mapResult';
+import type { ResultRow } from '../lib/mapResult';
+import { buildProgress } from '../lib/progress';
+import type {
+  AiReview,
+  AiReviewKind,
+  AiReviewStatus,
+  ProgressPeriod,
+  SpeakingReview,
+  TestResult,
+  WritingReview,
+} from '../model/types';
 
 export const resultKeys = {
   all: ['results'] as const,
   detail: (id: string) => ['results', id] as const,
-  writing: (id: string) => ['results', id, 'writing'] as const,
-  speaking: (id: string) => ['results', id, 'speaking'] as const,
-  progress: (period: ProgressPeriod) => ['progress', period] as const,
+  ai: (id: string, kind: AiReviewKind) => ['results', id, 'ai', kind] as const,
 };
 
-let mockCache: Promise<TestResult[]> | null = null;
-const mockResults = () => {
-  mockCache ??= buildMockResults();
-  return mockCache;
-};
+const AI_POLL_MS = 4000;
 
-export const fetchResults = async () => {
-  const local = useResultStore.getState().results;
-  return delay([...local, ...(await mockResults())], 300);
+const RESULT_COLUMNS =
+  'id, test_id, listening, reading, writing, speaking, total, answers, duration_sec, created_at, tests(title), ai_reviews(kind, status)';
+
+export const isAiActive = (status: AiReviewStatus | undefined) => status === 'pending' || status === 'processing';
+
+const hasActiveAi = (result: TestResult | undefined) =>
+  result !== undefined && Object.values(result.aiStatus).some(isAiActive);
+
+export const fetchResults = async (): Promise<TestResult[]> => {
+  const rows = unwrap(await supabase.from('results').select(RESULT_COLUMNS).order('created_at', { ascending: false }));
+  return mapResults(rows as unknown as ResultRow[]);
 };
 
 export const fetchResult = async (id: string) => {
-  const all = await fetchResults();
-  const found = all.find((r) => r.id === id);
-  if (!found) throw new Error('Natija topilmadi');
+  const found = (await fetchResults()).find((result) => result.id === id);
+  if (!found) throw new ApiError('not_found');
   return found;
 };
 
-export const fetchWritingReview = () => delay(writingReview, 500);
+const fetchAiReview = async <T>(resultId: string, kind: AiReviewKind): Promise<AiReview<T>> => {
+  const { data, error } = await supabase
+    .from('ai_reviews')
+    .select('status, review')
+    .eq('result_id', resultId)
+    .eq('kind', kind)
+    .maybeSingle();
+  if (error) throw error;
+  return { status: data?.status ?? 'pending', review: (data?.review ?? null) as T | null };
+};
 
-export const fetchSpeakingReview = () => delay(speakingReview, 500);
+export const requestAiReview = (resultId: string) =>
+  invokeFunction<{ status: string }>('ai-review', { resultId, locale: useLocaleStore.getState().locale });
 
 export const useResults = () => useQuery({ queryKey: resultKeys.all, queryFn: fetchResults });
 
-export const useResult = (id: string) => useQuery({ queryKey: resultKeys.detail(id), queryFn: () => fetchResult(id) });
+export const useResult = (id: string) =>
+  useQuery({
+    queryKey: resultKeys.detail(id),
+    queryFn: () => fetchResult(id),
+    refetchInterval: (query) => (hasActiveAi(query.state.data) ? AI_POLL_MS : false),
+  });
 
 export const useLatestResult = () => {
   const query = useResults();
   return { ...query, data: query.data?.[0] };
 };
 
-export const useWritingReview = (id: string) =>
-  useQuery({ queryKey: resultKeys.writing(id), queryFn: fetchWritingReview });
+const useAiReview = <T>(id: string, kind: AiReviewKind) =>
+  useQuery({
+    queryKey: resultKeys.ai(id, kind),
+    queryFn: () => fetchAiReview<T>(id, kind),
+    refetchInterval: (query) => (isAiActive(query.state.data?.status) ? AI_POLL_MS : false),
+  });
 
-export const useSpeakingReview = (id: string) =>
-  useQuery({ queryKey: resultKeys.speaking(id), queryFn: fetchSpeakingReview });
+export const useWritingReview = (id: string) => useAiReview<WritingReview>(id, 'writing');
+
+export const useSpeakingReview = (id: string) => useAiReview<SpeakingReview>(id, 'speaking');
 
 export const useProgress = (period: ProgressPeriod) =>
   useQuery({
-    queryKey: resultKeys.progress(period),
-    queryFn: () => delay(progressByPeriod[period], 250),
-    placeholderData: (prev) => prev,
+    queryKey: resultKeys.all,
+    queryFn: fetchResults,
+    select: (results) => buildProgress(results, period),
   });
