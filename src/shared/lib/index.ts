@@ -8,3 +8,4 @@ export { daysUntil, formatShortDate } from './date';
 export { usePlayback } from './usePlayback';
 export { useKeyboardLift } from './useKeyboardLift';
 export { useRefresh } from './useRefresh';
+export { useScrollHeader } from './useScrollHeader';

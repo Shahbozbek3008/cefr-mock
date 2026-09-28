@@ -35,7 +35,7 @@ SearchField.displayName = 'SearchField';
 
 const useStyles = makeStyles(({ colors }) => ({
   field: {
-    height: 48,
+    flex: 1,
     borderRadius: radius.md,
     backgroundColor: colors.surface,
     borderWidth: 1,

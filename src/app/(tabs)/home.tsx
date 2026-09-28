@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUnreadCount } from '@/entities/notification';
@@ -15,9 +16,9 @@ import { ExamHeroSkeleton, SectionsOverviewSkeleton } from '@/features/home/ui/H
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
 import { useI18n } from '@/shared/i18n';
-import { daysUntil, useRefresh } from '@/shared/lib';
+import { daysUntil, useRefresh, useScrollHeader } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
-import { RefreshControl, StateView } from '@/shared/ui';
+import { HeaderSurface, RefreshControl, StateView } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 export default function HomeScreen() {
@@ -31,6 +32,7 @@ export default function HomeScreen() {
   const unread = useUnreadCount();
   const tests = useTests();
   const refresh = useRefresh(latest.refetch, tests.refetch);
+  const { scrollY, onScroll } = useScrollHeader();
 
   const resume = useMemo(() => tests.data?.find((t) => t.status === 'in_progress'), [tests.data]);
   const firstName = user?.name.split(' ')[0] ?? 'Aziza';
@@ -48,49 +50,48 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <ScrollView
-      style={styles.screen}
-      contentContainerStyle={[
-        styles.content,
-        { paddingTop: insets.top + size.topGap, paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] },
-      ]}
-      refreshControl={
-        <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={insets.top} />
-      }
-      showsVerticalScrollIndicator={false}
-    >
-      <HomeHeader name={firstName} hasNotifications={unread > 0} onBellPress={() => router.push('/notifications')} />
+    <View style={styles.screen}>
+      <HeaderSurface scrollY={scrollY}>
+        <HomeHeader name={firstName} hasNotifications={unread > 0} onBellPress={() => router.push('/notifications')} />
+      </HeaderSurface>
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] }]}
+        refreshControl={<RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} />}
+        showsVerticalScrollIndicator={false}
+      >
+        {latest.isPending ? (
+          <ExamHeroSkeleton />
+        ) : latest.isError ? (
+          <StateView
+            tone="error"
+            title={t('common.error')}
+            message={t('common.checkInternet')}
+            actionLabel={t('common.retry')}
+            onAction={() => latest.refetch()}
+          />
+        ) : (
+          <ExamHero
+            daysLeft={examDate ? daysUntil(examDate) : null}
+            examDate={examDate}
+            score={latest.data?.total ?? 0}
+            target={targetLevel}
+            onDatePress={() => router.push({ pathname: '/(onboarding)/exam-date', params: { edit: '1' } })}
+          />
+        )}
 
-      {latest.isPending ? (
-        <ExamHeroSkeleton />
-      ) : latest.isError ? (
-        <StateView
-          tone="error"
-          title={t('common.error')}
-          message={t('common.checkInternet')}
-          actionLabel={t('common.retry')}
-          onAction={() => latest.refetch()}
-        />
-      ) : (
-        <ExamHero
-          daysLeft={examDate ? daysUntil(examDate) : null}
-          examDate={examDate}
-          score={latest.data?.total ?? 0}
-          target={targetLevel}
-          onDatePress={() => router.push({ pathname: '/(onboarding)/exam-date', params: { edit: '1' } })}
-        />
-      )}
+        {resume ? <ContinueCard test={resume} onPress={onResume} /> : null}
 
-      {resume ? <ContinueCard test={resume} onPress={onResume} /> : null}
+        <TodayPlan items={todayPlan} onStart={onStartPlan} />
 
-      <TodayPlan items={todayPlan} onStart={onStartPlan} />
-
-      {latest.data ? (
-        <SectionsOverview sections={latest.data.sections} onPress={() => router.navigate('/(tabs)/progress')} />
-      ) : latest.isPending ? (
-        <SectionsOverviewSkeleton />
-      ) : null}
-    </ScrollView>
+        {latest.data ? (
+          <SectionsOverview sections={latest.data.sections} onPress={() => router.navigate('/(tabs)/progress')} />
+        ) : latest.isPending ? (
+          <SectionsOverviewSkeleton />
+        ) : null}
+      </Animated.ScrollView>
+    </View>
   );
 }
 
@@ -100,6 +101,7 @@ const useStyles = makeStyles(({ colors }) => ({
     backgroundColor: colors.bg,
   },
   content: {
+    paddingTop: space[3],
     paddingHorizontal: size.screenPadding,
     gap: space[3],
   },

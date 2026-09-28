@@ -1,22 +1,21 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
-import { FlashList } from '@shopify/flash-list';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ListFilter } from 'lucide-react-native';
 import { useTests } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
 import { applyCatalog, filterLabels, filterOrder, modeLabels, practiceItems } from '@/features/catalog/model/filters';
 import type { CatalogFilter, CatalogMode, CatalogSort, PracticeItem } from '@/features/catalog/model/filters';
+import { CATALOG_HEADER_COLLAPSE, CATALOG_HEADER_HEIGHT, CatalogHeader } from '@/features/catalog/ui/CatalogHeader';
 import { PracticeCard } from '@/features/catalog/ui/PracticeCard';
-import { SearchField } from '@/features/catalog/ui/SearchField';
 import { TestCard } from '@/features/catalog/ui/TestCard';
 import { TestListSkeleton } from '@/features/catalog/ui/TestListSkeleton';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
-import { useRefresh } from '@/shared/lib';
-import { makeStyles, size, space, useTheme } from '@/shared/theme';
-import { Chip, Dot, IconButton, Radio, SegmentedControl, Sheet, RefreshControl, StateView, Text } from '@/shared/ui';
+import { useRefresh, useScrollHeader } from '@/shared/lib';
+import { makeStyles, size, space } from '@/shared/theme';
+import { Chip, Radio, RefreshControl, SegmentedControl, Sheet, StateView, Text } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 const sortOptions: { value: CatalogSort; label: TKey }[] = [
@@ -28,7 +27,6 @@ const modes: CatalogMode[] = ['full', 'sections'];
 
 export default function TestsScreen() {
   const styles = useStyles();
-  const { colors } = useTheme();
   const { t } = useI18n();
   const modeOptions = useMemo(() => modes.map((value) => ({ value, label: t(modeLabels[value]) })), [t]);
   const insets = useSafeAreaInsets();
@@ -39,6 +37,16 @@ export default function TestsScreen() {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<CatalogSort>('newest');
   const [sortOpen, setSortOpen] = useState(false);
+  const { scrollY, scrollRef, onScroll } = useScrollHeader<FlatList>(CATALOG_HEADER_COLLAPSE);
+  const headerTop = insets.top + size.topGap + CATALOG_HEADER_HEIGHT;
+
+  const changeMode = useCallback(
+    (next: CatalogMode) => {
+      scrollY.value = 0;
+      setMode(next);
+    },
+    [scrollY],
+  );
 
   const list = useMemo(() => applyCatalog(tests.data ?? [], filter, query, sort), [tests.data, filter, query, sort]);
 
@@ -67,19 +75,7 @@ export default function TestsScreen() {
 
   const header = (
     <View style={styles.header}>
-      <View style={styles.titleRow}>
-        <Text variant="titleLg">{t('catalog.title')}</Text>
-        <IconButton accessibilityLabel={t('catalog.sort')} onPress={() => setSortOpen(true)}>
-          <ListFilter size={18} color={colors.textStrong} strokeWidth={1.6} />
-          <View style={styles.filterDot}>
-            <Dot color={colors.data} size={7} />
-          </View>
-        </IconButton>
-      </View>
-
-      <SearchField value={query} onChange={setQuery} />
-
-      <SegmentedControl options={modeOptions} value={mode} onChange={setMode} size="lg" />
+      <SegmentedControl options={modeOptions} value={mode} onChange={changeMode} size="lg" />
 
       {mode === 'full' ? (
         <ScrollView
@@ -102,11 +98,11 @@ export default function TestsScreen() {
   );
 
   const refreshControl = (
-    <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={insets.top} />
+    <RefreshControl refreshing={refresh.refreshing} onRefresh={refresh.onRefresh} offset={headerTop} />
   );
 
   const contentStyle = {
-    paddingTop: insets.top + size.topGap,
+    paddingTop: headerTop,
     paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4],
     paddingHorizontal: size.screenPadding,
   };
@@ -114,7 +110,10 @@ export default function TestsScreen() {
   return (
     <View style={styles.screen}>
       {mode === 'sections' ? (
-        <FlashList
+        <Animated.FlatList
+          ref={scrollRef}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           data={practiceItems}
           keyExtractor={(item) => item.kind}
           renderItem={({ item }) => <PracticeCard item={item} onPress={onPracticePress} />}
@@ -125,7 +124,10 @@ export default function TestsScreen() {
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <FlashList
+        <Animated.FlatList
+          ref={scrollRef}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           data={tests.isPending ? [] : list}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TestCard test={item} onPress={onTestPress} />}
@@ -160,6 +162,8 @@ export default function TestsScreen() {
           showsVerticalScrollIndicator={false}
         />
       )}
+
+      <CatalogHeader scrollY={scrollY} query={query} onQueryChange={setQuery} onFilterPress={() => setSortOpen(true)} />
 
       <Sheet visible={sortOpen} onClose={() => setSortOpen(false)}>
         <Text variant="titleSheet" style={styles.sheetTitle}>
@@ -200,21 +204,6 @@ const useStyles = makeStyles(({ colors }) => ({
   header: {
     gap: space[3.5],
     paddingBottom: space[3.5],
-  },
-  titleRow: {
-    height: size.headerBar,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space[1],
-  },
-  filterDot: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    borderWidth: 2,
-    borderColor: colors.surface,
-    borderRadius: 6,
   },
   chipsScroll: {
     marginRight: -size.screenPadding,

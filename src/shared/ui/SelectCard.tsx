@@ -1,5 +1,5 @@
 import { ReactNode, memo } from 'react';
-import { Pressable, View, ViewStyle } from 'react-native';
+import { Pressable, ViewStyle } from 'react-native';
 import { makeStyles, radius, useTheme } from '../theme';
 
 export type SelectCardProps = {

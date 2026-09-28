@@ -22,6 +22,7 @@ export { ProgressSteps } from './ProgressSteps';
 export { Radio } from './Radio';
 export { RefreshControl } from './RefreshControl';
 export { Screen } from './Screen';
+export { HeaderSurface, ScreenHeader } from './ScreenHeader';
 export { SegmentedControl } from './SegmentedControl';
 export { SegmentProgress } from './SegmentProgress';
 export { SelectCard } from './SelectCard';

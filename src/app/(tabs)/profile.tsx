@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Bell, Calendar, CircleHelp, Globe, Moon, Sun, Target } from 'lucide-react-native';
@@ -12,7 +13,8 @@ import { LanguageSheet } from '@/features/language-switch/ui/LanguageSheet';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
 import { locales, useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, size, space, useTheme, useThemePreference } from '@/shared/theme';
-import { ConfirmSheet, ListGroup, ListRow, Switch, Text, useToast } from '@/shared/ui';
+import { useScrollHeader } from '@/shared/lib';
+import { ConfirmSheet, ListGroup, ListRow, ScreenHeader, Switch, Text, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 const contactOf = (user: User | null) =>
@@ -33,6 +35,7 @@ export default function ProfileScreen() {
   const resetAttempt = useAttemptStore((s) => s.reset);
   const showToast = useToast((s) => s.show);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const { scrollY, onScroll } = useScrollHeader();
   const [themeOpen, setThemeOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const preference = useThemePreference((s) => s.preference);
@@ -48,19 +51,14 @@ export default function ProfileScreen() {
   const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
 
   return (
-    <>
-      <ScrollView
-        style={styles.screen}
-        contentContainerStyle={[
-          styles.content,
-          { paddingTop: insets.top + size.topGap, paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] },
-        ]}
+    <View style={styles.screen}>
+      <ScreenHeader title={t('profile.title')} scrollY={scrollY} />
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + TAB_BAR_SPACE + space[4] }]}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Text variant="titleLg">{t('profile.title')}</Text>
-        </View>
-
         <ProfileCard
           name={user?.name ?? 'Aziza Karimova'}
           contact={contactOf(user)}
@@ -133,7 +131,7 @@ export default function ProfileScreen() {
             {t('profile.signOut')}
           </Text>
         </Pressable>
-      </ScrollView>
+      </Animated.ScrollView>
 
       <ThemeSheet visible={themeOpen} onClose={() => setThemeOpen(false)} />
       <LanguageSheet visible={languageOpen} onClose={() => setLanguageOpen(false)} />
@@ -147,7 +145,7 @@ export default function ProfileScreen() {
         onConfirm={onSignOut}
         onClose={() => setConfirmOpen(false)}
       />
-    </>
+    </View>
   );
 }
 
@@ -157,13 +155,9 @@ const useStyles = makeStyles(({ colors }) => ({
     backgroundColor: colors.bg,
   },
   content: {
+    paddingTop: space[3],
     paddingHorizontal: size.screenPadding,
     gap: space[3.5],
-  },
-  header: {
-    height: size.headerBar,
-    justifyContent: 'center',
-    paddingHorizontal: space[1],
   },
   groupLabel: {
     paddingTop: space[1.5],
