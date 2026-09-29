@@ -7,7 +7,8 @@ import type { SectionStats } from './stats';
 import { useBackGuard, useSectionFlow } from './useSectionFlow';
 
 export const useSessionControls = (test: TestDetail, section: SectionKind, questions?: Question[]) => {
-  const { finish, finishing } = useSectionFlow(test, section);
+  const { finish, finishing, submitTest } = useSectionFlow(test, section);
+  const mode = useAttemptStore((s) => s.mode);
   const [exitOpen, setExitOpen] = useState(false);
   const [finishOpen, setFinishOpen] = useState(false);
   const [stats, setStats] = useState<SectionStats>();
@@ -18,8 +19,12 @@ export const useSessionControls = (test: TestDetail, section: SectionKind, quest
 
   const confirmExit = useCallback(() => {
     setExitOpen(false);
+    if (mode === 'exam') {
+      submitTest();
+      return;
+    }
     router.back();
-  }, []);
+  }, [mode, submitTest]);
 
   const requestFinish = useCallback(() => {
     if (questions) {
@@ -34,6 +39,7 @@ export const useSessionControls = (test: TestDetail, section: SectionKind, quest
   return {
     test,
     section,
+    mode,
     stats,
     finish,
     finishing,

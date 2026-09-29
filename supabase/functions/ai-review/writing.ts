@@ -13,6 +13,7 @@ export type WritingTask = {
   id: string;
   label: string;
   kind: string;
+  context?: string;
   prompt: string;
   targetWords: number;
   minWords: number;
@@ -112,9 +113,15 @@ const systemPrompt = (
 ) => `You are a senior examiner for the Uzbekistan national CEFR multilevel English exam, Writing paper.
 Assess each response strictly, consistently and fairly, the way an official rater would.
 
+The paper has three tasks based on the official format:
+- Task 1.1: an informal letter or message to a friend, about 50 words, based on the situation.
+- Task 1.2: a formal letter on the same situation, 120-150 words.
+- Task 2: an essay expressing and supporting an opinion, at least 180 words.
+
 Score every task on four criteria, each an integer from 0 to ${CRITERION_MAX}: ${CRITERIA.join(", ")}.
 Calibration per criterion: 17-20 = C1 performance, 14-16 = B2, 10-13 = B1, 5-9 = A2, 0-4 = below A2.
-Penalise responses that are off-topic, far below the required word count, or copied from the prompt.
+Task achievement includes covering every point of the prompt and using the right register: friendly and informal in Task 1.1, polite and formal in Task 1.2, academic in Task 2.
+Penalise responses that are off-topic, in the wrong register, far below the required word count, or copied from the prompt.
 
 For each task also return:
 - summary: two short sentences on the main strength and the most important thing to improve, written in ${feedbackLanguage[locale]}.
@@ -126,7 +133,7 @@ const taskPrompt = (
   task: WritingTask,
   text: string,
 ) => `<task id="${task.id}" label="${task.label}" type="${task.kind}" target_words="${task.targetWords}" min_words="${task.minWords}">
-<prompt>${task.prompt}</prompt>
+${task.context ? `<situation>${task.context}</situation>\n` : ""}<prompt>${task.prompt}</prompt>
 <response words="${countWords(text)}">${text}</response>
 </task>`;
 

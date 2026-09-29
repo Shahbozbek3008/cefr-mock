@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { openAttempt, saveAttempt, snapshotOf, useAttemptStore } from '@/entities/attempt';
+import type { AttemptMode } from '@/entities/attempt';
 
 const AUTOSAVE_MS = 2500;
 
@@ -10,8 +11,8 @@ const isOpen = (testId: string) => {
   return current === testId && attemptId !== null;
 };
 
-export const beginAttempt = async (testId: string) => {
-  if (!isOpen(testId)) useAttemptStore.getState().hydrate(await openAttempt(testId));
+export const beginAttempt = async (testId: string, mode: AttemptMode = 'practice') => {
+  if (!isOpen(testId)) useAttemptStore.getState().hydrate(await openAttempt(testId, mode));
   return useAttemptStore.getState();
 };
 

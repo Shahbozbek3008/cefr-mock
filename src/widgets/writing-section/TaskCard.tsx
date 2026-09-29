@@ -34,6 +34,13 @@ export const TaskBrief = memo<{ task: WritingTask }>(({ task }) => {
       <Text variant="monoLabel" color={colors.textTertiary}>
         {`${task.label} · ${task.kind}`.toUpperCase()}
       </Text>
+      {task.context ? (
+        <View style={styles.context}>
+          <Text variant="bodySmRelaxed" color={colors.textStrong}>
+            {task.context}
+          </Text>
+        </View>
+      ) : null}
       <Text variant="lead">{task.prompt}</Text>
       <View style={styles.requirements}>
         <View style={styles.requirement}>
@@ -72,6 +79,14 @@ const useStyles = makeStyles(({ colors }) => ({
   brief: {
     padding: space[4],
     gap: space[3],
+  },
+  context: {
+    borderLeftWidth: 3,
+    borderLeftColor: colors.selectedBorder,
+    borderRadius: radius.xs,
+    backgroundColor: colors.bg,
+    paddingVertical: space[2.5],
+    paddingHorizontal: space[3],
   },
   requirements: {
     marginTop: space[1],

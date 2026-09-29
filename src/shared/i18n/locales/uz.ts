@@ -196,6 +196,16 @@ export const uz = {
     speakingDetail: '{{parts}} qism · AI baho',
   },
   testIntro: {
+    mode: 'Rejim',
+    examMode: 'Imtihon rejimi',
+    examModeHint: "Haqiqiy imtihon kabi: to'xtatib bo'lmaydi, audio bir marta eshittiriladi.",
+    practiceMode: 'Mashq rejimi',
+    practiceModeHint: 'Erkin: istalgan payt chiqib davom ettirish va audioni qayta tinglash mumkin.',
+    modeLocked: "Boshlangan testning rejimini o'zgartirib bo'lmaydi.",
+    ruleNoExit: 'Testdan chiqsangiz, u shu holatda topshirilgan hisoblanadi.',
+    ruleTimer: "Har bir bo'lim vaqti tugaganda avtomatik yakunlanadi.",
+    rulePracticeReplay: 'Listening audiosini qayta tinglashingiz mumkin.',
+    rulePracticeResume: 'Istalgan payt chiqib, keyinroq shu joydan davom ettirasiz.',
     fullMock: "To'liq mock",
     realMode: 'Real rejim',
     officialFormat: '{{period}} rasmiy formati',
@@ -209,6 +219,10 @@ export const uz = {
     loadFailed: 'Test yuklanmadi',
   },
   session: {
+    examExitTitle: 'Testni yakunlaysizmi?',
+    examExitMessage:
+      "Imtihon rejimida testdan chiqib, keyin davom ettirib bo'lmaydi. Chiqsangiz, test hozirgi javoblaringiz bilan topshiriladi.",
+    examExitConfirm: 'Topshirish',
     startFailed: "Testni boshlab bo'lmadi. Internetni tekshiring.",
     submitFailed: "Natijani yuborib bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.",
     exitA11y: 'Testdan chiqish',
@@ -241,6 +255,9 @@ export const uz = {
     finishAnyway: 'Baribir yakunlash',
   },
   listening: {
+    practiceMode: 'Mashq rejimi',
+    practiceNote: 'Mashq rejimida audioni qayta tinglash mumkin.',
+    replay: 'Qayta tinglash',
     playing: 'Eshittirilmoqda',
     ended: 'Audio tugadi',
     realMode: 'Real rejim',

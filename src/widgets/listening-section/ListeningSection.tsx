@@ -32,6 +32,8 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
   const questions = useMemo(() => parts.flatMap((p) => p.questions), [parts]);
   const controls = useSessionControls(test, 'listening', questions);
   const setPosition = useAttemptStore((s) => s.setPosition);
+  const playedParts = useAttemptStore((s) => s.playedParts);
+  const markPartPlayed = useAttemptStore((s) => s.markPartPlayed);
 
   const [currentId, setCurrentId] = useState(
     () => questions[useAttemptStore.getState().position.listening ?? 0]?.id ?? questions[0].id,
@@ -128,6 +130,9 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
             key={part.id}
             uri={listeningAudioUrl(part.audio)}
             durationSec={part.durationSec}
+            mode={controls.mode}
+            played={playedParts.includes(part.id)}
+            onStart={() => markPartPlayed(part.id)}
             onEnded={onAudioEnded}
           />
         ) : null}

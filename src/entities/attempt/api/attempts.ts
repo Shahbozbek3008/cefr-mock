@@ -1,7 +1,7 @@
 import { ensureOk, supabase, unwrap } from '@/shared/api';
 import type { Json, Tables } from '@/shared/api';
 import type { SectionKind } from '@/entities/test';
-import type { AttemptSnapshot } from '../model/store';
+import type { AttemptMode, AttemptSnapshot } from '../model/store';
 
 type AttemptRow = Tables<'attempts'>;
 
@@ -10,6 +10,7 @@ const UNIQUE_VIOLATION = '23505';
 const toSnapshot = (row: AttemptRow): AttemptSnapshot => ({
   attemptId: row.id,
   testId: row.test_id,
+  mode: row.mode,
   section: row.current_section as SectionKind | null,
   startedAt: new Date(row.started_at).getTime(),
   endsAt: row.ends_at as Partial<Record<SectionKind, number>>,
@@ -20,7 +21,7 @@ const toSnapshot = (row: AttemptRow): AttemptSnapshot => ({
   uploads: (row.recordings as Record<string, string>) ?? {},
 });
 
-const fetchActiveAttempt = async (testId: string) => {
+export const fetchActiveAttempt = async (testId: string) => {
   const { data, error } = await supabase
     .from('attempts')
     .select('*')
@@ -31,14 +32,14 @@ const fetchActiveAttempt = async (testId: string) => {
   return data ? toSnapshot(data) : null;
 };
 
-const createAttempt = async (testId: string) => {
-  const { data, error } = await supabase.from('attempts').insert({ test_id: testId }).select('*').single();
+const createAttempt = async (testId: string, mode: AttemptMode) => {
+  const { data, error } = await supabase.from('attempts').insert({ test_id: testId, mode }).select('*').single();
   if (error?.code === UNIQUE_VIOLATION) return fetchActiveAttempt(testId);
   return toSnapshot(unwrap({ data, error }));
 };
 
-export const openAttempt = async (testId: string): Promise<AttemptSnapshot> => {
-  const snapshot = (await fetchActiveAttempt(testId)) ?? (await createAttempt(testId));
+export const openAttempt = async (testId: string, mode: AttemptMode): Promise<AttemptSnapshot> => {
+  const snapshot = (await fetchActiveAttempt(testId)) ?? (await createAttempt(testId, mode));
   if (!snapshot) throw new Error('attempt_unavailable');
   return snapshot;
 };

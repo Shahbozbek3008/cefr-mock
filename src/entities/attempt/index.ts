@@ -1,6 +1,6 @@
 export { snapshotOf, useAnswer, useAttemptStore, useIsFlagged } from './model/store';
-export type { AttemptSnapshot, Highlight } from './model/store';
-export { openAttempt, saveAttempt, submitAttempt } from './api/attempts';
+export type { AttemptMode, AttemptSnapshot, Highlight } from './model/store';
+export { fetchActiveAttempt, openAttempt, saveAttempt, submitAttempt } from './api/attempts';
 export { recordingUrl, uploadRecording } from './api/recordings';
 export { FlagButton } from './ui/FlagButton';
 export { GapInput } from './ui/GapInput';

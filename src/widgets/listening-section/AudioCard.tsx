@@ -1,10 +1,12 @@
-import { memo, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { ReactNode, memo, useCallback, useEffect, useRef } from 'react';
+import { Pressable, View } from 'react-native';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import { Lock } from 'lucide-react-native';
+import { Lock, RotateCcw } from 'lucide-react-native';
+import type { AttemptMode } from '@/entities/attempt';
+import type { TKey } from '@/shared/i18n';
 import { useI18n } from '@/shared/i18n';
 import { formatClock } from '@/shared/lib';
-import { makeStyles, radius, space, useTheme } from '@/shared/theme';
+import { hitSlop, makeStyles, radius, space, useTheme } from '@/shared/theme';
 import { Card, Dot, Text } from '@/shared/ui';
 import { Waveform } from '@/shared/ui/charts';
 
@@ -13,42 +15,22 @@ const bars = [
   0.6, 0.4, 0.7, 0.3, 0.5, 0.2, 0.45, 0.3,
 ];
 
-export type AudioCardProps = {
-  uri: string;
-  durationSec: number;
-  onEnded: () => void;
+const END_TOLERANCE_SEC = 0.5;
+
+type FrameProps = {
+  mode: AttemptMode;
+  label: TKey;
+  active: boolean;
+  position: number;
+  duration: number;
+  progress: number;
+  action?: ReactNode;
 };
 
-export const AudioCard = memo<AudioCardProps>(({ uri, durationSec, onEnded }) => {
+const Frame = ({ mode, label, active, position, duration, progress, action }: FrameProps) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
-  const player = useAudioPlayer({ uri });
-  const status = useAudioPlayerStatus(player);
-  const started = useRef(false);
-  const endedRef = useRef(onEnded);
-  endedRef.current = onEnded;
-
-  const duration = status.duration || durationSec;
-  const position = Math.min(status.currentTime, duration);
-  const progress = duration > 0 ? position / duration : 0;
-  const finished = started.current && !status.playing && position >= duration - 0.5;
-  const active = status.isLoaded && !finished;
-  const label = !status.isLoaded ? 'common.loading' : finished ? 'listening.ended' : 'listening.playing';
-
-  useEffect(() => {
-    setAudioModeAsync({ playsInSilentMode: true, allowsRecording: false }).catch(() => undefined);
-  }, []);
-
-  useEffect(() => {
-    if (!status.isLoaded || started.current) return;
-    started.current = true;
-    player.play();
-  }, [player, status.isLoaded]);
-
-  useEffect(() => {
-    if (status.didJustFinish) endedRef.current();
-  }, [status.didJustFinish]);
 
   return (
     <Card level="strong" radius={radius.hero} style={styles.card}>
@@ -64,10 +46,10 @@ export const AudioCard = memo<AudioCardProps>(({ uri, durationSec, onEnded }) =>
             {t(label)}
           </Text>
         </View>
-        <View style={styles.lock}>
-          <Lock size={11} color={colors.textSecondary} strokeWidth={2.2} />
+        <View style={styles.badge}>
+          {mode === 'exam' ? <Lock size={11} color={colors.textSecondary} strokeWidth={2.2} /> : null}
           <Text variant="microMedium" color={colors.textSecondary}>
-            {t('listening.realMode')}
+            {t(mode === 'exam' ? 'listening.realMode' : 'listening.practiceMode')}
           </Text>
         </View>
       </View>
@@ -81,12 +63,99 @@ export const AudioCard = memo<AudioCardProps>(({ uri, durationSec, onEnded }) =>
 
       <Waveform bars={bars} progress={progress} playhead />
 
-      <Text variant="caption" color={colors.textSecondary}>
-        {t('listening.onceNote')}
-      </Text>
+      <View style={styles.footer}>
+        <Text variant="caption" color={colors.textSecondary} style={styles.note}>
+          {t(mode === 'exam' ? 'listening.onceNote' : 'listening.practiceNote')}
+        </Text>
+        {action}
+      </View>
     </Card>
   );
-});
+};
+
+export type AudioCardProps = {
+  uri: string;
+  durationSec: number;
+  mode: AttemptMode;
+  played: boolean;
+  onStart: () => void;
+  onEnded: () => void;
+};
+
+const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProps, 'played'>) => {
+  const styles = useStyles();
+  const { colors } = useTheme();
+  const { t } = useI18n();
+  const player = useAudioPlayer({ uri });
+  const status = useAudioPlayerStatus(player);
+  const started = useRef(false);
+  const startRef = useRef(onStart);
+  const endedRef = useRef(onEnded);
+  startRef.current = onStart;
+  endedRef.current = onEnded;
+
+  const duration = status.duration || durationSec;
+  const position = Math.min(status.currentTime, duration);
+  const finished = started.current && !status.playing && position >= duration - END_TOLERANCE_SEC;
+  const label: TKey = !status.isLoaded ? 'common.loading' : finished ? 'listening.ended' : 'listening.playing';
+
+  useEffect(() => {
+    setAudioModeAsync({ playsInSilentMode: true, allowsRecording: false }).catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    if (!status.isLoaded || started.current) return;
+    started.current = true;
+    startRef.current();
+    player.play();
+  }, [player, status.isLoaded]);
+
+  useEffect(() => {
+    if (status.didJustFinish) endedRef.current();
+  }, [status.didJustFinish]);
+
+  const replay = useCallback(() => {
+    player.seekTo(0);
+    player.play();
+  }, [player]);
+
+  const action =
+    mode === 'practice' && finished ? (
+      <Pressable accessibilityRole="button" hitSlop={hitSlop} onPress={replay} style={styles.replay}>
+        <RotateCcw size={14} color={colors.link} strokeWidth={1.8} />
+        <Text variant="calloutMedium" color={colors.link}>
+          {t('listening.replay')}
+        </Text>
+      </Pressable>
+    ) : undefined;
+
+  return (
+    <Frame
+      mode={mode}
+      label={label}
+      active={status.isLoaded && !finished}
+      position={position}
+      duration={duration}
+      progress={duration > 0 ? position / duration : 0}
+      action={action}
+    />
+  );
+};
+
+export const AudioCard = memo<AudioCardProps>(({ played, ...props }) =>
+  props.mode === 'exam' && played ? (
+    <Frame
+      mode="exam"
+      label="listening.ended"
+      active={false}
+      position={props.durationSec}
+      duration={props.durationSec}
+      progress={1}
+    />
+  ) : (
+    <Player {...props} />
+  ),
+);
 
 AudioCard.displayName = 'AudioCard';
 
@@ -105,7 +174,7 @@ const useStyles = makeStyles(({ colors }) => ({
     alignItems: 'center',
     gap: space[2],
   },
-  lock: {
+  badge: {
     height: 24,
     paddingHorizontal: 9,
     borderRadius: radius.pill,
@@ -118,5 +187,18 @@ const useStyles = makeStyles(({ colors }) => ({
     flexDirection: 'row',
     alignItems: 'baseline',
     gap: space[2],
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space[3],
+  },
+  note: {
+    flex: 1,
+  },
+  replay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space[1.5],
   },
 }));

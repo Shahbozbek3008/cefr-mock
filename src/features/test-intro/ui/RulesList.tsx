@@ -1,24 +1,36 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Headphones, LucideIcon, Wifi } from 'lucide-react-native';
+import { DoorOpen, Headphones, LucideIcon, RotateCcw, Timer, Wifi } from 'lucide-react-native';
+import type { AttemptMode } from '@/entities/attempt';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
 import { space, useTheme } from '@/shared/theme';
 import { Text } from '@/shared/ui';
 
-const rules: { Icon: LucideIcon; text: TKey }[] = [
-  { Icon: Headphones, text: 'testIntro.ruleAudio' },
-  { Icon: Wifi, text: 'testIntro.ruleOffline' },
-];
+type Rule = { Icon: LucideIcon; text: TKey };
 
-export const RulesList = memo(() => {
+const rules: Record<AttemptMode, Rule[]> = {
+  exam: [
+    { Icon: Headphones, text: 'testIntro.ruleAudio' },
+    { Icon: DoorOpen, text: 'testIntro.ruleNoExit' },
+    { Icon: Timer, text: 'testIntro.ruleTimer' },
+    { Icon: Wifi, text: 'testIntro.ruleOffline' },
+  ],
+  practice: [
+    { Icon: RotateCcw, text: 'testIntro.rulePracticeReplay' },
+    { Icon: DoorOpen, text: 'testIntro.rulePracticeResume' },
+    { Icon: Wifi, text: 'testIntro.ruleOffline' },
+  ],
+};
+
+export const RulesList = memo<{ mode: AttemptMode }>(({ mode }) => {
   const { colors } = useTheme();
   const { t } = useI18n();
 
   return (
     <View style={styles.list}>
       <Text variant="calloutMedium">{t('testIntro.rules')}</Text>
-      {rules.map(({ Icon, text }) => (
+      {rules[mode].map(({ Icon, text }) => (
         <View key={text} style={styles.rule}>
           <Icon size={15} color={colors.data} strokeWidth={1.6} style={styles.icon} />
           <Text variant="callout" color={colors.textStrong} style={styles.text}>

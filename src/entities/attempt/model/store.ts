@@ -5,9 +5,13 @@ import type { SectionKind } from '@/entities/test';
 
 export type Highlight = { paragraph: string; color: 'yellow' | 'blue' };
 
+export type AttemptMode = 'exam' | 'practice';
+
 type AttemptData = {
   attemptId: string | null;
   testId: string | null;
+  mode: AttemptMode;
+  playedParts: string[];
   section: SectionKind | null;
   startedAt: number | null;
   endsAt: Partial<Record<SectionKind, number>>;
@@ -26,6 +30,7 @@ export type AttemptSnapshot = Pick<
   AttemptData,
   | 'attemptId'
   | 'testId'
+  | 'mode'
   | 'section'
   | 'startedAt'
   | 'endsAt'
@@ -46,6 +51,7 @@ type AttemptActions = {
   setWriting: (taskId: string, text: string) => void;
   setRecording: (questionId: string, uri: string) => void;
   setUpload: (questionId: string, path: string) => void;
+  markPartPlayed: (partId: string) => void;
   setPosition: (section: SectionKind, index: number) => void;
   reset: () => void;
 };
@@ -53,6 +59,8 @@ type AttemptActions = {
 const empty: AttemptData = {
   attemptId: null,
   testId: null,
+  mode: 'practice',
+  playedParts: [],
   section: null,
   startedAt: null,
   endsAt: {},
@@ -106,6 +114,8 @@ export const useAttemptStore = create<AttemptData & AttemptActions>()(
         set((state) => ({ writing: { ...state.writing, [taskId]: text }, writingSavedAt: Date.now() })),
       setRecording: (questionId, uri) => set((state) => ({ recordings: { ...state.recordings, [questionId]: uri } })),
       setUpload: (questionId, path) => set((state) => ({ uploads: { ...state.uploads, [questionId]: path } })),
+      markPartPlayed: (partId) =>
+        set((state) => (state.playedParts.includes(partId) ? state : { playedParts: [...state.playedParts, partId] })),
       setPosition: (section, index) => set((state) => ({ position: { ...state.position, [section]: index } })),
       reset: () => set(empty),
     }),
@@ -122,6 +132,7 @@ export const useIsFlagged = (questionId: string) => useAttemptStore((s) => s.fla
 export const snapshotOf = (state: AttemptData): AttemptSnapshot => ({
   attemptId: state.attemptId,
   testId: state.testId,
+  mode: state.mode,
   section: state.section,
   startedAt: state.startedAt,
   endsAt: state.endsAt,

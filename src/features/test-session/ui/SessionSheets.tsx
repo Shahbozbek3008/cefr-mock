@@ -20,6 +20,7 @@ export const SessionSheets = memo<SessionSheetsProps>(({ controls, onReview }) =
   const { closeFinish } = controls;
   const { t } = useI18n();
   const next = nextSectionMeta(controls);
+  const exam = controls.mode === 'exam';
 
   const review = useCallback(
     (number: number) => {
@@ -33,12 +34,13 @@ export const SessionSheets = memo<SessionSheetsProps>(({ controls, onReview }) =
     <>
       <ConfirmSheet
         visible={controls.exitOpen}
-        title={t('session.exitTitle')}
-        message={t('session.exitMessage')}
-        confirmLabel={t('common.exit')}
+        title={t(exam ? 'session.examExitTitle' : 'session.exitTitle')}
+        message={t(exam ? 'session.examExitMessage' : 'session.exitMessage')}
+        confirmLabel={t(exam ? 'session.examExitConfirm' : 'common.exit')}
         cancelLabel={t('common.continue')}
         tone="destructive"
         icon={DoorOpen}
+        loading={controls.finishing}
         onConfirm={controls.confirmExit}
         onClose={controls.closeExit}
       />

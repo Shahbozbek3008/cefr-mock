@@ -1,15 +1,18 @@
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowRight, ChevronLeft } from 'lucide-react-native';
-import { useAttemptStore } from '@/entities/attempt';
+import { fetchActiveAttempt, useAttemptStore } from '@/entities/attempt';
+import type { AttemptMode } from '@/entities/attempt';
 import { sectionOrder, useTest, useTests } from '@/entities/test';
-import { beginAttempt } from '@/features/test-session/model/attemptSession';
+import { ModePicker } from '@/features/test-intro/ui/ModePicker';
 import { RulesList } from '@/features/test-intro/ui/RulesList';
 import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
-import { TestStats } from '@/features/test-intro/ui/TestStats';
 import { TestIntroSkeleton } from '@/features/test-intro/ui/TestIntroSkeleton';
+import { TestStats } from '@/features/test-intro/ui/TestStats';
+import { beginAttempt } from '@/features/test-session/model/attemptSession';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, StateView, Tag, Text, TopBar, useToast } from '@/shared/ui';
@@ -23,16 +26,23 @@ export default function TestIntroScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const test = useTest(id);
   const tests = useTests();
-  const attemptTestId = useAttemptStore((s) => s.testId);
+  const local = useAttemptStore((s) => (s.testId === id && s.attemptId ? s.mode : null));
   const showToast = useToast((s) => s.show);
   const [starting, setStarting] = useState(false);
+  const [chosen, setChosen] = useState<AttemptMode>('exam');
 
-  const resuming = attemptTestId === id || tests.data?.find((item) => item.id === id)?.status === 'in_progress';
+  const resuming = local !== null || tests.data?.find((item) => item.id === id)?.status === 'in_progress';
+  const active = useQuery({
+    queryKey: ['attempts', id, 'active'],
+    queryFn: () => fetchActiveAttempt(id),
+    enabled: resuming && local === null,
+  });
+  const mode = resuming ? (local ?? active.data?.mode ?? chosen) : chosen;
 
   const onStart = useCallback(async () => {
     setStarting(true);
     try {
-      const { completed } = await beginAttempt(id);
+      const { completed } = await beginAttempt(id, mode);
       const next = sectionOrder.find((kind) => !completed.includes(kind)) ?? 'listening';
       router.push({ pathname: '/test/[id]/[section]', params: { id, section: next } });
     } catch {
@@ -40,7 +50,7 @@ export default function TestIntroScreen() {
     } finally {
       setStarting(false);
     }
-  }, [id, showToast, t]);
+  }, [id, mode, showToast, t]);
 
   return (
     <Screen>
@@ -61,7 +71,7 @@ export default function TestIntroScreen() {
             <View style={styles.intro}>
               <View style={styles.tags}>
                 <Tag label={t('testIntro.fullMock')} tone="lime" />
-                <Tag label={t('testIntro.realMode')} tone="neutral" />
+                <Tag label={t(mode === 'exam' ? 'testIntro.examMode' : 'testIntro.practiceMode')} tone="neutral" />
               </View>
               <Text variant="titleXl">{test.data.title}</Text>
               <Text variant="bodySm" color={colors.textSecondary}>
@@ -77,9 +87,11 @@ export default function TestIntroScreen() {
               ]}
             />
 
+            <ModePicker value={mode} locked={resuming} onChange={setChosen} />
+
             <SectionsCard sections={test.data.sections} />
 
-            <RulesList />
+            <RulesList mode={mode} />
           </>
         ) : test.isError ? (
           <StateView

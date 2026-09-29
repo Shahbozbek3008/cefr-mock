@@ -198,6 +198,16 @@ export const ru: Dictionary = {
     speakingDetail: '{{parts}} части · оценка ИИ',
   },
   testIntro: {
+    mode: 'Режим',
+    examMode: 'Режим экзамена',
+    examModeHint: 'Как на настоящем экзамене: без пауз, аудио звучит один раз.',
+    practiceMode: 'Режим практики',
+    practiceModeHint: 'Свободно: можно выйти и продолжить позже, аудио можно переслушать.',
+    modeLocked: 'Режим начатого теста изменить нельзя.',
+    ruleNoExit: 'Если выйти из теста, он будет сдан в текущем состоянии.',
+    ruleTimer: 'Каждый раздел завершается автоматически, когда время истекает.',
+    rulePracticeReplay: 'Аудио Listening можно переслушать.',
+    rulePracticeResume: 'Можно выйти в любой момент и продолжить позже с того же места.',
     fullMock: 'Полный тест',
     realMode: 'Реальный режим',
     officialFormat: 'Официальный формат {{period}}',
@@ -211,6 +221,10 @@ export const ru: Dictionary = {
     loadFailed: 'Не удалось загрузить тест',
   },
   session: {
+    examExitTitle: 'Завершить тест?',
+    examExitMessage:
+      'В режиме экзамена нельзя выйти и продолжить позже. Если выйти, тест будет сдан с текущими ответами.',
+    examExitConfirm: 'Сдать',
     startFailed: 'Не удалось начать тест. Проверьте интернет.',
     submitFailed: 'Не удалось отправить результат. Проверьте интернет и попробуйте снова.',
     exitA11y: 'Выйти из теста',
@@ -243,6 +257,9 @@ export const ru: Dictionary = {
     finishAnyway: 'Всё равно завершить',
   },
   listening: {
+    practiceMode: 'Режим практики',
+    practiceNote: 'В режиме практики аудио можно переслушать.',
+    replay: 'Переслушать',
     playing: 'Воспроизводится',
     ended: 'Аудио закончилось',
     realMode: 'Реальный режим',

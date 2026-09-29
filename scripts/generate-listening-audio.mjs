@@ -1,9 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { Mp3Encoder } from '@breezystack/lamejs';
-import ts from 'typescript';
+import { loadSeed, seedDir } from './load-seed.mjs';
 
 const SAMPLE_RATE = 24000;
 const BITRATE_KBPS = 64;
@@ -20,25 +18,14 @@ const voices = {
   man3: 'aura-2-zeus-en',
 };
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const seedDir = join(root, 'supabase', 'seed');
-const outputDir = join(seedDir, 'audio');
-const require = createRequire(import.meta.url);
 const apiKey = process.env.DEEPGRAM_API_KEY;
+const force = process.argv.includes('--force');
+const only = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
 
 if (!apiKey) {
   console.error('Set DEEPGRAM_API_KEY before running this script.');
   process.exit(1);
 }
-
-const load = (file) => {
-  const { outputText } = ts.transpileModule(readFileSync(join(seedDir, file), 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-  });
-  const module = { exports: {} };
-  new Function('module', 'exports', 'require', outputText)(module, module.exports, require);
-  return module.exports;
-};
 
 const speak = async (voice, text) => {
   const url = `https://api.deepgram.com/v1/speak?model=${voices[voice]}&encoding=linear16&sample_rate=${SAMPLE_RATE}&container=none`;
@@ -55,8 +42,7 @@ const speak = async (voice, text) => {
 const silence = (seconds) => new Int16Array(Math.round(seconds * SAMPLE_RATE));
 
 const concat = (chunks) => {
-  const total = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
-  const merged = new Int16Array(total);
+  const merged = new Int16Array(chunks.reduce((sum, chunk) => sum + chunk.length, 0));
   let offset = 0;
   chunks.forEach((chunk) => {
     merged.set(chunk, offset);
@@ -77,7 +63,7 @@ const encodeMp3 = (samples) => {
   return Buffer.concat(parts);
 };
 
-const renderPart = async ({ partId, lines }) => {
+const renderPart = async (outputDir, { partId, lines }) => {
   const chunks = [silence(0.5)];
   const audioAt = {};
   let length = chunks[0].length;
@@ -90,21 +76,27 @@ const renderPart = async ({ partId, lines }) => {
     length += speech.length + pause.length;
   }
 
-  const file = `${partId}.mp3`;
-  writeFileSync(join(outputDir, file), encodeMp3(concat(chunks)));
-  const durationSec = Math.ceil(length / SAMPLE_RATE);
-  console.log(`${file}: ${durationSec}s, ${lines.length} lines`);
-  return [partId, { file, durationSec, audioAt }];
+  writeFileSync(join(outputDir, `${partId}.mp3`), encodeMp3(concat(chunks)));
+  return { durationSec: Math.ceil(length / SAMPLE_RATE), audioAt };
 };
 
-const { listeningScripts } = load('listening-scripts.ts');
-mkdirSync(outputDir, { recursive: true });
+const { testContents } = loadSeed('tests');
 
-const manifest = {};
-for (const script of listeningScripts) {
-  const [partId, entry] = await renderPart(script);
-  manifest[partId] = entry;
+for (const [testId, content] of Object.entries(testContents)) {
+  if (only.length && !only.includes(testId)) continue;
+  const outputDir = join(seedDir, 'audio', testId);
+  const manifestPath = join(outputDir, 'manifest.json');
+  if (existsSync(manifestPath) && !force) {
+    console.log(`${testId}: already generated, skipping (use --force to rebuild)`);
+    continue;
+  }
+
+  mkdirSync(outputDir, { recursive: true });
+  const manifest = {};
+  for (const part of content.scripts) {
+    const rendered = await renderPart(outputDir, part);
+    manifest[part.partId] = { file: `${testId}/${part.partId}.mp3`, ...rendered };
+    console.log(`${testId}/${part.partId}.mp3: ${rendered.durationSec}s`);
+  }
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 }
-
-writeFileSync(join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-console.log('Manifest written.');

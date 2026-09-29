@@ -198,6 +198,16 @@ export const en: Dictionary = {
     speakingDetail: '{{parts}} parts · AI-graded',
   },
   testIntro: {
+    mode: 'Mode',
+    examMode: 'Exam mode',
+    examModeHint: 'Like the real exam: no pausing, and the audio plays only once.',
+    practiceMode: 'Practice mode',
+    practiceModeHint: 'Flexible: leave and resume any time, and replay the audio.',
+    modeLocked: "You can't change the mode of a test you have already started.",
+    ruleNoExit: 'If you leave the test, it will be submitted as it is.',
+    ruleTimer: 'Each section ends automatically when its time runs out.',
+    rulePracticeReplay: 'You can replay the Listening audio.',
+    rulePracticeResume: 'Leave any time and continue later from the same place.',
     fullMock: 'Full mock',
     realMode: 'Real mode',
     officialFormat: 'Official {{period}} format',
@@ -211,6 +221,10 @@ export const en: Dictionary = {
     loadFailed: "Couldn't load the test",
   },
   session: {
+    examExitTitle: 'Finish the test?',
+    examExitMessage:
+      "In exam mode you can't leave and continue later. If you leave, the test will be submitted with your current answers.",
+    examExitConfirm: 'Submit',
     startFailed: "Couldn't start the test. Check your internet.",
     submitFailed: "Couldn't submit your result. Check your internet and try again.",
     exitA11y: 'Exit test',
@@ -243,6 +257,9 @@ export const en: Dictionary = {
     finishAnyway: 'Finish anyway',
   },
   listening: {
+    practiceMode: 'Practice mode',
+    practiceNote: 'In practice mode you can replay the audio.',
+    replay: 'Replay',
     playing: 'Now playing',
     ended: 'Audio finished',
     realMode: 'Real mode',

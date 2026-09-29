@@ -75,6 +75,7 @@ export type Database = {
           user_id: string;
           test_id: string;
           status: 'in_progress' | 'completed';
+          mode: 'exam' | 'practice';
           current_section: string | null;
           completed_sections: string[];
           answers: Json;
@@ -88,6 +89,7 @@ export type Database = {
         };
         Insert: {
           test_id: string;
+          mode?: 'exam' | 'practice';
           current_section?: string | null;
           completed_sections?: string[];
           answers?: Json;

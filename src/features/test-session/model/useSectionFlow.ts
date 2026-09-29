@@ -24,16 +24,7 @@ export const useSectionFlow = (test: TestDetail, section: SectionKind) => {
   const showToast = useToast((s) => s.show);
   const { t } = useI18n();
 
-  const finish = useCallback(async () => {
-    useAttemptStore.getState().completeSection(section);
-
-    const next = nextSection(section);
-    if (next) {
-      flushAttempt().catch(() => undefined);
-      router.replace({ pathname: '/test/[id]/[section]', params: { id: test.id, section: next } });
-      return;
-    }
-
+  const submitTest = useCallback(async () => {
     setFinishing(true);
     try {
       await flushUploads();
@@ -49,9 +40,21 @@ export const useSectionFlow = (test: TestDetail, section: SectionKind) => {
       setFinishing(false);
       showToast({ message: t('session.submitFailed'), tone: 'error' });
     }
-  }, [section, showToast, t, test.id]);
+  }, [showToast, t]);
 
-  return { finish, finishing };
+  const finish = useCallback(async () => {
+    useAttemptStore.getState().completeSection(section);
+
+    const next = nextSection(section);
+    if (!next) {
+      await submitTest();
+      return;
+    }
+    flushAttempt().catch(() => undefined);
+    router.replace({ pathname: '/test/[id]/[section]', params: { id: test.id, section: next } });
+  }, [section, submitTest, test.id]);
+
+  return { finish, finishing, submitTest };
 };
 
 export const useBackGuard = (onBack: () => void) => {

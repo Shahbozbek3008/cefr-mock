@@ -3,8 +3,12 @@ import type { AnswerReview, SectionReview } from '../model/types';
 
 const normalize = (value: string) => value.trim().toLowerCase().replace(/\s+/g, ' ');
 
+const accepted = (key: AnswerKey) => key.answer.split('|');
+
 export const isCorrect = (key: AnswerKey | undefined, value: string) =>
-  key !== undefined && normalize(value) !== '' && normalize(value) === normalize(key.answer);
+  key !== undefined &&
+  normalize(value) !== '' &&
+  accepted(key).some((answer) => normalize(answer) === normalize(value));
 
 export const buildReview = (
   questions: Question[],
@@ -22,7 +26,7 @@ export const buildReview = (
       status,
       prompt: q.prompt,
       yourAnswer: value,
-      correctAnswer: key?.answer ?? '',
+      correctAnswer: key ? accepted(key).join(' / ') : '',
       explanation: key?.explanation,
       audioAt: audioAt[q.number],
     };

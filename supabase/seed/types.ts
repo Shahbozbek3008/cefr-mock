@@ -38,6 +38,7 @@ export type WritingTask = {
   index: number;
   label: string;
   kind: string;
+  context?: string;
   prompt: string;
   targetWords: number;
   minWords: number;
@@ -51,4 +52,23 @@ export type SpeakingQuestion = {
   image?: string;
   prepSec: number;
   answerSec: number;
+};
+
+export type Voice = 'narrator' | 'woman' | 'man' | 'woman2' | 'man2' | 'woman3' | 'man3';
+
+export type ScriptLine = {
+  voice: Voice;
+  text: string;
+  question?: number;
+  pauseAfter?: number;
+};
+
+export type PartScript = { partId: string; lines: ScriptLine[] };
+
+export type TestContent = {
+  listening: ListeningPart[];
+  reading: ReadingPart[];
+  writing: WritingTask[];
+  speaking: SpeakingQuestion[];
+  scripts: PartScript[];
 };

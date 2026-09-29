@@ -46,6 +46,7 @@ export type WritingTask = {
   index: number;
   label: string;
   kind: string;
+  context?: string;
   prompt: string;
   targetWords: number;
   minWords: number;
