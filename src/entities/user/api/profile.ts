@@ -1,5 +1,6 @@
 import { ensureOk, requireUserId, supabase, unwrap } from '@/shared/api';
 import type { Database, Tables } from '@/shared/api';
+import type { Locale } from '@/shared/i18n';
 import type { DailyMinutes, TargetLevel } from '../model/types';
 import { avatarUrl } from './avatar';
 
@@ -21,7 +22,7 @@ export type ProfilePatch = Partial<
   Pick<
     Profile,
     'firstName' | 'lastName' | 'avatarPath' | 'targetLevel' | 'examDate' | 'dailyMinutes' | 'reminderEnabled'
-  > & { pushToken: string | null }
+  > & { pushToken: string | null; locale: Locale }
 >;
 
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
@@ -52,6 +53,7 @@ const toUpdate = (patch: ProfilePatch): ProfileUpdate => {
   if (patch.dailyMinutes !== undefined) update.daily_minutes = patch.dailyMinutes;
   if (patch.reminderEnabled !== undefined) update.reminder_enabled = patch.reminderEnabled;
   if (patch.pushToken !== undefined) update.push_token = patch.pushToken;
+  if (patch.locale !== undefined) update.locale = patch.locale;
   return update;
 };
 

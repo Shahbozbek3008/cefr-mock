@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { fetchProfile, updateProfile, useUserStore } from '@/entities/user/model';
 import type { ProfilePatch } from '@/entities/user/model';
+import { useLocaleStore } from '@/shared/i18n';
 
 const SYNC_DELAY_MS = 800;
 
@@ -18,7 +19,17 @@ const diff = (next: Synced, previous: Synced): ProfilePatch =>
     (Object.keys(next) as (keyof Synced)[]).filter((key) => next[key] !== previous[key]).map((key) => [key, next[key]]),
   );
 
+const useLocaleSync = () => {
+  const locale = useLocaleStore((s) => s.locale);
+
+  useEffect(() => {
+    updateProfile({ locale }).catch(() => undefined);
+  }, [locale]);
+};
+
 export const useProfileSync = () => {
+  useLocaleSync();
+
   useEffect(() => {
     let synced = pick(useUserStore.getState());
     let timer: ReturnType<typeof setTimeout> | undefined;

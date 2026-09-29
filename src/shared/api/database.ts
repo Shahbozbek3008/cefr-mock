@@ -18,6 +18,7 @@ export type Database = {
           first_name: string | null;
           last_name: string | null;
           avatar_path: string | null;
+          locale: 'uz' | 'ru' | 'en';
           target_level: string | null;
           exam_date: string | null;
           daily_minutes: number | null;
@@ -32,6 +33,7 @@ export type Database = {
           first_name?: string | null;
           last_name?: string | null;
           avatar_path?: string | null;
+          locale?: 'uz' | 'ru' | 'en';
           target_level?: string | null;
           exam_date?: string | null;
           daily_minutes?: number | null;
