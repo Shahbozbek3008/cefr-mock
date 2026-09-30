@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback, useEffect, useRef } from 'react';
+import { ReactNode, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { Lock, RotateCcw } from 'lucide-react-native';
@@ -142,8 +142,10 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
   );
 };
 
-export const AudioCard = memo<AudioCardProps>(({ played, ...props }) =>
-  props.mode === 'exam' && played ? (
+export const AudioCard = memo<AudioCardProps>(({ played, ...props }) => {
+  // Only a part played before this card mounted is locked; onStart marks the current playback as played too.
+  const [playedBefore] = useState(played);
+  return props.mode === 'exam' && playedBefore ? (
     <Frame
       mode="exam"
       label="listening.ended"
@@ -154,8 +156,8 @@ export const AudioCard = memo<AudioCardProps>(({ played, ...props }) =>
     />
   ) : (
     <Player {...props} />
-  ),
-);
+  );
+});
 
 AudioCard.displayName = 'AudioCard';
 

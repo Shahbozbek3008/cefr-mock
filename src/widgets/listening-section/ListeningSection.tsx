@@ -86,11 +86,14 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
     else requestFinish();
   }, [next, requestFinish, select]);
 
+  const { mode } = controls;
+
   const onAudioEnded = useCallback(() => {
+    if (mode !== 'exam') return;
     const following = parts[partIndex + 1];
     if (following) select(following.questions[0].id);
     else requestFinish();
-  }, [partIndex, parts, requestFinish, select]);
+  }, [mode, partIndex, parts, requestFinish, select]);
 
   const onReview = useCallback(
     (number: number) => {
