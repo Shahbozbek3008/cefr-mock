@@ -84,6 +84,7 @@ export type SpeakingAnswer = {
   words: number;
   wpm: number;
   segments: TextSegment[];
+  sample?: string;
 };
 
 export type SpeakingReview = {

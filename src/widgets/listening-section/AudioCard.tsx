@@ -143,7 +143,6 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
 };
 
 export const AudioCard = memo<AudioCardProps>(({ played, ...props }) => {
-  // Only a part played before this card mounted is locked; onStart marks the current playback as played too.
   const [playedBefore] = useState(played);
   return props.mode === 'exam' && playedBefore ? (
     <Frame

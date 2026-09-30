@@ -10,6 +10,7 @@ import type { AvatarSource } from '@/features/profile/model/pickAvatar';
 import { useProfileEditor } from '@/features/profile/model/useProfileEditor';
 import { AvatarEditor } from '@/features/profile/ui/AvatarEditor';
 import { PhotoSheet } from '@/features/profile/ui/PhotoSheet';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { Button, Card, ConfirmSheet, IconButton, Screen, Text, TextField, TopBar, useToast } from '@/shared/ui';
@@ -78,8 +79,8 @@ export default function EditProfileScreen() {
       await editor.save();
       showToast({ message: t('profileEdit.saved'), tone: 'success' });
       leave();
-    } catch {
-      showToast({ message: t('profileEdit.saveFailed'), tone: 'error' });
+    } catch (error) {
+      showToast({ message: `${t('profileEdit.saveFailed')} ${t(failureReason(error))}`, tone: 'error' });
     }
   }, [editor, leave, showToast, t]);
 

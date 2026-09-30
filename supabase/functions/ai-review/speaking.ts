@@ -16,7 +16,7 @@ type Tip = { tone: 'good' | 'warn'; text: string };
 type Assessment = {
   criteria: { label: (typeof CRITERIA)[number]; score: number }[];
   tips: Tip[];
-  answers: { questionId: string; segments: { text: string; mark: Mark | 'none' }[] }[];
+  answers: { questionId: string; segments: { text: string; mark: Mark | 'none' }[]; sample: string }[];
 };
 
 export type SpeakingAnswer = {
@@ -28,6 +28,7 @@ export type SpeakingAnswer = {
   words: number;
   wpm: number;
   segments: Segment[];
+  sample: string;
 };
 
 export type SpeakingReview = {
@@ -71,10 +72,11 @@ const schema = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['questionId', 'segments'],
+        required: ['questionId', 'segments', 'sample'],
         properties: {
           questionId: { type: 'string' },
           segments: segmentSchema(['grammar', 'lexis', 'filler', 'good']),
+          sample: { type: 'string' },
         },
       },
     },
@@ -93,7 +95,7 @@ Unanswered or very short answers must lower Fluency and the overall assessment.
 
 Also return:
 - tips: 2 to 4 short, concrete tips written in ${feedbackLanguage[locale]}, tone "good" for strengths and "warn" for things to fix.
-- answers: for every answered question, its transcript split into consecutive pieces that reproduce it exactly when joined. Mark grammar errors as "grammar", wrong or weak word choice as "lexis", hesitations such as "um" or "uh" as "filler", a few strong phrases as "good", everything else as "none".`;
+- answers: for every answered question, its transcript split into consecutive pieces that reproduce it exactly when joined. Mark grammar errors as "grammar", wrong or weak word choice as "lexis", hesitations such as "um" or "uh" as "filler", a few strong phrases as "good", everything else as "none". For each of these answers also write "sample": a model spoken answer to the same question in English at B2-C1 level that fits the allowed speaking time, keeps the candidate's own ideas where they are usable and sounds natural when said aloud.`;
 
 const answerPrompt = (question: SpeakingQuestion, transcript: Transcript | undefined) =>
   transcript && transcript.text
@@ -157,6 +159,7 @@ export const reviewSpeaking = async (
       words: transcript.words,
       wpm: wordsPerMinute(transcript),
       segments: marked ? alignSegments(transcript.text, marked.segments) : [{ text: transcript.text }],
+      sample: marked?.sample ?? '',
     };
   });
 

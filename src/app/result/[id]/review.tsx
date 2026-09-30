@@ -4,11 +4,12 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { buildReview, useResult } from '@/entities/result';
-import { sectionTitles, useTest, useTestKeys } from '@/entities/test';
+import { sectionTitles, useTest, useTestKeys, useTestScripts } from '@/entities/test';
 import type { ListeningPart } from '@/entities/test';
 import { AnswerDetail } from '@/features/review/ui/AnswerDetail';
 import { ReviewGrid } from '@/features/review/ui/ReviewGrid';
 import { ReviewSkeleton } from '@/features/review/ui/ReviewSkeleton';
+import { TranscriptCard } from '@/features/review/ui/TranscriptCard';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, SegmentedControl, Text, TopBar } from '@/shared/ui';
@@ -37,6 +38,7 @@ export default function ReviewScreen() {
   const result = useResult(id);
   const test = useTest(result.data?.testId ?? '');
   const keys = useTestKeys(result.data?.testId ?? '');
+  const scripts = useTestScripts(result.data?.testId ?? '');
   const [tab, setTab] = useState<'listening' | 'reading'>('listening');
   const [onlyWrong, setOnlyWrong] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -54,6 +56,8 @@ export default function ReviewScreen() {
   const current = review?.items.find((i) => i.questionId === selectedId) ?? navigable[0] ?? review?.items[0];
   const position = current ? navigable.indexOf(current) : -1;
   const question = questions.find((q) => q.id === current?.questionId);
+  const partId = tab === 'listening' ? parts?.find((p) => p.questions.some((q) => q.id === question?.id))?.id : undefined;
+  const transcript = scripts.data?.find((item) => item.partId === partId);
 
   const onTab = useCallback(
     (value: Tab) => {
@@ -109,7 +113,15 @@ export default function ReviewScreen() {
               <Summary value={review.empty} label={t('review.empty')} color={colors.text} />
             </View>
             <ReviewGrid items={review.items} selectedId={current.questionId} onSelect={setSelectedId} />
+            <Button
+              label={t('mistakes.start')}
+              variant="soft"
+              size="M"
+              align="center"
+              onPress={() => router.push({ pathname: '/result/[id]/practice', params: { id } })}
+            />
             <AnswerDetail item={current} question={question} />
+            {transcript ? <TranscriptCard transcript={transcript} questionNumber={current.number} /> : null}
           </>
         ) : (
           <ReviewSkeleton />

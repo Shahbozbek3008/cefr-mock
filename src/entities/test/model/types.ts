@@ -30,6 +30,10 @@ export type ListeningPart = {
   questions: Question[];
 };
 
+export type TranscriptLine = { voice: string; text: string; question?: number };
+
+export type PartTranscript = { partId: string; lines: TranscriptLine[] };
+
 export type PassageParagraph = { label: string; text: string; highlight?: string };
 
 export type ReadingPart = {

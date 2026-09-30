@@ -13,6 +13,7 @@ import { RecommendationCard } from '@/features/result/ui/RecommendationCard';
 import { ResultGauge } from '@/features/result/ui/ResultGauge';
 import { SectionScoreCard } from '@/features/result/ui/SectionScoreCard';
 import { ResultSkeleton } from '@/features/result/ui/ResultSkeleton';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { MAX_SCORE, levelFor } from '@/shared/lib';
 import { gradientDirection, size, space, useTheme } from '@/shared/theme';
@@ -110,7 +111,7 @@ export default function ResultScreen() {
           <StateView
             tone="error"
             title={t('result.notFound')}
-            message={t('common.checkInternet')}
+            message={t(failureReason(result.error))}
             actionLabel={t('common.retry')}
             onAction={() => result.refetch()}
           />

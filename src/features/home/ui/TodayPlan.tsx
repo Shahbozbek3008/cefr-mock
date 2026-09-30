@@ -40,12 +40,10 @@ export const TodayPlan = memo<TodayPlanProps>(({ items, onStart }) => {
             )}
             <View style={styles.body}>
               <Text variant="label" color={item.done ? colors.textTertiary : colors.text}>
-                {`${sectionTitles[item.section]} · ${item.part}`}
+                {sectionTitles[item.section]}
               </Text>
               <Text variant="caption" color={item.done ? colors.textTertiary : colors.textSecondary}>
-                {item.total
-                  ? t('home.planCorrect', { minutes: item.minutes, correct: item.correct ?? 0, total: item.total })
-                  : t('home.planAi', { minutes: item.minutes })}
+                {t('home.planMinutes', { minutes: item.minutes })}
               </Text>
             </View>
             {item.done ? null : (

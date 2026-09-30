@@ -10,6 +10,7 @@ import { ScoreChartCard } from '@/features/progress/ui/ScoreChartCard';
 import { ProgressEmpty } from '@/features/progress/ui/ProgressEmpty';
 import { ProgressSkeleton } from '@/features/progress/ui/ProgressSkeleton';
 import { SectionProgress } from '@/features/progress/ui/SectionProgress';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { useRefresh, useScrollHeader } from '@/shared/lib';
 import { hitSlop, makeStyles, size, space, useTheme } from '@/shared/theme';
@@ -67,7 +68,7 @@ export default function ProgressScreen() {
           <StateView
             tone="error"
             title={t('common.error')}
-            message={t('common.checkInternet')}
+            message={t(failureReason(progress.error))}
             actionLabel={t('common.retry')}
             onAction={() => progress.refetch()}
           />

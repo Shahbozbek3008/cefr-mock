@@ -5,16 +5,20 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUnreadCount } from '@/entities/notification';
 import { useLatestResult } from '@/entities/result';
+import { dayKey, streakOf, useStudyDays, weekDays, weekdayIndex, weeklyPlan } from '@/entities/study';
 import { useTests } from '@/entities/test';
+import type { SectionKind } from '@/entities/test';
 import { useUserStore } from '@/entities/user/model';
-import { todayPlan } from '@/features/home/model/plan';
+import { DEFAULT_DAILY_MINUTES, todayPlanOf } from '@/features/home/model/plan';
 import type { PlanItem } from '@/features/home/model/plan';
 import { ContinueCard } from '@/features/home/ui/ContinueCard';
 import { ExamHero } from '@/features/home/ui/ExamHero';
 import { HomeHeader } from '@/features/home/ui/HomeHeader';
 import { ExamHeroSkeleton, SectionsOverviewSkeleton } from '@/features/home/ui/HomeSkeleton';
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
+import { StudyWeek } from '@/features/home/ui/StudyWeek';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { daysUntil, useRefresh, useScrollHeader } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
@@ -28,14 +32,35 @@ export default function HomeScreen() {
   const user = useUserStore((s) => s.user);
   const examDate = useUserStore((s) => s.examDate);
   const targetLevel = useUserStore((s) => s.targetLevel);
+  const dailyMinutes = useUserStore((s) => s.dailyMinutes);
   const latest = useLatestResult();
   const unread = useUnreadCount();
   const tests = useTests();
-  const refresh = useRefresh(latest.refetch, tests.refetch);
+  const study = useStudyDays();
+  const refresh = useRefresh(latest.refetch, tests.refetch, study.refetch);
   const { scrollY, onScroll } = useScrollHeader();
 
   const resume = useMemo(() => tests.data?.find((t) => t.status === 'in_progress'), [tests.data]);
   const firstName = user?.firstName ?? '';
+
+  const today = new Date();
+  const minutesByDay = study.data ?? {};
+  const studiedMinutes = minutesByDay[dayKey(today)] ?? 0;
+  const goalMinutes = dailyMinutes ?? DEFAULT_DAILY_MINUTES;
+  const plan = weeklyPlan(
+    Object.fromEntries((latest.data?.sections ?? []).map((section) => [section.kind, section.score])) as Partial<
+      Record<SectionKind, number>
+    >,
+  );
+  const todayIndex = weekdayIndex(today);
+  const week = weekDays(today).map((key, index) => ({
+    key,
+    section: plan[index],
+    studied: (minutesByDay[key] ?? 0) > 0,
+    today: index === todayIndex,
+  }));
+  const practiceTest =
+    resume ?? tests.data?.find((item) => item.status === 'new') ?? tests.data?.find((item) => item.status === 'completed');
 
   const onResume = useCallback(() => {
     if (!resume) return;
@@ -45,9 +70,13 @@ export default function HomeScreen() {
     });
   }, [resume]);
 
-  const onStartPlan = useCallback((item: PlanItem) => {
-    router.push({ pathname: '/test/[id]/[section]', params: { id: 't13', section: item.section } });
-  }, []);
+  const onStartPlan = useCallback(
+    (item: PlanItem) => {
+      if (!practiceTest) return;
+      router.push({ pathname: '/test/[id]/[section]', params: { id: practiceTest.id, section: item.section } });
+    },
+    [practiceTest],
+  );
 
   return (
     <View style={styles.screen}>
@@ -72,7 +101,7 @@ export default function HomeScreen() {
           <StateView
             tone="error"
             title={t('common.error')}
-            message={t('common.checkInternet')}
+            message={t(failureReason(latest.error))}
             actionLabel={t('common.retry')}
             onAction={() => latest.refetch()}
           />
@@ -88,7 +117,14 @@ export default function HomeScreen() {
 
         {resume ? <ContinueCard test={resume} onPress={onResume} /> : null}
 
-        <TodayPlan items={todayPlan} onStart={onStartPlan} />
+        <StudyWeek
+          streak={streakOf(minutesByDay, today)}
+          studiedMinutes={studiedMinutes}
+          goalMinutes={goalMinutes}
+          days={week}
+        />
+
+        <TodayPlan items={todayPlanOf(plan[todayIndex], goalMinutes, studiedMinutes)} onStart={onStartPlan} />
 
         {latest.data ? (
           <SectionsOverview sections={latest.data.sections} onPress={() => router.navigate('/(tabs)/progress')} />

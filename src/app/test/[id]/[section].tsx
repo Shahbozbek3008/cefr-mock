@@ -6,6 +6,7 @@ import { sectionOrder, useTest } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
 import { useAttemptAutosave, useAttemptSession } from '@/features/test-session/model/attemptSession';
 import { SectionSkeleton } from '@/features/test-session/ui/SectionSkeleton';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { space } from '@/shared/theme';
 import { Screen, StateView } from '@/shared/ui';
@@ -50,7 +51,7 @@ export default function SectionScreen() {
             <StateView
               tone="error"
               title={t('common.error')}
-              message={t(test.isError ? 'testIntro.loadFailed' : 'session.startFailed')}
+              message={`${t(test.isError ? 'testIntro.loadFailed' : 'session.startFailed')} ${t(failureReason(test.error ?? session.error))}`}
               actionLabel={t('common.retry')}
               onAction={() => (test.isError ? test.refetch() : session.retry())}
             />

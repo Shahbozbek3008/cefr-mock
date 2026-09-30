@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { requireUserId, supabase, unwrap } from '@/shared/api';
 import type { Json, Tables } from '@/shared/api';
-import type { AnswerKeys, SectionKind, SectionMeta, TestDetail, TestSummary } from '../model/types';
+import type { AnswerKeys, PartTranscript, SectionKind, SectionMeta, TestDetail, TestSummary } from '../model/types';
 
 export const testKeys = {
   all: ['tests'] as const,
   detail: (id: string) => ['tests', id] as const,
   answers: (id: string) => ['tests', id, 'answers'] as const,
+  scripts: (id: string) => ['tests', id, 'scripts'] as const,
 };
 
 const SCORE_RANGE = '0–75';
@@ -135,6 +136,12 @@ export const fetchTestKeys = async (id: string): Promise<AnswerKeys> => {
   return (data?.keys ?? {}) as unknown as AnswerKeys;
 };
 
+export const fetchTestScripts = async (id: string): Promise<PartTranscript[]> => {
+  const { data, error } = await supabase.from('test_keys').select('scripts').eq('test_id', id).maybeSingle();
+  if (error) throw error;
+  return (data?.scripts ?? []) as unknown as PartTranscript[];
+};
+
 export const listeningAudioUrl = (file: string) => supabase.storage.from('listening').getPublicUrl(file).data.publicUrl;
 
 export const useTests = () => useQuery({ queryKey: testKeys.all, queryFn: fetchTests });
@@ -144,3 +151,6 @@ export const useTest = (id: string) =>
 
 export const useTestKeys = (id: string) =>
   useQuery({ queryKey: testKeys.answers(id), queryFn: () => fetchTestKeys(id), enabled: id !== '' });
+
+export const useTestScripts = (id: string) =>
+  useQuery({ queryKey: testKeys.scripts(id), queryFn: () => fetchTestScripts(id), enabled: id !== '' });

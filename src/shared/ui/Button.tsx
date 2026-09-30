@@ -21,7 +21,6 @@ export type ButtonProps = {
   align?: 'between' | 'center' | 'start';
   accessibilityLabel?: string;
   grow?: boolean;
-  /** Keeps the label on one line and shrinks its font when it does not fit. */
   fitLabel?: boolean;
   style?: ViewStyle;
 };

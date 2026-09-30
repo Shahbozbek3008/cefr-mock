@@ -20,19 +20,23 @@ export const flushAttempt = () => saveAttempt(snapshotOf(useAttemptStore.getStat
 
 export const useAttemptSession = (testId: string) => {
   const [status, setStatus] = useState<SessionStatus>(() => (isOpen(testId) ? 'ready' : 'loading'));
+  const [error, setError] = useState<unknown>(null);
 
   const load = useCallback(() => {
     setStatus('loading');
     beginAttempt(testId)
       .then(() => setStatus('ready'))
-      .catch(() => setStatus('error'));
+      .catch((failure) => {
+        setError(failure);
+        setStatus('error');
+      });
   }, [testId]);
 
   useEffect(() => {
     if (!isOpen(testId)) load();
   }, [load, testId]);
 
-  return { status, retry: load };
+  return { status, error, retry: load };
 };
 
 export const useAttemptAutosave = (active: boolean) => {

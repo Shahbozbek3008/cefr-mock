@@ -5,6 +5,7 @@ export type {
   GapQuestion,
   ListeningPart,
   McqQuestion,
+  PartTranscript,
   PassageParagraph,
   Question,
   ReadingPart,
@@ -16,16 +17,19 @@ export type {
   TestStatus,
   TestSummary,
   TfngQuestion,
+  TranscriptLine,
   WritingTask,
 } from './model/types';
 export {
   fetchTest,
   fetchTestKeys,
+  fetchTestScripts,
   fetchTests,
   listeningAudioUrl,
   testKeys,
   useTest,
   useTestKeys,
+  useTestScripts,
   useTests,
 } from './api/queries';
 export { sectionDetailKeys, sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';

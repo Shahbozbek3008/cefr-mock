@@ -11,6 +11,7 @@ import { CATALOG_HEADER_COLLAPSE, CATALOG_HEADER_HEIGHT, CatalogHeader } from '@
 import { PracticeCard } from '@/features/catalog/ui/PracticeCard';
 import { TestCard } from '@/features/catalog/ui/TestCard';
 import { TestListSkeleton } from '@/features/catalog/ui/TestListSkeleton';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
 import { useRefresh, useScrollHeader } from '@/shared/lib';
@@ -140,7 +141,7 @@ export default function TestsScreen() {
               <StateView
                 tone="error"
                 title={t('common.error')}
-                message={t('common.checkInternet')}
+                message={t(failureReason(tests.error))}
                 actionLabel={t('common.retry')}
                 onAction={() => tests.refetch()}
               />

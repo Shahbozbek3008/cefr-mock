@@ -11,6 +11,7 @@ import { resetProgress } from '@/features/profile/model/resetProgress';
 import { ProfileCard } from '@/features/profile/ui/ProfileCard';
 import { LanguageSheet } from '@/features/language-switch/ui/LanguageSheet';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
+import { failureReason } from '@/shared/api';
 import { locales, useI18n } from '@/shared/i18n';
 import { hitSlop, makeStyles, size, space, useTheme, useThemePreference } from '@/shared/theme';
 import { useScrollHeader } from '@/shared/lib';
@@ -52,8 +53,8 @@ export default function ProfileScreen() {
       await resetProgress();
       setResetOpen(false);
       showToast({ message: t('profile.resetDone') });
-    } catch {
-      showToast({ message: t('profile.resetFailed'), tone: 'error' });
+    } catch (error) {
+      showToast({ message: `${t('profile.resetFailed')} ${t(failureReason(error))}`, tone: 'error' });
     } finally {
       setResetting(false);
     }

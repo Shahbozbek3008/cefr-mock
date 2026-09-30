@@ -13,6 +13,7 @@ import { SectionsCard } from '@/features/test-intro/ui/SectionsCard';
 import { TestIntroSkeleton } from '@/features/test-intro/ui/TestIntroSkeleton';
 import { TestStats } from '@/features/test-intro/ui/TestStats';
 import { beginAttempt } from '@/features/test-session/model/attemptSession';
+import { failureReason } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { size, space, useTheme } from '@/shared/theme';
 import { Button, IconButton, Screen, StateView, Tag, Text, TopBar, useToast } from '@/shared/ui';
@@ -45,8 +46,8 @@ export default function TestIntroScreen() {
       const { completed } = await beginAttempt(id, mode);
       const next = sectionOrder.find((kind) => !completed.includes(kind)) ?? 'listening';
       router.push({ pathname: '/test/[id]/[section]', params: { id, section: next } });
-    } catch {
-      showToast({ message: t('session.startFailed'), tone: 'error' });
+    } catch (error) {
+      showToast({ message: `${t('session.startFailed')} ${t(failureReason(error))}`, tone: 'error' });
     } finally {
       setStarting(false);
     }
@@ -97,7 +98,7 @@ export default function TestIntroScreen() {
           <StateView
             tone="error"
             title={t('common.error')}
-            message={t('common.checkInternet')}
+            message={t(failureReason(test.error))}
             actionLabel={t('common.retry')}
             onAction={() => test.refetch()}
           />

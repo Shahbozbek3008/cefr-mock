@@ -64,6 +64,7 @@ export type Database = {
         Row: {
           test_id: string;
           keys: Json;
+          scripts: Json;
         };
         Insert: { [_ in never]: never };
         Update: { [_ in never]: never };
@@ -154,6 +155,16 @@ export type Database = {
           },
         ];
       };
+      study_days: {
+        Row: {
+          user_id: string;
+          day: string;
+          minutes: number;
+        };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
       notifications: {
         Row: {
           id: string;
@@ -173,6 +184,10 @@ export type Database = {
     };
     Views: { [_ in never]: never };
     Functions: {
+      log_study: {
+        Args: { study_day: string; spent_minutes: number };
+        Returns: undefined;
+      };
       reset_progress: {
         Args: Record<string, never>;
         Returns: string[];

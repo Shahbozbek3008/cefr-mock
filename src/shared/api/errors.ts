@@ -1,4 +1,5 @@
 import { FunctionsHttpError, FunctionsRelayError } from '@supabase/supabase-js';
+import type { TKey } from '../i18n';
 import { isSupabaseConfigured, supabase } from './supabase';
 
 export class ApiError extends Error {
@@ -56,3 +57,16 @@ export const invokeFunction = async <T>(name: string, body: Record<string, unkno
 };
 
 export const errorCode = (error: unknown) => (error instanceof ApiError ? error.code : 'network_error');
+
+const NETWORK_PATTERN = /network request failed|failed to fetch|fetch failed|network error|timed? ?out|aborted/i;
+
+const messageOf = (error: unknown) => {
+  const message = (error as { message?: unknown } | null)?.message;
+  return typeof message === 'string' ? message : '';
+};
+
+export const isNetworkFailure = (error: unknown) =>
+  (error instanceof ApiError && error.code === 'network_error') || NETWORK_PATTERN.test(messageOf(error));
+
+export const failureReason = (error: unknown): TKey =>
+  isNetworkFailure(error) ? 'common.checkInternet' : 'common.serverError';

@@ -77,6 +77,12 @@ const keysOf = (content) =>
     ]),
   );
 
+const scriptsOf = (content) =>
+  content.scripts.map(({ partId, lines }) => ({
+    partId,
+    lines: lines.map(({ voice, text, question }) => (question ? { voice, text, question } : { voice, text })),
+  }));
+
 const json = (value) => `$json$${JSON.stringify(value)}$json$::jsonb`;
 const text = (value) => `'${String(value).replace(/'/g, "''")}'`;
 
@@ -107,9 +113,9 @@ on conflict (id) do update set
   is_pro = excluded.is_pro,
   content = excluded.content;
 
-insert into public.test_keys (test_id, keys)
-values (${text(test.id)}, ${json(keysOf(content))})
-on conflict (test_id) do update set keys = excluded.keys;
+insert into public.test_keys (test_id, keys, scripts)
+values (${text(test.id)}, ${json(keysOf(content))}, ${json(scriptsOf(content))})
+on conflict (test_id) do update set keys = excluded.keys, scripts = excluded.scripts;
 `;
 });
 
