@@ -60,13 +60,14 @@ export const ConfirmSheet = memo<ConfirmSheetProps>(
         </View>
 
         <View style={styles.actions}>
-          <Button label={cancelLabel} variant="secondary" size="M" align="center" grow onPress={onClose} />
+          <Button label={cancelLabel} variant="secondary" size="M" align="center" grow fitLabel onPress={onClose} />
           <Button
             label={confirmLabel}
             variant={tone === 'destructive' ? 'destructive' : 'primary'}
             size="M"
             align="center"
             grow
+            fitLabel
             loading={loading}
             onPress={onConfirm}
           />

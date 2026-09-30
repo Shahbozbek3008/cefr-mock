@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { Pressable, View } from 'react-native';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useQuery } from '@tanstack/react-query';
@@ -27,14 +27,14 @@ export const RecordingPlayer = memo<RecordingPlayerProps>(({ path, durationSec }
   const duration = status.duration || durationSec;
   const ready = Boolean(url.data) && status.isLoaded;
 
-  const toggle = useCallback(() => {
+  const toggle = () => {
     if (status.playing) {
       player.pause();
       return;
     }
     if (status.didJustFinish || status.currentTime >= duration) player.seekTo(0);
     player.play();
-  }, [duration, player, status.currentTime, status.didJustFinish, status.playing]);
+  };
 
   return (
     <View style={styles.row}>

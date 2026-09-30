@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import Animated, {
   Extrapolation,
@@ -49,12 +49,9 @@ export const CatalogHeader = memo<CatalogHeaderProps>(({ scrollY, query, onQuery
   const top = useSafeAreaInsets().top + size.topGap;
   const titleWidth = useSharedValue(0);
 
-  const onTitleLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      titleWidth.value = event.nativeEvent.layout.width;
-    },
-    [titleWidth],
-  );
+  const onTitleLayout = (event: LayoutChangeEvent) => {
+    titleWidth.value = event.nativeEvent.layout.width;
+  };
 
   const rootStyle = useAnimatedStyle(() => {
     const progress = interpolate(scrollY.value, [0, CATALOG_HEADER_COLLAPSE], [0, 1], Extrapolation.CLAMP);

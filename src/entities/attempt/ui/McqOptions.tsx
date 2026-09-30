@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAnswer, useAttemptStore } from '../model/store';
 import type { McqQuestion as McqQuestionModel } from '@/entities/test';
@@ -14,13 +14,10 @@ export const McqOptions = memo<McqOptionsProps>(({ question, onAnswer }) => {
   const value = useAnswer(question.id);
   const setAnswer = useAttemptStore((s) => s.setAnswer);
 
-  const select = useCallback(
-    (key: string) => {
-      setAnswer(question.id, key);
-      onAnswer?.(question.id);
-    },
-    [onAnswer, question.id, setAnswer],
-  );
+  const select = (key: string) => {
+    setAnswer(question.id, key);
+    onAnswer?.(question.id);
+  };
 
   return (
     <View style={styles.options}>

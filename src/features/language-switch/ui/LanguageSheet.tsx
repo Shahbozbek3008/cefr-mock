@@ -17,13 +17,10 @@ export const LanguageSheet = memo<LanguageSheetProps>(({ visible, onClose }) => 
   const setLocale = useLocaleStore((s) => s.setLocale);
   const pending = useRef<Locale | null>(null);
 
-  const select = useCallback(
-    (value: Locale) => {
-      pending.current = value === locale ? null : value;
-      onClose();
-    },
-    [locale, onClose],
-  );
+  const select = (value: Locale) => {
+    pending.current = value === locale ? null : value;
+    onClose();
+  };
 
   const onHidden = useCallback(() => {
     const next = pending.current;

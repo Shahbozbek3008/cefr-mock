@@ -49,14 +49,14 @@ export default function OtpScreen() {
     [phone, showError],
   );
 
-  const resend = useCallback(async () => {
+  const resend = async () => {
     restart();
     try {
       await requestCode(phone);
     } catch (error) {
       showError(error);
     }
-  }, [phone, restart, showError]);
+  };
 
   useEffect(() => {
     if (code.length === OTP_LENGTH && !verifying) verify(code);

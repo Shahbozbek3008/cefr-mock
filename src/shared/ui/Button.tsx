@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback } from 'react';
+import { ReactNode, memo } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Colors, makeStyles, motion, radius, size, space, TypeToken, useTheme } from '../theme';
@@ -21,8 +21,13 @@ export type ButtonProps = {
   align?: 'between' | 'center' | 'start';
   accessibilityLabel?: string;
   grow?: boolean;
+  /** Keeps the label on one line and shrinks its font when it does not fit. */
+  fitLabel?: boolean;
   style?: ViewStyle;
 };
+
+const FIT_PADDING = space[2];
+const FIT_MIN_SCALE = 0.75;
 
 const metrics: Record<Size, { height: number; radius: number; padding: number; text: TypeToken }> = {
   L: { height: size.buttonL, radius: radius.lg, padding: space[5.5], text: 'titleSm' },
@@ -54,6 +59,7 @@ export const Button = memo<ButtonProps>(
     align = 'between',
     accessibilityLabel,
     grow = false,
+    fitLabel = false,
     style,
   }) => {
     const styles = useStyles();
@@ -68,15 +74,15 @@ export const Button = memo<ButtonProps>(
     const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
     const pressedStyle = useAnimatedStyle(() => ({ opacity: pressed.value }));
 
-    const onPressIn = useCallback(() => {
+    const onPressIn = () => {
       scale.value = withTiming(0.985, { duration: motion.fast });
       pressed.value = withTiming(1, { duration: motion.fast });
-    }, [pressed, scale]);
+    };
 
-    const onPressOut = useCallback(() => {
+    const onPressOut = () => {
       scale.value = withTiming(1, { duration: motion.fast });
       pressed.value = withTiming(0, { duration: motion.fast });
-    }, [pressed, scale]);
+    };
 
     const gradient = variant === 'primary' && !inactive;
 
@@ -122,7 +128,7 @@ export const Button = memo<ButtonProps>(
           <View
             style={[
               styles.content,
-              { paddingHorizontal: iconOnly ? 0 : m.padding },
+              { paddingHorizontal: iconOnly ? 0 : fitLabel ? FIT_PADDING : m.padding },
               (align === 'center' || iconOnly) && styles.center,
               align === 'start' && styles.start,
             ]}
@@ -133,7 +139,14 @@ export const Button = memo<ButtonProps>(
               <>
                 {icon}
                 {label ? (
-                  <Text variant={m.text} color={color}>
+                  <Text
+                    variant={m.text}
+                    color={color}
+                    numberOfLines={fitLabel ? 1 : undefined}
+                    adjustsFontSizeToFit={fitLabel}
+                    minimumFontScale={FIT_MIN_SCALE}
+                    style={fitLabel ? styles.fitLabel : undefined}
+                  >
                     {label}
                   </Text>
                 ) : null}
@@ -207,5 +220,8 @@ const useStyles = makeStyles(({ colors }) => ({
   },
   trailingText: {
     opacity: 0.75,
+  },
+  fitLabel: {
+    flexShrink: 1,
   },
 }));

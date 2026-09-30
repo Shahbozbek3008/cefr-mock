@@ -67,13 +67,10 @@ export default function ReviewScreen() {
     [id],
   );
 
-  const step = useCallback(
-    (delta: number) => {
-      const target = navigable[Math.max(0, Math.min(navigable.length - 1, position + delta))];
-      if (target) setSelectedId(target.questionId);
-    },
-    [navigable, position],
-  );
+  const step = (delta: number) => {
+    const target = navigable[Math.max(0, Math.min(navigable.length - 1, position + delta))];
+    if (target) setSelectedId(target.questionId);
+  };
 
   const modeLabel = t(onlyWrong ? 'review.onlyWrong' : 'review.allQuestions');
   const counter = `${position >= 0 ? position + 1 : '–'}/${navigable.length}`;

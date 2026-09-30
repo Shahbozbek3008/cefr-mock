@@ -38,17 +38,14 @@ const SheetBody = ({ visible, onClose, onHidden, children }: SheetProps) => {
     hiddenRef.current?.();
   }, []);
 
-  const onLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      distance.current = event.nativeEvent.layout.height + bottom;
-      if (!visible || opened.current) return;
-      opened.current = true;
-      translate.value = distance.current;
-      translate.value = withTiming(0, { duration: motion.sheetIn, easing: decelerate });
-      backdrop.value = withTiming(1, { duration: motion.sheetIn, easing: decelerate });
-    },
-    [backdrop, bottom, translate, visible],
-  );
+  const onLayout = (event: LayoutChangeEvent) => {
+    distance.current = event.nativeEvent.layout.height + bottom;
+    if (!visible || opened.current) return;
+    opened.current = true;
+    translate.value = distance.current;
+    translate.value = withTiming(0, { duration: motion.sheetIn, easing: decelerate });
+    backdrop.value = withTiming(1, { duration: motion.sheetIn, easing: decelerate });
+  };
 
   useEffect(() => {
     if (visible) {
@@ -69,7 +66,7 @@ const SheetBody = ({ visible, onClose, onHidden, children }: SheetProps) => {
   const sheetStyle = useAnimatedStyle(() => ({ transform: [{ translateY: translate.value }] }));
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdrop.value }));
 
-  const close = useCallback(() => onClose(), [onClose]);
+  const close = () => onClose();
 
   return (
     <Modal

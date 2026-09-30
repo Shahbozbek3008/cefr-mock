@@ -45,13 +45,10 @@ export default function ResultScreen() {
     Share.share({ message: t('result.shareMessage', { title, score: total, max: MAX_SCORE, level: levelFor(total) }) });
   }, [result.data, t]);
 
-  const openReview = useCallback(
-    (screen: keyof typeof reviewRoutes) => {
-      setAiOpen(false);
-      router.push({ pathname: reviewRoutes[screen], params: { id } });
-    },
-    [id],
-  );
+  const openReview = (screen: keyof typeof reviewRoutes) => {
+    setAiOpen(false);
+    router.push({ pathname: reviewRoutes[screen], params: { id } });
+  };
 
   const data = result.data;
   const aiPending = Object.values(data?.aiStatus ?? {}).includes('pending');

@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { makeStyles, radius } from '@/shared/theme';
 import { Text } from '@/shared/ui';
@@ -15,9 +15,9 @@ export const OtpField = memo<OtpFieldProps>(({ value, onChange, autoFocus = true
   const inputRef = useRef<TextInput>(null);
   const [focused, setFocused] = useState(false);
 
-  const onChangeText = useCallback((text: string) => onChange(sanitizeDigits(text, OTP_LENGTH)), [onChange]);
+  const onChangeText = (text: string) => onChange(sanitizeDigits(text, OTP_LENGTH));
 
-  const focus = useCallback(() => inputRef.current?.focus(), []);
+  const focus = () => inputRef.current?.focus();
 
   return (
     <Pressable onPress={focus} accessibilityRole="none">

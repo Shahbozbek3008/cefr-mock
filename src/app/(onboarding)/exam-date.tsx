@@ -27,10 +27,10 @@ export default function ExamDateScreen() {
     router.push('/(onboarding)/pace');
   }, [edit]);
 
-  const onSkip = useCallback(() => {
+  const onSkip = () => {
     setExamDate(null);
     onContinue();
-  }, [setExamDate, onContinue]);
+  };
 
   const remaining = examDate ? daysUntil(examDate) : null;
 

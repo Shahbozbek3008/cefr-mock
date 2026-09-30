@@ -20,9 +20,9 @@ export const TextField = memo<TextFieldProps>(
     const localRef = useRef<TextInput>(null);
     const [focused, setFocused] = useState(false);
 
-    const focus = useCallback(() => {
+    const focus = () => {
       if (!readOnly) localRef.current?.focus();
-    }, [readOnly]);
+    };
 
     const setRefs = useCallback(
       (node: TextInput | null) => {

@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, memo, useEffect, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { Lock, RotateCcw } from 'lucide-react-native';
@@ -114,10 +114,10 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
     if (status.didJustFinish) endedRef.current();
   }, [status.didJustFinish]);
 
-  const replay = useCallback(() => {
+  const replay = () => {
     player.seekTo(0);
     player.play();
-  }, [player]);
+  };
 
   const action =
     mode === 'practice' && finished ? (

@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
@@ -22,7 +22,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
 
   const cells = useMemo(() => buildMonthGrid(year, month), [year, month]);
 
-  const goPrev = useCallback(() => {
+  const goPrev = () => {
     setMonth((prev) => {
       if (prev === 0) {
         setYear((y) => y - 1);
@@ -30,9 +30,9 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
       }
       return prev - 1;
     });
-  }, []);
+  };
 
-  const goNext = useCallback(() => {
+  const goNext = () => {
     setMonth((prev) => {
       if (prev === 11) {
         setYear((y) => y + 1);
@@ -40,7 +40,7 @@ export const Calendar = memo<CalendarProps>(({ value, onChange }) => {
       }
       return prev + 1;
     });
-  }, []);
+  };
 
   return (
     <Card level="raised" radius={radius.cardLg} style={styles.card}>

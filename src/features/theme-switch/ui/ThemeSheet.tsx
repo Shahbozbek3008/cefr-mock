@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { GestureResponderEvent, Pressable, View } from 'react-native';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, motion, radius, space, useTheme, useThemePreference } from '@/shared/theme';
@@ -71,15 +71,12 @@ export const ThemeSheet = memo<ThemeSheetProps>(({ visible, onClose }) => {
     return () => clearTimeout(timer);
   }, [capture, visible]);
 
-  const select = useCallback(
-    (value: ThemePreference, event: GestureResponderEvent) => {
-      onClose();
-      if (value === preference) return;
-      setShown(value);
-      apply(value, { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
-    },
-    [apply, onClose, preference],
-  );
+  const select = (value: ThemePreference, event: GestureResponderEvent) => {
+    onClose();
+    if (value === preference) return;
+    setShown(value);
+    apply(value, { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
+  };
 
   return (
     <Sheet visible={visible} onClose={onClose} onHidden={release}>

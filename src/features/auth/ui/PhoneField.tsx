@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, type, useTheme } from '@/shared/theme';
@@ -18,9 +18,9 @@ export const PhoneField = memo<PhoneFieldProps>(({ value, onChange, error }) => 
   const inputRef = useRef<TextInput>(null);
   const [focused, setFocused] = useState(false);
 
-  const onChangeText = useCallback((text: string) => onChange(sanitizeDigits(text, PHONE_DIGITS)), [onChange]);
+  const onChangeText = (text: string) => onChange(sanitizeDigits(text, PHONE_DIGITS));
 
-  const focus = useCallback(() => inputRef.current?.focus(), []);
+  const focus = () => inputRef.current?.focus();
 
   const invalid = Boolean(error);
 

@@ -44,10 +44,10 @@ export const ThemeTransitionProvider = ({ children }: { children: ReactNode }) =
     setSnapshot(null);
   }, []);
 
-  const onLoaded = useCallback(() => {
+  const onLoaded = () => {
     loadedRef.current?.();
     loadedRef.current = null;
-  }, []);
+  };
 
   const capture = useCallback(() => {
     if (pendingRef.current || runningRef.current || !rootRef.current) return;
