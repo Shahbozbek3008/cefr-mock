@@ -425,6 +425,7 @@ export const en: Dictionary = {
     introText: 'Check the answers below or give us a call — we are happy to help.',
     contact: 'Contact us',
     call: 'Call',
+    callHint: 'Tap to call',
     callFailed: 'Could not start the call. Number: {{phone}}',
     faqTitle: 'Frequently asked questions',
     version: 'App version {{version}}',

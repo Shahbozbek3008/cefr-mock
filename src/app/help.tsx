@@ -3,13 +3,14 @@ import { Linking, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChevronLeft, LifeBuoy, Phone } from 'lucide-react-native';
+import { ChevronLeft, Headset, LifeBuoy, Phone } from 'lucide-react-native';
 import { PHONE_PREFIX, formatPhone } from '@/features/auth/model';
+import { ContactRow } from '@/features/help/ui/ContactRow';
 import { FaqItem } from '@/features/help/ui/FaqItem';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
-import { Card, IconButton, IconTile, ListGroup, ListRow, Screen, Text, TopBar, useToast } from '@/shared/ui';
+import { Card, IconButton, IconTile, ListGroup, Screen, Text, TopBar, useToast } from '@/shared/ui';
 
 const SUPPORT_DIGITS = '773713008';
 const SUPPORT_PHONE = `${PHONE_PREFIX}${SUPPORT_DIGITS}`;
@@ -71,10 +72,12 @@ export default function HelpScreen() {
             {t('help.contact')}
           </Text>
           <ListGroup>
-            <ListRow
-              icon={<Phone {...icon} />}
-              title={t('help.call')}
+            <ContactRow
+              icon={<Headset {...icon} />}
               value={`${PHONE_PREFIX} ${formatPhone(SUPPORT_DIGITS)}`}
+              label={t('help.callHint')}
+              accessibilityLabel={t('help.call')}
+              action={<Phone size={16} color={colors.onAction} strokeWidth={1.8} />}
               onPress={call}
             />
           </ListGroup>

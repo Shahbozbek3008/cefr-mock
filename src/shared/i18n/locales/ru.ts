@@ -425,6 +425,7 @@ export const ru: Dictionary = {
     introText: 'Посмотрите ответы ниже или позвоните нам — мы поможем.',
     contact: 'Связаться с нами',
     call: 'Позвонить',
+    callHint: 'Нажмите, чтобы позвонить',
     callFailed: 'Не удалось начать звонок. Номер: {{phone}}',
     faqTitle: 'Частые вопросы',
     version: 'Версия приложения {{version}}',

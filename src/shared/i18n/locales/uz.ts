@@ -423,6 +423,7 @@ export const uz = {
     introText: "Quyidagi javoblarni ko'ring yoki bizga qo'ng'iroq qiling — yordam beramiz.",
     contact: "Biz bilan bog'lanish",
     call: "Qo'ng'iroq qilish",
+    callHint: "Qo'ng'iroq qilish uchun bosing",
     callFailed: "Qo'ng'iroqni ochib bo'lmadi. Raqam: {{phone}}",
     faqTitle: "Ko'p so'raladigan savollar",
     version: 'Ilova versiyasi {{version}}',
