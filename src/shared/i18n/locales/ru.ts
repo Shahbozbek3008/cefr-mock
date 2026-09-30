@@ -282,6 +282,7 @@ export const ru: Dictionary = {
     notesSoon: 'Заметки появятся в следующей версии',
   },
   writing: {
+    done: 'Готово',
     panes: { task: 'Задание', answer: 'Ответ' },
     task: 'TASK',
     placeholder: 'Напишите ответ здесь…',

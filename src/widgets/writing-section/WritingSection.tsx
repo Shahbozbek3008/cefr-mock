@@ -16,7 +16,6 @@ import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button, ConfirmSheet, SegmentedControl } from '@/shared/ui';
 import { countWords, useDrafts } from './draft';
 import { Editor } from './Editor';
-import { SavedNote } from './SavedNote';
 import { TaskBrief, TaskCard } from './TaskCard';
 
 type Pane = 'task' | 'answer';
@@ -27,8 +26,12 @@ const AnswerPane = memo<{ task: WritingTask; text: string; onChange: (taskId: st
   ({ task, text, onChange }) => (
     <>
       <TaskCard task={task} />
-      <Editor value={text} onChange={(value) => onChange(task.id, value)} targetWords={task.targetWords} />
-      <SavedNote />
+      <Editor
+        value={text}
+        onChange={(value) => onChange(task.id, value)}
+        targetWords={task.targetWords}
+        minWords={task.minWords}
+      />
     </>
   ),
 );

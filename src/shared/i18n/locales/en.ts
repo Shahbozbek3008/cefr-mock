@@ -282,6 +282,7 @@ export const en: Dictionary = {
     notesSoon: 'Notes are coming in the next version',
   },
   writing: {
+    done: 'Done',
     panes: { task: 'Task', answer: 'Answer' },
     task: 'TASK',
     placeholder: 'Write your answer here…',

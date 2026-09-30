@@ -280,6 +280,7 @@ export const uz = {
     notesSoon: "Izohlar keyingi versiyada qo'shiladi",
   },
   writing: {
+    done: 'Tayyor',
     panes: { task: 'Topshiriq', answer: 'Javob' },
     task: 'TASK',
     placeholder: 'Javobingizni shu yerga yozing…',
