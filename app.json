@@ -62,7 +62,7 @@
         {
           "photosPermission": "Profil rasmini tanlash uchun galereyaga ruxsat kerak.",
           "cameraPermission": "Profil rasmini olish uchun kameraga ruxsat kerak.",
-          "microphonePermission": false
+          "microphonePermission": "Speaking bo'limida javobingizni yozib olish uchun mikrofon kerak."
         }
       ]
     ],
