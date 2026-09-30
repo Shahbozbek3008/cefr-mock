@@ -419,6 +419,32 @@ export const en: Dictionary = {
     resetDone: 'Statistics reset',
     resetFailed: 'Could not reset. Check your connection and try again.',
   },
+  help: {
+    title: 'Help & contact',
+    introTitle: 'Have a question?',
+    introText: 'Check the answers below or give us a call — we are happy to help.',
+    contact: 'Contact us',
+    call: 'Call',
+    callFailed: 'Could not start the call. Number: {{phone}}',
+    faqTitle: 'Frequently asked questions',
+    version: 'App version {{version}}',
+    faq: {
+      modesQ: 'What is the difference between Exam and Practice mode?',
+      modesA:
+        'Exam mode works like the real exam: audio plays once and the test cannot be paused. In Practice mode you can replay audio and leave at any time, then continue where you stopped.',
+      scoreQ: 'How is the score calculated?',
+      scoreA:
+        'Each section is scored 0–75 and the total is the average of the four sections. Level: B1 from 38, B2 from 51, C1 from 65; A2 below that.',
+      aiQ: 'How are Writing and Speaking graded?',
+      aiA: 'After you submit, AI reviews your Writing and Speaking answers. It takes a little time — you will get a notification when the result is ready.',
+      micQ: 'The microphone does not work',
+      micA: 'Open CEFR Mock in your phone settings, allow microphone access under Permissions and restart the app.',
+      offlineQ: 'What if the internet drops during a test?',
+      offlineA: 'Your answers are saved on the device and will not be lost. You need internet to start and submit a test.',
+      retakeQ: 'Can I take a test again?',
+      retakeA: 'Yes. Profile → Reset statistics deletes all results so you can take the tests from scratch.',
+    },
+  },
   profileEdit: {
     title: 'Edit profile',
     edit: 'Edit',

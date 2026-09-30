@@ -417,6 +417,34 @@ export const uz = {
     resetDone: 'Statistika tozalandi',
     resetFailed: "Tozalab bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.",
   },
+  help: {
+    title: 'Yordam va aloqa',
+    introTitle: 'Savolingiz bormi?',
+    introText: "Quyidagi javoblarni ko'ring yoki bizga qo'ng'iroq qiling — yordam beramiz.",
+    contact: "Biz bilan bog'lanish",
+    call: "Qo'ng'iroq qilish",
+    callFailed: "Qo'ng'iroqni ochib bo'lmadi. Raqam: {{phone}}",
+    faqTitle: "Ko'p so'raladigan savollar",
+    version: 'Ilova versiyasi {{version}}',
+    faq: {
+      modesQ: 'Imtihon va Mashq rejimining farqi nima?',
+      modesA:
+        "Imtihon rejimi haqiqiy imtihonga o'xshaydi: audio bir marta eshittiriladi, testni to'xtatib bo'lmaydi. Mashq rejimida audioni qayta tinglash va istalgan payt chiqib, keyin shu joydan davom ettirish mumkin.",
+      scoreQ: 'Ball qanday hisoblanadi?',
+      scoreA:
+        "Har bir bo'lim 0–75 ball bilan baholanadi, umumiy ball — to'rt bo'limning o'rtachasi. Daraja: 38 dan B1, 51 dan B2, 65 dan C1; undan pastda A2.",
+      aiQ: 'Writing va Speaking qanday baholanadi?',
+      aiA: "Test topshirilgach, Writing va Speaking javoblaringizni AI baholaydi. Bu biroz vaqt oladi — natija tayyor bo'lganda bildirishnoma keladi.",
+      micQ: 'Mikrofon ishlamayapti',
+      micA: "Telefon sozlamalarida CEFR Mock ilovasini oching, Ruxsatlar bo'limida mikrofonga ruxsat bering va ilovani qayta ishga tushiring.",
+      offlineQ: "Test paytida internet uzilsa nima bo'ladi?",
+      offlineA:
+        "Javoblaringiz qurilmada saqlanadi va yo'qolmaydi. Testni boshlash va topshirish uchun internet kerak.",
+      retakeQ: "Testni qaytadan ishlasam bo'ladimi?",
+      retakeA:
+        "Ha. Profil → Statistikani tozalash orqali barcha natijalar o'chiriladi va testlarni boshidan ishlashingiz mumkin.",
+    },
+  },
   profileEdit: {
     title: 'Profilni tahrirlash',
     edit: 'Tahrirlash',

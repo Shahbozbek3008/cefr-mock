@@ -59,8 +59,6 @@ export default function ProfileScreen() {
     }
   }, [showToast, t]);
 
-  const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
-
   return (
     <View style={styles.screen}>
       <ScreenHeader title={t('profile.title')} scrollY={scrollY} />
@@ -132,7 +130,7 @@ export default function ProfileScreen() {
 
         <ListGroup>
           <ListRow icon={<RotateCcw {...icon} />} title={t('profile.reset')} divider onPress={() => setResetOpen(true)} />
-          <ListRow icon={<CircleHelp {...icon} />} title={t('profile.help')} onPress={soon} />
+          <ListRow icon={<CircleHelp {...icon} />} title={t('profile.help')} onPress={() => router.push('/help')} />
         </ListGroup>
 
         <Pressable
