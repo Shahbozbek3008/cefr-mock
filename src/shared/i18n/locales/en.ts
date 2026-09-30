@@ -411,6 +411,13 @@ export const en: Dictionary = {
     signOut: 'Sign out',
     signOutTitle: 'Sign out?',
     signOutMessage: 'Unfinished test answers on this device will be deleted.',
+    reset: 'Reset statistics',
+    resetTitle: 'Reset statistics?',
+    resetMessage:
+      'All results, AI reviews and unfinished tests will be deleted so you can take the tests again. This cannot be undone.',
+    resetConfirm: 'Reset',
+    resetDone: 'Statistics reset',
+    resetFailed: 'Could not reset. Check your connection and try again.',
   },
   profileEdit: {
     title: 'Edit profile',

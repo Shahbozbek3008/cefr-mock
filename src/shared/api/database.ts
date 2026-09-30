@@ -173,6 +173,10 @@ export type Database = {
     };
     Views: { [_ in never]: never };
     Functions: {
+      reset_progress: {
+        Args: Record<string, never>;
+        Returns: string[];
+      };
       submit_attempt: {
         Args: { attempt_id: string };
         Returns: string;

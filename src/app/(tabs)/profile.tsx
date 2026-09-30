@@ -3,10 +3,11 @@ import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Bell, Calendar, CircleHelp, Globe, LogOut, Moon, Sun, Target } from 'lucide-react-native';
+import { Bell, Calendar, CircleHelp, Globe, LogOut, Moon, RotateCcw, Sun, Target } from 'lucide-react-native';
 import { useUserStore } from '@/entities/user/model';
 import type { User } from '@/entities/user/model';
 import { PHONE_PREFIX, formatPhone, signOut } from '@/features/auth/model';
+import { resetProgress } from '@/features/profile/model/resetProgress';
 import { ProfileCard } from '@/features/profile/ui/ProfileCard';
 import { LanguageSheet } from '@/features/language-switch/ui/LanguageSheet';
 import { ThemeSheet } from '@/features/theme-switch/ui/ThemeSheet';
@@ -32,6 +33,8 @@ export default function ProfileScreen() {
   const setReminderEnabled = useUserStore((s) => s.setReminderEnabled);
   const showToast = useToast((s) => s.show);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const { scrollY, onScroll } = useScrollHeader();
   const [themeOpen, setThemeOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
@@ -42,6 +45,19 @@ export default function ProfileScreen() {
     await signOut();
     router.replace('/(auth)/phone');
   }, []);
+
+  const onReset = useCallback(async () => {
+    setResetting(true);
+    try {
+      await resetProgress();
+      setResetOpen(false);
+      showToast({ message: t('profile.resetDone') });
+    } catch {
+      showToast({ message: t('profile.resetFailed'), tone: 'error' });
+    } finally {
+      setResetting(false);
+    }
+  }, [showToast, t]);
 
   const soon = useCallback(() => showToast({ message: t('common.comingSoon') }), [showToast, t]);
 
@@ -115,6 +131,7 @@ export default function ProfileScreen() {
         </ListGroup>
 
         <ListGroup>
+          <ListRow icon={<RotateCcw {...icon} />} title={t('profile.reset')} divider onPress={() => setResetOpen(true)} />
           <ListRow icon={<CircleHelp {...icon} />} title={t('profile.help')} onPress={soon} />
         </ListGroup>
 
@@ -132,6 +149,18 @@ export default function ProfileScreen() {
 
       <ThemeSheet visible={themeOpen} onClose={() => setThemeOpen(false)} />
       <LanguageSheet visible={languageOpen} onClose={() => setLanguageOpen(false)} />
+      <ConfirmSheet
+        visible={resetOpen}
+        title={t('profile.resetTitle')}
+        message={t('profile.resetMessage')}
+        confirmLabel={t('profile.resetConfirm')}
+        cancelLabel={t('common.cancel')}
+        tone="destructive"
+        icon={RotateCcw}
+        loading={resetting}
+        onConfirm={onReset}
+        onClose={() => setResetOpen(false)}
+      />
       <ConfirmSheet
         visible={confirmOpen}
         title={t('profile.signOutTitle')}

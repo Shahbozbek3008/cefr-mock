@@ -409,6 +409,13 @@ export const uz = {
     signOut: 'Chiqish',
     signOutTitle: 'Hisobdan chiqasizmi?',
     signOutMessage: "Qurilmadagi tugallanmagan test javoblari o'chiriladi.",
+    reset: 'Statistikani tozalash',
+    resetTitle: 'Statistikani tozalaysizmi?',
+    resetMessage:
+      "Barcha natijalar, AI baholari va tugallanmagan testlar o'chiriladi. Testlarni qaytadan boshlashingiz mumkin bo'ladi. Buni ortga qaytarib bo'lmaydi.",
+    resetConfirm: 'Tozalash',
+    resetDone: 'Statistika tozalandi',
+    resetFailed: "Tozalab bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.",
   },
   profileEdit: {
     title: 'Profilni tahrirlash',
