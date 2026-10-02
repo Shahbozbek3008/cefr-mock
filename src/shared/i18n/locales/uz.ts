@@ -494,6 +494,8 @@ export const uz = {
     resetFailed: "Tozalab bo'lmadi.",
   },
   help: {
+    stillNeedHelp: "Javob topmadingizmi? Biz yordam beramiz.",
+    callUs: "Bizga qo'ng'iroq qiling",
     title: "Yordam va aloqa",
     introTitle: "Savolingiz bormi?",
     introText:

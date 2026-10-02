@@ -451,6 +451,8 @@ export const en: Dictionary = {
     resetFailed: 'Could not reset.',
   },
   help: {
+    stillNeedHelp: "Didn't find your answer? We're here to help.",
+    callUs: 'Call us',
     title: 'Help & contact',
     introTitle: 'Have a question?',
     introText: 'Check the answers below or give us a call — we are happy to help.',

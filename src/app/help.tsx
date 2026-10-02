@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Linking, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import Constants from 'expo-constants';
@@ -6,23 +6,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, Headset, LifeBuoy, Phone } from 'lucide-react-native';
 import { PHONE_PREFIX, formatPhone } from '@/features/auth/model';
 import { ContactRow } from '@/features/help/ui/ContactRow';
-import { FaqItem } from '@/features/help/ui/FaqItem';
+import { faqTopics } from '@/features/help/model/faq';
+import type { FaqTopic } from '@/features/help/model/faq';
+import { FaqGrid } from '@/features/help/ui/FaqGrid';
+import { FaqSheet } from '@/features/help/ui/FaqSheet';
 import { useI18n } from '@/shared/i18n';
-import type { TKey } from '@/shared/i18n';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Card, IconButton, IconTile, ListGroup, Screen, Text, TopBar, useToast } from '@/shared/ui';
 
 const SUPPORT_DIGITS = '773713008';
 const SUPPORT_PHONE = `${PHONE_PREFIX}${SUPPORT_DIGITS}`;
-
-const faq: { question: TKey; answer: TKey }[] = [
-  { question: 'help.faq.modesQ', answer: 'help.faq.modesA' },
-  { question: 'help.faq.scoreQ', answer: 'help.faq.scoreA' },
-  { question: 'help.faq.aiQ', answer: 'help.faq.aiA' },
-  { question: 'help.faq.micQ', answer: 'help.faq.micA' },
-  { question: 'help.faq.offlineQ', answer: 'help.faq.offlineA' },
-  { question: 'help.faq.retakeQ', answer: 'help.faq.retakeA' },
-];
 
 export default function HelpScreen() {
   const styles = useStyles();
@@ -30,6 +23,8 @@ export default function HelpScreen() {
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const showToast = useToast((s) => s.show);
+  const [topic, setTopic] = useState<FaqTopic | null>(null);
+  const [topicOpen, setTopicOpen] = useState(false);
   const icon = { size: 16, color: colors.textStrong, strokeWidth: 1.5 };
 
   const call = useCallback(() => {
@@ -38,12 +33,19 @@ export default function HelpScreen() {
     );
   }, [showToast, t]);
 
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/(tabs)/profile'));
+
+  const openTopic = (next: FaqTopic) => {
+    setTopic(next);
+    setTopicOpen(true);
+  };
+
   return (
     <Screen>
       <TopBar
         centered
         left={
-          <IconButton accessibilityLabel={t('common.back')} onPress={router.back}>
+          <IconButton accessibilityLabel={t('common.back')} onPress={goBack}>
             <ChevronLeft size={17} color={colors.textStrong} strokeWidth={1.6} />
           </IconButton>
         }
@@ -87,22 +89,15 @@ export default function HelpScreen() {
           <Text variant="caption" color={colors.textTertiary} style={styles.sectionLabel}>
             {t('help.faqTitle')}
           </Text>
-          <ListGroup>
-            {faq.map((item, index) => (
-              <FaqItem
-                key={item.question}
-                question={t(item.question)}
-                answer={t(item.answer)}
-                divider={index < faq.length - 1}
-              />
-            ))}
-          </ListGroup>
+          <FaqGrid topics={faqTopics} onOpen={openTopic} />
         </View>
 
         <Text variant="caption" color={colors.textTertiary} style={styles.version}>
           {t('help.version', { version: Constants.expoConfig?.version ?? '—' })}
         </Text>
       </ScrollView>
+
+      <FaqSheet visible={topicOpen} topic={topic} onClose={() => setTopicOpen(false)} onCall={call} />
     </Screen>
   );
 }

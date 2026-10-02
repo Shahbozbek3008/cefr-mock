@@ -451,6 +451,8 @@ export const ru: Dictionary = {
     resetFailed: 'Не удалось сбросить.',
   },
   help: {
+    stillNeedHelp: 'Не нашли ответ? Мы поможем.',
+    callUs: 'Позвонить нам',
     title: 'Помощь и связь',
     introTitle: 'Есть вопрос?',
     introText: 'Посмотрите ответы ниже или позвоните нам — мы поможем.',
