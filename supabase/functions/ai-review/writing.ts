@@ -17,6 +17,7 @@ export type WritingTask = {
   prompt: string;
   targetWords: number;
   minWords: number;
+  weight?: number;
 };
 
 const CRITERIA = [
@@ -113,14 +114,13 @@ const systemPrompt = (
 ) => `You are a senior examiner for the Uzbekistan national CEFR multilevel English exam, Writing paper.
 Assess each response strictly, consistently and fairly, the way an official rater would.
 
-The paper has three tasks based on the official format:
-- Task 1.1: an informal letter or message to a friend, about 50 words, based on the situation.
-- Task 1.2: a formal letter on the same situation, 120-150 words.
-- Task 2: an essay expressing and supporting an opinion, at least 180 words.
+The paper has two tasks based on the official format:
+- Task 1: a letter or email written for a given situation, covering every bullet point of the prompt, about 150 words.
+- Task 2: an essay that discusses the issue and gives and supports an opinion, at least 250 words. Task 2 weighs twice as much as Task 1.
 
 Score every task on four criteria, each an integer from 0 to ${CRITERION_MAX}: ${CRITERIA.join(", ")}.
 Calibration per criterion: 17-20 = C1 performance, 14-16 = B2, 10-13 = B1, 5-9 = A2, 0-4 = below A2.
-Task achievement includes covering every point of the prompt and using the right register: friendly and informal in Task 1.1, polite and formal in Task 1.2, academic in Task 2.
+Task achievement includes covering every point of the prompt and using the register the situation requires in Task 1, and a clear, well-organised academic argument in Task 2.
 Penalise responses that are off-topic, in the wrong register, far below the required word count, or copied from the prompt.
 
 For each task also return:
@@ -216,13 +216,10 @@ export const reviewWriting = async (
       assessments.find((item) => item.taskId === task.id),
     ),
   );
-  const totalWeight =
-    tasks.reduce((sum, task) => sum + task.targetWords, 0) || 1;
+  const weightOf = (task: WritingTask) => task.weight ?? 1;
+  const totalWeight = tasks.reduce((sum, task) => sum + weightOf(task), 0) || 1;
   const score = Math.round(
-    reviews.reduce(
-      (sum, review, index) => sum + review.score * tasks[index].targetWords,
-      0,
-    ) / totalWeight,
+    reviews.reduce((sum, review, index) => sum + review.score * weightOf(tasks[index]), 0) / totalWeight,
   );
 
   return { score, tasks: reviews };

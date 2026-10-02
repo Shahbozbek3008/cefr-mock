@@ -203,7 +203,7 @@ export const en: Dictionary = {
   testIntro: {
     mode: 'Mode',
     examMode: 'Exam mode',
-    examModeHint: 'Like the real exam: no pausing, and the audio plays only once.',
+    examModeHint: 'Like the real exam: no pausing, and each recording plays twice.',
     practiceMode: 'Practice mode',
     practiceModeHint: 'Flexible: leave and resume any time, and replay the audio.',
     modeLocked: "You can't change the mode of a test you have already started.",
@@ -218,7 +218,7 @@ export const en: Dictionary = {
     sectionsCount: 'sections',
     score: 'points',
     rules: 'Rules',
-    ruleAudio: 'Wear headphones. The audio plays once, with no pauses.',
+    ruleAudio: 'Wear headphones. Each recording plays twice, with no pauses.',
     ruleOffline: "Answers are saved on your device — they won't be lost if the connection drops.",
     start: 'Start test',
     loadFailed: "Couldn't load the test",
@@ -266,13 +266,15 @@ export const en: Dictionary = {
     playing: 'Now playing',
     ended: 'Audio finished',
     realMode: 'Real mode',
-    onceNote: 'The audio plays once — pause and rewind are disabled.',
+    onceNote: 'The audio plays twice — pause and rewind are disabled.',
+    round: '{{count}}/2',
   },
   reading: {
     modes: { text: 'Text', both: 'Both', questions: 'Questions' },
     serif: 'Serif font',
     kinds: {
-      tfng: 'True · False · Not given',
+      tfng: 'True · False · No Information',
+      match: 'Choose the matching option',
       mcq: 'Choose an option',
       gap: 'Write one word',
     },
@@ -461,7 +463,7 @@ export const en: Dictionary = {
     faq: {
       modesQ: 'What is the difference between Exam and Practice mode?',
       modesA:
-        'Exam mode works like the real exam: audio plays once and the test cannot be paused. In Practice mode you can replay audio and leave at any time, then continue where you stopped.',
+        'Exam mode works like the real exam: each recording plays twice and the test cannot be paused. In Practice mode you can replay audio and leave at any time, then continue where you stopped.',
       scoreQ: 'How is the score calculated?',
       scoreA:
         'Each section is scored 0–75 and the total is the average of the four sections. Level: B1 from 38, B2 from 51, C1 from 65; A2 below that.',

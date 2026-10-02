@@ -16,6 +16,7 @@ const bars = [
 ];
 
 const END_TOLERANCE_SEC = 0.5;
+const EXAM_ROUNDS = 2;
 
 type FrameProps = {
   mode: AttemptMode;
@@ -24,10 +25,11 @@ type FrameProps = {
   position: number;
   duration: number;
   progress: number;
+  round?: number;
   action?: ReactNode;
 };
 
-const Frame = ({ mode, label, active, position, duration, progress, action }: FrameProps) => {
+const Frame = ({ mode, label, active, position, duration, progress, round, action }: FrameProps) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
@@ -43,7 +45,7 @@ const Frame = ({ mode, label, active, position, duration, progress, action }: Fr
             ringWidth={4}
           />
           <Text variant="captionMedium" color={active ? colors.selectedText : colors.textSecondary}>
-            {t(label)}
+            {round ? `${t(label)} · ${t('listening.round', { count: round })}` : t(label)}
           </Text>
         </View>
         <View style={styles.badge}>
@@ -89,6 +91,7 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
   const player = useAudioPlayer({ uri });
   const status = useAudioPlayerStatus(player);
   const started = useRef(false);
+  const [round, setRound] = useState(1);
   const startRef = useRef(onStart);
   const endedRef = useRef(onEnded);
   startRef.current = onStart;
@@ -96,7 +99,8 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
 
   const duration = status.duration || durationSec;
   const position = Math.min(status.currentTime, duration);
-  const finished = started.current && !status.playing && position >= duration - END_TOLERANCE_SEC;
+  const lastRound = mode !== 'exam' || round === EXAM_ROUNDS;
+  const finished = lastRound && started.current && !status.playing && position >= duration - END_TOLERANCE_SEC;
   const label: TKey = !status.isLoaded ? 'common.loading' : finished ? 'listening.ended' : 'listening.playing';
 
   useEffect(() => {
@@ -111,8 +115,15 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
   }, [player, status.isLoaded]);
 
   useEffect(() => {
-    if (status.didJustFinish) endedRef.current();
-  }, [status.didJustFinish]);
+    if (!status.didJustFinish) return;
+    if (lastRound) {
+      endedRef.current();
+      return;
+    }
+    setRound((current) => current + 1);
+    player.seekTo(0);
+    player.play();
+  }, [lastRound, player, status.didJustFinish]);
 
   const replay = () => {
     player.seekTo(0);
@@ -137,6 +148,7 @@ const Player = ({ uri, durationSec, mode, onStart, onEnded }: Omit<AudioCardProp
       position={position}
       duration={duration}
       progress={duration > 0 ? position / duration : 0}
+      round={mode === 'exam' ? round : undefined}
       action={action}
     />
   );

@@ -1,10 +1,9 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAnswer, useAttemptStore } from '../model/store';
+import { tfngChoices } from '@/entities/test';
 import { space } from '@/shared/theme';
 import { ChoiceTile } from '@/shared/ui';
-
-const choices = ['True', 'False', 'Not given'] as const;
 
 export const TfngChoices = memo<{ questionId: string }>(({ questionId }) => {
   const value = useAnswer(questionId);
@@ -12,7 +11,7 @@ export const TfngChoices = memo<{ questionId: string }>(({ questionId }) => {
 
   return (
     <View style={styles.row}>
-      {choices.map((choice) => (
+      {tfngChoices.map((choice) => (
         <ChoiceTile
           key={choice}
           label={choice}

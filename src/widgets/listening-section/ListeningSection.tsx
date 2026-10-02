@@ -17,6 +17,8 @@ import { useI18n } from '@/shared/i18n';
 import { makeStyles, size, space, useTheme } from '@/shared/theme';
 import { Button } from '@/shared/ui';
 import { AudioCard } from './AudioCard';
+import { MapCard } from './MapCard';
+import { MatchCard } from './MatchCard';
 import { McqCard } from './McqCard';
 import { NotesCard } from './NotesCard';
 
@@ -147,12 +149,25 @@ export const ListeningSection = memo<{ test: TestDetail }>(({ test }) => {
             onFocus={setCurrentId}
             registerInput={registerInput}
           />
+        ) : part.choices ? (
+          <>
+            {part.map ? <MapCard map={part.map} /> : null}
+            <MatchCard
+              choices={part.choices}
+              questions={part.questions}
+              currentId={currentId}
+              showChoices={!part.map}
+              onAnswer={setCurrentId}
+              onLayout={registerOffset}
+            />
+          </>
         ) : (
-          part.questions.map((q) =>
+          part.questions.map((q, index) =>
             q.kind === 'mcq' ? (
               <McqCard
                 key={q.id}
                 question={q}
+                group={q.group !== part.questions[index - 1]?.group ? q.group : undefined}
                 current={q.id === currentId}
                 onAnswer={setCurrentId}
                 onLayout={registerOffset}

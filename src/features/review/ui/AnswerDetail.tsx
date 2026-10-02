@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { View } from 'react-native';
 import { Sparkles } from 'lucide-react-native';
 import type { AnswerReview, ReviewStatus } from '@/entities/result';
-import type { Question } from '@/entities/test';
+import type { Choice, Question } from '@/entities/test';
 import { PlayIcon } from '@/shared/icons';
 import { useI18n } from '@/shared/i18n';
 import { formatClock } from '@/shared/lib';
@@ -15,10 +15,11 @@ const statusTones: Record<ReviewStatus, TagTone> = {
   empty: 'neutral',
 };
 
-const answerText = (question: Question, value: string) => {
+const answerText = (question: Question, value: string, choices?: Choice[]) => {
   if (!value.trim()) return '—';
-  if (question.kind !== 'mcq') return value;
-  const option = question.options.find((o) => o.key === value);
+  const options = question.kind === 'mcq' ? question.options : question.kind === 'match' ? choices : undefined;
+  if (!options) return value;
+  const option = options.find((o) => o.key === value);
   return option ? `${option.key} · ${option.text}` : value;
 };
 
@@ -50,9 +51,10 @@ AnswerBox.displayName = 'AnswerBox';
 export type AnswerDetailProps = {
   item: AnswerReview;
   question: Question;
+  choices?: Choice[];
 };
 
-export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
+export const AnswerDetail = memo<AnswerDetailProps>(({ item, question, choices }) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
@@ -76,22 +78,24 @@ export const AnswerDetail = memo<AnswerDetailProps>(({ item, question }) => {
         ) : null}
       </View>
 
-      <Text variant="labelRelaxed">{question.kind === 'gap' ? `${item.prompt} ______` : item.prompt}</Text>
+      {item.prompt ? (
+        <Text variant="labelRelaxed">{question.kind === 'gap' ? `${item.prompt} ______` : item.prompt}</Text>
+      ) : null}
 
       <View style={styles.answers}>
         {item.status === 'correct' ? (
-          <AnswerBox label={t('review.yourAnswer')} value={answerText(question, item.yourAnswer)} tone="success" />
+          <AnswerBox label={t('review.yourAnswer')} value={answerText(question, item.yourAnswer, choices)} tone="success" />
         ) : (
           <>
             <AnswerBox
               label={t('review.yourAnswer')}
-              value={answerText(question, item.yourAnswer)}
+              value={answerText(question, item.yourAnswer, choices)}
               tone={item.status === 'wrong' ? 'error' : 'neutral'}
               struck={item.status === 'wrong'}
             />
             <AnswerBox
               label={t('review.correctAnswer')}
-              value={answerText(question, item.correctAnswer)}
+              value={answerText(question, item.correctAnswer, choices)}
               tone="success"
             />
           </>

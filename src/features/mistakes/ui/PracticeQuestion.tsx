@@ -1,13 +1,11 @@
 import { memo } from 'react';
 import { View } from 'react-native';
-import type { Question } from '@/entities/test';
-import { sectionTitles } from '@/entities/test';
+import type { Choice, Question } from '@/entities/test';
+import { sectionTitles, tfngChoices } from '@/entities/test';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, space } from '@/shared/theme';
 import { AnswerOption, Card, ChoiceTile, Tag, Text, TextField } from '@/shared/ui';
 import type { PracticeItem } from '../model/practice';
-
-const tfngChoices = ['True', 'False', 'Not given'] as const;
 
 export type PracticeQuestionProps = {
   item: PracticeItem;
@@ -15,14 +13,21 @@ export type PracticeQuestionProps = {
   onChange: (value: string) => void;
 };
 
-const Inputs = ({ question, value, onChange }: { question: Question } & Omit<PracticeQuestionProps, 'item'>) => {
+const Inputs = ({
+  question,
+  choices,
+  value,
+  onChange,
+}: { question: Question; choices?: Choice[] } & Omit<PracticeQuestionProps, 'item'>) => {
   const styles = useStyles();
   const { t } = useI18n();
 
-  if (question.kind === 'mcq') {
+  const options = question.kind === 'mcq' ? question.options : question.kind === 'match' ? choices : undefined;
+
+  if (options) {
     return (
       <View style={styles.options}>
-        {question.options.map((option) => (
+        {options.map((option) => (
           <AnswerOption
             key={option.key}
             letter={option.key}
@@ -67,7 +72,7 @@ export const PracticeQuestion = memo<PracticeQuestionProps>(({ item, value, onCh
         <Tag label={`Q${question.number} · ${sectionTitles[item.section]}`} tone="neutral" size="md" mono />
       </View>
       <Text variant="labelRelaxed">{question.kind === 'gap' ? `${question.prompt} ______` : question.prompt}</Text>
-      <Inputs question={question} value={value} onChange={onChange} />
+      <Inputs question={question} choices={item.part.choices} value={value} onChange={onChange} />
     </Card>
   );
 });

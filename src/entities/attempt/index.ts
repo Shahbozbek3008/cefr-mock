@@ -4,6 +4,7 @@ export { fetchActiveAttempt, openAttempt, saveAttempt, submitAttempt } from './a
 export { recordingUrl, uploadRecording } from './api/recordings';
 export { FlagButton } from './ui/FlagButton';
 export { GapInput } from './ui/GapInput';
+export { MatchChips } from './ui/MatchChips';
 export { McqOptions } from './ui/McqOptions';
 export { QuestionCell } from './ui/QuestionCell';
 export { QuestionGridSheet } from './ui/QuestionGridSheet';

@@ -4,6 +4,11 @@ export type {
   Choice,
   GapQuestion,
   ListeningPart,
+  MapBlock,
+  MapLabel,
+  MapRoad,
+  MapSpec,
+  MatchQuestion,
   McqQuestion,
   PartTranscript,
   PassageParagraph,
@@ -32,4 +37,5 @@ export {
   useTestScripts,
   useTests,
 } from './api/queries';
+export { tfngChoices } from './model/choices';
 export { sectionDetailKeys, sectionIcons, sectionOrder, sectionTitles } from './ui/sectionIcons';

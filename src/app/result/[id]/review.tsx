@@ -58,6 +58,7 @@ export default function ReviewScreen() {
   const question = questions.find((q) => q.id === current?.questionId);
   const partId = tab === 'listening' ? parts?.find((p) => p.questions.some((q) => q.id === question?.id))?.id : undefined;
   const transcript = scripts.data?.find((item) => item.partId === partId);
+  const choices = parts?.find((p) => p.questions.some((q) => q.id === question?.id))?.choices;
 
   const onTab = useCallback(
     (value: Tab) => {
@@ -120,7 +121,7 @@ export default function ReviewScreen() {
               align="center"
               onPress={() => router.push({ pathname: '/result/[id]/practice', params: { id } })}
             />
-            <AnswerDetail item={current} question={question} />
+            <AnswerDetail item={current} question={question} choices={choices} />
             {transcript ? <TranscriptCard transcript={transcript} questionNumber={current.number} /> : null}
           </>
         ) : (

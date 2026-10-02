@@ -231,7 +231,7 @@ export const uz = {
     mode: "Rejim",
     examMode: "Imtihon rejimi",
     examModeHint:
-      "Haqiqiy imtihon kabi: to'xtatib bo'lmaydi, audio bir marta eshittiriladi.",
+      "Haqiqiy imtihon kabi: to'xtatib bo'lmaydi, har bir audio ikki marta eshittiriladi.",
     practiceMode: "Mashq rejimi",
     practiceModeHint:
       "Erkin: istalgan payt chiqib davom ettirish va audioni qayta tinglash mumkin.",
@@ -248,7 +248,7 @@ export const uz = {
     sectionsCount: "bo'lim",
     score: "ball",
     rules: "Qoidalar",
-    ruleAudio: "Quloqchin taqing. Audio bir marta, pauzasiz eshittiriladi.",
+    ruleAudio: "Quloqchin taqing. Har bir audio ikki marta, pauzasiz eshittiriladi.",
     ruleOffline:
       "Javoblar qurilmada ham saqlanadi — internet uzilsa ham yo'qolmaydi.",
     start: "Testni boshlash",
@@ -300,13 +300,15 @@ export const uz = {
     playing: "Eshittirilmoqda",
     ended: "Audio tugadi",
     realMode: "Real rejim",
-    onceNote: "Audio bir marta eshittiriladi — pauza va qaytarish o'chirilgan.",
+    onceNote: "Audio ikki marta eshittiriladi — pauza va qaytarish o'chirilgan.",
+    round: "{{count}}/2",
   },
   reading: {
     modes: { text: "Matn", both: "Ikkalasi", questions: "Savollar" },
     serif: "Serif shrift",
     kinds: {
-      tfng: "True · False · Not given",
+      tfng: "True · False · No Information",
+      match: "Mos variantni tanlang",
       mcq: "Variantni tanlang",
       gap: "Bitta so'z yozing",
     },
@@ -505,7 +507,7 @@ export const uz = {
     faq: {
       modesQ: "Imtihon va Mashq rejimining farqi nima?",
       modesA:
-        "Imtihon rejimi haqiqiy imtihonga o'xshaydi: audio bir marta eshittiriladi, testni to'xtatib bo'lmaydi. Mashq rejimida audioni qayta tinglash va istalgan payt chiqib, keyin shu joydan davom ettirish mumkin.",
+        "Imtihon rejimi haqiqiy imtihonga o'xshaydi: har bir audio ikki marta eshittiriladi, testni to'xtatib bo'lmaydi. Mashq rejimida audioni qayta tinglash va istalgan payt chiqib, keyin shu joydan davom ettirish mumkin.",
       scoreQ: "Ball qanday hisoblanadi?",
       scoreA:
         "Har bir bo'lim 0–75 ball bilan baholanadi, umumiy ball — to'rt bo'limning o'rtachasi. Daraja: 38 dan B1, 51 dan B2, 65 dan C1; undan pastda A2.",

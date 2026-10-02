@@ -113,6 +113,7 @@ export const ReadingSection = memo<{ test: TestDetail }>(({ test }) => {
         {mode === 'text' ? null : (
           <QuestionPanel
             question={question}
+            choices={part.choices}
             siblings={part.questions}
             expanded={mode === 'questions'}
             bottomInset={footerSpace}

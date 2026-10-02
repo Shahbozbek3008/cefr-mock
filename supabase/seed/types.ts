@@ -6,12 +6,29 @@ type QuestionBase = {
   prompt: string;
   answer: string;
   explanation?: string;
+  group?: string;
 };
 
 export type Question =
   | (QuestionBase & { kind: 'mcq'; options: Choice[] })
   | (QuestionBase & { kind: 'gap' })
-  | (QuestionBase & { kind: 'tfng' });
+  | (QuestionBase & { kind: 'tfng' })
+  | (QuestionBase & { kind: 'match' });
+
+export type MapRoad = { points: [number, number][] };
+
+export type MapBlock = { x: number; y: number; w: number; h: number; letter?: string; name?: string };
+
+export type MapLabel = { x: number; y: number; text: string };
+
+export type MapSpec = {
+  width: number;
+  height: number;
+  roads: MapRoad[];
+  blocks: MapBlock[];
+  labels?: MapLabel[];
+};
+
 
 export type ListeningPart = {
   id: string;
@@ -21,6 +38,8 @@ export type ListeningPart = {
   title?: string;
   durationSec: number;
   audioAt?: Record<number, number>;
+  choices?: Choice[];
+  map?: MapSpec;
   questions: Question[];
 };
 
@@ -30,6 +49,7 @@ export type ReadingPart = {
   title: string;
   instruction: string;
   passage: { label: string; text: string; highlight?: string }[];
+  choices?: Choice[];
   questions: Question[];
 };
 
@@ -42,6 +62,7 @@ export type WritingTask = {
   prompt: string;
   targetWords: number;
   minWords: number;
+  weight?: number;
 };
 
 export type SpeakingQuestion = {

@@ -34,10 +34,26 @@ export const gap = (
   explanation,
 });
 
+export const match = (section: 'l' | 'r', number: number, prompt: string, answer: string, explanation?: string): Question => ({
+  id: `${section}-${number}`,
+  number,
+  kind: 'match',
+  prompt,
+  answer,
+  explanation,
+});
+
+export const choices = (texts: string[]): Choice[] => options(texts);
+
+export const letters = (count: number): Choice[] => options(Array.from({ length: count }, () => ''));
+
+export const grouped = (group: string, questions: Question[]): Question[] =>
+  questions.map((question) => ({ ...question, group }));
+
 export const tfng = (
   number: number,
   prompt: string,
-  answer: 'True' | 'False' | 'Not given',
+  answer: 'True' | 'False' | 'No Information',
   explanation?: string,
 ): Question => ({
   id: `r-${number}`,
@@ -48,28 +64,19 @@ export const tfng = (
   explanation,
 });
 
-export const writingTasks = (situation: string, informal: string, formal: string, essay: string): WritingTask[] => [
+export const writingPaper = (email: { context: string; prompt: string }, essay: string): WritingTask[] => [
   {
     id: 'w1',
     index: 1,
-    label: 'Task 1.1',
-    kind: 'Informal letter',
-    context: situation,
-    prompt: informal,
-    targetWords: 50,
-    minWords: 40,
-  },
-  {
-    id: 'w2',
-    index: 2,
-    label: 'Task 1.2',
-    kind: 'Formal letter',
-    context: situation,
-    prompt: formal,
-    targetWords: 135,
+    label: 'Task 1',
+    kind: 'Letter',
+    context: email.context,
+    prompt: email.prompt,
+    targetWords: 150,
     minWords: 120,
+    weight: 1,
   },
-  { id: 'w3', index: 3, label: 'Task 2', kind: 'Essay', prompt: essay, targetWords: 200, minWords: 180 },
+  { id: 'w2', index: 2, label: 'Task 2', kind: 'Essay', prompt: essay, targetWords: 250, minWords: 250, weight: 2 },
 ];
 
 type SpeakingSet = {
@@ -98,13 +105,6 @@ export const speakingQuestions = ({
 export const say = (voice: Voice, text: string, pauseAfter?: number): ScriptLine => ({ voice, text, pauseAfter });
 
 export const intro = (text: string): ScriptLine => ({ voice: 'narrator', text, pauseAfter: 1.5 });
-
-export const ask = (number: number, text: string): ScriptLine => ({
-  voice: 'narrator',
-  text: `Question ${number}. ${text}`,
-  question: number,
-  pauseAfter: 1.2,
-});
 
 export const cue = (number: number, voice: Voice, text: string, pauseAfter?: number): ScriptLine => ({
   voice,

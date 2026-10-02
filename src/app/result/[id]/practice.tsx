@@ -120,7 +120,7 @@ export default function MistakesPracticeScreen() {
               <PracticeContext key={item.question.id} item={item} />
               {review ? (
                 <>
-                  <AnswerDetail item={review} question={item.question} />
+                  <AnswerDetail item={review} question={item.question} choices={item.part.choices} />
                   {transcript ? <TranscriptCard transcript={transcript} questionNumber={item.question.number} /> : null}
                 </>
               ) : (

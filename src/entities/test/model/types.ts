@@ -6,6 +6,7 @@ type QuestionBase = {
   id: string;
   number: number;
   prompt: string;
+  group?: string;
 };
 
 export type AnswerKey = { answer: string; explanation?: string };
@@ -15,8 +16,24 @@ export type AnswerKeys = Record<string, AnswerKey>;
 export type McqQuestion = QuestionBase & { kind: 'mcq'; options: Choice[] };
 export type GapQuestion = QuestionBase & { kind: 'gap' };
 export type TfngQuestion = QuestionBase & { kind: 'tfng' };
+export type MatchQuestion = QuestionBase & { kind: 'match' };
 
-export type Question = McqQuestion | GapQuestion | TfngQuestion;
+export type Question = McqQuestion | GapQuestion | TfngQuestion | MatchQuestion;
+
+export type MapRoad = { points: [number, number][] };
+
+export type MapBlock = { x: number; y: number; w: number; h: number; letter?: string; name?: string };
+
+export type MapLabel = { x: number; y: number; text: string };
+
+export type MapSpec = {
+  width: number;
+  height: number;
+  roads: MapRoad[];
+  blocks: MapBlock[];
+  labels?: MapLabel[];
+};
+
 
 export type ListeningPart = {
   id: string;
@@ -27,6 +44,8 @@ export type ListeningPart = {
   durationSec: number;
   audio?: string;
   audioAt?: Record<number, number>;
+  choices?: Choice[];
+  map?: MapSpec;
   questions: Question[];
 };
 
@@ -42,6 +61,7 @@ export type ReadingPart = {
   title: string;
   instruction: string;
   passage: PassageParagraph[];
+  choices?: Choice[];
   questions: Question[];
 };
 
@@ -54,6 +74,7 @@ export type WritingTask = {
   prompt: string;
   targetWords: number;
   minWords: number;
+  weight?: number;
 };
 
 export type SpeakingQuestion = {

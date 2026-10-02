@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { GapInput, McqOptions, TfngChoices, useAnswer } from '@/entities/attempt';
-import type { Question } from '@/entities/test';
+import type { Choice, Question } from '@/entities/test';
 import { useI18n } from '@/shared/i18n';
 import { makeStyles, radius, size, space, useTheme } from '@/shared/theme';
 import { Tag, Text } from '@/shared/ui';
@@ -16,12 +16,13 @@ Dot.displayName = 'QuestionDot';
 
 export type QuestionPanelProps = {
   question: Question;
+  choices?: Choice[];
   siblings: Question[];
   expanded: boolean;
   bottomInset: number;
 };
 
-const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question, siblings }) => {
+const PanelBody = memo<{ question: Question; choices?: Choice[]; siblings: Question[] }>(({ question, choices, siblings }) => {
   const styles = useStyles();
   const { colors } = useTheme();
   const { t } = useI18n();
@@ -47,13 +48,16 @@ const PanelBody = memo<{ question: Question; siblings: Question[] }>(({ question
       {question.kind === 'tfng' ? <TfngChoices questionId={question.id} /> : null}
       {question.kind === 'mcq' ? <McqOptions question={question} /> : null}
       {question.kind === 'gap' ? <GapInput questionId={question.id} number={question.number} variant="field" /> : null}
+      {question.kind === 'match' && choices ? (
+        <McqOptions question={{ ...question, kind: 'mcq', options: choices }} />
+      ) : null}
     </>
   );
 });
 
 PanelBody.displayName = 'PanelBody';
 
-export const QuestionPanel = memo<QuestionPanelProps>(({ question, siblings, expanded, bottomInset }) => {
+export const QuestionPanel = memo<QuestionPanelProps>(({ question, choices, siblings, expanded, bottomInset }) => {
   const styles = useStyles();
   const { elevation } = useTheme();
   const contentStyle = [styles.content, { paddingBottom: bottomInset + space[4] }];
@@ -67,11 +71,11 @@ export const QuestionPanel = memo<QuestionPanelProps>(({ question, siblings, exp
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <PanelBody question={question} siblings={siblings} />
+          <PanelBody question={question} choices={choices} siblings={siblings} />
         </ScrollView>
       ) : (
         <View style={contentStyle}>
-          <PanelBody question={question} siblings={siblings} />
+          <PanelBody question={question} choices={choices} siblings={siblings} />
         </View>
       )}
     </View>
