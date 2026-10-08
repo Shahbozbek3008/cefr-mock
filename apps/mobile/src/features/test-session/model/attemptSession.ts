@@ -1,59 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
-import { openAttempt, saveAttempt, snapshotOf, useAttemptStore } from '@/entities/attempt';
+import {
+  beginAttempt as coreBeginAttempt,
+  flushAttempt as coreFlushAttempt,
+  useAttemptAutosave as coreUseAttemptAutosave,
+  useAttemptSession as coreUseAttemptSession,
+} from '@cefr/core';
+import { useAttemptStore } from '@/entities/attempt';
 import type { AttemptMode } from '@/entities/attempt';
+import { supabase } from '@/shared/api';
 
-const AUTOSAVE_MS = 2500;
+export const beginAttempt = (testId: string, mode: AttemptMode = 'practice') =>
+  coreBeginAttempt(supabase, useAttemptStore, testId, mode);
 
-type SessionStatus = 'loading' | 'ready' | 'error';
+export const flushAttempt = () => coreFlushAttempt(supabase, useAttemptStore);
 
-const isOpen = (testId: string) => {
-  const { testId: current, attemptId } = useAttemptStore.getState();
-  return current === testId && attemptId !== null;
-};
+export const useAttemptSession = (testId: string) => coreUseAttemptSession(useAttemptStore, testId);
 
-export const beginAttempt = async (testId: string, mode: AttemptMode = 'practice') => {
-  if (!isOpen(testId)) useAttemptStore.getState().hydrate(await openAttempt(testId, mode));
-  return useAttemptStore.getState();
-};
-
-export const flushAttempt = () => saveAttempt(snapshotOf(useAttemptStore.getState()));
-
-export const useAttemptSession = (testId: string) => {
-  const [status, setStatus] = useState<SessionStatus>(() => (isOpen(testId) ? 'ready' : 'loading'));
-  const [error, setError] = useState<unknown>(null);
-
-  const load = useCallback(() => {
-    setStatus('loading');
-    beginAttempt(testId)
-      .then(() => setStatus('ready'))
-      .catch((failure) => {
-        setError(failure);
-        setStatus('error');
-      });
-  }, [testId]);
-
-  useEffect(() => {
-    if (!isOpen(testId)) load();
-  }, [load, testId]);
-
-  return { status, error, retry: load };
-};
-
-export const useAttemptAutosave = (active: boolean) => {
-  useEffect(() => {
-    if (!active) return;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-
-    const unsubscribe = useAttemptStore.subscribe((state, previous) => {
-      if (!state.attemptId || state.attemptId !== previous.attemptId) return;
-      clearTimeout(timer);
-      timer = setTimeout(() => flushAttempt().catch(() => undefined), AUTOSAVE_MS);
-    });
-
-    return () => {
-      clearTimeout(timer);
-      unsubscribe();
-      flushAttempt().catch(() => undefined);
-    };
-  }, [active]);
-};
+export const useAttemptAutosave = (active: boolean) => coreUseAttemptAutosave(useAttemptStore, active);

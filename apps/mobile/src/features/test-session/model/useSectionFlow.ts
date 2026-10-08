@@ -1,20 +1,18 @@
 import { useCallback, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
-import { submitAttempt, useAttemptStore } from '@/entities/attempt';
+import { completeSection, submitSession } from '@cefr/core';
+import { useAttemptStore } from '@/entities/attempt';
 import { notificationKeys } from '@/entities/notification';
-import { requestAiReview, resultKeys } from '@/entities/result';
-import { logStudy } from '@/entities/study';
-import { sectionOrder, testKeys } from '@/entities/test';
+import { resultKeys } from '@/entities/result';
+import { studyKeys } from '@/entities/study';
+import { testKeys } from '@/entities/test';
 import type { SectionKind, TestDetail } from '@/entities/test';
-import { failureReason } from '@/shared/api';
-import { useI18n } from '@/shared/i18n';
+import { failureReason, supabase } from '@/shared/api';
+import { useI18n, useLocaleStore } from '@/shared/i18n';
 import { queryClient } from '@/shared/lib';
 import { useToast } from '@/shared/ui';
-import { flushAttempt } from './attemptSession';
-import { flushUploads } from './recordingUploads';
-
-const nextSection = (section: SectionKind) => sectionOrder[sectionOrder.indexOf(section) + 1] ?? null;
+import { uploads } from './recordingUploads';
 
 const refreshAfterSubmit = () =>
   Promise.all(
@@ -29,14 +27,8 @@ export const useSectionFlow = (test: TestDetail, section: SectionKind) => {
   const submitTest = useCallback(async () => {
     setFinishing(true);
     try {
-      await flushUploads();
-      await flushAttempt();
-      const { attemptId } = useAttemptStore.getState();
-      if (!attemptId) throw new Error('attempt_missing');
-      const resultId = await submitAttempt(attemptId);
-      requestAiReview(resultId).catch(() => undefined);
+      const resultId = await submitSession(supabase, useAttemptStore, uploads, useLocaleStore.getState().locale);
       await refreshAfterSubmit();
-      useAttemptStore.getState().reset();
       router.replace({ pathname: '/result/[id]', params: { id: resultId, from: 'test' } });
     } catch (error) {
       setFinishing(false);
@@ -45,20 +37,16 @@ export const useSectionFlow = (test: TestDetail, section: SectionKind) => {
   }, [showToast, t]);
 
   const finish = useCallback(async () => {
-    const { endsAt } = useAttemptStore.getState();
-    const limitSec = (test.sections.find((item) => item.kind === section)?.minutes ?? 0) * 60;
-    const remainingSec = Math.max(0, ((endsAt[section] ?? Date.now()) - Date.now()) / 1000);
-    logStudy(Math.max(0, limitSec - remainingSec)).catch(() => undefined);
-    useAttemptStore.getState().completeSection(section);
-
-    const next = nextSection(section);
+    const { next, studied } = completeSection(supabase, useAttemptStore, test, section);
+    studied.then((logged) => {
+      if (logged) queryClient.invalidateQueries({ queryKey: studyKeys.all });
+    });
     if (!next) {
       await submitTest();
       return;
     }
-    flushAttempt().catch(() => undefined);
     router.replace({ pathname: '/test/[id]/[section]', params: { id: test.id, section: next } });
-  }, [section, submitTest, test.id, test.sections]);
+  }, [section, submitTest, test]);
 
   return { finish, finishing, submitTest };
 };

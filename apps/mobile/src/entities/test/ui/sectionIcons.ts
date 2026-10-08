@@ -9,14 +9,7 @@ export const sectionIcons: Record<SectionKind, LucideIcon> = {
   speaking: Mic,
 };
 
-export const sectionTitles: Record<SectionKind, string> = {
-  listening: 'Listening',
-  reading: 'Reading',
-  writing: 'Writing',
-  speaking: 'Speaking',
-};
-
-export const sectionOrder: SectionKind[] = ['listening', 'reading', 'writing', 'speaking'];
+export { sectionOrder, sectionTitles } from '@cefr/core';
 
 export const sectionDetailKeys = {
   listening: 'sections.listeningDetail',

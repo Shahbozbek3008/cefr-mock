@@ -1,0 +1,26 @@
+{
+  "name": "cefr-mock",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "mobile": "npm run start --workspace @cefr/mobile",
+    "web": "npm run dev --workspace @cefr/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:seed": "node scripts/generate-test-seed.mjs",
+    "db:push": "npx supabase db push",
+    "functions:deploy": "npx supabase functions deploy",
+    "proxy:deploy": "npx wrangler deploy --config proxy/wrangler.toml"
+  },
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "@supabase/supabase-js": "2.109.0",
+    "@tanstack/react-query": "5.103.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "~19.2.2"
+  }
+}

@@ -1,0 +1,1176 @@
+{
+  "metadata": {
+    "title": "CEFR Mock — prepare for the CEFR exam in real conditions",
+    "description": "Full mock tests, AI scoring for Writing and Speaking, and an explanation for every mistake."
+  },
+  "common": {
+    "language": "Language",
+    "examDate": "November 1, 2026"
+  },
+  "skills": {
+    "listening": "Listening",
+    "reading": "Reading",
+    "writing": "Writing",
+    "speaking": "Speaking"
+  },
+  "calendar": {
+    "weekdays": "Mo,Tu,We,Th,Fr,Sa,Su",
+    "months": "January,February,March,April,May,June,July,August,September,October,November,December",
+    "monthTitle": "{month} {year}",
+    "prev": "Previous month",
+    "next": "Next month",
+    "official": "Official exam days",
+    "selected": "Selected"
+  },
+  "app": {
+    "nav": {
+      "label": "Main menu",
+      "home": "Home",
+      "tests": "Tests",
+      "progress": "Progress",
+      "profile": "Profile",
+      "billing": "Billing",
+      "workspace": "Workspace",
+      "account": "Account"
+    },
+    "upsell": {
+      "title": "Upgrade to Pro",
+      "text": "Unlimited mock tests and AI scoring.",
+      "cta": "See plans"
+    },
+    "plan": {
+      "free": "Free plan",
+      "pro": "Pro"
+    },
+    "topbar": {
+      "notifications": "Notifications",
+      "newTest": "New test",
+      "exam": "{days} days left"
+    },
+    "user": {
+      "settings": "Settings",
+      "billing": "Billing & plans",
+      "logout": "Log out",
+      "menu": "User menu"
+    }
+  },
+  "landing": {
+    "header": {
+      "navLabel": "Page sections",
+      "nav": {
+        "format": "Format",
+        "ai": "AI scoring",
+        "pricing": "Pricing",
+        "app": "App",
+        "faq": "FAQ"
+      },
+      "navMenu": {
+        "format": "Exam format",
+        "ai": "AI scoring",
+        "pricing": "Pricing",
+        "faq": "FAQ"
+      },
+      "login": "Log in",
+      "start": "Start free",
+      "menuOpen": "Open menu",
+      "menuClose": "Close menu"
+    },
+    "menu": {
+      "download": "Get the app",
+      "platforms": "iOS and Android"
+    },
+    "footer": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "help": "Help",
+      "tagline": "Prepare for the CEFR Multilevel exam in real exam conditions.",
+      "product": "Product",
+      "resources": "Resources",
+      "legal": "Legal",
+      "rights": "All rights reserved.",
+      "status": "All systems operational"
+    },
+    "hero": {
+      "announcement": "Updated to the official September format",
+      "announcementShort": "Updated to the official format",
+      "title": "Prepare for CEFR<br></br> <muted>in real exam</muted><br></br> conditions.",
+      "subtitle": "Full mock tests, AI scoring for Writing and Speaking, and an explanation for every mistake.",
+      "cta": "Free mock test",
+      "how": "How it works · 1 min",
+      "noCard": "No card required",
+      "platforms": "iOS · Android · Web",
+      "aiFix": "AI correction",
+      "growth": "in 3 months",
+      "phone": {
+        "title": "Result",
+        "level": "B2 · Upper-Intermediate",
+        "levelShort": "B2 · Upper-Int."
+      },
+      "trust": "{count}+ students preparing",
+      "rating": "average rating"
+    },
+    "stats": {
+      "students": "Active students",
+      "tests": "Mock tests completed",
+      "speed": "AI scoring time",
+      "speedUnit": "min",
+      "growth": "Average gain in 3 months",
+      "growthUnit": "pts"
+    },
+    "preview": {
+      "eyebrow": "Your dashboard",
+      "title": "Everything in one place. <muted>Until exam day.</muted>",
+      "text": "Days left, scores for every section and your next step — at a glance.",
+      "url": "app.cefrmock.uz",
+      "live": "Live"
+    },
+    "format": {
+      "eyebrow": "Exam format",
+      "title": "Four sections. <muted>Just like the exam.</muted>",
+      "text": "Timing, question types and the 0–75 scale match the official requirements. In real mode the audio plays once and the timer never stops.",
+      "realMode": "Real mode",
+      "note": "Note",
+      "cards": {
+        "listening": {
+          "meta": "35 min · 6 parts · 35 questions",
+          "title": "Listening",
+          "desc": "Audio plays once, no pauses. Just like the exam hall."
+        },
+        "reading": {
+          "meta": "60 min · 5 parts · 35 questions",
+          "title": "Reading",
+          "desc": "Highlight the text and leave notes."
+        },
+        "writing": {
+          "meta": "60 min · 2 tasks",
+          "title": "Writing",
+          "desc": "Autosave and a live word counter."
+        },
+        "speaking": {
+          "meta": "~15 min · 3 parts",
+          "title": "Speaking",
+          "desc": "Preparation timer, recording and transcript."
+        }
+      }
+    },
+    "ai": {
+      "eyebrow": "AI scoring",
+      "title": "Scored in two minutes. <muted>Every mistake explained.</muted>",
+      "text": "Scores against the official criteria and clear, actionable advice.",
+      "points": {
+        "criteria": {
+          "title": "Scores on 4 criteria",
+          "desc": "Task achievement, coherence, lexical resource, grammar."
+        },
+        "inline": {
+          "title": "Mistakes right in your text",
+          "desc": "Grammar and vocabulary are marked separately, with fixes."
+        },
+        "transcript": {
+          "title": "Speaking transcript",
+          "desc": "Tips on pauses, pace and pronunciation."
+        }
+      },
+      "card": {
+        "task": "Writing · Task 2",
+        "level": "B2 · intermediate",
+        "summaryLead": "Strong content.",
+        "summary": "Improve grammatical accuracy.",
+        "fixNote": "— \"people\" is plural"
+      }
+    },
+    "steps": {
+      "eyebrow": "How it works",
+      "title": "From goal to result. <muted>Three steps.</muted>",
+      "items": {
+        "goal": {
+          "title": "Set your goal",
+          "desc": "A daily plan is built around your level and exam date."
+        },
+        "test": {
+          "title": "Take a mock test",
+          "desc": "Real timing, real format. Answers are saved even offline."
+        },
+        "review": {
+          "title": "Work on your mistakes",
+          "desc": "Close the gaps with question reviews and AI advice."
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Results",
+      "title": "Students <muted>speak for themselves.</muted>",
+      "items": {
+        "t1": {
+          "name": "Dilnoza Rahimova",
+          "city": "Tashkent",
+          "quote": "Real mode feels exactly like the exam. Nothing surprised me on exam day — I got B2 on my first attempt."
+        },
+        "t2": {
+          "name": "Jasur Aliyev",
+          "city": "Samarkand",
+          "quote": "The AI feedback on Writing is precise. Now I understand why every mistake is a mistake."
+        },
+        "t3": {
+          "name": "Malika Yusupova",
+          "city": "Bukhara",
+          "quote": "30 minutes a day and drills from my plan. I went from 44 to 59 points in two months."
+        },
+        "t4": {
+          "name": "Sardor Toshmatov",
+          "city": "Namangan",
+          "quote": "The Speaking transcript showed me my pauses. I speak much more freely now."
+        },
+        "t5": {
+          "name": "Nilufar Karimova",
+          "city": "Fergana",
+          "quote": "Listening audio plays only once — that habit really paid off in the exam."
+        },
+        "t6": {
+          "name": "Bekzod Nazarov",
+          "city": "Andijan",
+          "quote": "The result review pinpointed my weak spot. I worked on grammar and reached C1."
+        }
+      }
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "How long until your exam?",
+      "text": "Click or Payme · cancel anytime",
+      "popular": "Most popular"
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "help": "Didn't find an answer? <link>Message us on Telegram</link>",
+      "items": {
+        "format": {
+          "q": "How close are the tests to the official exam?",
+          "a": "Format, timing and question types match the official CEFR Multilevel format of September 2026. Scores use the 0–75 scale and are converted to a level."
+        },
+        "accuracy": {
+          "q": "How accurate is the AI score?",
+          "a": "The AI scores against the official criteria and every score comes with an explanation."
+        },
+        "free": {
+          "q": "What is free?",
+          "a": "One full mock test, drills for every section and a result review. No card required."
+        },
+        "offline": {
+          "q": "Will I lose my answers if the internet drops?",
+          "a": "No. Every answer is saved on your device instantly and sent once the connection is back."
+        }
+      }
+    },
+    "cta": {
+      "title": "Take your first mock test today.",
+      "start": "Start free",
+      "stores": "App Store · Google Play",
+      "note": "No card required · results in 2 minutes",
+      "noteShort": "Free · results in 2 minutes"
+    },
+    "sticky": {
+      "title": "First mock test is free",
+      "note": "No card required",
+      "cta": "Start"
+    }
+  },
+  "plans": {
+    "currency": "UZS",
+    "perMonth": "{price} UZS / mo",
+    "perMonthUnit": "UZS / mo",
+    "everyMonth": "every month",
+    "choose": "Choose",
+    "start": "Start",
+    "monthly": {
+      "name": "Monthly",
+      "period": "mo"
+    },
+    "quarterly": {
+      "name": "3 months",
+      "period": "3 mo"
+    },
+    "yearly": {
+      "name": "Yearly",
+      "period": "yr"
+    },
+    "features": {
+      "allMocks": "All mock tests",
+      "aiWritingSpeaking": "AI Writing and Speaking",
+      "analysis": "Detailed review",
+      "personalPlan": "Personal plan",
+      "offline": "Offline mode",
+      "unlimited": "Unlimited mock tests — 40+",
+      "explanations": "An explanation for every question"
+    }
+  },
+  "auth": {
+    "back": "Back",
+    "phone": "Phone number",
+    "sendCode": "Send code",
+    "or": "or",
+    "google": "Google",
+    "apple": "Apple",
+    "legal": "Terms · Privacy",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Enter your phone number — we'll send you a verification code.",
+      "noAccount": "No account yet? <link>Start free</link>",
+      "showcase": {
+        "label": "Latest result",
+        "level": "B2 · Upper-Intermediate",
+        "growth": "+14 · in 3 months",
+        "sync": "Progress, drafts and results sync across all your devices."
+      }
+    },
+    "verify": {
+      "title": "Enter the code",
+      "text": "We sent a 6-digit code to <mono>{phone}</mono>.",
+      "change": "Change",
+      "otpLabel": "Verification code",
+      "confirm": "Confirm",
+      "noCode": "Didn't get the code?",
+      "resend": "Resend"
+    },
+    "errors": {
+      "invalid_code": "Incorrect code. Please try again.",
+      "code_expired": "The code has expired. Request a new one.",
+      "too_many_attempts": "Too many attempts. Request a new code.",
+      "too_many_requests": "Please wait a moment and try again.",
+      "sms_unavailable": "SMS service is temporarily unavailable.",
+      "invalid_phone": "Invalid phone number.",
+      "network_error": "Check your internet connection.",
+      "function_not_found": "Server function not found. Check that the phone-auth function is deployed.",
+      "server_error": "Something went wrong on the server. Please try again shortly.",
+      "not_configured": "Server is not configured: Supabase values are missing in .env.",
+      "unknown": "Something went wrong. Please try again."
+    },
+    "sending": "Sending…",
+    "verifying": "Verifying…"
+  },
+  "onboarding": {
+    "step": "{current} / {total}",
+    "haveAccount": "Have an account? <link>Log in</link>",
+    "continue": "Continue",
+    "goal": {
+      "title": "Which level are you aiming for?",
+      "text": "Your preparation plan is built around this level. You can change it later.",
+      "levels": {
+        "B1": "Intermediate",
+        "B2": "Upper-Intermediate",
+        "C1": "Advanced"
+      },
+      "range": "{min}–{max} points"
+    },
+    "date": {
+      "title": "When is your exam?",
+      "text": "We'll build a weekly plan and reminders around the date.",
+      "daily": "Daily time",
+      "options": {
+        "minutes": "{count} min"
+      },
+      "planLabel": "Your plan",
+      "planValue": "{days} days · {tests} mock tests",
+      "target": "{level} · {min}+"
+    },
+    "account": {
+      "title": "Let's save your plan",
+      "text": "Create an account so your progress syncs across devices.",
+      "name": "First name",
+      "smsHint": "The verification code arrives by SMS",
+      "consent": "I agree to the <terms>terms of use</terms> and <privacy>privacy policy</privacy>",
+      "summary": {
+        "title": "Your plan",
+        "goal": "Goal",
+        "goalValue": "{level} · {min}+ points",
+        "exam": "Exam",
+        "examValue": "{date} · {days} days",
+        "daily": "Daily",
+        "dailyValue": "{minutes} minutes",
+        "plan": "Plan",
+        "planValue": "{tests} mock tests · {drills} drills",
+        "tip": "Your first mock test is free — we'll find your starting level."
+      }
+    },
+    "done": {
+      "title": "Number verified",
+      "text": "<mono>{phone}</mono> · your account is ready. Your plan is set.",
+      "stats": {
+        "days": "days",
+        "tests": "mock tests",
+        "minutes": "min / day"
+      },
+      "startFree": "Start the free mock test",
+      "toDashboard": "Go to dashboard"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Dashboard",
+    "today": "Tuesday, September 29",
+    "greeting": "Good afternoon, {name}",
+    "search": "Search tests",
+    "newTest": "New mock test",
+    "countdown": {
+      "label": "Until the exam",
+      "days": "days",
+      "badge": "{date} · Goal {level}",
+      "date": "Nov 1",
+      "now": "Now {score}"
+    },
+    "continue": {
+      "label": "Continue",
+      "left": "{time} left",
+      "meta": "{section} · Part {part} · {answered}/{total} questions",
+      "cta": "Continue",
+      "progress": "{value}% complete"
+    },
+    "recommended": {
+      "title": "Recommended tests",
+      "catalog": "Catalog",
+      "kinds": {
+        "full": "Full · 4 sections",
+        "drill": "Section drill · AI score",
+        "done": "Full · Sep 22"
+      },
+      "minutes": "{value} min",
+      "hours": "{value} h",
+      "tags": {
+        "new": "New",
+        "weak": "Weak section",
+        "done": "Completed"
+      },
+      "subtitle": "Picked for your weak spots",
+      "columns": {
+        "test": "Test",
+        "duration": "Duration",
+        "status": "Status",
+        "result": "Result"
+      }
+    },
+    "subtitle": "Your plan for today is ready. {days} days until the exam.",
+    "kpi": {
+      "score": "Overall score",
+      "scoreHint": "vs. last test",
+      "exam": "Until exam",
+      "examHint": "{date} · Target {level}",
+      "streak": "Daily streak",
+      "streakUnit": "days",
+      "streakHint": "Best: {best} days",
+      "time": "This week",
+      "timeUnit": "min",
+      "timeHint": "Goal: {goal} min"
+    },
+    "chart": {
+      "title": "Score trend",
+      "subtitle": "Last {count} mock tests"
+    },
+    "skills": {
+      "title": "By section",
+      "subtitle": "on the 0–75 scale",
+      "weak": "Weak"
+    },
+    "activity": {
+      "title": "Weekly activity",
+      "subtitle": "Minutes studied per day",
+      "goal": "Goal",
+      "minutes": "{value} min"
+    },
+    "plan": {
+      "title": "Today's plan",
+      "progress": "{done}/{total} done",
+      "minutes": "{value} min",
+      "items": {
+        "reading": "Reading · True / False / Not Given",
+        "writing": "Writing Task 2 · introduction",
+        "vocab": "Vocabulary review · 20 words"
+      }
+    },
+    "insight": {
+      "label": "AI insight",
+      "title": "Writing is your main growth area",
+      "text": "Subject–verb agreement errors cost you 4–6 points. Three short drills will bring you closer to B2.",
+      "cta": "Start drill"
+    }
+  },
+  "results": {
+    "metaTitle": "Result",
+    "viewAnalysis": "View review",
+    "breadcrumbTests": "Tests",
+    "breadcrumbAttempt": "{name} · {date}",
+    "attemptDate": "Sep 22",
+    "title": "{name} result",
+    "share": "Share",
+    "detailed": "Detailed review",
+    "score": {
+      "level": "B2 · Upper-Intermediate",
+      "toNext": "<mono>{points}</mono> points to {level} · <up>+{delta}</up> since last test"
+    },
+    "recommendation": {
+      "label": "AI advice",
+      "title": "Writing — your main growth area",
+      "grammar": "{score}/{max} · verb agreement",
+      "coherence": "{score}/{max} · linking words",
+      "task1": "describing a chart",
+      "cta": "Writing drill"
+    }
+  },
+  "review": {
+    "title": "Detailed review",
+    "crumb": "Review",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "skipped": "Unanswered",
+    "onlyWrong": "Mistakes only",
+    "questionWrong": "Q{n} · Wrong",
+    "partType": "Part {part} · Note completion",
+    "listenFrom": "Listen from {time}",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "explanation": "Explanation",
+    "explanationText": "The speaker first gives the full price, then adds the student discount. The distractor is the first number mentioned. In questions like this, focus on what comes after words such as \"but\", \"however\" or \"for students\"."
+  },
+  "aiWriting": {
+    "title": "AI Writing score",
+    "improved": "Improved version",
+    "yourText": "Your text · {words} words",
+    "lexicalCount": "Vocabulary · {count}",
+    "level": "B2 · intermediate",
+    "verdict": "Strong content, low grammatical accuracy.",
+    "corrections": "Corrections",
+    "kinds": {
+      "grammar": "Grammar",
+      "lexical": "Vocabulary"
+    },
+    "notes": {
+      "peoplePlural": "\"people\" is plural — the verb takes no -s.",
+      "strongerAdjective": "A stronger adjective — raises your Lexical score."
+    }
+  },
+  "aiSpeaking": {
+    "title": "AI Speaking score",
+    "transcript": "Transcript",
+    "stats": "{words} words · {wpm} wpm · {pauses} pauses",
+    "partScore": "Part {part} score",
+    "level": "B2 · steady",
+    "overall": "Overall Speaking: <mono>{score}/75</mono>",
+    "feedback": {
+      "clear": "Clear ideas, relevant examples.",
+      "fillers": "Cut down on \"um\" and \"uh\" — start with \"Well, …\".",
+      "comparative": "\"more fresh\" → \"fresher\": short adjectives take -er."
+    }
+  },
+  "catalog": {
+    "title": "Tests",
+    "count": "{total} tests · {fresh} new",
+    "search": "Search",
+    "tabs": {
+      "full": "Full mocks",
+      "drills": "Section drills"
+    },
+    "filters": {
+      "all": "All",
+      "new": "New",
+      "notStarted": "Not started",
+      "done": "Completed",
+      "free": "Free"
+    },
+    "status": {
+      "new": "New",
+      "inProgress": "In progress",
+      "done": "Completed",
+      "free": "Free",
+      "pro": "Pro"
+    },
+    "meta": {
+      "sections": "4 sections",
+      "sectionsMonth": "4 sections · September 2026",
+      "progress": "{section} · Part {part}",
+      "date": "Sep 22"
+    },
+    "start": "Start",
+    "continue": "Continue",
+    "result": "Result"
+  },
+  "progress": {
+    "title": "Progress",
+    "meta": "{count} tests · July — September",
+    "range": {
+      "1m": "1 month",
+      "3m": "3 months",
+      "all": "All"
+    },
+    "overall": "Overall score",
+    "toNext": "{points} points to {level}",
+    "months": "July,August,September",
+    "chartLabel": "Overall score over time",
+    "sections": "Sections",
+    "period": "over 3 months",
+    "history": "History",
+    "all": "See all",
+    "columns": {
+      "date": "Date",
+      "test": "Test",
+      "score": "Score",
+      "level": "Level",
+      "change": "Change"
+    },
+    "historySubtitle": "Recent attempts",
+    "sectionsSubtitle": "Growth over 3 months"
+  },
+  "settings": {
+    "title": "Settings",
+    "cancel": "Cancel",
+    "save": "Save",
+    "nav": {
+      "settings": "Settings",
+      "profile": "Profile",
+      "exam": "Exam",
+      "notifications": "Notifications",
+      "subscription": "Subscription",
+      "security": "Security"
+    },
+    "profile": {
+      "since": "Member since July 2026",
+      "changePhoto": "Change photo",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "verified": "Verified",
+      "email": "Email",
+      "optional": "optional",
+      "title": "Personal details",
+      "subtitle": "Name and contact information"
+    },
+    "preferences": {
+      "target": "Target level",
+      "targetHint": "Your plan adapts to this level",
+      "examDate": "Exam date",
+      "daysLeft": "{days} days left",
+      "language": "Interface language",
+      "languageHint": "Uzbek, Russian or English",
+      "theme": "Theme",
+      "themeHint": "Interface appearance",
+      "themes": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    },
+    "interface": {
+      "title": "Interface",
+      "subtitle": "Language and appearance"
+    },
+    "exam": {
+      "title": "Exam plan",
+      "subtitle": "Your daily plan and reminders are based on these details",
+      "daily": "Daily study time",
+      "dailyHint": "Your daily plan size is based on this"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Choose which messages you receive",
+      "items": {
+        "reminder": {
+          "title": "Daily reminder",
+          "hint": "Every day at {time}"
+        },
+        "weekly": {
+          "title": "Weekly report",
+          "hint": "Progress summary every Monday"
+        },
+        "results": {
+          "title": "AI results ready",
+          "hint": "When Writing and Speaking are scored"
+        },
+        "newTests": {
+          "title": "New mock tests",
+          "hint": "When a new test is added to the catalog"
+        },
+        "promo": {
+          "title": "Offers and discounts",
+          "hint": "Rarely, only the important ones"
+        }
+      },
+      "channels": {
+        "title": "Delivery channels",
+        "subtitle": "Where messages are sent",
+        "sms": "SMS",
+        "telegram": "Telegram",
+        "email": "Email"
+      }
+    },
+    "subscription": {
+      "title": "Current plan",
+      "active": "Active",
+      "renews": "Valid {date}",
+      "change": "Change plan",
+      "cancel": "Cancel subscription",
+      "method": "Payment method",
+      "methodHint": "Future payments use this method",
+      "update": "Update",
+      "history": "Payment history",
+      "historySubtitle": "Receipts were also sent via SMS",
+      "columns": {
+        "date": "Date",
+        "plan": "Plan",
+        "amount": "Amount",
+        "status": "Status"
+      },
+      "paid": "Paid",
+      "receipt": "Receipt"
+    },
+    "security": {
+      "phone": {
+        "title": "Phone number",
+        "hint": "Sign-in codes are sent to this number",
+        "change": "Change number"
+      },
+      "sessions": {
+        "title": "Active devices",
+        "subtitle": "Devices signed in to your account",
+        "current": "Current",
+        "logout": "Sign out",
+        "logoutAll": "Sign out of all devices",
+        "devices": {
+          "desktop": {
+            "name": "Chrome · Windows",
+            "meta": "Tashkent · active now"
+          },
+          "phone": {
+            "name": "CEFR Mock · iPhone",
+            "meta": "Tashkent · 2 hours ago"
+          },
+          "tablet": {
+            "name": "Safari · iPad",
+            "meta": "Samarkand · 3 days ago"
+          }
+        }
+      },
+      "danger": {
+        "title": "Delete account",
+        "hint": "All results, history and your subscription will be permanently deleted. This can't be undone.",
+        "action": "Delete account"
+      }
+    }
+  },
+  "billing": {
+    "title": "CEFR Mock Pro",
+    "untilExam": "enough until the exam",
+    "paymentMethod": "Payment method",
+    "order": "Order",
+    "planLine": "Pro · {plan}",
+    "discount": "Discount",
+    "promo": "Promo code",
+    "apply": "Apply",
+    "total": "Total",
+    "pay": "Pay {amount} UZS",
+    "secure": "Secure payment · cancel anytime",
+    "choosePeriod": "Billing period",
+    "choosePeriodHint": "Pick the period that fits your exam date",
+    "included": "What's included in Pro",
+    "recommended": "Recommended",
+    "oneTime": "One-time payment",
+    "subtotal": "Subtotal",
+    "dueToday": "Due today",
+    "save": "You save {amount} UZS",
+    "validUntil": "Valid",
+    "validity": {
+      "monthly": "until Oct 29, 2026",
+      "quarterly": "until Dec 29, 2026",
+      "yearly": "until Sep 29, 2027"
+    },
+    "redirect": "Payment is completed securely on the provider's page.",
+    "product": "{plan} subscription",
+    "trust": {
+      "secure": "Secure payment",
+      "cancel": "Cancel anytime",
+      "receipt": "Receipt via SMS"
+    }
+  },
+  "billingSuccess": {
+    "title": "Pro activated",
+    "text": "All mock tests and AI scoring are unlocked. The receipt was sent by SMS.",
+    "plan": "Plan",
+    "planValue": "Pro · {plan}",
+    "validUntil": "Valid",
+    "validUntilValue": "until December 29, 2026",
+    "payment": "Payment",
+    "paymentValue": "{method} · {amount} UZS",
+    "startTest": "Start a mock test",
+    "receipt": "Download receipt"
+  },
+  "pretest": {
+    "title": "Before the test",
+    "back": "Back to tests",
+    "crumb": "Tests",
+    "online": "Connection stable",
+    "fullMock": "Full mock",
+    "realMode": "Real mode",
+    "subtitle": "Official September 2026 format · 0–75 points",
+    "totalTime": "Total time",
+    "deviceCheck": "Device check",
+    "headphones": "Headphones",
+    "listen": "Play",
+    "microphone": "Microphone",
+    "ready": "Ready",
+    "ruleAudio": "Audio plays once, without pauses.",
+    "ruleOffline": "Answers are also saved on your device.",
+    "start": "Start the test",
+    "sections": {
+      "partsQuestions": "{parts} parts · {questions} questions",
+      "tasksAi": "{tasks} tasks · AI score",
+      "partsAi": "{parts} parts · AI score",
+      "minutes": "{value} min"
+    }
+  },
+  "test": {
+    "metaTitle": "Test",
+    "exit": "Exit test",
+    "subtitle": {
+      "listening": "Listening · Part {current} / {total}",
+      "reading": "Reading · Part {current} / {total}",
+      "writing": "Writing · Task {current} / {total}",
+      "speaking": "Speaking · Question {current} / {total}"
+    },
+    "realMode": "Real mode",
+    "questionsRange": "Questions {range}",
+    "answerPlaceholder": "answer",
+    "autoAdvance": "The next part opens automatically when the audio ends",
+    "nextQuestion": "Next question",
+    "next": "Next",
+    "prev": "Previous",
+    "flag": "Flag",
+    "navigator": {
+      "title": "Questions",
+      "answered": "Answered",
+      "empty": "Unanswered",
+      "flagged": "Flagged"
+    },
+    "finish": {
+      "trigger": "Finish test",
+      "title": "Finish the test?",
+      "text": "You can't change your answers after finishing. Your result will be ready in 2 minutes.",
+      "answered": "Answered",
+      "flagged": "Flagged",
+      "unanswered": "Unanswered",
+      "unansweredList": "Unanswered questions",
+      "back": "Back to test",
+      "confirm": "Finish"
+    },
+    "reading": {
+      "toolbar": "Highlight tools",
+      "yellow": "Highlight yellow",
+      "blue": "Highlight blue",
+      "note": "Note",
+      "clear": "Clear",
+      "passage": "Passage {n}",
+      "fontSize": "Font size"
+    },
+    "writing": {
+      "tasks": "Tasks",
+      "task2": "Task 2 · Essay",
+      "task": "Task",
+      "minWords": "Minimum length",
+      "words": "{count} words",
+      "suggestedTime": "Suggested time",
+      "minutes": "{count} min",
+      "grading": "Scoring",
+      "gradingValue": "AI · 4 criteria",
+      "tip": "Start each paragraph with one main idea — that's how your Coherence score goes up.",
+      "undo": "Undo",
+      "saved": "Draft saved {seconds} seconds ago",
+      "editor": "Answer text",
+      "paragraphs": "{count} paragraphs",
+      "submit": "Submit Writing"
+    },
+    "speaking": {
+      "imagePlaceholder": "photo · city market",
+      "part": "Part {part} · Picture description",
+      "prep": "Preparation {seconds}s",
+      "answer": "Answer {seconds}s",
+      "recording": "Recording",
+      "restart": "Record again",
+      "stop": "Stop recording",
+      "next": "Next question"
+    }
+  },
+  "exam": {
+    "common": {
+      "back": "Back",
+      "close": "Close",
+      "share": "Share",
+      "next": "Next",
+      "previous": "Previous",
+      "retry": "Retry",
+      "error": "Something went wrong",
+      "checkInternet": "Check your internet connection",
+      "serverError": "Something went wrong on the server. Try again in a moment.",
+      "continue": "Continue",
+      "resume": "Continue",
+      "start": "Start",
+      "finish": "Finish",
+      "exit": "Exit",
+      "stay": "Stay",
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "all": "All",
+      "comingSoon": "This setting is coming in the next version",
+      "notSelected": "Not set",
+      "loading": "Loading",
+      "configMissingTitle": "Server is not configured",
+      "configMissingMessage": "Add EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY to the `.env` file and restart the app."
+    },
+    "units": {
+      "days": "{count, plural, one {{count} day} other {{count} days}}",
+      "minutes": "{count} min",
+      "minutesApprox": "~{count} min",
+      "words": "{count, plural, one {{count} word} other {{count} words}}",
+      "tests": "{count, plural, one {{count} test} other {{count} tests}}",
+      "seconds": "{count} sec",
+      "points": "{count} points"
+    },
+    "catalog": {
+      "title": "Tests",
+      "sort": "Sort",
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "search": "Search tests or topics",
+      "fullMock": "Full mock",
+      "sectionPractice": "Section practice",
+      "filters": {
+        "all": "All",
+        "free": "Free",
+        "new": "Not started",
+        "completed": "Completed"
+      },
+      "newBadge": "New",
+      "freeBadge": "Free",
+      "resumeShort": "Continue",
+      "formatOf": "{period} format",
+      "inProgress": "In progress · {section}",
+      "completedOn": "Completed · {date}",
+      "premium": "Premium · {period} format",
+      "practiceTitle": "{section} practice",
+      "emptyTitle": "Nothing found",
+      "emptyMessage": "Try another filter or search term"
+    },
+    "sections": {
+      "listeningDetail": "{parts} parts · {questions} questions",
+      "readingDetail": "{parts} parts · {questions} questions",
+      "writingDetail": "{parts} tasks · AI-graded",
+      "speakingDetail": "{parts} parts · AI-graded"
+    },
+    "testIntro": {
+      "mode": "Mode",
+      "examMode": "Exam mode",
+      "examModeHint": "Like the real exam: no pausing, and each recording plays twice.",
+      "practiceMode": "Practice mode",
+      "practiceModeHint": "Flexible: leave and resume any time, and replay the audio.",
+      "modeLocked": "You can't change the mode of a test you have already started.",
+      "ruleNoExit": "If you leave the test, it will be submitted as it is.",
+      "ruleTimer": "Each section ends automatically when its time runs out.",
+      "rulePracticeReplay": "You can replay the Listening audio.",
+      "rulePracticeResume": "Leave any time and continue later from the same place.",
+      "fullMock": "Full mock",
+      "realMode": "Real mode",
+      "officialFormat": "Official {period} format",
+      "hours": "hours",
+      "sectionsCount": "sections",
+      "score": "points",
+      "rules": "Rules",
+      "ruleAudio": "Wear headphones. Each recording plays twice, with no pauses.",
+      "ruleOffline": "Answers are saved on your device — they won't be lost if the connection drops.",
+      "start": "Start test",
+      "loadFailed": "Couldn't load the test"
+    },
+    "session": {
+      "examExitTitle": "Finish the test?",
+      "examExitMessage": "In exam mode you can't leave and continue later. If you leave, the test will be submitted with your current answers.",
+      "examExitConfirm": "Submit",
+      "startFailed": "Couldn't start the test.",
+      "submitFailed": "Couldn't submit your result.",
+      "exitA11y": "Exit test",
+      "remainingA11y": "{time} remaining",
+      "question": "Question {number}",
+      "answerOf": "Answer to question {number}",
+      "answerPlaceholder": "Your answer",
+      "flag": "Flag question",
+      "unflag": "Remove flag",
+      "nextQuestion": "Next question",
+      "nextPart": "Next part",
+      "previousQuestion": "Previous question",
+      "questions": "Questions",
+      "questionList": "Question list",
+      "legendAnswered": "Answered",
+      "legendCurrent": "Current",
+      "legendFlagged": "Flagged",
+      "finishSection": "Finish section",
+      "exitTitle": "Leave the test?",
+      "exitMessage": "The timer won't stop. Your answers are saved on this device.",
+      "finishTitle": "Finish {section}?",
+      "finishNext": "Once finished, answers can't be changed. Next section — {section}, {minutes} minutes.",
+      "finishLast": "Once finished, answers can't be changed. AI will calculate your result.",
+      "statAnswered": "answered",
+      "statFlagged": "flagged",
+      "statEmpty": "unanswered",
+      "goBack": "Go back",
+      "backToEmpty": "Back to unanswered",
+      "backToFlagged": "Back to flagged",
+      "finishAnyway": "Finish anyway"
+    },
+    "listening": {
+      "practiceMode": "Practice mode",
+      "practiceNote": "In practice mode you can replay the audio.",
+      "replay": "Replay",
+      "playing": "Now playing",
+      "ended": "Audio finished",
+      "realMode": "Real mode",
+      "onceNote": "The audio plays twice — pause and rewind are disabled.",
+      "round": "{count}/2"
+    },
+    "reading": {
+      "modes": {
+        "text": "Text",
+        "both": "Both",
+        "questions": "Questions"
+      },
+      "serif": "Serif font",
+      "kinds": {
+        "tfng": "True · False · No Information",
+        "match": "Choose the matching option",
+        "mcq": "Choose an option",
+        "gap": "Write one word"
+      },
+      "highlightYellow": "Highlight in yellow",
+      "highlightBlue": "Highlight in blue",
+      "note": "Note",
+      "notesSoon": "Notes are coming in the next version"
+    },
+    "writing": {
+      "done": "Done",
+      "panes": {
+        "task": "Task",
+        "answer": "Answer"
+      },
+      "task": "TASK",
+      "placeholder": "Write your answer here…",
+      "answerA11y": "Writing answer",
+      "minVolume": "Minimum length",
+      "recommended": "Recommended",
+      "submit": "Submit",
+      "shortTitle": "Not enough words",
+      "shortItem": "{task}: {count}/{min} words",
+      "shortMessage": "{items}. Short answers receive a lower score.",
+      "submitAnyway": "Submit anyway",
+      "keepWriting": "Keep writing",
+      "savedAuto": "Draft saves automatically",
+      "savedSeconds": "Draft saved {count} sec ago",
+      "savedMinutes": "Draft saved {count} min ago"
+    },
+    "speaking": {
+      "subtitle": "Part {part} · Question {index} / {total}",
+      "image": "image · {caption}",
+      "status": {
+        "pending": "Preparing microphone",
+        "prep": "Get ready",
+        "recording": "Recording",
+        "done": "Recorded",
+        "denied": "No access"
+      },
+      "prepChip": "Preparation {count}s",
+      "answerChip": "Answer {count}s",
+      "restart": "Record again",
+      "record": "Start recording",
+      "stop": "Stop recording",
+      "deniedTitle": "Microphone access denied",
+      "deniedMessage": "Allow microphone access in Settings to record your Speaking answer.",
+      "openSettings": "Open Settings"
+    },
+    "result": {
+      "notFound": "Result not found",
+      "points": "/ {max} points",
+      "focus": "Focus",
+      "toLevel": "{points} points to {level}",
+      "topLevel": "Top level reached",
+      "growthPoint": "{focus} — your fastest way to improve",
+      "aiScore": "AI score",
+      "aiScoreSections": "Writing · Speaking",
+      "aiSheetMessage": "Your Writing and Speaking answers were scored against the criteria.",
+      "writingReview": "Writing feedback",
+      "speakingReview": "Speaking feedback",
+      "details": "Detailed review",
+      "shareMessage": "CEFR Mock · {title}: {score}/{max} ({level})"
+    },
+    "review": {
+      "title": "Detailed review",
+      "subtitle": "Mock #{number} · {section}",
+      "correct": "correct",
+      "wrong": "wrong",
+      "empty": "unanswered",
+      "status": {
+        "correct": "Correct",
+        "wrong": "Wrong",
+        "empty": "Unanswered"
+      },
+      "onlyWrong": "Mistakes only",
+      "allQuestions": "All questions",
+      "onlyWrongA11y": "Show mistakes only",
+      "listenFrom": "Listen from {time}",
+      "yourAnswer": "Your answer",
+      "correctAnswer": "Correct answer",
+      "transcript": "Audio script",
+      "transcriptFull": "Show the whole part",
+      "transcriptQuestion": "This question only",
+      "voices": {
+        "narrator": "Narrator",
+        "woman": "Woman",
+        "man": "Man",
+        "woman2": "Woman 2",
+        "man2": "Man 2",
+        "woman3": "Woman 3",
+        "man3": "Man 3"
+      }
+    },
+    "mistakes": {
+      "title": "Work on mistakes",
+      "start": "Practise your mistakes",
+      "listen": "Listen to this part",
+      "check": "Check",
+      "noneTitle": "No mistakes",
+      "noneMessage": "All your Listening and Reading answers are correct.",
+      "doneTitle": "{solved} of {total} correct",
+      "doneMessage": "You can go through the remaining mistakes again.",
+      "again": "Start again"
+    },
+    "aiReview": {
+      "sampleShow": "Show a model answer",
+      "sampleHide": "Hide the model answer",
+      "checkingTitle": "AI is reviewing",
+      "checkingMessage": "This usually takes 1–2 minutes. We'll notify you when it's ready.",
+      "failedMessage": "AI couldn't finish the review. Please try again.",
+      "noAnswer": "No answer was written for this task.",
+      "noRecordings": "No answers were recorded in the Speaking section.",
+      "checkingShort": "AI reviewing",
+      "criteriaTitle": "Criteria",
+      "answers": "Answers",
+      "writingTitle": "AI Writing feedback",
+      "speakingTitle": "AI Speaking feedback",
+      "writingMeta": "{task} · {count} words",
+      "speakingMeta": "{part} · {count} sec",
+      "writingScore": "Writing score",
+      "loadFailed": "Couldn't load AI feedback",
+      "errorsInText": "Mistakes in your text",
+      "grammar": "Grammar",
+      "lexis": "Vocabulary",
+      "showImproved": "See improved version",
+      "improvedTitle": "Improved version",
+      "improvedSubtitle": "Mistakes fixed and adjusted to an academic style.",
+      "transcript": "Transcript",
+      "transcriptMeta": "{words} words · {wpm} wpm",
+      "play": "Play",
+      "pause": "Pause"
+    }
+  }
+}

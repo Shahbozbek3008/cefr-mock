@@ -1,0 +1,1176 @@
+{
+  "metadata": {
+    "title": "CEFR Mock — CEFR imtihoniga real sharoitda tayyorlaning",
+    "description": "To'liq mock testlar, Writing va Speaking uchun AI baholash va har bir xato bo'yicha tushuntirish."
+  },
+  "common": {
+    "language": "Til",
+    "examDate": "1-noyabr 2026"
+  },
+  "skills": {
+    "listening": "Listening",
+    "reading": "Reading",
+    "writing": "Writing",
+    "speaking": "Speaking"
+  },
+  "calendar": {
+    "weekdays": "Du,Se,Ch,Pa,Ju,Sh,Ya",
+    "months": "Yanvar,Fevral,Mart,Aprel,May,Iyun,Iyul,Avgust,Sentabr,Oktabr,Noyabr,Dekabr",
+    "monthTitle": "{month} {year}",
+    "prev": "Oldingi oy",
+    "next": "Keyingi oy",
+    "official": "Rasmiy imtihon kunlari",
+    "selected": "Tanlangan"
+  },
+  "app": {
+    "nav": {
+      "label": "Asosiy menyu",
+      "home": "Asosiy",
+      "tests": "Testlar",
+      "progress": "Progress",
+      "profile": "Profil",
+      "billing": "Obuna",
+      "workspace": "Ish maydoni",
+      "account": "Hisob"
+    },
+    "upsell": {
+      "title": "Pro'ga o'ting",
+      "text": "Cheksiz mock testlar va AI baholash.",
+      "cta": "Tariflarni ko'rish"
+    },
+    "plan": {
+      "free": "Bepul tarif",
+      "pro": "Pro"
+    },
+    "topbar": {
+      "notifications": "Bildirishnomalar",
+      "newTest": "Yangi test",
+      "exam": "{days} kun qoldi"
+    },
+    "user": {
+      "settings": "Sozlamalar",
+      "billing": "Obuna va to'lov",
+      "logout": "Chiqish",
+      "menu": "Foydalanuvchi menyusi"
+    }
+  },
+  "landing": {
+    "header": {
+      "navLabel": "Sahifa bo'limlari",
+      "nav": {
+        "format": "Format",
+        "ai": "AI baholash",
+        "pricing": "Narxlar",
+        "app": "Ilova",
+        "faq": "Savollar"
+      },
+      "navMenu": {
+        "format": "Imtihon formati",
+        "ai": "AI baholash",
+        "pricing": "Narxlar",
+        "faq": "Savollar"
+      },
+      "login": "Kirish",
+      "start": "Bepul boshlash",
+      "menuOpen": "Menyuni ochish",
+      "menuClose": "Menyuni yopish"
+    },
+    "menu": {
+      "download": "Ilovani yuklab oling",
+      "platforms": "iOS va Android"
+    },
+    "footer": {
+      "terms": "Shartlar",
+      "privacy": "Maxfiylik",
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "help": "Yordam",
+      "tagline": "CEFR Multilevel imtihoniga real sharoitda tayyorlanish platformasi.",
+      "product": "Mahsulot",
+      "resources": "Resurslar",
+      "legal": "Huquqiy",
+      "rights": "Barcha huquqlar himoyalangan.",
+      "status": "Barcha tizimlar ishlayapti"
+    },
+    "hero": {
+      "announcement": "Sentabr rasmiy formatiga yangilandi",
+      "announcementShort": "Rasmiy formatga yangilandi",
+      "title": "CEFR imtihoniga<br></br> <muted>real sharoitda</muted><br></br> tayyorlaning.",
+      "subtitle": "To'liq mock testlar, Writing va Speaking uchun AI baholash va har bir xato bo'yicha tushuntirish.",
+      "cta": "Bepul mock test",
+      "how": "Qanday ishlaydi · 1 daq",
+      "noCard": "Karta talab qilinmaydi",
+      "platforms": "iOS · Android · Web",
+      "aiFix": "AI tuzatish",
+      "growth": "3 oyda",
+      "phone": {
+        "title": "Natija",
+        "level": "B2 · Upper-Intermediate",
+        "levelShort": "B2 · Upper-Int."
+      },
+      "trust": "{count}+ o'quvchi tayyorlanmoqda",
+      "rating": "o'rtacha baho"
+    },
+    "stats": {
+      "students": "Faol o'quvchilar",
+      "tests": "Topshirilgan mock testlar",
+      "speed": "AI baholash vaqti",
+      "speedUnit": "daq",
+      "growth": "3 oyda o'rtacha o'sish",
+      "growthUnit": "ball"
+    },
+    "preview": {
+      "eyebrow": "Shaxsiy kabinet",
+      "title": "Hammasi bir joyda. <muted>Imtihon kunigacha.</muted>",
+      "text": "Qolgan kunlar, har bo'lim bo'yicha ball va keyingi qadam — bir qarashda.",
+      "url": "app.cefrmock.uz",
+      "live": "Jonli"
+    },
+    "format": {
+      "eyebrow": "Imtihon formati",
+      "title": "To'rt bo'lim. <muted>Xuddi imtihondagidek.</muted>",
+      "text": "Vaqt, savol turlari va 0–75 shkala rasmiy talablarga mos. Real rejimda audio bir marta, taymer to'xtamaydi.",
+      "realMode": "Real rejim",
+      "note": "Izoh",
+      "cards": {
+        "listening": {
+          "meta": "35 daq · 6 qism · 35 savol",
+          "title": "Listening",
+          "desc": "Audio bir marta, pauzasiz. Xuddi imtihon zalidagidek."
+        },
+        "reading": {
+          "meta": "60 daq · 5 qism · 35 savol",
+          "title": "Reading",
+          "desc": "Matnni belgilang va izoh qoldiring."
+        },
+        "writing": {
+          "meta": "60 daq · 2 topshiriq",
+          "title": "Writing",
+          "desc": "Avtosaqlash va jonli so'z hisoblagich."
+        },
+        "speaking": {
+          "meta": "~15 daq · 3 qism",
+          "title": "Speaking",
+          "desc": "Tayyorlanish taymeri, yozib olish va transkript."
+        }
+      }
+    },
+    "ai": {
+      "eyebrow": "AI baholash",
+      "title": "Ikki daqiqada baho. <muted>Har bir xato izohi bilan.</muted>",
+      "text": "Rasmiy mezonlar bo'yicha ball va o'zbek tilidagi aniq tavsiyalar.",
+      "points": {
+        "criteria": {
+          "title": "4 mezon bo'yicha ball",
+          "desc": "Task achievement, coherence, lexical resource, grammar."
+        },
+        "inline": {
+          "title": "Xatolar matnning o'zida",
+          "desc": "Grammatika va lug'at alohida belgilanadi, tuzatish bilan."
+        },
+        "transcript": {
+          "title": "Speaking transkripti",
+          "desc": "Pauza, tezlik va talaffuz bo'yicha tavsiyalar."
+        }
+      },
+      "card": {
+        "task": "Writing · Task 2",
+        "level": "B2 · o'rta daraja",
+        "summaryLead": "Mazmun kuchli.",
+        "summary": "Grammatik aniqlikni oshiring.",
+        "fixNote": "— \"people\" ko'plikda"
+      }
+    },
+    "steps": {
+      "eyebrow": "Qanday ishlaydi",
+      "title": "Maqsaddan natijagacha. <muted>Uch qadam.</muted>",
+      "items": {
+        "goal": {
+          "title": "Maqsadni belgilang",
+          "desc": "Daraja va imtihon sanasiga qarab kunlik reja tuziladi."
+        },
+        "test": {
+          "title": "Mock test ishlang",
+          "desc": "Real vaqt, real format. Javoblar oflayn ham saqlanadi."
+        },
+        "review": {
+          "title": "Xatolar ustida ishlang",
+          "desc": "Savollar tahlili va AI tavsiyalari bilan zaif joylarni yoping."
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Natijalar",
+      "title": "O'quvchilar <muted>o'zlari gapiradi.</muted>",
+      "items": {
+        "t1": {
+          "name": "Dilnoza Rahimova",
+          "city": "Toshkent",
+          "quote": "Real rejim xuddi imtihondagidek. Imtihon kuni hech narsa yangilik bo'lmadi — B2 ni birinchi urinishda oldim."
+        },
+        "t2": {
+          "name": "Jasur Aliyev",
+          "city": "Samarqand",
+          "quote": "Writing bo'yicha AI izohlari juda aniq. Har bir xato nega xato ekanini endi tushunaman."
+        },
+        "t3": {
+          "name": "Malika Yusupova",
+          "city": "Buxoro",
+          "quote": "Har kuni 30 daqiqa va reja bo'yicha mashqlar. Ikki oyda 44 dan 59 ballga chiqdim."
+        },
+        "t4": {
+          "name": "Sardor Toshmatov",
+          "city": "Namangan",
+          "quote": "Speaking transkripti pauzalarimni ko'rsatdi. Endi ancha erkin gapiraman."
+        },
+        "t5": {
+          "name": "Nilufar Karimova",
+          "city": "Farg'ona",
+          "quote": "Listening'da audio faqat bir marta eshittiriladi — bu odat imtihonda juda asqotdi."
+        },
+        "t6": {
+          "name": "Bekzod Nazarov",
+          "city": "Andijon",
+          "quote": "Natijalar tahlili zaif joyimni aniq ko'rsatdi. Grammatika ustida ishlab C1 ga yetdim."
+        }
+      }
+    },
+    "pricing": {
+      "eyebrow": "Narxlar",
+      "title": "Imtihongacha qancha vaqt qoldi?",
+      "text": "Click yoki Payme · istalgan vaqt bekor qilish",
+      "popular": "Eng ko'p tanlanadi"
+    },
+    "faq": {
+      "eyebrow": "Savollar",
+      "title": "Ko'p beriladigan savollar",
+      "help": "Javob topmadingizmi? <link>Telegram orqali yozing</link>",
+      "items": {
+        "format": {
+          "q": "Testlar rasmiy imtihonga qanchalik mos?",
+          "a": "Formati, vaqti va savol turlari 2026-yil sentabrdagi rasmiy CEFR Multilevel formatiga mos. Ball 0–75 shkalada hisoblanadi va darajaga o'giriladi."
+        },
+        "accuracy": {
+          "q": "AI bahosi qanchalik aniq?",
+          "a": "AI rasmiy mezonlar bo'yicha baholaydi va har bir ball izoh bilan beriladi."
+        },
+        "free": {
+          "q": "Bepul nima bor?",
+          "a": "Bitta to'liq mock test, har bo'limdan mashqlar va natija tahlili. Karta talab qilinmaydi."
+        },
+        "offline": {
+          "q": "Internet uzilsa javoblarim yo'qoladimi?",
+          "a": "Yo'q. Har bir javob darhol qurilmada saqlanadi va ulanish tiklanganda yuboriladi."
+        }
+      }
+    },
+    "cta": {
+      "title": "Birinchi mock testni bugun ishlang.",
+      "start": "Bepul boshlash",
+      "stores": "App Store · Google Play",
+      "note": "Karta talab qilinmaydi · natija 2 daqiqada",
+      "noteShort": "Bepul · natija 2 daqiqada"
+    },
+    "sticky": {
+      "title": "1-mock test bepul",
+      "note": "Karta talab qilinmaydi",
+      "cta": "Boshlash"
+    }
+  },
+  "plans": {
+    "currency": "so'm",
+    "perMonth": "{price} so'm / oy",
+    "perMonthUnit": "so'm / oy",
+    "everyMonth": "har oy",
+    "choose": "Tanlash",
+    "start": "Boshlash",
+    "monthly": {
+      "name": "Oylik",
+      "period": "oy"
+    },
+    "quarterly": {
+      "name": "3 oylik",
+      "period": "3 oy"
+    },
+    "yearly": {
+      "name": "Yillik",
+      "period": "yil"
+    },
+    "features": {
+      "allMocks": "Barcha mock testlar",
+      "aiWritingSpeaking": "AI Writing va Speaking",
+      "analysis": "Batafsil tahlil",
+      "personalPlan": "Shaxsiy reja",
+      "offline": "Oflayn rejim",
+      "unlimited": "Cheksiz mock testlar — 40+",
+      "explanations": "Har savol bo'yicha tushuntirish"
+    }
+  },
+  "auth": {
+    "back": "Orqaga",
+    "phone": "Telefon raqam",
+    "sendCode": "Kod yuborish",
+    "or": "yoki",
+    "google": "Google",
+    "apple": "Apple",
+    "legal": "Shartlar · Maxfiylik",
+    "login": {
+      "title": "Xush kelibsiz",
+      "subtitle": "Telefon raqamingizni kiriting — tasdiqlash kodini yuboramiz.",
+      "noAccount": "Hisobingiz yo'qmi? <link>Bepul boshlash</link>",
+      "showcase": {
+        "label": "Oxirgi natija",
+        "level": "B2 · Upper-Intermediate",
+        "growth": "+14 · 3 oyda",
+        "sync": "Progress, qoralamalar va natijalar barcha qurilmalaringizda sinxronlanadi."
+      }
+    },
+    "verify": {
+      "title": "Kodni kiriting",
+      "text": "<mono>{phone}</mono> raqamiga 6 xonali kod yuborildi.",
+      "change": "O'zgartirish",
+      "otpLabel": "Tasdiqlash kodi",
+      "confirm": "Tasdiqlash",
+      "noCode": "Kod kelmadimi?",
+      "resend": "Qayta yuborish"
+    },
+    "errors": {
+      "invalid_code": "Kod noto'g'ri. Qayta kiriting.",
+      "code_expired": "Kod muddati tugagan. Yangi kod so'rang.",
+      "too_many_attempts": "Urinishlar juda ko'p. Yangi kod so'rang.",
+      "too_many_requests": "Biroz kuting va qayta urinib ko'ring.",
+      "sms_unavailable": "SMS xizmati vaqtincha ishlamayapti.",
+      "invalid_phone": "Telefon raqam noto'g'ri.",
+      "network_error": "Internet aloqasini tekshiring.",
+      "function_not_found": "Server funksiyasi topilmadi. phone-auth funksiyasi deploy qilinganini tekshiring.",
+      "server_error": "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
+      "not_configured": "Server sozlanmagan: .env faylida Supabase qiymatlari yo'q.",
+      "unknown": "Kutilmagan xatolik. Qayta urinib ko'ring."
+    },
+    "sending": "Yuborilmoqda…",
+    "verifying": "Tekshirilmoqda…"
+  },
+  "onboarding": {
+    "step": "{current} / {total}",
+    "haveAccount": "Hisobingiz bormi? <link>Kirish</link>",
+    "continue": "Davom etish",
+    "goal": {
+      "title": "Qaysi darajani maqsad qilyapsiz?",
+      "text": "Tayyorgarlik rejasi shu darajaga qarab tuziladi. Keyin o'zgartirish mumkin.",
+      "levels": {
+        "B1": "Intermediate",
+        "B2": "Upper-Intermediate",
+        "C1": "Advanced"
+      },
+      "range": "{min}–{max} ball"
+    },
+    "date": {
+      "title": "Imtihon qachon?",
+      "text": "Sana bo'yicha haftalik reja va eslatmalar tuzamiz.",
+      "daily": "Kunlik vaqt",
+      "options": {
+        "minutes": "{count} daq"
+      },
+      "planLabel": "Sizning rejangiz",
+      "planValue": "{days} kun · {tests} ta mock test",
+      "target": "{level} · {min}+"
+    },
+    "account": {
+      "title": "Rejangizni saqlaymiz",
+      "text": "Progress barcha qurilmalarda sinxronlanishi uchun hisob yarating.",
+      "name": "Ism",
+      "smsHint": "Tasdiqlash kodi SMS orqali keladi",
+      "consent": "<terms>Foydalanish shartlari</terms> va <privacy>maxfiylik siyosati</privacy>ga roziman",
+      "summary": {
+        "title": "Sizning rejangiz",
+        "goal": "Maqsad",
+        "goalValue": "{level} · {min}+ ball",
+        "exam": "Imtihon",
+        "examValue": "{date} · {days} kun",
+        "daily": "Kunlik",
+        "dailyValue": "{minutes} daqiqa",
+        "plan": "Reja",
+        "planValue": "{tests} mock test · {drills} mashq",
+        "tip": "Birinchi mock test bepul — boshlang'ich darajangizni aniqlaymiz."
+      }
+    },
+    "done": {
+      "title": "Raqam tasdiqlandi",
+      "text": "<mono>{phone}</mono> · hisobingiz yaratildi. Rejangiz tayyor.",
+      "stats": {
+        "days": "kun",
+        "tests": "mock test",
+        "minutes": "daq / kun"
+      },
+      "startFree": "Bepul mock testni boshlash",
+      "toDashboard": "Boshqaruv paneliga o'tish"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Boshqaruv paneli",
+    "today": "Seshanba, 29-sentabr",
+    "greeting": "Xayrli kun, {name}",
+    "search": "Test qidirish",
+    "newTest": "Yangi mock test",
+    "countdown": {
+      "label": "Imtihongacha",
+      "days": "kun",
+      "badge": "{date} · Maqsad {level}",
+      "date": "1-noyabr",
+      "now": "Hozir {score}"
+    },
+    "continue": {
+      "label": "Davom ettirish",
+      "left": "{time} qoldi",
+      "meta": "{section} · {part}-qism · {answered}/{total} savol",
+      "cta": "Davom etish",
+      "progress": "{value}% bajarildi"
+    },
+    "recommended": {
+      "title": "Tavsiya etilgan testlar",
+      "catalog": "Katalog",
+      "kinds": {
+        "full": "To'liq · 4 bo'lim",
+        "drill": "Bo'lim mashqi · AI baho",
+        "done": "To'liq · 22-sentabr"
+      },
+      "minutes": "{value} daq",
+      "hours": "{value} soat",
+      "tags": {
+        "new": "Yangi",
+        "weak": "Zaif bo'lim",
+        "done": "Tugagan"
+      },
+      "subtitle": "Zaif joylaringizga qarab tanlangan",
+      "columns": {
+        "test": "Test",
+        "duration": "Davomiyligi",
+        "status": "Holat",
+        "result": "Natija"
+      }
+    },
+    "subtitle": "Bugungi rejangiz tayyor. Imtihongacha {days} kun qoldi.",
+    "kpi": {
+      "score": "Umumiy ball",
+      "scoreHint": "o'tgan testga nisbatan",
+      "exam": "Imtihongacha",
+      "examHint": "{date} · Maqsad {level}",
+      "streak": "Kunlik seriya",
+      "streakUnit": "kun",
+      "streakHint": "Rekord: {best} kun",
+      "time": "Bu hafta",
+      "timeUnit": "daq",
+      "timeHint": "Maqsad: {goal} daq"
+    },
+    "chart": {
+      "title": "Ball dinamikasi",
+      "subtitle": "So'nggi {count} ta mock test"
+    },
+    "skills": {
+      "title": "Bo'limlar bo'yicha",
+      "subtitle": "0–75 shkalada",
+      "weak": "Zaif"
+    },
+    "activity": {
+      "title": "Haftalik faollik",
+      "subtitle": "Kunlik o'qish daqiqalari",
+      "goal": "Maqsad",
+      "minutes": "{value} daq"
+    },
+    "plan": {
+      "title": "Bugungi reja",
+      "progress": "{done}/{total} bajarildi",
+      "minutes": "{value} daq",
+      "items": {
+        "reading": "Reading · True / False / Not Given",
+        "writing": "Writing Task 2 · kirish qismi",
+        "vocab": "Lug'at takrorlash · 20 so'z"
+      }
+    },
+    "insight": {
+      "label": "AI tavsiyasi",
+      "title": "Writing — asosiy o'sish nuqtasi",
+      "text": "Fe'l mosligi xatolari ballingizni 4–6 ga tushiryapti. 3 ta qisqa mashq B2 ga yaqinlashtiradi.",
+      "cta": "Mashqni boshlash"
+    }
+  },
+  "results": {
+    "metaTitle": "Natija",
+    "viewAnalysis": "Tahlilni ko'rish",
+    "breadcrumbTests": "Testlar",
+    "breadcrumbAttempt": "{name} · {date}",
+    "attemptDate": "22-sentabr",
+    "title": "{name} natijasi",
+    "share": "Ulashish",
+    "detailed": "Batafsil tahlil",
+    "score": {
+      "level": "B2 · Upper-Intermediate",
+      "toNext": "{level} gacha <mono>{points}</mono> ball · o'tgan testdan <up>+{delta}</up>"
+    },
+    "recommendation": {
+      "label": "AI tavsiyasi",
+      "title": "Writing — asosiy o'sish nuqtasi",
+      "grammar": "{score}/{max} · fe'l mosligi",
+      "coherence": "{score}/{max} · bog'lovchilar",
+      "task1": "grafik tavsifi",
+      "cta": "Writing mashqi"
+    }
+  },
+  "review": {
+    "title": "Batafsil tahlil",
+    "crumb": "Tahlil",
+    "correct": "To'g'ri",
+    "wrong": "Xato",
+    "skipped": "Javobsiz",
+    "onlyWrong": "Faqat xatolar",
+    "questionWrong": "Q{n} · Xato",
+    "partType": "Part {part} · Note completion",
+    "listenFrom": "{time} dan tinglash",
+    "yourAnswer": "Sizning javobingiz",
+    "correctAnswer": "To'g'ri javob",
+    "explanation": "Tushuntirish",
+    "explanationText": "Spiker avval to'liq narxni aytadi, keyin talabalar uchun chegirmani qo'shadi. Distraktor — birinchi aytilgan raqam. Bunday savollarda \"but\", \"however\", \"for students\" kabi so'zlardan keyingi ma'lumotga e'tibor bering."
+  },
+  "aiWriting": {
+    "title": "AI Writing bahosi",
+    "improved": "Yaxshilangan variant",
+    "yourText": "Sizning matningiz · {words} so'z",
+    "lexicalCount": "Lug'at · {count}",
+    "level": "B2 · o'rta",
+    "verdict": "Mazmun kuchli, grammatik aniqlik past.",
+    "corrections": "Tuzatishlar",
+    "kinds": {
+      "grammar": "Grammar",
+      "lexical": "Lug'at"
+    },
+    "notes": {
+      "peoplePlural": "\"people\" ko'plikda — fe'l -s olmaydi.",
+      "strongerAdjective": "Kuchliroq sifat — Lexical ballni oshiradi."
+    }
+  },
+  "aiSpeaking": {
+    "title": "AI Speaking bahosi",
+    "transcript": "Transkript",
+    "stats": "{words} so'z · {wpm} wpm · {pauses} pauza",
+    "partScore": "Part {part} balli",
+    "level": "B2 · barqaror",
+    "overall": "Umumiy Speaking: <mono>{score}/75</mono>",
+    "feedback": {
+      "clear": "Fikr aniq, misollar mavzuga mos.",
+      "fillers": "\"Um\", \"uh\" pauzalarini kamaytiring — \"Well, …\" bilan boshlang.",
+      "comparative": "\"more fresh\" → \"fresher\": qisqa sifatlarda -er."
+    }
+  },
+  "catalog": {
+    "title": "Testlar",
+    "count": "{total} ta test · {fresh} tasi yangi",
+    "search": "Qidirish",
+    "tabs": {
+      "full": "To'liq mock",
+      "drills": "Bo'lim mashqlari"
+    },
+    "filters": {
+      "all": "Hammasi",
+      "new": "Yangi",
+      "notStarted": "Boshlanmagan",
+      "done": "Tugagan",
+      "free": "Bepul"
+    },
+    "status": {
+      "new": "Yangi",
+      "inProgress": "Davom etmoqda",
+      "done": "Tugagan",
+      "free": "Bepul",
+      "pro": "Pro"
+    },
+    "meta": {
+      "sections": "4 bo'lim",
+      "sectionsMonth": "4 bo'lim · sentabr 2026",
+      "progress": "{section} · {part}-qism",
+      "date": "22-sentabr"
+    },
+    "start": "Boshlash",
+    "continue": "Davom etish",
+    "result": "Natija"
+  },
+  "progress": {
+    "title": "Progress",
+    "meta": "{count} ta test · iyul — sentabr",
+    "range": {
+      "1m": "1 oy",
+      "3m": "3 oy",
+      "all": "Hammasi"
+    },
+    "overall": "Umumiy ball",
+    "toNext": "{level} gacha {points} ball",
+    "months": "iyul,avgust,sentabr",
+    "chartLabel": "Umumiy ball dinamikasi",
+    "sections": "Bo'limlar",
+    "period": "3 oy ichida",
+    "history": "Tarix",
+    "all": "Barchasi",
+    "columns": {
+      "date": "Sana",
+      "test": "Test",
+      "score": "Ball",
+      "level": "Daraja",
+      "change": "O'zgarish"
+    },
+    "historySubtitle": "So'nggi urinishlar",
+    "sectionsSubtitle": "3 oy ichidagi o'sish"
+  },
+  "settings": {
+    "title": "Sozlamalar",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "nav": {
+      "settings": "Sozlamalar",
+      "profile": "Profil",
+      "exam": "Imtihon",
+      "notifications": "Bildirishnomalar",
+      "subscription": "Obuna",
+      "security": "Xavfsizlik"
+    },
+    "profile": {
+      "since": "2026-yil iyuldan beri",
+      "changePhoto": "Rasmni o'zgartirish",
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "phone": "Telefon",
+      "verified": "Tasdiqlangan",
+      "email": "Email",
+      "optional": "ixtiyoriy",
+      "title": "Shaxsiy ma'lumotlar",
+      "subtitle": "Ism va aloqa ma'lumotlari"
+    },
+    "preferences": {
+      "target": "Maqsad daraja",
+      "targetHint": "Reja shu darajaga moslashtiriladi",
+      "examDate": "Imtihon sanasi",
+      "daysLeft": "{days} kun qoldi",
+      "language": "Interfeys tili",
+      "languageHint": "O'zbekcha, ruscha yoki inglizcha",
+      "theme": "Tema",
+      "themeHint": "Interfeys ko'rinishi",
+      "themes": {
+        "light": "Yorug'",
+        "dark": "Qorong'i",
+        "system": "Tizim"
+      }
+    },
+    "interface": {
+      "title": "Interfeys",
+      "subtitle": "Til va ko'rinish"
+    },
+    "exam": {
+      "title": "Imtihon rejasi",
+      "subtitle": "Kunlik reja va eslatmalar shu ma'lumotlarga asoslanadi",
+      "daily": "Kunlik o'qish vaqti",
+      "dailyHint": "Kunlik reja hajmi shunga qarab tuziladi"
+    },
+    "notifications": {
+      "title": "Bildirishnomalar",
+      "subtitle": "Qaysi xabarlarni olishni tanlang",
+      "items": {
+        "reminder": {
+          "title": "Kunlik eslatma",
+          "hint": "Har kuni {time} da"
+        },
+        "weekly": {
+          "title": "Haftalik hisobot",
+          "hint": "Har dushanba progress xulosasi"
+        },
+        "results": {
+          "title": "AI natijalar tayyor",
+          "hint": "Writing va Speaking baholanganda"
+        },
+        "newTests": {
+          "title": "Yangi mock testlar",
+          "hint": "Katalogga yangi test qo'shilganda"
+        },
+        "promo": {
+          "title": "Aksiya va chegirmalar",
+          "hint": "Kamdan-kam, faqat muhimlari"
+        }
+      },
+      "channels": {
+        "title": "Yetkazish kanallari",
+        "subtitle": "Xabarlar qayerga yuborilsin",
+        "sms": "SMS",
+        "telegram": "Telegram",
+        "email": "Email"
+      }
+    },
+    "subscription": {
+      "title": "Joriy tarif",
+      "active": "Faol",
+      "renews": "{date} amal qiladi",
+      "change": "Tarifni o'zgartirish",
+      "cancel": "Obunani bekor qilish",
+      "method": "To'lov usuli",
+      "methodHint": "Keyingi to'lovlar shu usul orqali",
+      "update": "O'zgartirish",
+      "history": "To'lovlar tarixi",
+      "historySubtitle": "Cheklar SMS orqali ham yuborilgan",
+      "columns": {
+        "date": "Sana",
+        "plan": "Tarif",
+        "amount": "Summa",
+        "status": "Holat"
+      },
+      "paid": "To'langan",
+      "receipt": "Chek"
+    },
+    "security": {
+      "phone": {
+        "title": "Telefon raqami",
+        "hint": "Kirish va SMS kodlar shu raqamga yuboriladi",
+        "change": "Raqamni o'zgartirish"
+      },
+      "sessions": {
+        "title": "Faol qurilmalar",
+        "subtitle": "Hisobingizga kirilgan qurilmalar",
+        "current": "Joriy",
+        "logout": "Chiqish",
+        "logoutAll": "Barcha qurilmalardan chiqish",
+        "devices": {
+          "desktop": {
+            "name": "Chrome · Windows",
+            "meta": "Toshkent · hozir faol"
+          },
+          "phone": {
+            "name": "CEFR Mock · iPhone",
+            "meta": "Toshkent · 2 soat oldin"
+          },
+          "tablet": {
+            "name": "Safari · iPad",
+            "meta": "Samarqand · 3 kun oldin"
+          }
+        }
+      },
+      "danger": {
+        "title": "Hisobni o'chirish",
+        "hint": "Barcha natijalar, tarix va obuna butunlay o'chiriladi. Bu amalni qaytarib bo'lmaydi.",
+        "action": "Hisobni o'chirish"
+      }
+    }
+  },
+  "billing": {
+    "title": "CEFR Mock Pro",
+    "untilExam": "imtihongacha yetarli",
+    "paymentMethod": "To'lov usuli",
+    "order": "Buyurtma",
+    "planLine": "Pro · {plan}",
+    "discount": "Chegirma",
+    "promo": "Promokod",
+    "apply": "Qo'llash",
+    "total": "Jami",
+    "pay": "{amount} so'm to'lash",
+    "secure": "Xavfsiz to'lov · istalgan vaqt bekor qilish",
+    "choosePeriod": "Obuna muddati",
+    "choosePeriodHint": "Imtihon sanangizga mos muddatni tanlang",
+    "included": "Pro'ga nimalar kiradi",
+    "recommended": "Tavsiya etiladi",
+    "oneTime": "Bir martalik to'lov",
+    "subtotal": "Oraliq summa",
+    "dueToday": "Bugun to'lanadi",
+    "save": "{amount} so'm tejaysiz",
+    "validUntil": "Amal qiladi",
+    "validity": {
+      "monthly": "29-oktabr 2026 gacha",
+      "quarterly": "29-dekabr 2026 gacha",
+      "yearly": "29-sentabr 2027 gacha"
+    },
+    "redirect": "To'lov tanlangan tizim sahifasida xavfsiz yakunlanadi.",
+    "product": "{plan} obuna",
+    "trust": {
+      "secure": "Xavfsiz to'lov",
+      "cancel": "Istalgan vaqt bekor qilish",
+      "receipt": "Chek SMS orqali"
+    }
+  },
+  "billingSuccess": {
+    "title": "Pro faollashtirildi",
+    "text": "Barcha mock testlar va AI baholash ochildi. Chek SMS orqali yuborildi.",
+    "plan": "Tarif",
+    "planValue": "Pro · {plan}",
+    "validUntil": "Amal qiladi",
+    "validUntilValue": "29-dekabr 2026 gacha",
+    "payment": "To'lov",
+    "paymentValue": "{method} · {amount} so'm",
+    "startTest": "Mock testni boshlash",
+    "receipt": "Chekni yuklab olish"
+  },
+  "pretest": {
+    "title": "Test oldidan",
+    "back": "Testlarga qaytish",
+    "crumb": "Testlar",
+    "online": "Ulanish barqaror",
+    "fullMock": "To'liq mock",
+    "realMode": "Real rejim",
+    "subtitle": "Sentabr 2026 rasmiy formati · 0–75 ball",
+    "totalTime": "Umumiy vaqt",
+    "deviceCheck": "Qurilmani tekshirish",
+    "headphones": "Quloqchin",
+    "listen": "Tinglash",
+    "microphone": "Mikrofon",
+    "ready": "Tayyor",
+    "ruleAudio": "Audio bir marta, pauzasiz eshittiriladi.",
+    "ruleOffline": "Javoblar qurilmada ham saqlanadi.",
+    "start": "Testni boshlash",
+    "sections": {
+      "partsQuestions": "{parts} qism · {questions} savol",
+      "tasksAi": "{tasks} topshiriq · AI baho",
+      "partsAi": "{parts} qism · AI baho",
+      "minutes": "{value} daq"
+    }
+  },
+  "test": {
+    "metaTitle": "Test",
+    "exit": "Testdan chiqish",
+    "subtitle": {
+      "listening": "Listening · Part {current} / {total}",
+      "reading": "Reading · Part {current} / {total}",
+      "writing": "Writing · Task {current} / {total}",
+      "speaking": "Speaking · Savol {current} / {total}"
+    },
+    "realMode": "Real rejim",
+    "questionsRange": "Savollar {range}",
+    "answerPlaceholder": "javob",
+    "autoAdvance": "Audio tugagach keyingi qismga avtomatik o'tiladi",
+    "nextQuestion": "Keyingi savol",
+    "next": "Keyingi",
+    "prev": "Oldingi",
+    "flag": "Belgilash",
+    "navigator": {
+      "title": "Savollar",
+      "answered": "Javob berilgan",
+      "empty": "Javobsiz",
+      "flagged": "Belgilangan"
+    },
+    "finish": {
+      "trigger": "Testni yakunlash",
+      "title": "Testni yakunlaysizmi?",
+      "text": "Yakunlangandan keyin javoblarni o'zgartirib bo'lmaydi. Natija 2 daqiqada tayyor bo'ladi.",
+      "answered": "Javob berilgan",
+      "flagged": "Belgilangan",
+      "unanswered": "Javobsiz",
+      "unansweredList": "Javobsiz savollar",
+      "back": "Testga qaytish",
+      "confirm": "Yakunlash"
+    },
+    "reading": {
+      "toolbar": "Belgilash vositalari",
+      "yellow": "Sariq bilan belgilash",
+      "blue": "Ko'k bilan belgilash",
+      "note": "Izoh",
+      "clear": "Tozalash",
+      "passage": "Passage {n}",
+      "fontSize": "Shrift o'lchami"
+    },
+    "writing": {
+      "tasks": "Topshiriqlar",
+      "task2": "Task 2 · Essay",
+      "task": "Topshiriq",
+      "minWords": "Minimal hajm",
+      "words": "{count} so'z",
+      "suggestedTime": "Tavsiya etilgan vaqt",
+      "minutes": "{count} daq",
+      "grading": "Baholash",
+      "gradingValue": "AI · 4 mezon",
+      "tip": "Har bir paragrafni bitta asosiy fikr bilan boshlang — Coherence balli shunda oshadi.",
+      "undo": "Bekor qilish",
+      "saved": "Qoralama {seconds} soniya oldin saqlandi",
+      "editor": "Javob matni",
+      "paragraphs": "{count} paragraf",
+      "submit": "Writing'ni topshirish"
+    },
+    "speaking": {
+      "imagePlaceholder": "rasm · shahar bozori",
+      "part": "Part {part} · Rasm tavsifi",
+      "prep": "Tayyorlanish {seconds}s",
+      "answer": "Javob {seconds}s",
+      "recording": "Yozilmoqda",
+      "restart": "Qaytadan yozish",
+      "stop": "Yozishni to'xtatish",
+      "next": "Keyingi savol"
+    }
+  },
+  "exam": {
+    "common": {
+      "back": "Orqaga",
+      "close": "Yopish",
+      "share": "Ulashish",
+      "next": "Keyingi",
+      "previous": "Oldingi",
+      "retry": "Qayta",
+      "error": "Xatolik",
+      "checkInternet": "Internetni tekshiring",
+      "serverError": "Serverda xatolik yuz berdi. Birozdan keyin qayta urinib ko'ring.",
+      "continue": "Davom etish",
+      "resume": "Davom ettirish",
+      "start": "Boshlash",
+      "finish": "Yakunlash",
+      "exit": "Chiqish",
+      "stay": "Qolish",
+      "cancel": "Bekor qilish",
+      "clear": "Tozalash",
+      "all": "Barchasi",
+      "comingSoon": "Bu sozlama keyingi versiyada qo'shiladi",
+      "notSelected": "Tanlanmagan",
+      "loading": "Yuklanmoqda",
+      "configMissingTitle": "Server sozlanmagan",
+      "configMissingMessage": "`.env` fayliga EXPO_PUBLIC_SUPABASE_URL va EXPO_PUBLIC_SUPABASE_ANON_KEY qiymatlarini yozing va ilovani qayta ishga tushiring."
+    },
+    "units": {
+      "days": "{count, plural, one {{count} kun} other {{count} kun}}",
+      "minutes": "{count} daq",
+      "minutesApprox": "~{count} daq",
+      "words": "{count, plural, one {{count} so'z} other {{count} so'z}}",
+      "tests": "{count, plural, one {{count} test} other {{count} test}}",
+      "seconds": "{count} soniya",
+      "points": "{count} ball"
+    },
+    "catalog": {
+      "title": "Testlar",
+      "sort": "Saralash",
+      "newestFirst": "Avval yangilari",
+      "oldestFirst": "Avval eskilari",
+      "search": "Test yoki mavzu qidirish",
+      "fullMock": "To'liq mock",
+      "sectionPractice": "Bo'lim mashqlari",
+      "filters": {
+        "all": "Barchasi",
+        "free": "Bepul",
+        "new": "Boshlanmagan",
+        "completed": "Tugatilgan"
+      },
+      "newBadge": "Yangi",
+      "freeBadge": "Bepul",
+      "resumeShort": "Davom",
+      "formatOf": "{period} formati",
+      "inProgress": "Davom etmoqda · {section}",
+      "completedOn": "Tugatilgan · {date}",
+      "premium": "Premium · {period} formati",
+      "practiceTitle": "{section} mashqlari",
+      "emptyTitle": "Natija yo'q",
+      "emptyMessage": "Boshqa filtr yoki so'z bilan qidiring"
+    },
+    "sections": {
+      "listeningDetail": "{parts} qism · {questions} savol",
+      "readingDetail": "{parts} qism · {questions} savol",
+      "writingDetail": "{parts} topshiriq · AI baho",
+      "speakingDetail": "{parts} qism · AI baho"
+    },
+    "testIntro": {
+      "mode": "Rejim",
+      "examMode": "Imtihon rejimi",
+      "examModeHint": "Haqiqiy imtihon kabi: to'xtatib bo'lmaydi, har bir audio ikki marta eshittiriladi.",
+      "practiceMode": "Mashq rejimi",
+      "practiceModeHint": "Erkin: istalgan payt chiqib davom ettirish va audioni qayta tinglash mumkin.",
+      "modeLocked": "Boshlangan testning rejimini o'zgartirib bo'lmaydi.",
+      "ruleNoExit": "Testdan chiqsangiz, u shu holatda topshirilgan hisoblanadi.",
+      "ruleTimer": "Har bir bo'lim vaqti tugaganda avtomatik yakunlanadi.",
+      "rulePracticeReplay": "Listening audiosini qayta tinglashingiz mumkin.",
+      "rulePracticeResume": "Istalgan payt chiqib, keyinroq shu joydan davom ettirasiz.",
+      "fullMock": "To'liq mock",
+      "realMode": "Real rejim",
+      "officialFormat": "{period} rasmiy formati",
+      "hours": "soat",
+      "sectionsCount": "bo'lim",
+      "score": "ball",
+      "rules": "Qoidalar",
+      "ruleAudio": "Quloqchin taqing. Har bir audio ikki marta, pauzasiz eshittiriladi.",
+      "ruleOffline": "Javoblar qurilmada ham saqlanadi — internet uzilsa ham yo'qolmaydi.",
+      "start": "Testni boshlash",
+      "loadFailed": "Test yuklanmadi"
+    },
+    "session": {
+      "examExitTitle": "Testni yakunlaysizmi?",
+      "examExitMessage": "Imtihon rejimida testdan chiqib, keyin davom ettirib bo'lmaydi. Chiqsangiz, test hozirgi javoblaringiz bilan topshiriladi.",
+      "examExitConfirm": "Topshirish",
+      "startFailed": "Testni boshlab bo'lmadi.",
+      "submitFailed": "Natijani yuborib bo'lmadi.",
+      "exitA11y": "Testdan chiqish",
+      "remainingA11y": "Qolgan vaqt {time}",
+      "question": "Savol {number}",
+      "answerOf": "Savol {number} javobi",
+      "answerPlaceholder": "Javobingiz",
+      "flag": "Savolni belgilash",
+      "unflag": "Belgini olib tashlash",
+      "nextQuestion": "Keyingi savol",
+      "nextPart": "Keyingi qism",
+      "previousQuestion": "Oldingi savol",
+      "questions": "Savollar",
+      "questionList": "Savollar ro'yxati",
+      "legendAnswered": "Javob berilgan",
+      "legendCurrent": "Joriy",
+      "legendFlagged": "Belgilangan",
+      "finishSection": "Bo'limni yakunlash",
+      "exitTitle": "Testdan chiqasizmi?",
+      "exitMessage": "Chiqsangiz, taymer to'xtamaydi. Javoblaringiz qurilmada saqlanadi.",
+      "finishTitle": "{section} bo'limini yakunlaysizmi?",
+      "finishNext": "Yakunlangach, javoblarni o'zgartirib bo'lmaydi. Keyingi bo'lim — {section}, {minutes} daqiqa.",
+      "finishLast": "Yakunlangach, javoblarni o'zgartirib bo'lmaydi. AI natijangizni hisoblaydi.",
+      "statAnswered": "javob",
+      "statFlagged": "belgilangan",
+      "statEmpty": "javobsiz",
+      "goBack": "Qaytish",
+      "backToEmpty": "Javobsizlarga qaytish",
+      "backToFlagged": "Belgilanganlarga qaytish",
+      "finishAnyway": "Baribir yakunlash"
+    },
+    "listening": {
+      "practiceMode": "Mashq rejimi",
+      "practiceNote": "Mashq rejimida audioni qayta tinglash mumkin.",
+      "replay": "Qayta tinglash",
+      "playing": "Eshittirilmoqda",
+      "ended": "Audio tugadi",
+      "realMode": "Real rejim",
+      "onceNote": "Audio ikki marta eshittiriladi — pauza va qaytarish o'chirilgan.",
+      "round": "{count}/2"
+    },
+    "reading": {
+      "modes": {
+        "text": "Matn",
+        "both": "Ikkalasi",
+        "questions": "Savollar"
+      },
+      "serif": "Serif shrift",
+      "kinds": {
+        "tfng": "True · False · No Information",
+        "match": "Mos variantni tanlang",
+        "mcq": "Variantni tanlang",
+        "gap": "Bitta so'z yozing"
+      },
+      "highlightYellow": "Sariq bilan belgilash",
+      "highlightBlue": "Ko'k bilan belgilash",
+      "note": "Izoh",
+      "notesSoon": "Izohlar keyingi versiyada qo'shiladi"
+    },
+    "writing": {
+      "done": "Tayyor",
+      "panes": {
+        "task": "Topshiriq",
+        "answer": "Javob"
+      },
+      "task": "TASK",
+      "placeholder": "Javobingizni shu yerga yozing…",
+      "answerA11y": "Writing javobi",
+      "minVolume": "Minimal hajm",
+      "recommended": "Tavsiya etilgan",
+      "submit": "Topshirish",
+      "shortTitle": "So'zlar soni yetarli emas",
+      "shortItem": "{task}: {count}/{min} so'z",
+      "shortMessage": "{items}. Kam so'zli javob pastroq baholanadi.",
+      "submitAnyway": "Baribir topshirish",
+      "keepWriting": "Yozishni davom ettirish",
+      "savedAuto": "Qoralama avtomatik saqlanadi",
+      "savedSeconds": "Qoralama {count} soniya oldin saqlandi",
+      "savedMinutes": "Qoralama {count} daqiqa oldin saqlandi"
+    },
+    "speaking": {
+      "subtitle": "Part {part} · Savol {index} / {total}",
+      "image": "rasm · {caption}",
+      "status": {
+        "pending": "Mikrofon tayyorlanmoqda",
+        "prep": "Tayyorlaning",
+        "recording": "Yozilmoqda",
+        "done": "Yozib olindi",
+        "denied": "Ruxsat yo'q"
+      },
+      "prepChip": "Tayyorlanish {count}s",
+      "answerChip": "Javob {count}s",
+      "restart": "Qayta yozish",
+      "record": "Yozishni boshlash",
+      "stop": "Yozishni to'xtatish",
+      "deniedTitle": "Mikrofonga ruxsat berilmagan",
+      "deniedMessage": "Speaking javobini yozib olish uchun sozlamalarda mikrofonni yoqing.",
+      "openSettings": "Sozlamalarni ochish"
+    },
+    "result": {
+      "notFound": "Natija topilmadi",
+      "points": "/ {max} ball",
+      "focus": "Fokus",
+      "toLevel": "{level} gacha {points} ball",
+      "topLevel": "Eng yuqori daraja",
+      "growthPoint": "{focus} — eng tez o'sish nuqtasi",
+      "aiScore": "AI baho",
+      "aiScoreSections": "Writing · Speaking",
+      "aiSheetMessage": "Writing va Speaking javoblaringiz mezonlar bo'yicha baholandi.",
+      "writingReview": "Writing bahosi",
+      "speakingReview": "Speaking bahosi",
+      "details": "Batafsil tahlil",
+      "shareMessage": "CEFR Mock · {title}: {score}/{max} ({level})"
+    },
+    "review": {
+      "title": "Batafsil tahlil",
+      "subtitle": "Mock #{number} · {section}",
+      "correct": "to'g'ri",
+      "wrong": "xato",
+      "empty": "javobsiz",
+      "status": {
+        "correct": "To'g'ri",
+        "wrong": "Xato",
+        "empty": "Javobsiz"
+      },
+      "onlyWrong": "Faqat xatolar",
+      "allQuestions": "Barcha savollar",
+      "onlyWrongA11y": "Faqat xatolarni ko'rsatish",
+      "listenFrom": "{time} dan tinglash",
+      "yourAnswer": "Sizning javob",
+      "correctAnswer": "To'g'ri javob",
+      "transcript": "Audio matni",
+      "transcriptFull": "Butun qismni ko'rsatish",
+      "transcriptQuestion": "Faqat shu savol",
+      "voices": {
+        "narrator": "Diktor",
+        "woman": "Ayol",
+        "man": "Erkak",
+        "woman2": "Ayol 2",
+        "man2": "Erkak 2",
+        "woman3": "Ayol 3",
+        "man3": "Erkak 3"
+      }
+    },
+    "mistakes": {
+      "title": "Xatolar ustida ishlash",
+      "start": "Xatolarni mashq qilish",
+      "listen": "Shu joyni tinglash",
+      "check": "Tekshirish",
+      "noneTitle": "Xato yo'q",
+      "noneMessage": "Listening va Reading bo'limlarida barcha javoblaringiz to'g'ri.",
+      "doneTitle": "{total} tadan {solved} tasi to'g'ri",
+      "doneMessage": "Qolgan xatolarni yana bir bor ishlab chiqishingiz mumkin.",
+      "again": "Qaytadan boshlash"
+    },
+    "aiReview": {
+      "sampleShow": "Namunaviy javobni ko'rish",
+      "sampleHide": "Namunaviy javobni yashirish",
+      "checkingTitle": "AI tekshirmoqda",
+      "checkingMessage": "Odatda 1–2 daqiqa davom etadi. Tayyor bo'lganda bildirishnoma yuboramiz.",
+      "failedMessage": "AI baholashni yakunlay olmadi. Qayta urinib ko'ring.",
+      "noAnswer": "Bu topshiriqqa javob yozilmagan.",
+      "noRecordings": "Speaking bo'limida javob yozib olinmagan.",
+      "checkingShort": "AI tekshirmoqda",
+      "criteriaTitle": "Mezonlar",
+      "answers": "Javoblar",
+      "writingTitle": "AI Writing bahosi",
+      "speakingTitle": "AI Speaking bahosi",
+      "writingMeta": "{task} · {count} so'z",
+      "speakingMeta": "{part} · {count} soniya",
+      "writingScore": "Writing ball",
+      "loadFailed": "AI bahosi yuklanmadi",
+      "errorsInText": "Matndagi xatolar",
+      "grammar": "Grammar",
+      "lexis": "Lug'at",
+      "showImproved": "Yaxshilangan variantni ko'rish",
+      "improvedTitle": "Yaxshilangan variant",
+      "improvedSubtitle": "Xatolar tuzatilgan va akademik uslubga moslangan.",
+      "transcript": "Transkript",
+      "transcriptMeta": "{words} so'z · {wpm} wpm",
+      "play": "Tinglash",
+      "pause": "To'xtatish"
+    }
+  }
+}

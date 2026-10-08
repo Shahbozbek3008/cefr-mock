@@ -1,1 +1,1 @@
-export const tfngChoices = ['True', 'False', 'No Information'] as const;
+export { tfngChoices } from '@cefr/core';
