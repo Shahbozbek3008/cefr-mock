@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware';
-import type { SectionKind } from '../test/types';
+import type { AttemptScope, SectionKind } from '../test/types';
 
 export type Highlight = { paragraph: string; color: 'yellow' | 'blue' };
 
@@ -10,6 +10,7 @@ export type AttemptData = {
   attemptId: string | null;
   testId: string | null;
   mode: AttemptMode;
+  scope: AttemptScope;
   playedParts: string[];
   section: SectionKind | null;
   startedAt: number | null;
@@ -27,7 +28,7 @@ export type AttemptData = {
 
 export type AttemptSnapshot = Pick<
   AttemptData,
-  'attemptId' | 'testId' | 'mode' | 'section' | 'startedAt' | 'endsAt' | 'completed' | 'answers' | 'flags' | 'writing' | 'uploads'
+  'attemptId' | 'testId' | 'mode' | 'scope' | 'section' | 'startedAt' | 'endsAt' | 'completed' | 'answers' | 'flags' | 'writing' | 'uploads'
 >;
 
 export type AttemptActions = {
@@ -51,6 +52,7 @@ const empty: AttemptData = {
   attemptId: null,
   testId: null,
   mode: 'practice',
+  scope: 'full',
   playedParts: [],
   section: null,
   startedAt: null,
@@ -117,6 +119,7 @@ export const snapshotOf = (state: AttemptData): AttemptSnapshot => ({
   attemptId: state.attemptId,
   testId: state.testId,
   mode: state.mode,
+  scope: state.scope,
   section: state.section,
   startedAt: state.startedAt,
   endsAt: state.endsAt,

@@ -6,6 +6,8 @@ export { ApiError, ensureOk, errorCode, invokeFunction, isNetworkFailure, requir
 export { MAX_SCORE, levelFor, levelNames, levelThresholds, nextLevelGap, toScaled } from './lib/level';
 export type { Level } from './lib/level';
 export { daysUntil, formatShortDate } from './lib/date';
+export { buildMonthGrid, isOfficialExamDay, toIso } from './lib/calendar';
+export type { CalendarCell } from './lib/calendar';
 export { formatClock, formatHours, formatShortClock, secondsUntil } from './lib/time';
 
 export { AUTH_ERROR_CODES, requestCode, verifyCode } from './auth/api';
@@ -23,23 +25,24 @@ export { MOBILE_RECORDING, recordingFormatOf, fetchActiveAttempt, openAttempt, r
 export type { RecordingFormat } from './attempt/api';
 
 export type * from './result/types';
-export { mapResults } from './result/mapResult';
+export { mapResult, mapResults } from './result/mapResult';
 export type { ResultRow } from './result/mapResult';
 export { buildProgress } from './result/progress';
-export { buildReview, isCorrect } from './result/review';
+export { buildReview, isCorrect, weakestLabel } from './result/review';
 export { AI_POLL_MS, fetchAiReview, fetchResult, fetchResults, hasActiveAi, isAiActive, requestAiReview, resultKeys } from './result/api';
 export type { ReviewLocale } from './result/api';
-export { useLatestResult, useProgress, useResult, useResults, useSpeakingReview, useWritingReview } from './result/hooks';
+export { useAiReviewRequest, useLatestResult, useProgress, useResult, useResults, useSpeakingReview, useWritingReview } from './result/hooks';
 
-export { weeklyPlan } from './study/plan';
-export type { SectionScores } from './study/plan';
+export { DEFAULT_DAILY_MINUTES, todayPlanOf, weeklyPlan } from './study/plan';
+export type { PlanItem, SectionScores } from './study/plan';
 export { dayKey, streakOf, weekDays, weekdayIndex } from './study/streak';
 export { fetchStudyDays, logStudy, studyKeys, useStudyDays } from './study/api';
 
 export { DAILY_MINUTES, TARGET_LEVELS } from './user/types';
 export type { AuthProvider, DailyMinutes, OnboardingState, TargetLevel, User } from './user/types';
 export { avatarUrl, fetchProfile, profileKeys, removeAvatar, updateProfile, uploadAvatar } from './user/api';
-export { useProfile } from './user/hooks';
+export { useProfile, useUpdateProfile } from './user/hooks';
+export { resetProgress } from './user/reset';
 export type { Locale, Profile, ProfilePatch } from './user/api';
 
 export {
@@ -68,5 +71,6 @@ export {
 } from './session/engine';
 export type { AttemptStore, RecordingSource, UploadQueue } from './session/engine';
 
-export { PRACTICE_TEST_ID, applyCatalog, catalogModes, filterOrder, practiceItems } from './catalog/filters';
+export { applyCatalog, catalogModes, filterOrder, practiceItems } from './catalog/filters';
+export { fetchPracticeTest } from './catalog/practice';
 export type { CatalogFilter, CatalogMode, CatalogSort, PracticeItem } from './catalog/filters';

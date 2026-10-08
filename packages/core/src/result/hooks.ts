@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCefrClient } from '../api/client';
-import { AI_POLL_MS, fetchAiReview, fetchResult, fetchResults, hasActiveAi, isAiActive, resultKeys } from './api';
+import { AI_POLL_MS, fetchAiReview, fetchResult, fetchResults, hasActiveAi, isAiActive, requestAiReview, resultKeys, type ReviewLocale } from './api';
 import { buildProgress } from './progress';
-import type { AiReviewKind, ProgressPeriod, SpeakingReview, WritingReview } from './types';
+import type { AiReviewKind, AiReviewStatus, ProgressPeriod, SpeakingReview, WritingReview } from './types';
 
 export const useResults = () => {
   const client = useCefrClient();
@@ -43,4 +44,30 @@ export const useProgress = (period: ProgressPeriod) => {
     queryFn: () => fetchResults(client),
     select: (results) => buildProgress(results, period),
   });
+};
+
+export const useAiReviewRequest = (resultId: string, status: AiReviewStatus | undefined, locale: ReviewLocale) => {
+  const client = useCefrClient();
+  const queryClient = useQueryClient();
+  const [requesting, setRequesting] = useState(false);
+  const autoRequested = useRef(false);
+
+  const request = useCallback(async () => {
+    setRequesting(true);
+    try {
+      await requestAiReview(client, resultId, locale);
+    } finally {
+      setRequesting(false);
+      await queryClient.invalidateQueries({ queryKey: resultKeys.detail(resultId) });
+      await queryClient.invalidateQueries({ queryKey: ['results', resultId, 'ai'] });
+    }
+  }, [client, locale, queryClient, resultId]);
+
+  useEffect(() => {
+    if (status !== 'pending' || autoRequested.current) return;
+    autoRequested.current = true;
+    request().catch(() => undefined);
+  }, [request, status]);
+
+  return { request, requesting };
 };

@@ -424,7 +424,10 @@
       "left": "{time} qoldi",
       "meta": "{section} · {part}-qism · {answered}/{total} savol",
       "cta": "Davom etish",
-      "progress": "{value}% bajarildi"
+      "progress": "{value}% bajarildi",
+      "empty": "Faol test yo'q",
+      "emptyText": "Yangi mock test bilan bilimingizni sinab ko'ring.",
+      "emptyCta": "Testni tanlash"
     },
     "recommended": {
       "title": "Tavsiya etilgan testlar",
@@ -447,7 +450,8 @@
         "duration": "Davomiyligi",
         "status": "Holat",
         "result": "Natija"
-      }
+      },
+      "empty": "Hozircha tavsiya yo'q"
     },
     "subtitle": "Bugungi rejangiz tayyor. Imtihongacha {days} kun qoldi.",
     "kpi": {
@@ -460,16 +464,21 @@
       "streakHint": "Rekord: {best} kun",
       "time": "Bu hafta",
       "timeUnit": "daq",
-      "timeHint": "Maqsad: {goal} daq"
+      "timeHint": "Maqsad: {goal} daq",
+      "examPick": "Sanani tanlang",
+      "examNoDate": "Sana belgilanmagan",
+      "streakNone": "Seriyani bugun boshlang"
     },
     "chart": {
       "title": "Ball dinamikasi",
-      "subtitle": "So'nggi {count} ta mock test"
+      "subtitle": "So'nggi {count} ta mock test",
+      "empty": "Birinchi mock testdan keyin ball dinamikasi shu yerda chiqadi."
     },
     "skills": {
       "title": "Bo'limlar bo'yicha",
       "subtitle": "0–75 shkalada",
-      "weak": "Zaif"
+      "weak": "Zaif",
+      "empty": "Bo'limlar bo'yicha ball birinchi testdan keyin chiqadi."
     },
     "activity": {
       "title": "Haftalik faollik",
@@ -485,14 +494,21 @@
         "reading": "Reading · True / False / Not Given",
         "writing": "Writing Task 2 · kirish qismi",
         "vocab": "Lug'at takrorlash · 20 so'z"
-      }
+      },
+      "start": "Boshlash",
+      "done": "Bajarildi",
+      "item": "{section} mashqi"
     },
     "insight": {
       "label": "AI tavsiyasi",
       "title": "Writing — asosiy o'sish nuqtasi",
       "text": "Fe'l mosligi xatolari ballingizni 4–6 ga tushiryapti. 3 ta qisqa mashq B2 ga yaqinlashtiradi.",
-      "cta": "Mashqni boshlash"
-    }
+      "cta": "Tahlilni ko'rish",
+      "empty": "Birinchi testni topshiring",
+      "emptyText": "AI natijangizni tahlil qilib, eng tez o'sish nuqtasini ko'rsatadi.",
+      "emptyCta": "Testlar katalogi"
+    },
+    "subtitleNoExam": "Imtihon sanasini belgilang — kunlik reja shunga moslanadi."
   },
   "results": {
     "metaTitle": "Natija",
@@ -595,7 +611,7 @@
   },
   "progress": {
     "title": "Progress",
-    "meta": "{count} ta test · iyul — sentabr",
+    "meta": "{count} ta test · {range}",
     "range": {
       "1m": "1 oy",
       "3m": "3 oy",
@@ -603,10 +619,8 @@
     },
     "overall": "Umumiy ball",
     "toNext": "{level} gacha {points} ball",
-    "months": "iyul,avgust,sentabr",
     "chartLabel": "Umumiy ball dinamikasi",
     "sections": "Bo'limlar",
-    "period": "3 oy ichida",
     "history": "Tarix",
     "all": "Barchasi",
     "columns": {
@@ -617,7 +631,11 @@
       "change": "O'zgarish"
     },
     "historySubtitle": "So'nggi urinishlar",
-    "sectionsSubtitle": "3 oy ichidagi o'sish"
+    "sectionsSubtitle": "Davr boshiga nisbatan o'sish",
+    "empty": "Hali natija yo'q",
+    "emptyText": "Birinchi mock testni topshiring — ball dinamikasi va tarix shu yerda chiqadi.",
+    "emptyCta": "Testlar katalogi",
+    "noHistory": "Bu davrda test topshirilmagan"
   },
   "settings": {
     "title": "Sozlamalar",
@@ -632,16 +650,17 @@
       "security": "Xavfsizlik"
     },
     "profile": {
-      "since": "2026-yil iyuldan beri",
+      "since": "{date} dan beri a'zo",
       "changePhoto": "Rasmni o'zgartirish",
       "firstName": "Ism",
       "lastName": "Familiya",
       "phone": "Telefon",
       "verified": "Tasdiqlangan",
-      "email": "Email",
-      "optional": "ixtiyoriy",
       "title": "Shaxsiy ma'lumotlar",
-      "subtitle": "Ism va aloqa ma'lumotlari"
+      "subtitle": "Ism va aloqa ma'lumotlari",
+      "removePhoto": "Rasmni o'chirish",
+      "photoFailed": "Rasmni yuklab bo'lmadi.",
+      "photoHint": "JPG yoki PNG, kvadrat shaklda kesiladi"
     },
     "preferences": {
       "target": "Maqsad daraja",
@@ -649,36 +668,31 @@
       "examDate": "Imtihon sanasi",
       "daysLeft": "{days} kun qoldi",
       "language": "Interfeys tili",
-      "languageHint": "O'zbekcha, ruscha yoki inglizcha",
-      "theme": "Tema",
-      "themeHint": "Interfeys ko'rinishi",
-      "themes": {
-        "light": "Yorug'",
-        "dark": "Qorong'i",
-        "system": "Tizim"
-      }
+      "languageHint": "O'zbekcha, ruscha yoki inglizcha"
     },
     "interface": {
       "title": "Interfeys",
-      "subtitle": "Til va ko'rinish"
+      "subtitle": "Interfeys tili"
     },
     "exam": {
       "title": "Imtihon rejasi",
       "subtitle": "Kunlik reja va eslatmalar shu ma'lumotlarga asoslanadi",
       "daily": "Kunlik o'qish vaqti",
-      "dailyHint": "Kunlik reja hajmi shunga qarab tuziladi"
+      "dailyHint": "Kunlik reja hajmi shunga qarab tuziladi",
+      "noDate": "Sana belgilanmagan",
+      "clearDate": "Bilmayman hozircha",
+      "pickTitle": "Imtihon sanasi",
+      "pickText": "Rasmiy imtihon kunlari ko'k nuqta bilan belgilangan.",
+      "confirm": "Tanlash"
     },
     "notifications": {
       "title": "Bildirishnomalar",
-      "subtitle": "Qaysi xabarlarni olishni tanlang",
+      "subtitle": "Xabarlar mobil ilova va sayt ichida ko'rsatiladi",
+      "alwaysOn": "Doim yoqilgan",
       "items": {
         "reminder": {
-          "title": "Kunlik eslatma",
-          "hint": "Har kuni {time} da"
-        },
-        "weekly": {
-          "title": "Haftalik hisobot",
-          "hint": "Har dushanba progress xulosasi"
+          "title": "Push-bildirishnomalar",
+          "hint": "Kunlik eslatma va natijalar mobil ilovaga yuboriladi"
         },
         "results": {
           "title": "AI natijalar tayyor",
@@ -687,73 +701,45 @@
         "newTests": {
           "title": "Yangi mock testlar",
           "hint": "Katalogga yangi test qo'shilganda"
-        },
-        "promo": {
-          "title": "Aksiya va chegirmalar",
-          "hint": "Kamdan-kam, faqat muhimlari"
         }
-      },
-      "channels": {
-        "title": "Yetkazish kanallari",
-        "subtitle": "Xabarlar qayerga yuborilsin",
-        "sms": "SMS",
-        "telegram": "Telegram",
-        "email": "Email"
       }
     },
     "subscription": {
       "title": "Joriy tarif",
       "active": "Faol",
-      "renews": "{date} amal qiladi",
-      "change": "Tarifni o'zgartirish",
-      "cancel": "Obunani bekor qilish",
-      "method": "To'lov usuli",
-      "methodHint": "Keyingi to'lovlar shu usul orqali",
-      "update": "O'zgartirish",
-      "history": "To'lovlar tarixi",
-      "historySubtitle": "Cheklar SMS orqali ham yuborilgan",
-      "columns": {
-        "date": "Sana",
-        "plan": "Tarif",
-        "amount": "Summa",
-        "status": "Holat"
-      },
-      "paid": "To'langan",
-      "receipt": "Chek"
+      "free": "Bepul tarif",
+      "freeHint": "Pro bilan barcha mock testlar va to'liq AI tahlil ochiladi",
+      "proHint": "Barcha mock testlar va AI tahlil ochiq",
+      "upgrade": "Pro'ga o'tish",
+      "change": "Tarifni o'zgartirish"
     },
     "security": {
       "phone": {
         "title": "Telefon raqami",
-        "hint": "Kirish va SMS kodlar shu raqamga yuboriladi",
-        "change": "Raqamni o'zgartirish"
+        "hint": "Kirish kodlari shu raqamga SMS orqali yuboriladi"
       },
-      "sessions": {
-        "title": "Faol qurilmalar",
-        "subtitle": "Hisobingizga kirilgan qurilmalar",
-        "current": "Joriy",
-        "logout": "Chiqish",
-        "logoutAll": "Barcha qurilmalardan chiqish",
-        "devices": {
-          "desktop": {
-            "name": "Chrome · Windows",
-            "meta": "Toshkent · hozir faol"
-          },
-          "phone": {
-            "name": "CEFR Mock · iPhone",
-            "meta": "Toshkent · 2 soat oldin"
-          },
-          "tablet": {
-            "name": "Safari · iPad",
-            "meta": "Samarqand · 3 kun oldin"
-          }
-        }
+      "signOut": {
+        "title": "Ushbu qurilmadan chiqish",
+        "hint": "Qurilmadagi tugallanmagan test javoblari o'chiriladi.",
+        "action": "Chiqish",
+        "confirmTitle": "Hisobdan chiqasizmi?"
       },
-      "danger": {
-        "title": "Hisobni o'chirish",
-        "hint": "Barcha natijalar, tarix va obuna butunlay o'chiriladi. Bu amalni qaytarib bo'lmaydi.",
-        "action": "Hisobni o'chirish"
+      "signOutAll": {
+        "title": "Barcha qurilmalardan chiqish",
+        "hint": "Telefon va boshqa brauzerlardagi sessiyalar ham yakunlanadi",
+        "action": "Hammasidan chiqish"
+      },
+      "reset": {
+        "title": "Statistikani tozalash",
+        "hint": "Barcha natijalar, AI baholari va tugallanmagan testlar o'chiriladi. Testlarni qaytadan boshlashingiz mumkin bo'ladi. Buni ortga qaytarib bo'lmaydi.",
+        "action": "Tozalash",
+        "confirmTitle": "Statistikani tozalaysizmi?",
+        "done": "Statistika tozalandi",
+        "failed": "Tozalab bo'lmadi."
       }
-    }
+    },
+    "saved": "Saqlandi",
+    "saveFailed": "Saqlab bo'lmadi."
   },
   "billing": {
     "title": "CEFR Mock Pro",

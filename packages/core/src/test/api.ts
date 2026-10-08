@@ -83,9 +83,10 @@ export const fetchTests = async (client: CefrClient): Promise<TestSummary[]> => 
     client
       .from('attempts')
       .select('test_id, current_section, answers, ends_at')
+      .eq('scope', 'full')
       .eq('status', 'in_progress')
       .order('updated_at', { ascending: false }),
-    client.from('results').select('id, test_id, total, created_at').order('created_at', { ascending: false }),
+    client.from('results').select('id, test_id, total, created_at').eq('scope', 'full').order('created_at', { ascending: false }),
     client.from('profiles').select('is_pro').eq('id', userId).single(),
   ]);
 

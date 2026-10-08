@@ -9,6 +9,7 @@ export type ResultRow = Pick<
   Tables<'results'>,
   | 'id'
   | 'test_id'
+  | 'scope'
   | 'listening'
   | 'reading'
   | 'writing'
@@ -23,7 +24,9 @@ export type ResultRow = Pick<
 };
 
 const toResult = (row: ResultRow, previous?: ResultRow): TestResult => {
-  const scores = sectionOrder.map((kind) => ({ kind, title: sectionTitles[kind], score: row[kind] }));
+  const scope = row.scope ?? 'full';
+  const kinds = scope === 'full' ? sectionOrder : sectionOrder.filter((kind) => kind === scope);
+  const scores = kinds.map((kind) => ({ kind, title: sectionTitles[kind], score: row[kind] }));
   const weakest = scores.reduce((min, item) => (item.score < min.score ? item : min), scores[0]);
   const sections: SectionScore[] = scores.map((item) => ({
     ...item,
@@ -35,6 +38,7 @@ const toResult = (row: ResultRow, previous?: ResultRow): TestResult => {
   return {
     id: row.id,
     testId: row.test_id,
+    scope,
     title: row.tests?.title ?? '',
     createdAt: row.created_at,
     dateLabel: formatShortDate(new Date(row.created_at)),
@@ -49,3 +53,5 @@ const toResult = (row: ResultRow, previous?: ResultRow): TestResult => {
 };
 
 export const mapResults = (rows: ResultRow[]) => rows.map((row, index) => toResult(row, rows[index + 1]));
+
+export const mapResult = (row: ResultRow) => toResult(row);

@@ -44,8 +44,8 @@ export function VerifyCodeForm({ digits, next = ROUTES.dashboard }: { digits: st
     <div className="flex flex-col gap-5">
       <OtpInput label={t('verify.otpLabel')} autoFocusIndex={0} success={done} error={error !== null} disabled={pending} onChange={change} />
       {error && <span className="-mt-2 text-[13px] text-error-text">{t(`errors.${error}`)}</span>}
-      <Button block disabled={code.length !== OTP_LENGTH || pending} onClick={() => confirm(code)}>
-        {pending ? t('verifying') : t('verify.confirm')}
+      <Button block disabled={code.length !== OTP_LENGTH} loading={pending} onClick={() => confirm(code)}>
+        {t('verify.confirm')}
       </Button>
       <ResendTimer seconds={RESEND_SECONDS} onResend={() => requestCode(client, digits)} />
     </div>

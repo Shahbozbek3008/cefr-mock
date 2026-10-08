@@ -23,7 +23,7 @@ function DateView() {
       <OnboardingSplit
         title={t('date.title')}
         text={t('date.text')}
-        aside={<ExamCalendar year={2026} month={10} officialDays={[8, 15, 22, 29]} defaultSelected={1} />}
+        aside={<ExamCalendar />}
       >
         <div className="flex flex-col gap-2.5">
           <span className="text-[13px] font-medium">{t('date.daily')}</span>

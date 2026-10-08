@@ -28,13 +28,16 @@ export type SegmentOption = { value: string; label: ReactNode };
 
 type SegmentedControlProps = VariantProps<typeof trackVariants> & {
   options: readonly SegmentOption[];
-  defaultValue: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   label: string;
   className?: string;
 };
 
-export function SegmentedControl({ options, defaultValue, label, size, className }: SegmentedControlProps) {
-  const [value, setValue] = useState(defaultValue);
+export function SegmentedControl({ options, defaultValue, value: controlled, onValueChange, label, size, className }: SegmentedControlProps) {
+  const [uncontrolled, setUncontrolled] = useState(defaultValue ?? options[0]?.value);
+  const value = controlled ?? uncontrolled;
   const layoutId = useId();
 
   return (
@@ -43,7 +46,11 @@ export function SegmentedControl({ options, defaultValue, label, size, className
       value={value}
       aria-label={label}
       className={cn(trackVariants({ size }), className)}
-      onValueChange={(next) => next && setValue(next)}
+      onValueChange={(next) => {
+        if (!next) return;
+        setUncontrolled(next);
+        onValueChange?.(next);
+      }}
     >
       {options.map((o) => (
         <ToggleGroup.Item key={o.value} value={o.value} className={itemVariants({ size })}>

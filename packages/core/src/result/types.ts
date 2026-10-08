@@ -1,4 +1,4 @@
-import type { SectionKind } from '../test/types';
+import type { AttemptScope, SectionKind } from '../test/types';
 
 export type Recommendation = { level: string | null; points: number; focus: string };
 
@@ -15,6 +15,7 @@ export type SectionScore = {
 export type TestResult = {
   id: string;
   testId: string;
+  scope: AttemptScope;
   title: string;
   createdAt: string;
   dateLabel: string;

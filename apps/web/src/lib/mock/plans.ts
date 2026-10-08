@@ -24,6 +24,6 @@ export const RECOMMENDED_PLAN: PlanId = 'quarterly';
 export const PRO_FEATURES = ['unlimited', 'aiWritingSpeaking', 'explanations', 'personalPlan'] as const;
 
 export const PAYMENT_METHODS = [
-  { value: 'click', name: 'Click', letter: 'C', color: 'oklch(0.6 0.14 235)' },
-  { value: 'payme', name: 'Payme', letter: 'P', color: 'oklch(0.68 0.12 190)' },
+  { value: 'click', name: 'Click' },
+  { value: 'payme', name: 'Payme' },
 ] as const;

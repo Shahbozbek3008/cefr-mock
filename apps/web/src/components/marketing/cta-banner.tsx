@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/cn';
-import { ButtonLink, buttonVariants } from '@/components/ui/button';
+import { ButtonLink } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button-variants';
 import { Reveal } from '@/components/motion/reveal';
 import { Container } from './container';
 

@@ -2,7 +2,7 @@
 
 import { useEffect, type ComponentType } from 'react';
 import { useTranslations } from 'next-intl';
-import { sectionOrder, useAttemptAutosave, useAttemptSession, useTest, type SectionKind, type TestDetail } from '@cefr/core';
+import { sectionOrder, useAttemptAutosave, useAttemptSession, useTest, type AttemptScope, type SectionKind, type TestDetail } from '@cefr/core';
 import { useRouter } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { useAttemptStore } from '@/lib/attempt-store';
@@ -37,16 +37,16 @@ function ScreenState({ message, onRetry }: { message?: string; onRetry?: () => v
   );
 }
 
-export function ExamSectionScreen({ id, section }: { id: string; section: SectionKind }) {
+export function ExamSectionScreen({ id, section, scope }: { id: string; section: SectionKind; scope: AttemptScope }) {
   const t = useTranslations('exam');
   const router = useRouter();
   const test = useTest(id);
-  const session = useAttemptSession(useAttemptStore, id);
+  const session = useAttemptSession(useAttemptStore, id, scope);
   const enterSection = useAttemptStore((s) => s.enterSection);
   const completed = useAttemptStore((s) => s.completed);
   const minutes = test.data?.sections.find((s) => s.kind === section)?.minutes;
   const ready = session.status === 'ready' && test.data !== undefined;
-  const allowed = sectionOrder.find((kind) => !completed.includes(kind));
+  const allowed = scope === 'full' ? sectionOrder.find((kind) => !completed.includes(kind)) : scope;
   const locked = ready && allowed !== section;
 
   useAttemptAutosave(useAttemptStore, ready && !locked);

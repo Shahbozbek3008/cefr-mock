@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
 import { MAX_SCORE, SKILL_ICONS } from '@/lib/constants';
-import type { SkillScore } from '@/lib/mock/results';
+import type { SkillScore } from '@/components/dashboard/skills-card';
 import { Link } from '@/i18n/navigation';
 import { Card } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';

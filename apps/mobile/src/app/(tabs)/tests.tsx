@@ -3,6 +3,7 @@ import { FlatList, Pressable, ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { fetchPracticeTest } from '@cefr/core';
 import { useTests } from '@/entities/test';
 import type { TestSummary } from '@/entities/test';
 import { applyCatalog, filterLabels, filterOrder, modeLabels, practiceItems } from '@/features/catalog/model/filters';
@@ -11,12 +12,12 @@ import { CATALOG_HEADER_COLLAPSE, CATALOG_HEADER_HEIGHT, CatalogHeader } from '@
 import { PracticeCard } from '@/features/catalog/ui/PracticeCard';
 import { TestCard } from '@/features/catalog/ui/TestCard';
 import { TestListSkeleton } from '@/features/catalog/ui/TestListSkeleton';
-import { failureReason } from '@/shared/api';
+import { failureReason, supabase } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import type { TKey } from '@/shared/i18n';
 import { useRefresh, useScrollHeader } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
-import { Chip, Radio, RefreshControl, SegmentedControl, Sheet, StateView, Text } from '@/shared/ui';
+import { Chip, Radio, RefreshControl, SegmentedControl, Sheet, StateView, Text, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 const sortOptions: { value: CatalogSort; label: TKey }[] = [
@@ -38,6 +39,7 @@ export default function TestsScreen() {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<CatalogSort>('newest');
   const [sortOpen, setSortOpen] = useState(false);
+  const showToast = useToast((s) => s.show);
   const { scrollY, scrollRef, onScroll } = useScrollHeader<FlatList>(CATALOG_HEADER_COLLAPSE);
   const headerTop = insets.top + size.topGap + CATALOG_HEADER_HEIGHT;
 
@@ -70,9 +72,18 @@ export default function TestsScreen() {
     router.push({ pathname: '/test/[id]', params: { id: test.id } });
   }, []);
 
-  const onPracticePress = useCallback((item: PracticeItem) => {
-    router.push({ pathname: '/test/[id]/[section]', params: { id: 't13', section: item.kind } });
-  }, []);
+  const onPracticePress = useCallback(
+    async (item: PracticeItem) => {
+      try {
+        const testId = await fetchPracticeTest(supabase, item.kind);
+        if (!testId) throw new Error('practice_unavailable');
+        router.push({ pathname: '/test/[id]/[section]', params: { id: testId, section: item.kind, scope: item.kind } });
+      } catch (error) {
+        showToast({ message: `${t('session.startFailed')} ${t(failureReason(error))}`, tone: 'error' });
+      }
+    },
+    [showToast, t],
+  );
 
   const header = (
     <View style={styles.header}>

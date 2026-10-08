@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { fetchPracticeTest } from '@cefr/core';
 import { useUnreadCount } from '@/entities/notification';
 import { useLatestResult } from '@/entities/result';
 import { dayKey, streakOf, useStudyDays, weekDays, weekdayIndex, weeklyPlan } from '@/entities/study';
@@ -18,17 +19,18 @@ import { ExamHeroSkeleton, SectionsOverviewSkeleton } from '@/features/home/ui/H
 import { SectionsOverview } from '@/features/home/ui/SectionsOverview';
 import { StudyWeek } from '@/features/home/ui/StudyWeek';
 import { TodayPlan } from '@/features/home/ui/TodayPlan';
-import { failureReason } from '@/shared/api';
+import { failureReason, supabase } from '@/shared/api';
 import { useI18n } from '@/shared/i18n';
 import { daysUntil, useRefresh, useScrollHeader } from '@/shared/lib';
 import { makeStyles, size, space } from '@/shared/theme';
-import { HeaderSurface, RefreshControl, StateView } from '@/shared/ui';
+import { HeaderSurface, RefreshControl, StateView, useToast } from '@/shared/ui';
 import { TAB_BAR_SPACE } from '@/widgets/tab-bar';
 
 export default function HomeScreen() {
   const styles = useStyles();
   const insets = useSafeAreaInsets();
   const { t } = useI18n();
+  const showToast = useToast((s) => s.show);
   const user = useUserStore((s) => s.user);
   const examDate = useUserStore((s) => s.examDate);
   const targetLevel = useUserStore((s) => s.targetLevel);
@@ -59,8 +61,6 @@ export default function HomeScreen() {
     studied: (minutesByDay[key] ?? 0) > 0,
     today: index === todayIndex,
   }));
-  const practiceTest =
-    resume ?? tests.data?.find((item) => item.status === 'new') ?? tests.data?.find((item) => item.status === 'completed');
 
   const onResume = useCallback(() => {
     if (!resume) return;
@@ -71,11 +71,16 @@ export default function HomeScreen() {
   }, [resume]);
 
   const onStartPlan = useCallback(
-    (item: PlanItem) => {
-      if (!practiceTest) return;
-      router.push({ pathname: '/test/[id]/[section]', params: { id: practiceTest.id, section: item.section } });
+    async (item: PlanItem) => {
+      try {
+        const testId = await fetchPracticeTest(supabase, item.section);
+        if (!testId) throw new Error('practice_unavailable');
+        router.push({ pathname: '/test/[id]/[section]', params: { id: testId, section: item.section, scope: item.section } });
+      } catch (error) {
+        showToast({ message: `${t('session.startFailed')} ${t(failureReason(error))}`, tone: 'error' });
+      }
     },
-    [practiceTest],
+    [showToast, t],
   );
 
   return (

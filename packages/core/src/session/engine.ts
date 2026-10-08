@@ -6,7 +6,7 @@ import { snapshotOf, type AttemptMode, type AttemptState } from '../attempt/stor
 import { requestAiReview, type ReviewLocale } from '../result/api';
 import { logStudy } from '../study/api';
 import { sectionOrder } from '../test/sections';
-import type { SectionKind, TestDetail } from '../test/types';
+import type { AttemptScope, SectionKind, TestDetail } from '../test/types';
 
 export type AttemptStore = UseBoundStore<StoreApi<AttemptState>>;
 
@@ -16,13 +16,19 @@ const AUTOSAVE_MS = 2500;
 
 export const nextSection = (section: SectionKind) => sectionOrder[sectionOrder.indexOf(section) + 1] ?? null;
 
-export const isAttemptOpen = (store: AttemptStore, testId: string) => {
-  const { testId: current, attemptId } = store.getState();
-  return current === testId && attemptId !== null;
+export const isAttemptOpen = (store: AttemptStore, testId: string, scope: AttemptScope = 'full') => {
+  const { testId: current, attemptId, scope: currentScope } = store.getState();
+  return current === testId && currentScope === scope && attemptId !== null;
 };
 
-export const beginAttempt = async (client: CefrClient, store: AttemptStore, testId: string, mode: AttemptMode = 'practice') => {
-  if (!isAttemptOpen(store, testId)) store.getState().hydrate(await openAttempt(client, testId, mode));
+export const beginAttempt = async (
+  client: CefrClient,
+  store: AttemptStore,
+  testId: string,
+  mode: AttemptMode = 'practice',
+  scope: AttemptScope = 'full',
+) => {
+  if (!isAttemptOpen(store, testId, scope)) store.getState().hydrate(await openAttempt(client, testId, mode, scope));
   return store.getState();
 };
 
@@ -69,7 +75,7 @@ export const completeSection = (client: CefrClient, store: AttemptStore, test: T
   const remainingSec = Math.max(0, ((endsAt[section] ?? Date.now()) - Date.now()) / 1000);
   const studied = logStudy(client, Math.max(0, limitSec - remainingSec)).catch(() => false);
   store.getState().completeSection(section);
-  const next = nextSection(section);
+  const next = store.getState().scope === 'full' ? nextSection(section) : null;
   if (next) flushAttempt(client, store).catch(() => undefined);
   return { next, studied };
 };
@@ -87,24 +93,24 @@ export const submitSession = async (client: CefrClient, store: AttemptStore, upl
 
 type SessionStatus = 'loading' | 'ready' | 'error';
 
-export const useAttemptSession = (store: AttemptStore, testId: string) => {
+export const useAttemptSession = (store: AttemptStore, testId: string, scope: AttemptScope = 'full') => {
   const client = useCefrClient();
-  const [status, setStatus] = useState<SessionStatus>(() => (isAttemptOpen(store, testId) ? 'ready' : 'loading'));
+  const [status, setStatus] = useState<SessionStatus>(() => (isAttemptOpen(store, testId, scope) ? 'ready' : 'loading'));
   const [error, setError] = useState<unknown>(null);
 
   const load = useCallback(() => {
     setStatus('loading');
-    beginAttempt(client, store, testId)
+    beginAttempt(client, store, testId, 'practice', scope)
       .then(() => setStatus('ready'))
       .catch((failure) => {
         setError(failure);
         setStatus('error');
       });
-  }, [client, store, testId]);
+  }, [client, scope, store, testId]);
 
   useEffect(() => {
-    if (!isAttemptOpen(store, testId)) load();
-  }, [load, store, testId]);
+    if (!isAttemptOpen(store, testId, scope)) load();
+  }, [load, scope, store, testId]);
 
   return { status, error, retry: load };
 };

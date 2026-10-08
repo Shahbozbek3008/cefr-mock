@@ -1,5 +1,7 @@
 export type SectionKind = 'listening' | 'reading' | 'writing' | 'speaking';
 
+export type AttemptScope = 'full' | SectionKind;
+
 export type Choice = { key: string; text: string };
 
 type QuestionBase = {

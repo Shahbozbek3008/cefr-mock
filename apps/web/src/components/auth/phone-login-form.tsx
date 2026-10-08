@@ -43,8 +43,8 @@ export function PhoneLoginForm({ next = ROUTES.loginVerify }: { next?: string })
           onChange={(e) => setDigits(sanitizeDigits(e.target.value, PHONE_DIGITS))}
         />
       </Field>
-      <Button type="submit" arrow block disabled={!isPhoneComplete(digits) || pending}>
-        {pending ? t('sending') : t('sendCode')}
+      <Button type="submit" arrow block disabled={!isPhoneComplete(digits)} loading={pending}>
+        {t('sendCode')}
       </Button>
     </form>
   );

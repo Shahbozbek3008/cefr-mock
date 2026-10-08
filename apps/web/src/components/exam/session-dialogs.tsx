@@ -37,7 +37,7 @@ export function SessionDialogs({ controls, onReview }: SessionDialogsProps) {
           {failure}
           <div className="grid grid-cols-2 gap-2.5">
             <Button variant="secondary" onClick={controls.closeExit}>{t('common.continue')}</Button>
-            <Button onClick={controls.confirmExit} disabled={controls.finishing} className="bg-none bg-error hover:bg-error">
+            <Button onClick={controls.confirmExit} loading={controls.finishing} className="bg-none bg-error hover:bg-error">
               {t(exam ? 'session.examExitConfirm' : 'common.exit')}
             </Button>
           </div>
@@ -80,7 +80,7 @@ export function SessionDialogs({ controls, onReview }: SessionDialogsProps) {
           {failure}
           <div className="grid grid-cols-2 gap-2.5">
             <Button variant="secondary" onClick={controls.closeFinish}>{t('session.goBack')}</Button>
-            <Button arrow onClick={controls.finish} disabled={controls.finishing}>
+            <Button arrow onClick={controls.finish} loading={controls.finishing}>
               {controls.stats && controls.stats.empty + controls.stats.flagged > 0 ? t('session.finishAnyway') : t('common.finish')}
             </Button>
           </div>

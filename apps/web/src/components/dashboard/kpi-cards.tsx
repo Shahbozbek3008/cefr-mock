@@ -1,19 +1,17 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, ChartNoAxesColumnIncreasing, Clock3, Flame, type LucideIcon } from 'lucide-react';
-import { MAX_SCORE } from '@/lib/constants';
-import { KPI, SCORE_TREND } from '@/lib/mock/dashboard';
-import { MOCK_EXAM } from '@/lib/mock/user';
+import { MAX_SCORE, ROUTES } from '@/lib/constants';
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { CountUp } from '@/components/motion/count-up';
-import { Grow } from '@/components/motion/grow';
 import { panelSurface } from './panel';
 import { Sparkline } from './sparkline';
 import { Trend } from './trend';
 
-type KpiCardProps = { label: string; icon: LucideIcon; value: number; unit?: ReactNode; aside?: ReactNode; footer: ReactNode; accent?: boolean };
+type KpiCardProps = { label: string; icon: LucideIcon; value: ReactNode; unit?: ReactNode; aside?: ReactNode; footer: ReactNode; accent?: boolean };
 
 function KpiCard({ label, icon, value, unit, aside, footer, accent = false }: KpiCardProps) {
   return (
@@ -30,80 +28,87 @@ function KpiCard({ label, icon, value, unit, aside, footer, accent = false }: Kp
           <Icon as={icon} size={14} strokeWidth={1.8} />
         </span>
       </div>
-      <div className="flex items-end justify-between gap-3">
+      <div className="flex min-h-8 items-end justify-between gap-3">
         <span className="flex items-baseline gap-1.5">
-          <span className="text-[32px] leading-none font-light tracking-[-0.05em]"><CountUp value={value} /></span>
+          <span className="text-[32px] leading-none font-light tracking-[-0.05em]">{value}</span>
           {unit && <span className={cn('text-[13px]', accent ? 'text-white/70' : 'text-ink-3')}>{unit}</span>}
         </span>
         {aside}
       </div>
-      <div className={cn('text-xs', accent ? 'text-white/75' : 'text-ink-3')}>{footer}</div>
+      <div className={cn('min-h-4 text-xs', accent ? 'text-white/75' : 'text-ink-3')}>{footer}</div>
     </div>
   );
 }
 
-function StreakWeek() {
-  const t = useTranslations('calendar');
-  const days = t('weekdays').split(',');
-  return (
-    <div className="flex gap-1" aria-hidden>
-      {KPI.streak.week.map((done, i) => (
-        <span key={days[i]} className="flex flex-col items-center gap-1">
-          <span className={cn('h-5 w-2 rounded-[3px]', done ? 'bg-warning' : 'bg-track')} />
-          <span className="font-mono text-[9px] text-ink-3">{days[i][0]}</span>
-        </span>
-      ))}
-    </div>
-  );
-}
+export type WeekDay = { key: string; label: string; minutes: number };
 
-export function KpiCards() {
+export type KpiData = {
+  score: number | null;
+  delta: number;
+  trend: number[];
+  daysLeft: number | null;
+  examLabel: string | null;
+  target: string | null;
+  streak: number;
+  week: WeekDay[];
+  weekGoal: number;
+};
+
+export function KpiCards({ data }: { data: KpiData }) {
   const t = useTranslations('dashboard.kpi');
   const tc = useTranslations('dashboard.countdown');
-  const examProgress = `${(KPI.exam.elapsed / KPI.exam.total) * 100}%`;
+  const weekMinutes = data.week.reduce((sum, day) => sum + day.minutes, 0);
 
   return (
     <div className="stagger grid grid-cols-2 gap-4 xl:grid-cols-4">
       <KpiCard
         label={t('score')}
         icon={ChartNoAxesColumnIncreasing}
-        value={KPI.score.value}
+        value={data.score === null ? '—' : <CountUp value={data.score} />}
         unit={`/ ${MAX_SCORE}`}
-        aside={<Sparkline data={SCORE_TREND} width={96} height={32} />}
-        footer={<span className="flex items-center gap-2"><Trend value={KPI.score.delta} />{t('scoreHint')}</span>}
+        aside={data.trend.length > 1 ? <Sparkline data={data.trend} width={96} height={32} /> : undefined}
+        footer={data.delta !== 0 && <span className="flex items-center gap-2"><Trend value={data.delta} />{t('scoreHint')}</span>}
       />
       <KpiCard
         accent
         label={t('exam')}
         icon={CalendarDays}
-        value={MOCK_EXAM.daysLeft}
-        unit={tc('days')}
+        value={data.daysLeft === null ? '—' : <CountUp value={data.daysLeft} />}
+        unit={data.daysLeft === null ? undefined : tc('days')}
         footer={
-          <span className="flex flex-col gap-2">
-            <span className="block h-1 overflow-hidden rounded-[2px] bg-white/20">
-              <Grow width={examProgress} className="h-full rounded-[2px] bg-white" />
-            </span>
-            {t('examHint', { date: tc('date'), level: MOCK_EXAM.target })}
-          </span>
+          data.examLabel ? (
+            t('examHint', { date: data.examLabel, level: data.target ?? '—' })
+          ) : (
+            <Link href={ROUTES.settings} className="font-medium text-white underline underline-offset-4 hover:text-white">{t('examPick')}</Link>
+          )
         }
       />
       <KpiCard
         label={t('streak')}
         icon={Flame}
-        value={KPI.streak.value}
+        value={<CountUp value={data.streak} />}
         unit={t('streakUnit')}
-        aside={<StreakWeek />}
-        footer={t('streakHint', { best: KPI.streak.best })}
+        aside={
+          <div className="flex gap-1" aria-hidden>
+            {data.week.map((day) => (
+              <span key={day.key} className="flex flex-col items-center gap-1">
+                <span className={cn('h-5 w-2 rounded-[3px]', day.minutes > 0 ? 'bg-warning' : 'bg-track')} />
+                <span className="font-mono text-[9px] text-ink-3">{day.label[0]}</span>
+              </span>
+            ))}
+          </div>
+        }
+        footer={data.streak === 0 && t('streakNone')}
       />
       <KpiCard
         label={t('time')}
         icon={Clock3}
-        value={KPI.time.value}
+        value={<CountUp value={weekMinutes} />}
         unit={t('timeUnit')}
         footer={
           <span className="flex flex-col gap-2">
-            <ProgressBar value={KPI.time.value} max={KPI.time.goal} tone="green" />
-            {t('timeHint', { goal: KPI.time.goal })}
+            <ProgressBar value={Math.min(weekMinutes, data.weekGoal)} max={data.weekGoal} tone="green" />
+            {t('timeHint', { goal: data.weekGoal })}
           </span>
         }
       />

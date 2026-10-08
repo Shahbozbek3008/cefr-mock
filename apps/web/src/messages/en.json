@@ -424,7 +424,10 @@
       "left": "{time} left",
       "meta": "{section} · Part {part} · {answered}/{total} questions",
       "cta": "Continue",
-      "progress": "{value}% complete"
+      "progress": "{value}% complete",
+      "empty": "No active test",
+      "emptyText": "Check your level with a new mock test.",
+      "emptyCta": "Choose a test"
     },
     "recommended": {
       "title": "Recommended tests",
@@ -447,7 +450,8 @@
         "duration": "Duration",
         "status": "Status",
         "result": "Result"
-      }
+      },
+      "empty": "No recommendations yet"
     },
     "subtitle": "Your plan for today is ready. {days} days until the exam.",
     "kpi": {
@@ -460,16 +464,21 @@
       "streakHint": "Best: {best} days",
       "time": "This week",
       "timeUnit": "min",
-      "timeHint": "Goal: {goal} min"
+      "timeHint": "Goal: {goal} min",
+      "examPick": "Pick a date",
+      "examNoDate": "No date set",
+      "streakNone": "Start your streak today"
     },
     "chart": {
       "title": "Score trend",
-      "subtitle": "Last {count} mock tests"
+      "subtitle": "Last {count} mock tests",
+      "empty": "Your score trend appears after your first mock test."
     },
     "skills": {
       "title": "By section",
       "subtitle": "on the 0–75 scale",
-      "weak": "Weak"
+      "weak": "Weak",
+      "empty": "Section scores appear after your first test."
     },
     "activity": {
       "title": "Weekly activity",
@@ -485,14 +494,21 @@
         "reading": "Reading · True / False / Not Given",
         "writing": "Writing Task 2 · introduction",
         "vocab": "Vocabulary review · 20 words"
-      }
+      },
+      "start": "Start",
+      "done": "Done",
+      "item": "{section} practice"
     },
     "insight": {
       "label": "AI insight",
       "title": "Writing is your main growth area",
       "text": "Subject–verb agreement errors cost you 4–6 points. Three short drills will bring you closer to B2.",
-      "cta": "Start drill"
-    }
+      "cta": "View review",
+      "empty": "Take your first test",
+      "emptyText": "AI will analyze your result and show your fastest way to grow.",
+      "emptyCta": "Test catalog"
+    },
+    "subtitleNoExam": "Set your exam date — your daily plan will adapt to it."
   },
   "results": {
     "metaTitle": "Result",
@@ -595,7 +611,7 @@
   },
   "progress": {
     "title": "Progress",
-    "meta": "{count} tests · July — September",
+    "meta": "{count, plural, one {# test} other {# tests}} · {range}",
     "range": {
       "1m": "1 month",
       "3m": "3 months",
@@ -603,10 +619,8 @@
     },
     "overall": "Overall score",
     "toNext": "{points} points to {level}",
-    "months": "July,August,September",
     "chartLabel": "Overall score over time",
     "sections": "Sections",
-    "period": "over 3 months",
     "history": "History",
     "all": "See all",
     "columns": {
@@ -617,7 +631,11 @@
       "change": "Change"
     },
     "historySubtitle": "Recent attempts",
-    "sectionsSubtitle": "Growth over 3 months"
+    "sectionsSubtitle": "Growth since the start of the period",
+    "empty": "No results yet",
+    "emptyText": "Take your first mock test — score trends and history will appear here.",
+    "emptyCta": "Test catalog",
+    "noHistory": "No tests in this period"
   },
   "settings": {
     "title": "Settings",
@@ -632,16 +650,17 @@
       "security": "Security"
     },
     "profile": {
-      "since": "Member since July 2026",
+      "since": "Member since {date}",
       "changePhoto": "Change photo",
       "firstName": "First name",
       "lastName": "Last name",
       "phone": "Phone",
       "verified": "Verified",
-      "email": "Email",
-      "optional": "optional",
       "title": "Personal details",
-      "subtitle": "Name and contact information"
+      "subtitle": "Name and contact information",
+      "removePhoto": "Remove photo",
+      "photoFailed": "Couldn't upload the photo.",
+      "photoHint": "JPG or PNG, cropped to a square"
     },
     "preferences": {
       "target": "Target level",
@@ -649,36 +668,31 @@
       "examDate": "Exam date",
       "daysLeft": "{days} days left",
       "language": "Interface language",
-      "languageHint": "Uzbek, Russian or English",
-      "theme": "Theme",
-      "themeHint": "Interface appearance",
-      "themes": {
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
-      }
+      "languageHint": "Uzbek, Russian or English"
     },
     "interface": {
       "title": "Interface",
-      "subtitle": "Language and appearance"
+      "subtitle": "Interface language"
     },
     "exam": {
       "title": "Exam plan",
       "subtitle": "Your daily plan and reminders are based on these details",
       "daily": "Daily study time",
-      "dailyHint": "Your daily plan size is based on this"
+      "dailyHint": "Your daily plan size is based on this",
+      "noDate": "No date selected",
+      "clearDate": "Not sure yet",
+      "pickTitle": "Exam date",
+      "pickText": "Official exam days are marked with a blue dot.",
+      "confirm": "Select"
     },
     "notifications": {
       "title": "Notifications",
-      "subtitle": "Choose which messages you receive",
+      "subtitle": "Notifications appear in the mobile app and on the web",
+      "alwaysOn": "Always on",
       "items": {
         "reminder": {
-          "title": "Daily reminder",
-          "hint": "Every day at {time}"
-        },
-        "weekly": {
-          "title": "Weekly report",
-          "hint": "Progress summary every Monday"
+          "title": "Push notifications",
+          "hint": "Daily reminders and results are sent to the mobile app"
         },
         "results": {
           "title": "AI results ready",
@@ -687,73 +701,45 @@
         "newTests": {
           "title": "New mock tests",
           "hint": "When a new test is added to the catalog"
-        },
-        "promo": {
-          "title": "Offers and discounts",
-          "hint": "Rarely, only the important ones"
         }
-      },
-      "channels": {
-        "title": "Delivery channels",
-        "subtitle": "Where messages are sent",
-        "sms": "SMS",
-        "telegram": "Telegram",
-        "email": "Email"
       }
     },
     "subscription": {
       "title": "Current plan",
       "active": "Active",
-      "renews": "Valid {date}",
-      "change": "Change plan",
-      "cancel": "Cancel subscription",
-      "method": "Payment method",
-      "methodHint": "Future payments use this method",
-      "update": "Update",
-      "history": "Payment history",
-      "historySubtitle": "Receipts were also sent via SMS",
-      "columns": {
-        "date": "Date",
-        "plan": "Plan",
-        "amount": "Amount",
-        "status": "Status"
-      },
-      "paid": "Paid",
-      "receipt": "Receipt"
+      "free": "Free plan",
+      "freeHint": "Pro unlocks every mock test and full AI review",
+      "proHint": "All mock tests and AI review unlocked",
+      "upgrade": "Upgrade to Pro",
+      "change": "Change plan"
     },
     "security": {
       "phone": {
         "title": "Phone number",
-        "hint": "Sign-in codes are sent to this number",
-        "change": "Change number"
+        "hint": "Sign-in codes are sent to this number by SMS"
       },
-      "sessions": {
-        "title": "Active devices",
-        "subtitle": "Devices signed in to your account",
-        "current": "Current",
-        "logout": "Sign out",
-        "logoutAll": "Sign out of all devices",
-        "devices": {
-          "desktop": {
-            "name": "Chrome · Windows",
-            "meta": "Tashkent · active now"
-          },
-          "phone": {
-            "name": "CEFR Mock · iPhone",
-            "meta": "Tashkent · 2 hours ago"
-          },
-          "tablet": {
-            "name": "Safari · iPad",
-            "meta": "Samarkand · 3 days ago"
-          }
-        }
+      "signOut": {
+        "title": "Sign out on this device",
+        "hint": "Unfinished test answers on this device will be deleted.",
+        "action": "Sign out",
+        "confirmTitle": "Sign out?"
       },
-      "danger": {
-        "title": "Delete account",
-        "hint": "All results, history and your subscription will be permanently deleted. This can't be undone.",
-        "action": "Delete account"
+      "signOutAll": {
+        "title": "Sign out everywhere",
+        "hint": "Sessions on your phone and other browsers will end too",
+        "action": "Sign out everywhere"
+      },
+      "reset": {
+        "title": "Reset statistics",
+        "hint": "All results, AI reviews and unfinished tests will be deleted so you can take the tests again. This cannot be undone.",
+        "action": "Reset",
+        "confirmTitle": "Reset statistics?",
+        "done": "Statistics reset",
+        "failed": "Could not reset."
       }
-    }
+    },
+    "saved": "Saved",
+    "saveFailed": "Couldn't save."
   },
   "billing": {
     "title": "CEFR Mock Pro",

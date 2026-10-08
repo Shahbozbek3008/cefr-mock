@@ -1,7 +1,7 @@
 import type { CefrClient } from '../api/client';
 import type { Json, Tables } from '../api/database';
 import { ensureOk, requireUserId, unwrap } from '../api/errors';
-import type { SectionKind } from '../test/types';
+import type { AttemptScope, SectionKind } from '../test/types';
 import type { AttemptMode, AttemptSnapshot } from './store';
 
 type AttemptRow = Tables<'attempts'>;
@@ -14,6 +14,7 @@ const toSnapshot = (row: AttemptRow): AttemptSnapshot => ({
   attemptId: row.id,
   testId: row.test_id,
   mode: row.mode,
+  scope: row.scope ?? 'full',
   section: row.current_section as SectionKind | null,
   startedAt: new Date(row.started_at).getTime(),
   endsAt: row.ends_at as Partial<Record<SectionKind, number>>,
@@ -24,25 +25,31 @@ const toSnapshot = (row: AttemptRow): AttemptSnapshot => ({
   uploads: (row.recordings as Record<string, string>) ?? {},
 });
 
-export const fetchActiveAttempt = async (client: CefrClient, testId: string) => {
+export const fetchActiveAttempt = async (client: CefrClient, testId: string, scope: AttemptScope = 'full') => {
   const { data, error } = await client
     .from('attempts')
     .select('*')
     .eq('test_id', testId)
+    .eq('scope', scope)
     .eq('status', 'in_progress')
     .maybeSingle();
   if (error) throw error;
   return data ? toSnapshot(data) : null;
 };
 
-const createAttempt = async (client: CefrClient, testId: string, mode: AttemptMode) => {
-  const { data, error } = await client.from('attempts').insert({ test_id: testId, mode }).select('*').single();
-  if (error?.code === UNIQUE_VIOLATION) return fetchActiveAttempt(client, testId);
+const createAttempt = async (client: CefrClient, testId: string, mode: AttemptMode, scope: AttemptScope) => {
+  const { data, error } = await client.from('attempts').insert({ test_id: testId, mode, scope }).select('*').single();
+  if (error?.code === UNIQUE_VIOLATION) return fetchActiveAttempt(client, testId, scope);
   return toSnapshot(unwrap({ data, error }));
 };
 
-export const openAttempt = async (client: CefrClient, testId: string, mode: AttemptMode): Promise<AttemptSnapshot> => {
-  const snapshot = (await fetchActiveAttempt(client, testId)) ?? (await createAttempt(client, testId, mode));
+export const openAttempt = async (
+  client: CefrClient,
+  testId: string,
+  mode: AttemptMode,
+  scope: AttemptScope = 'full',
+): Promise<AttemptSnapshot> => {
+  const snapshot = (await fetchActiveAttempt(client, testId, scope)) ?? (await createAttempt(client, testId, mode, scope));
   if (!snapshot) throw new Error('attempt_unavailable');
   return snapshot;
 };

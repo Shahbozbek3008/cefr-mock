@@ -60,7 +60,37 @@
   --animate-accordion-down: accordion-down 0.42s var(--ease-out);
   --animate-accordion-up: accordion-up 0.32s var(--ease-out);
   --animate-progress-loop: progress-loop 6s var(--ease) infinite;
+  --animate-spinner: spinner 1.6s linear infinite;
+  --animate-spinner-dash: spinner-dash 1.6s cubic-bezier(.4,0,.2,1) infinite;
+  --animate-loading-in: loading-in 0.32s var(--ease-out) both;
+  --animate-btn-sweep: btn-sweep 1.5s cubic-bezier(.45,0,.25,1) infinite;
+  --animate-check-draw: check-draw 0.42s var(--ease-out) 0.08s both;
+  --animate-shake: shake 0.42s cubic-bezier(.36,.07,.19,.97) both;
 
+  @keyframes spinner {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes spinner-dash {
+    0% { stroke-dasharray: 1 150; stroke-dashoffset: 0; }
+    50% { stroke-dasharray: 80 150; stroke-dashoffset: -30; }
+    100% { stroke-dasharray: 80 150; stroke-dashoffset: -118; }
+  }
+  @keyframes btn-sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
+  @keyframes check-draw {
+    from { stroke-dashoffset: 24; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes shake {
+    20%, 80% { translate: -1px 0; }
+    35%, 65% { translate: 3px 0; }
+    50% { translate: -3px 0; }
+  }
+  @keyframes loading-in {
+    from { opacity: 0; transform: scale(.6) rotate(-90deg); }
+  }
   @keyframes fade-up {
     from { opacity: 0; translate: 0 14px; filter: blur(6px); }
   }
@@ -243,4 +273,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .spinner, .spinner * { animation-duration: 2.4s !important; animation-iteration-count: infinite !important; }
 }

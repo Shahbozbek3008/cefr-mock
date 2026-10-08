@@ -172,7 +172,7 @@ export function TestIntro({ id }: { id: string }) {
               ))}
             </div>
             {failure && <span className="text-[13px] text-error-text">{failure}</span>}
-            <Button arrow block size="md" className="h-11 rounded-[12px]" disabled={starting} onClick={start}>
+            <Button arrow block size="md" className="h-11 rounded-[12px]" loading={starting} onClick={start}>
               {t(resuming ? 'common.resume' : 'testIntro.start')}
             </Button>
           </div>

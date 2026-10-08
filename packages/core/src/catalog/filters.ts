@@ -32,8 +32,6 @@ export type PracticeItem = {
   approx?: boolean;
 };
 
-export const PRACTICE_TEST_ID = 't13';
-
 export const practiceItems: PracticeItem[] = [
   { kind: 'listening', parts: 6, questions: 35, minutes: 35 },
   { kind: 'reading', parts: 5, questions: 35, minutes: 60 },

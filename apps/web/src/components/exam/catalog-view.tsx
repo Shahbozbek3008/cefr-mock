@@ -5,23 +5,26 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { ArrowRight, Lock, Search } from 'lucide-react';
 import {
   MAX_SCORE,
-  PRACTICE_TEST_ID,
   applyCatalog,
   catalogModes,
+  fetchPracticeTest,
   filterOrder,
   practiceItems,
   sectionTitles,
+  useCefrClient,
   useTests,
   type CatalogFilter,
   type CatalogMode,
   type CatalogSort,
+  type PracticeItem,
   type TestSummary,
 } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { ROUTES, SKILL_ICONS } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
+import { Spinner } from '@/components/ui/spinner';
 import { Tag } from '@/components/ui/tag';
 import { Chip } from '@/components/ui/chip';
 import { Button } from '@/components/ui/button';
@@ -93,22 +96,49 @@ function TestCard({ test }: { test: TestSummary }) {
 
 function PracticeList() {
   const t = useTranslations('exam');
+  const client = useCefrClient();
+  const router = useRouter();
+  const [opening, setOpening] = useState<PracticeItem['kind'] | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
+
+  const open = async (item: PracticeItem) => {
+    setOpening(item.kind);
+    setFailure(null);
+    try {
+      const testId = await fetchPracticeTest(client, item.kind);
+      if (!testId) throw new Error('practice_unavailable');
+      router.push(`${ROUTES.testSection(testId, item.kind)}?scope=${item.kind}`);
+    } catch (error) {
+      setFailure(`${t('session.startFailed')} ${t(`common.${failureKey(error)}`)}`);
+      setOpening(null);
+    }
+  };
+
   return (
-    <div className="stagger grid gap-3 md:grid-cols-2">
-      {practiceItems.map((item) => (
-        <Link
-          key={item.kind}
-          href={ROUTES.testSection(PRACTICE_TEST_ID, item.kind)}
-          className={cn(panelSurface, 'group flex items-center gap-4 p-5 text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}
-        >
-          <span className="grid size-11 place-items-center rounded-[12px] bg-surface-sunken text-ink-body"><Icon as={SKILL_ICONS[item.kind]} size={19} strokeWidth={1.6} /></span>
-          <span className="flex flex-1 flex-col gap-0.5">
-            <span className="text-[15px] font-medium">{t('catalog.practiceTitle', { section: sectionTitles[item.kind] })}</span>
-            <span className="text-[13px] text-ink-2">{t(`sections.${item.kind}Detail`, { parts: item.parts, questions: item.questions ?? 0 })}</span>
-          </span>
-          <span className="font-mono text-[13px] text-ink-2">{t(item.approx ? 'units.minutesApprox' : 'units.minutes', { count: item.minutes })}</span>
-        </Link>
-      ))}
+    <div className="flex flex-col gap-3">
+      {failure && <span className="text-[13px] text-error-text">{failure}</span>}
+      <div className="stagger grid gap-3 md:grid-cols-2">
+        {practiceItems.map((item) => (
+          <button
+            key={item.kind}
+            type="button"
+            disabled={opening !== null}
+            onClick={() => open(item)}
+            className={cn(panelSurface, 'group flex items-center gap-4 p-5 text-left text-ink transition-[box-shadow,translate,opacity] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:shadow-e1 disabled:pointer-events-none', opening !== null && opening !== item.kind && 'opacity-60')}
+          >
+            <span className="grid size-11 place-items-center rounded-[12px] bg-surface-sunken text-ink-body"><Icon as={SKILL_ICONS[item.kind]} size={19} strokeWidth={1.6} /></span>
+            <span className="flex flex-1 flex-col gap-0.5">
+              <span className="text-[15px] font-medium">{t('catalog.practiceTitle', { section: sectionTitles[item.kind] })}</span>
+              <span className="text-[13px] text-ink-2">{t(`sections.${item.kind}Detail`, { parts: item.parts, questions: item.questions ?? 0 })}</span>
+            </span>
+            {opening === item.kind ? (
+              <Spinner size={16} className="text-ink-2" />
+            ) : (
+              <span className="font-mono text-[13px] text-ink-2">{t(item.approx ? 'units.minutesApprox' : 'units.minutes', { count: item.minutes })}</span>
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

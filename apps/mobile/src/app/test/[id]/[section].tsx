@@ -25,10 +25,10 @@ const sections: Record<SectionKind, ComponentType<{ test: TestDetail }>> = {
 const isSection = (value: string | undefined): value is SectionKind => sectionOrder.includes(value as SectionKind);
 
 export default function SectionScreen() {
-  const { id, section } = useLocalSearchParams<{ id: string; section: string }>();
+  const { id, section, scope } = useLocalSearchParams<{ id: string; section: string; scope?: string }>();
   const test = useTest(id);
   const { t } = useI18n();
-  const session = useAttemptSession(id);
+  const session = useAttemptSession(id, isSection(scope) ? scope : 'full');
   const enterSection = useAttemptStore((s) => s.enterSection);
   const minutes = test.data?.sections.find((s) => s.kind === section)?.minutes;
   const ready = session.status === 'ready' && test.data !== undefined;

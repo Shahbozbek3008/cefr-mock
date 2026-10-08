@@ -17,6 +17,8 @@ export type Profile = {
   dailyMinutes: DailyMinutes | null;
   reminderEnabled: boolean;
   isPro: boolean;
+  locale: Locale;
+  createdAt: string;
 };
 
 export type ProfilePatch = Partial<
@@ -46,6 +48,8 @@ const toProfile = (client: CefrClient, row: Tables<'profiles'>): Profile => ({
   dailyMinutes: row.daily_minutes as DailyMinutes | null,
   reminderEnabled: row.reminder_enabled,
   isPro: row.is_pro,
+  locale: row.locale,
+  createdAt: row.created_at,
 });
 
 const clean = (value: string) => value.trim().replace(/\s+/g, ' ') || null;

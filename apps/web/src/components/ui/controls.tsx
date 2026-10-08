@@ -6,10 +6,14 @@ import { Check } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { Icon } from './icon';
 
-export function Switch({ defaultChecked, label }: { defaultChecked?: boolean; label: string }) {
+type SwitchProps = { defaultChecked?: boolean; checked?: boolean; onCheckedChange?: (checked: boolean) => void; label: string };
+
+export function Switch({ defaultChecked, checked, onCheckedChange, label }: SwitchProps) {
   return (
     <RSwitch.Root
       defaultChecked={defaultChecked}
+      checked={checked}
+      onCheckedChange={onCheckedChange}
       aria-label={label}
       className="group flex h-[26px] w-11 shrink-0 rounded-[13px] bg-line p-[3px] transition-colors duration-(--t-base) data-[state=checked]:bg-green"
     >

@@ -1,3 +1,5 @@
+type AttemptScopeValue = 'full' | 'listening' | 'reading' | 'writing' | 'speaking';
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 type TestRelation<Name extends string> = {
@@ -77,6 +79,7 @@ export type Database = {
           test_id: string;
           status: 'in_progress' | 'completed';
           mode: 'exam' | 'practice';
+          scope: AttemptScopeValue;
           current_section: string | null;
           completed_sections: string[];
           answers: Json;
@@ -91,6 +94,7 @@ export type Database = {
         Insert: {
           test_id: string;
           mode?: 'exam' | 'practice';
+          scope?: AttemptScopeValue;
           current_section?: string | null;
           completed_sections?: string[];
           answers?: Json;
@@ -116,6 +120,7 @@ export type Database = {
           user_id: string;
           attempt_id: string;
           test_id: string;
+          scope: AttemptScopeValue;
           listening: number;
           reading: number;
           writing: number;

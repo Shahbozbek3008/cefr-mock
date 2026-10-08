@@ -1,14 +1,14 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { DropdownMenu } from 'radix-ui';
-import { useQueryClient } from '@tanstack/react-query';
 import { ChevronsUpDown, CreditCard, LogOut, Settings } from 'lucide-react';
-import { formatPhone, useCefrClient, useProfile } from '@cefr/core';
-import { Link, useRouter } from '@/i18n/navigation';
+import { formatPhone, useProfile, useUpdateProfile, type Locale } from '@cefr/core';
+import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/cn';
-import { useAttemptStore } from '@/lib/attempt-store';
+import { useSignOut } from '@/lib/supabase/sign-out';
 import { Icon } from '@/components/ui/icon';
 import { Avatar } from '@/components/ui/avatar';
 import { menuContent, menuItem, menuSeparator } from '@/components/ui/menu';
@@ -22,20 +22,16 @@ const phoneLabel = (phone: string | null) => (phone ? `+998 ${formatPhone(phone.
 
 export function UserMenu() {
   const t = useTranslations('app');
-  const client = useCefrClient();
-  const queryClient = useQueryClient();
-  const router = useRouter();
+  const locale = useLocale() as Locale;
+  const signOut = useSignOut();
+  const { mutate: updateProfile } = useUpdateProfile();
   const { data: profile } = useProfile();
   const fullName = [profile?.firstName, profile?.lastName].filter(Boolean).join(' ');
   const initial = (profile?.firstName || '?').charAt(0).toUpperCase();
 
-  const signOut = async () => {
-    await client.auth.signOut({ scope: 'local' }).catch(() => undefined);
-    useAttemptStore.getState().reset();
-    queryClient.clear();
-    router.replace(ROUTES.login);
-    router.refresh();
-  };
+  useEffect(() => {
+    if (profile && profile.locale !== locale) updateProfile({ locale });
+  }, [locale, profile, updateProfile]);
 
   return (
     <DropdownMenu.Root modal={false}>
@@ -43,7 +39,7 @@ export function UserMenu() {
         aria-label={t('user.menu')}
         className="group flex w-full items-center gap-2.5 rounded-[11px] p-1.5 text-left transition-colors duration-(--t-fast) outline-none hover:bg-hover focus-visible:shadow-focus data-[state=open]:bg-hover"
       >
-        <Avatar initial={initial} size={32} />
+        <Avatar initial={initial} size={32} src={profile?.avatarUrl} />
         <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
           <span className="truncate text-[13px] font-medium text-ink">{fullName || phoneLabel(profile?.phone ?? null)}</span>
           <span className="truncate text-[11px] text-ink-3">{profile && t(`plan.${profile.isPro ? 'pro' : 'free'}`)}</span>
@@ -66,7 +62,7 @@ export function UserMenu() {
             </DropdownMenu.Item>
           ))}
           <DropdownMenu.Separator className={menuSeparator} />
-          <DropdownMenu.Item onSelect={signOut} className={cn(menuItem, 'data-highlighted:bg-error-50 data-highlighted:text-error-text')}>
+          <DropdownMenu.Item onSelect={() => signOut()} className={cn(menuItem, 'data-highlighted:bg-error-50 data-highlighted:text-error-text')}>
             <Icon as={LogOut} size={15} strokeWidth={1.6} />
             {t('user.logout')}
           </DropdownMenu.Item>

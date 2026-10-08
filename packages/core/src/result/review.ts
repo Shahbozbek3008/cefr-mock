@@ -1,5 +1,5 @@
 import type { AnswerKey, AnswerKeys, Question } from '../test/types';
-import type { AnswerReview, SectionReview } from './types';
+import type { AnswerReview, Criterion, SectionReview } from './types';
 
 const normalize = (value: string) => value.trim().toLowerCase().replace(/\s+/g, ' ');
 
@@ -39,3 +39,6 @@ export const buildReview = (
     empty: items.filter((i) => i.status === 'empty').length,
   };
 };
+
+export const weakestLabel = (criteria: Criterion[]) =>
+  criteria.reduce((min, c) => (c.score / c.max < min.score / min.max ? c : min), criteria[0])?.label;
