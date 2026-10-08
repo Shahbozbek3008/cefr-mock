@@ -5,7 +5,9 @@
   },
   "common": {
     "language": "Til",
-    "examDate": "1-noyabr 2026"
+    "examDate": "1-noyabr 2026",
+    "done": "Tayyor",
+    "failed": "Xatolik"
   },
   "skills": {
     "listening": "Listening",

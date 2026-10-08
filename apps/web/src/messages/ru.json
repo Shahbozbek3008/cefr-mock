@@ -5,7 +5,9 @@
   },
   "common": {
     "language": "Язык",
-    "examDate": "1 ноября 2026"
+    "examDate": "1 ноября 2026",
+    "done": "Готово",
+    "failed": "Ошибка"
   },
   "skills": {
     "listening": "Listening",

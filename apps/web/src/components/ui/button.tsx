@@ -2,19 +2,59 @@
 
 import { useEffect, useRef, useState, type ComponentProps, type MouseEvent, type ReactNode } from 'react';
 import { useLinkStatus } from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { AnimatePresence, motion, useReducedMotion, type TargetAndTransition, type Transition } from 'motion/react';
+import { ArrowRight, CircleAlert } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
+import { EASE_OUT } from '@/lib/motion';
 import { Icon } from './icon';
 import { Spinner } from './spinner';
 import { buttonVariants, type ButtonVariants } from './button-variants';
 
-const INDICATOR_SIZE = { lg: 18, md: 16, sm: 16, xs: 14 } as const;
-const SETTLE_MS = { success: 1100, error: 450 } as const;
+const INDICATOR_SIZE = { lg: 18, md: 16, sm: 16, xs: 15 } as const;
+const SETTLE_MS = { success: 1400, error: 1400 } as const;
+const MIN_LOADING_MS = 700;
+const FILL_DURATION = 4.5;
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 type OwnProps = ButtonVariants & { icon?: ReactNode; children?: ReactNode };
+
+const atLeast = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const SWAP = {
+  initial: { y: 14, opacity: 0, filter: 'blur(3px)' },
+  animate: { y: 0, opacity: 1, filter: 'blur(0px)' },
+  exit: { y: -14, opacity: 0, filter: 'blur(3px)' },
+  transition: { duration: 0.34, ease: EASE_OUT } satisfies Transition,
+};
+
+function Fill({ status }: { status: Status }) {
+  const reduced = useReducedMotion();
+
+  const target = (): TargetAndTransition => {
+    if (status === 'loading') {
+      return reduced
+        ? { scaleX: 1, opacity: 0.7, transition: { duration: 0.2 } }
+        : { scaleX: [0, 0.32, 0.9], opacity: 1, transition: { duration: FILL_DURATION, times: [0, 0.12, 1], ease: EASE_OUT } };
+    }
+    if (status === 'success') return { scaleX: 1, opacity: 1, transition: { duration: 0.35, ease: EASE_OUT } };
+    return { opacity: 0, transition: { duration: 0.45, ease: EASE_OUT } };
+  };
+
+  return (
+    <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
+      <motion.span
+        className="absolute inset-0 origin-left bg-[linear-gradient(90deg,color-mix(in_oklab,currentColor_6%,transparent),color-mix(in_oklab,currentColor_18%,transparent))]"
+        initial={false}
+        animate={target()}
+      >
+        <span className="absolute inset-y-0 right-0 w-px bg-[color-mix(in_oklab,currentColor_45%,transparent)]" />
+      </motion.span>
+    </span>
+  );
+}
 
 function SuccessMark({ size }: { size: number }) {
   return (
@@ -25,25 +65,16 @@ function SuccessMark({ size }: { size: number }) {
 }
 
 function Content({ icon, arrow, size, children, status = 'idle' }: OwnProps & { status?: Status }) {
+  const t = useTranslations('common');
   const indicator = INDICATOR_SIZE[size ?? 'lg'];
-  const covered = status === 'loading' || status === 'success';
 
   return (
     <>
-      {status === 'loading' && (
-        <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
-          <span className="absolute inset-y-0 -inset-x-1/2 animate-btn-sweep bg-[linear-gradient(100deg,transparent_35%,color-mix(in_oklab,currentColor_16%,transparent)_50%,transparent_65%)]" />
-        </span>
-      )}
-      {covered && (
-        <span key={status} className="pointer-events-none absolute inset-0 grid animate-loading-in place-items-center">
-          {status === 'loading' ? <Spinner size={indicator} /> : <SuccessMark size={indicator + 2} />}
-        </span>
-      )}
+      <Fill status={status} />
       <span
         className={cn(
-          'flex flex-1 items-center [gap:inherit] [justify-content:inherit] transition-[opacity,filter,scale] duration-300 ease-out-expo',
-          covered && 'scale-[.94] opacity-0 blur-[2px]',
+          'relative flex flex-1 items-center [gap:inherit] [justify-content:inherit] transition-[opacity,translate,filter] duration-300 ease-out-expo',
+          status !== 'idle' && '-translate-y-3 opacity-0 blur-[3px]',
         )}
       >
         {icon}
@@ -57,6 +88,21 @@ function Content({ icon, arrow, size, children, status = 'idle' }: OwnProps & { 
           />
         )}
       </span>
+      <AnimatePresence initial={false}>
+        {status !== 'idle' && (
+          <motion.span
+            key={status}
+            {...SWAP}
+            aria-hidden
+            className={cn('pointer-events-none absolute inset-0 flex items-center justify-center gap-2 overflow-hidden px-3 whitespace-nowrap', status === 'error' && 'animate-shake')}
+          >
+            {status === 'loading' && <Spinner size={indicator} />}
+            {status === 'success' && <SuccessMark size={indicator} />}
+            {status === 'error' && <Icon as={CircleAlert} size={indicator} strokeWidth={2} />}
+            {status !== 'loading' && <span className="truncate">{t(status === 'success' ? 'done' : 'failed')}</span>}
+          </motion.span>
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -96,9 +142,8 @@ export function Button({ variant, size, arrow, block, icon, className, children,
     const result = onClick?.(event);
     if (!isPromise(result)) return;
     setStatus('loading');
-    result.then(
-      (value) => settle(value === false ? 'error' : 'success'),
-      () => settle('error'),
+    Promise.allSettled([result, atLeast(MIN_LOADING_MS)]).then(([outcome]) =>
+      settle(outcome.status === 'rejected' || outcome.value === false ? 'error' : 'success'),
     );
   };
 
@@ -108,7 +153,7 @@ export function Button({ variant, size, arrow, block, icon, className, children,
       disabled={disabled && shown === 'idle'}
       aria-busy={busy || undefined}
       data-status={shown}
-      className={cn(buttonVariants({ variant, size, arrow, block }), shown === 'error' && 'animate-shake', className)}
+      className={cn(buttonVariants({ variant, size, arrow, block }), 'overflow-hidden', className)}
       onClick={handleClick}
       {...rest}
     >
@@ -126,7 +171,7 @@ export type ButtonLinkProps = OwnProps & Omit<ComponentProps<typeof Link>, keyof
 
 export function ButtonLink({ variant, size, arrow, block, icon, className, children, ...rest }: ButtonLinkProps) {
   return (
-    <Link className={cn(buttonVariants({ variant, size, arrow, block }), className)} {...rest}>
+    <Link className={cn(buttonVariants({ variant, size, arrow, block }), 'overflow-hidden', className)} {...rest}>
       <LinkContent icon={icon} arrow={arrow} size={size}>{children}</LinkContent>
     </Link>
   );

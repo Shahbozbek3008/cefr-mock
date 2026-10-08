@@ -4,6 +4,7 @@ import { MOCK_EXAM, MOCK_USER } from '@/lib/mock/user';
 import { richTags } from '@/lib/rich';
 import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
 import { ButtonLink } from '@/components/ui/button';
+import { NextTestLink } from '@/components/exam/next-test-link';
 import { OtpInput } from '@/components/ui/otp-input';
 import { StatGrid } from '@/components/ui/stat-grid';
 import { SuccessBadge } from '@/components/ui/success-badge';
@@ -33,7 +34,7 @@ function DoneView() {
             ]}
           />
           <div className="flex flex-col gap-2">
-            <ButtonLink href={ROUTES.test('13')} arrow block>{t('startFree')}</ButtonLink>
+            <NextTestLink arrow block>{t('startFree')}</NextTestLink>
             <ButtonLink href={ROUTES.dashboard} variant="secondary" block className="h-12">{t('toDashboard')}</ButtonLink>
           </div>
         </div>

@@ -5,7 +5,9 @@
   },
   "common": {
     "language": "Language",
-    "examDate": "November 1, 2026"
+    "examDate": "November 1, 2026",
+    "done": "Done",
+    "failed": "Failed"
   },
   "skills": {
     "listening": "Listening",

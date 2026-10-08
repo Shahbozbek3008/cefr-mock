@@ -1,9 +1,9 @@
 import { Stage } from "@/components/layout/stage";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { NextTestLink } from "@/components/exam/next-test-link";
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { KeyValueList } from "@/components/ui/key-value-list";
 import { SuccessBadge } from "@/components/ui/success-badge";
-import { ROUTES } from "@/lib/constants";
 import { formatSum } from "@/lib/format";
 import { initLocale, metadataTitle, type LocaleParams } from "@/lib/i18n";
 import { PLANS, RECOMMENDED_PLAN } from "@/lib/mock/plans";
@@ -50,14 +50,13 @@ function SuccessView() {
             ]}
           />
           <div className="flex w-full flex-col gap-2">
-            <ButtonLink
-              href={ROUTES.test("13")}
+            <NextTestLink
               arrow
               block
               className="px-[18px] shadow-action-sm"
             >
               {t("startTest")}
-            </ButtonLink>
+            </NextTestLink>
             <Button
               variant="secondary"
               block
