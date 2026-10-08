@@ -6,6 +6,8 @@ export type PushMessage = { title: string; body: string; url: string | null };
 
 export type PushResult = 'sent' | 'unregistered' | 'failed';
 
+export type PushPlatform = 'mobile' | 'web';
+
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
 const TOKEN_TTL_SEC = 3600;
@@ -68,19 +70,25 @@ const accessToken = async () => {
 
 const isUnregistered = (status: number, body: string) => status === 404 || body.includes('UNREGISTERED');
 
-export const sendPush = async (token: string, message: PushMessage): Promise<PushResult> => {
+const mobileMessage = (token: string, message: PushMessage) => ({
+  token,
+  notification: { title: message.title, body: message.body },
+  data: message.url ? { url: message.url } : {},
+  android: { priority: 'HIGH', notification: { sound: 'default' } },
+  apns: { payload: { aps: { sound: 'default' } } },
+});
+
+const webMessage = (token: string, message: PushMessage) => ({
+  token,
+  data: { title: message.title, body: message.body, url: message.url ?? '/app' },
+  webpush: { headers: { Urgency: 'high' } },
+});
+
+export const sendPush = async (token: string, platform: PushPlatform, message: PushMessage): Promise<PushResult> => {
   const response = await fetch(`https://fcm.googleapis.com/v1/projects/${account.project_id}/messages:send`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${await accessToken()}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: {
-        token,
-        notification: { title: message.title, body: message.body },
-        data: message.url ? { url: message.url } : {},
-        android: { priority: 'HIGH', notification: { sound: 'default' } },
-        apns: { payload: { aps: { sound: 'default' } } },
-      },
-    }),
+    body: JSON.stringify({ message: platform === 'web' ? webMessage(token, message) : mobileMessage(token, message) }),
   });
   if (response.ok) return 'sent';
   return isUnregistered(response.status, await response.text()) ? 'unregistered' : 'failed';

@@ -694,7 +694,7 @@
       "items": {
         "reminder": {
           "title": "Push-bildirishnomalar",
-          "hint": "Kunlik eslatma va natijalar mobil ilovaga yuboriladi"
+          "hint": "Kunlik eslatma va natijalar telefon hamda brauzerga yuboriladi"
         },
         "results": {
           "title": "AI natijalar tayyor",
@@ -704,6 +704,13 @@
           "title": "Yangi mock testlar",
           "hint": "Katalogga yangi test qo'shilganda"
         }
+      },
+      "browser": {
+        "title": "Brauzer bildirishnomalari",
+        "hint": "Ushbu brauzerga natija va eslatmalar keladi",
+        "pushOff": "Avval push-bildirishnomalarni yoqing",
+        "denied": "Brauzer bildirishnomalarni bloklagan. Manzil satridagi qulf belgisi orqali ruxsat bering",
+        "unavailable": "Bu brauzer bildirishnomalarni qo'llab-quvvatlamaydi"
       }
     },
     "subscription": {
@@ -1159,6 +1166,79 @@
       "transcriptMeta": "{words} so'z · {wpm} wpm",
       "play": "Tinglash",
       "pause": "To'xtatish"
+    },
+    "notifications": {
+      "title": "Bildirishnomalar",
+      "markAllRead": "Barchasini o'qilgan deb belgilash",
+      "clear": "Tozalash",
+      "clearTitle": "Bildirishnomalarni tozalaysizmi?",
+      "clearMessage": "Barcha bildirishnomalar ro'yxatdan o'chiriladi.",
+      "today": "Bugun",
+      "yesterday": "Kecha",
+      "earlier": "Oldinroq",
+      "unread": "{count, plural, one {{count} ta yangi} other {{count} ta yangi}}",
+      "emptyTitle": "Hozircha bildirishnoma yo'q",
+      "emptyMessage": "Natijalar, AI baholar va eslatmalar tayyor bo'lganda shu yerda ko'rinadi.",
+      "emptyAction": "Eslatmalarni yoqish",
+      "loadFailed": "Bildirishnomalar yuklanmadi",
+      "kinds": {
+        "result": {
+          "title": "Natijangiz tayyor",
+          "body": "{title}: {score} ball ({level}). Batafsil tahlilni ko'ring."
+        },
+        "mistakes": {
+          "title": "Xatolar ustida ishlash",
+          "start": "Xatolarni mashq qilish",
+          "listen": "Shu joyni tinglash",
+          "check": "Tekshirish",
+          "noneTitle": "Xato yo'q",
+          "noneMessage": "Listening va Reading bo'limlarida barcha javoblaringiz to'g'ri.",
+          "doneTitle": "{total} tadan {solved} tasi to'g'ri",
+          "doneMessage": "Qolgan xatolarni yana bir bor ishlab chiqishingiz mumkin.",
+          "again": "Qaytadan boshlash"
+        },
+        "aiReview": {
+          "sampleShow": "Namunaviy javobni ko'rish",
+          "sampleHide": "Namunaviy javobni yashirish",
+          "title": "AI baho tayyor",
+          "body": "{section} bo'yicha AI baho va tuzatishlar tayyor."
+        },
+        "reminder": {
+          "title": "Bugungi mashq kutmoqda",
+          "body": "{minutes} daqiqalik rejani bajarib, ritmni saqlang."
+        },
+        "newTest": {
+          "title": "Yangi mock test qo'shildi",
+          "body": "{title} rasmiy formatda. Birinchilardan bo'lib ishlang."
+        },
+        "exam": {
+          "title": "Imtihonga {days} kun qoldi",
+          "body": "Rejangizni ko'rib chiqing va zaif bo'limga e'tibor qarating."
+        }
+      },
+      "denied": "Bildirishnomalarga ruxsat berilmadi. Ularni telefon sozlamalaridan yoqishingiz mumkin.",
+      "open": "Ochish"
+    }
+  },
+  "mic": {
+    "retry": "Qayta urinish",
+    "denied": {
+      "title": "Mikrofonga ruxsat berilmagan",
+      "text": "Brauzer mikrofonni bloklagan. Ruxsat bergach, yozish avtomatik boshlanadi.",
+      "step1": "Manzil satridagi <icon></icon> belgisini bosing",
+      "step2": "«Mikrofon» bandida «Ruxsat berish»ni tanlang"
+    },
+    "missing": {
+      "title": "Mikrofon topilmadi",
+      "text": "Kompyuterga mikrofon yoki naushnik ulang, so'ng qayta urinib ko'ring."
+    },
+    "busy": {
+      "title": "Mikrofon band",
+      "text": "Mikrofonni boshqa dastur (Zoom, Teams, Telegram) ishlatmoqda. Uni yoping va qayta urinib ko'ring."
+    },
+    "unsupported": {
+      "title": "Ovoz yozib bo'lmaydi",
+      "text": "Chrome, Edge yoki Safari'ning so'nggi versiyasidan foydalaning. Sayt xavfsiz (https) manzilda ochilgan bo'lishi kerak."
     }
   }
 }

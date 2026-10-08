@@ -1,8 +1,9 @@
 import { useTranslations } from 'next-intl';
+import { AppleIcon, GoogleIcon } from '@/components/ui/brand-icons';
 
 const PROVIDERS = [
-  { key: 'google', mark: <span className="size-[18px] rounded-full bg-[conic-gradient(#ea4335_0_25%,#fbbc05_0_50%,#34a853_0_75%,#4285f4_0)]" /> },
-  { key: 'apple', mark: <span className="size-[18px] rounded-[5px] bg-ink" /> },
+  { key: 'google', mark: <GoogleIcon size={18} /> },
+  { key: 'apple', mark: <AppleIcon size={18} className="-mt-0.5 text-ink" /> },
 ] as const;
 
 export function SocialButtons() {
@@ -10,7 +11,7 @@ export function SocialButtons() {
   return (
     <div className="grid grid-cols-2 gap-2.5">
       {PROVIDERS.map((p) => (
-        <button key={p.key} type="button" className="flex h-12 items-center gap-2.5 rounded-[14px] bg-surface px-4 text-sm font-medium shadow-inset transition-colors duration-(--t-fast) hover:bg-bg-app">
+        <button key={p.key} type="button" className="flex h-12 items-center justify-center gap-2.5 rounded-[14px] bg-surface px-4 text-sm font-medium shadow-inset transition-colors duration-(--t-fast) hover:bg-bg-app">
           {p.mark}
           {t(p.key)}
         </button>

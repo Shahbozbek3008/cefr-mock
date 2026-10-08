@@ -170,6 +170,17 @@ export type Database = {
         Update: { [_ in never]: never };
         Relationships: [];
       };
+      push_tokens: {
+        Row: {
+          token: string;
+          user_id: string;
+          platform: 'mobile' | 'web';
+          updated_at: string;
+        };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
       notifications: {
         Row: {
           id: string;
@@ -189,6 +200,14 @@ export type Database = {
     };
     Views: { [_ in never]: never };
     Functions: {
+      register_push_token: {
+        Args: { push_token: string; push_platform: 'mobile' | 'web' };
+        Returns: undefined;
+      };
+      unregister_push_token: {
+        Args: { push_token: string };
+        Returns: undefined;
+      };
       log_study: {
         Args: { study_day: string; spent_minutes: number };
         Returns: undefined;

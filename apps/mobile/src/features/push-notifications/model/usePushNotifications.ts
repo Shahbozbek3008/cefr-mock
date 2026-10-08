@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { registerPushToken, unregisterPushToken } from '@cefr/core';
 import { updateProfile, useUserStore } from '@/entities/user/model';
+import { supabase } from '@/shared/api';
 import { translate, useI18n, useLocaleStore } from '@/shared/i18n';
 import { useToast } from '@/shared/ui';
 import { loadFcm, requestPushPermission } from './messaging';
@@ -7,8 +9,11 @@ import { openMessage, routeOf } from './route';
 import { usePushStore } from './store';
 
 const saveToken = (token: string | null) => {
+  const previous = usePushStore.getState().token;
   usePushStore.getState().setToken(token);
   updateProfile({ pushToken: token }).catch(() => undefined);
+  if (token) registerPushToken(supabase, token, 'mobile').catch(() => undefined);
+  if (previous && previous !== token) unregisterPushToken(supabase, previous).catch(() => undefined);
 };
 
 const useTokenSync = () => {

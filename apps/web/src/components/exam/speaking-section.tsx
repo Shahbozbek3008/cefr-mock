@@ -2,19 +2,58 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ChevronsRight, Mic, RotateCcw } from 'lucide-react';
+import { ChevronsRight, Headphones, Lock, Mic, MicOff, MonitorX, RotateCcw, type LucideIcon } from 'lucide-react';
 import { formatClock, useCefrClient, type SpeakingQuestion, type TestDetail } from '@cefr/core';
 import { cn } from '@/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { uploads, useSessionControls } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
 import { TimerPill } from '@/components/test/timer-pill';
 import { ExamHeader } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
-import { useAnswerRecorder, type RecorderPhase } from './use-answer-recorder';
+import { useAnswerRecorder, type MicIssue, type RecorderPhase } from './use-answer-recorder';
 
 const WAVE_BARS = 24;
 const roundButton = 'grid size-12 place-items-center rounded-full bg-surface text-ink-body shadow-inset transition-[background-color,scale] duration-(--t-base) hover:bg-bg-app active:scale-95 disabled:opacity-40';
+
+const ISSUE_ICONS: Record<MicIssue, LucideIcon> = { denied: MicOff, missing: Headphones, busy: Mic, unsupported: MonitorX };
+
+const lockIcon = () => (
+  <span className="inline-grid size-5 place-items-center rounded-[6px] bg-surface-sunken align-middle text-ink-2">
+    <Icon as={Lock} size={11} strokeWidth={2} />
+  </span>
+);
+
+function MicIssueCard({ issue, onRetry }: { issue: MicIssue; onRetry: () => void }) {
+  const t = useTranslations('mic');
+  return (
+    <div className="flex animate-fade-up flex-col gap-5 rounded-card-sm bg-surface p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)] sm:flex-row sm:items-start">
+      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-error-50 text-error-text">
+        <Icon as={ISSUE_ICONS[issue]} size={22} strokeWidth={1.7} />
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[15px] font-medium">{t(`${issue}.title`)}</span>
+          <span className="text-[13px] leading-normal text-ink-2">{t(`${issue}.text`)}</span>
+        </div>
+        {issue === 'denied' && (
+          <ol className="m-0 flex list-none flex-col gap-2 p-0">
+            {(['step1', 'step2'] as const).map((step, i) => (
+              <li key={step} className="flex items-center gap-2.5 text-[13px] text-ink-body">
+                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-surface-sunken font-mono text-[11px] text-ink-2">{i + 1}</span>
+                <span className="flex flex-wrap items-center gap-1">{t.rich(`denied.${step}`, { icon: lockIcon })}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+      <Button size="sm" variant="secondary" icon={<Icon as={RotateCcw} size={15} />} onClick={onRetry} className="shrink-0 self-start">
+        {t('retry')}
+      </Button>
+    </div>
+  );
+}
 
 function PromptCard({ question }: { question: SpeakingQuestion }) {
   const t = useTranslations('exam.speaking');
@@ -74,7 +113,7 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
   const t = useTranslations('exam');
   const client = useCefrClient();
   const setRecording = useAttemptStore((s) => s.setRecording);
-  const { phase, secondsLeft, elapsed, bars, start, stop, restart } = useAnswerRecorder(question, (url) => {
+  const { phase, issue, secondsLeft, elapsed, bars, start, stop, restart, retry } = useAnswerRecorder(question, (url) => {
     setRecording(question.id, url);
     uploads.upload(client, question.id, url);
   });
@@ -102,11 +141,8 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
             ))}
           </div>
           <PromptCard question={question} />
-          {phase === 'denied' ? (
-            <div className="flex flex-col gap-1.5 rounded-card-sm bg-error-50 p-5 shadow-[0_0_0_1px_oklch(0.6_0.17_28/.18)]">
-              <span className="text-sm font-medium text-error-text">{t('speaking.deniedTitle')}</span>
-              <span className="text-[13px] text-ink-2">{t('speaking.deniedMessage')}</span>
-            </div>
+          {phase === 'denied' && issue ? (
+            <MicIssueCard issue={issue} onRetry={retry} />
           ) : (
             <RecorderCard question={question} phase={phase} elapsed={elapsed} bars={bars} />
           )}
@@ -121,7 +157,7 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
             <span className="size-[22px] rounded-[7px] bg-error transition-[border-radius,scale] duration-(--t-sheet) ease-spring group-hover:scale-90 group-hover:rounded-[11px]" />
           </button>
         ) : (
-          <button type="button" aria-label={t('speaking.record')} onClick={start} disabled={phase !== 'prep'} className="grid size-16 place-items-center rounded-full bg-action text-white shadow-action transition-[scale] duration-(--t-sheet) ease-spring hover:scale-105 active:scale-95 disabled:opacity-40">
+          <button type="button" aria-label={t('speaking.record')} onClick={phase === 'denied' ? retry : start} disabled={phase !== 'prep' && phase !== 'denied'} className="grid size-16 place-items-center rounded-full bg-action text-white shadow-action transition-[scale] duration-(--t-sheet) ease-spring hover:scale-105 active:scale-95 disabled:opacity-40">
             <Icon as={Mic} size={24} strokeWidth={1.8} />
           </button>
         )}

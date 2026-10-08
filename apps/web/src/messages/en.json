@@ -694,7 +694,7 @@
       "items": {
         "reminder": {
           "title": "Push notifications",
-          "hint": "Daily reminders and results are sent to the mobile app"
+          "hint": "Daily reminders and results go to your phone and browser"
         },
         "results": {
           "title": "AI results ready",
@@ -704,6 +704,13 @@
           "title": "New mock tests",
           "hint": "When a new test is added to the catalog"
         }
+      },
+      "browser": {
+        "title": "Browser notifications",
+        "hint": "Get results and reminders in this browser",
+        "pushOff": "Turn on push notifications first",
+        "denied": "Notifications are blocked. Allow them via the lock icon in the address bar",
+        "unavailable": "This browser doesn't support notifications"
       }
     },
     "subscription": {
@@ -1159,6 +1166,79 @@
       "transcriptMeta": "{words} words · {wpm} wpm",
       "play": "Play",
       "pause": "Pause"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllRead": "Mark all as read",
+      "clear": "Clear",
+      "clearTitle": "Clear notifications?",
+      "clearMessage": "All notifications will be removed from the list.",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "earlier": "Earlier",
+      "unread": "{count, plural, one {{count} new} other {{count} new}}",
+      "emptyTitle": "No notifications yet",
+      "emptyMessage": "Results, AI reviews and reminders will appear here as soon as they are ready.",
+      "emptyAction": "Turn on reminders",
+      "loadFailed": "Could not load notifications",
+      "kinds": {
+        "result": {
+          "title": "Your result is ready",
+          "body": "{title}: {score} points ({level}). See the detailed review."
+        },
+        "mistakes": {
+          "title": "Work on mistakes",
+          "start": "Practise your mistakes",
+          "listen": "Listen to this part",
+          "check": "Check",
+          "noneTitle": "No mistakes",
+          "noneMessage": "All your Listening and Reading answers are correct.",
+          "doneTitle": "{solved} of {total} correct",
+          "doneMessage": "You can go through the remaining mistakes again.",
+          "again": "Start again"
+        },
+        "aiReview": {
+          "sampleShow": "Show a model answer",
+          "sampleHide": "Hide the model answer",
+          "title": "AI review is ready",
+          "body": "AI scores and corrections for {section} are ready."
+        },
+        "reminder": {
+          "title": "Today's practice is waiting",
+          "body": "Complete your {minutes}-minute plan and keep your rhythm."
+        },
+        "newTest": {
+          "title": "New mock test added",
+          "body": "{title} in the official format. Be among the first to try it."
+        },
+        "exam": {
+          "title": "{days} days until your exam",
+          "body": "Review your plan and focus on your weakest section."
+        }
+      },
+      "denied": "Notifications are not allowed. You can turn them on in phone settings.",
+      "open": "Open"
+    }
+  },
+  "mic": {
+    "retry": "Try again",
+    "denied": {
+      "title": "Microphone access blocked",
+      "text": "Your browser blocked the microphone. Recording starts automatically once you allow it.",
+      "step1": "Click the <icon></icon> icon in the address bar",
+      "step2": "Set “Microphone” to “Allow”"
+    },
+    "missing": {
+      "title": "No microphone found",
+      "text": "Connect a microphone or headset, then try again."
+    },
+    "busy": {
+      "title": "Microphone is busy",
+      "text": "Another app (Zoom, Teams, Telegram) is using the microphone. Close it and try again."
+    },
+    "unsupported": {
+      "title": "Recording unavailable",
+      "text": "Use the latest Chrome, Edge or Safari. The site must be opened over a secure (https) connection."
     }
   }
 }

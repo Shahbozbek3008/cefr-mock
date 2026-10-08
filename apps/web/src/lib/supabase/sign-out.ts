@@ -6,6 +6,7 @@ import { useCefrClient } from '@cefr/core';
 import { useRouter } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { useAttemptStore } from '@/lib/attempt-store';
+import { disableWebPush } from '@/lib/firebase/web-push';
 
 export const useSignOut = () => {
   const client = useCefrClient();
@@ -14,6 +15,7 @@ export const useSignOut = () => {
 
   return useCallback(
     async (scope: 'local' | 'global' = 'local') => {
+      await disableWebPush(client).catch(() => undefined);
       await client.auth.signOut({ scope }).catch(() => undefined);
       useAttemptStore.getState().reset();
       queryClient.clear();

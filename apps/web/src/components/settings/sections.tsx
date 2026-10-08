@@ -3,7 +3,7 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useQueryClient } from '@tanstack/react-query';
-import { Check, LogOut, MonitorSmartphone, RotateCcw, Smartphone, Sparkles } from 'lucide-react';
+import { BellRing, Check, LogOut, MonitorSmartphone, RotateCcw, Smartphone, Sparkles } from 'lucide-react';
 import {
   DAILY_MINUTES,
   DEFAULT_DAILY_MINUTES,
@@ -25,6 +25,7 @@ import { cn } from '@/lib/cn';
 import { toSquareJpeg } from '@/lib/image';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { useSignOut } from '@/lib/supabase/sign-out';
+import { useWebPush } from '@/lib/firebase/web-push';
 import { Tag } from '@/components/ui/tag';
 import { Icon } from '@/components/ui/icon';
 import { Avatar } from '@/components/ui/avatar';
@@ -278,15 +279,35 @@ const ALWAYS_ON = ['results', 'newTests'] as const;
 
 export function NotificationsSection() {
   const t = useTranslations('settings.notifications');
+  const client = useCefrClient();
   const profile = useProfile().data;
   const { save, state } = useSaver();
+  const browser = useWebPush(client);
+  const [browserBusy, setBrowserBusy] = useState(false);
   if (!profile) return <SectionSkeleton rows={1} />;
+
+  const toggleBrowser = async (checked: boolean) => {
+    setBrowserBusy(true);
+    await (checked ? browser.enable() : browser.disable());
+    setBrowserBusy(false);
+  };
+
+  const browserHint =
+    browser.status === 'unavailable' ? t('browser.unavailable') : browser.status === 'denied' ? t('browser.denied') : !profile.reminderEnabled ? t('browser.pushOff') : t('browser.hint');
 
   return (
     <Panel title={t('title')} subtitle={t('subtitle')} action={<SaveNote state={state} />}>
       <Rows>
         <SettingRow title={t('items.reminder.title')} hint={t('items.reminder.hint')} icon={<IconTile><Icon as={MonitorSmartphone} size={16} strokeWidth={1.7} /></IconTile>}>
           <Switch label={t('items.reminder.title')} checked={profile.reminderEnabled} onCheckedChange={(checked) => save({ reminderEnabled: checked })} />
+        </SettingRow>
+        <SettingRow title={t('browser.title')} hint={browserHint} icon={<IconTile><Icon as={BellRing} size={16} strokeWidth={1.7} /></IconTile>}>
+          <Switch
+            label={t('browser.title')}
+            checked={browser.status === 'on'}
+            disabled={browserBusy || !profile.reminderEnabled || browser.status === 'checking' || browser.status === 'unavailable' || browser.status === 'denied'}
+            onCheckedChange={toggleBrowser}
+          />
         </SettingRow>
         {ALWAYS_ON.map((key) => (
           <SettingRow key={key} title={t(`items.${key}.title`)} hint={t(`items.${key}.hint`)} icon={<IconTile><Icon as={Sparkles} size={16} strokeWidth={1.7} /></IconTile>}>

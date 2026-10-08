@@ -2,11 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import { daysUntil, useProfile } from '@cefr/core';
-import { Bell, CalendarDays, ChevronRight, Plus } from 'lucide-react';
+import { CalendarDays, ChevronRight, Plus } from 'lucide-react';
 import { usePathname } from '@/i18n/navigation';
 import { Icon } from '@/components/ui/icon';
 import { NextTestLink } from '@/components/exam/next-test-link';
 import { findActiveNav } from './app-nav';
+import { NotificationsMenu } from './notifications-menu';
 
 export function AppTopbar() {
   const t = useTranslations('app');
@@ -34,14 +35,7 @@ export function AppTopbar() {
         {t('topbar.exam', { days: daysUntil(examDate) })}
       </span>
       )}
-      <button
-        type="button"
-        aria-label={t('topbar.notifications')}
-        className="relative grid size-8 place-items-center rounded-[9px] text-ink-2 transition-colors duration-(--t-fast) hover:bg-hover hover:text-ink"
-      >
-        <Icon as={Bell} size={16} strokeWidth={1.6} />
-        <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-error ring-2 ring-bg" />
-      </button>
+      <NotificationsMenu label={t('topbar.notifications')} />
       <NextTestLink size="xs" icon={<Icon as={Plus} size={14} strokeWidth={2} />} className="h-8 gap-1.5 rounded-[9px] px-3 text-[13px]">
         {t('topbar.newTest')}
       </NextTestLink>

@@ -6,16 +6,17 @@ import { Check } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { Icon } from './icon';
 
-type SwitchProps = { defaultChecked?: boolean; checked?: boolean; onCheckedChange?: (checked: boolean) => void; label: string };
+type SwitchProps = { defaultChecked?: boolean; checked?: boolean; onCheckedChange?: (checked: boolean) => void; label: string; disabled?: boolean };
 
-export function Switch({ defaultChecked, checked, onCheckedChange, label }: SwitchProps) {
+export function Switch({ defaultChecked, checked, onCheckedChange, label, disabled }: SwitchProps) {
   return (
     <RSwitch.Root
       defaultChecked={defaultChecked}
       checked={checked}
       onCheckedChange={onCheckedChange}
+      disabled={disabled}
       aria-label={label}
-      className="group flex h-[26px] w-11 shrink-0 rounded-[13px] bg-line p-[3px] transition-colors duration-(--t-base) data-[state=checked]:bg-green"
+      className="group flex disabled:cursor-not-allowed disabled:opacity-50 h-[26px] w-11 shrink-0 rounded-[13px] bg-line p-[3px] transition-colors duration-(--t-base) data-[state=checked]:bg-green"
     >
       <RSwitch.Thumb className="size-5 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)] transition-[translate,width] duration-(--t-sheet) ease-spring group-active:w-6 data-[state=checked]:translate-x-[18px] group-active:data-[state=checked]:translate-x-[14px]" />
     </RSwitch.Root>

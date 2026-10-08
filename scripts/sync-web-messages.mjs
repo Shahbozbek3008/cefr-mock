@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const LOCALES = ['uz', 'ru', 'en'];
-const SECTIONS = ['common', 'units', 'catalog', 'sections', 'testIntro', 'session', 'listening', 'reading', 'writing', 'speaking', 'result', 'review', 'mistakes', 'aiReview'];
+const SECTIONS = ['common', 'units', 'catalog', 'sections', 'testIntro', 'session', 'listening', 'reading', 'writing', 'speaking', 'result', 'review', 'mistakes', 'aiReview', 'notifications'];
 const PLURAL_FORMS = ['zero', 'one', 'two', 'few', 'many', 'other'];
 
 const loadMobile = (locale) => {

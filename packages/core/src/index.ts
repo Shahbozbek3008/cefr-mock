@@ -55,6 +55,8 @@ export {
   useUnreadCount,
 } from './notification/api';
 export type { AppNotification, NotificationKind, NotificationParams } from './notification/api';
+export { registerPushToken, unregisterPushToken } from './notification/push';
+export type { PushPlatform } from './notification/push';
 
 export { sectionStats } from './session/stats';
 export type { SectionStats } from './session/stats';
