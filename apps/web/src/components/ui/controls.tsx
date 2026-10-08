@@ -23,12 +23,16 @@ export function Switch({ defaultChecked, checked, onCheckedChange, label, disabl
   );
 }
 
-export function Checkbox({ defaultChecked, id, children }: { defaultChecked?: boolean; id: string; children: ReactNode }) {
+type CheckboxProps = { defaultChecked?: boolean; checked?: boolean; onCheckedChange?: (checked: boolean) => void; id: string; children: ReactNode };
+
+export function Checkbox({ defaultChecked, checked, onCheckedChange, id, children }: CheckboxProps) {
   return (
     <div className="flex items-start gap-3 text-[13px] leading-normal text-ink-2">
       <RCheckbox.Root
         id={id}
         defaultChecked={defaultChecked}
+        checked={checked}
+        onCheckedChange={onCheckedChange ? (state) => onCheckedChange(state === true) : undefined}
         className="grid size-5 shrink-0 place-items-center rounded-md bg-surface text-white shadow-[inset_0_0_0_1.5px_var(--border-strong)] transition-[background-color,box-shadow] duration-(--t-base) data-[state=checked]:bg-green data-[state=checked]:shadow-none"
       >
         <RCheckbox.Indicator className="animate-pop">

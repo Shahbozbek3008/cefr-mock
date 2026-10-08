@@ -375,7 +375,9 @@
       },
       "planLabel": "Sizning rejangiz",
       "planValue": "{days} kun · {tests} ta mock test",
-      "target": "{level} · {min}+"
+      "target": "{level} · {min}+",
+      "skip": "Sanani hali bilmayman",
+      "planEmpty": "Sana belgilanmasa ham moslashuvchan reja tuziladi"
     },
     "account": {
       "title": "Rejangizni saqlaymiz",
@@ -393,7 +395,9 @@
         "dailyValue": "{minutes} daqiqa",
         "plan": "Reja",
         "planValue": "{tests} mock test · {drills} mashq",
-        "tip": "Birinchi mock test bepul — boshlang'ich darajangizni aniqlaymiz."
+        "tip": "Birinchi mock test bepul — boshlang'ich darajangizni aniqlaymiz.",
+        "empty": "Tanlanmagan",
+        "planFlexible": "Moslashuvchan reja"
       }
     },
     "done": {

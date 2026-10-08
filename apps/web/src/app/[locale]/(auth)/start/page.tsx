@@ -2,10 +2,9 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
-import { ButtonLink } from '@/components/ui/button';
 import { AuthTopBar, StepIndicator } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
-import { LevelPicker } from '@/components/auth/level-picker';
+import { GoalStep } from '@/components/auth/onboarding-steps';
 
 export const generateMetadata = metadataTitle('onboarding.goal.title');
 
@@ -25,10 +24,7 @@ function GoalView() {
           <h1 className="m-0 text-[40px] leading-[1.05] font-medium tracking-[-0.045em]">{t('goal.title')}</h1>
           <p className="m-0 text-base text-ink-2">{t('goal.text')}</p>
         </div>
-        <LevelPicker />
-        <div className="flex w-full max-w-[748px] justify-end">
-          <ButtonLink href={ROUTES.startDate} arrow className="min-w-[220px] max-sm:w-full">{t('continue')}</ButtonLink>
-        </div>
+        <GoalStep />
       </div>
     </Stage>
   );

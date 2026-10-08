@@ -43,6 +43,8 @@ export type { AuthProvider, DailyMinutes, OnboardingState, TargetLevel, User } f
 export { avatarUrl, fetchProfile, profileKeys, removeAvatar, updateProfile, uploadAvatar } from './user/api';
 export { useProfile, useUpdateProfile } from './user/hooks';
 export { resetProgress } from './user/reset';
+export { onboardingPatch, studyPlanOf } from './user/onboarding';
+export type { OnboardingDraft } from './user/onboarding';
 export type { Locale, Profile, ProfilePatch } from './user/api';
 
 export {

@@ -10,7 +10,9 @@ import { OtpInput } from '@/components/ui/otp-input';
 import { ResendTimer } from './resend-timer';
 import { authErrorKey } from './auth-error';
 
-export function VerifyCodeForm({ digits, next = ROUTES.dashboard }: { digits: string; next?: string }) {
+type VerifyCodeFormProps = { digits: string; next?: string; onVerified?: () => Promise<void> };
+
+export function VerifyCodeForm({ digits, next = ROUTES.dashboard, onVerified }: VerifyCodeFormProps) {
   const t = useTranslations('auth');
   const client = useCefrClient();
   const router = useRouter();
@@ -26,6 +28,10 @@ export function VerifyCodeForm({ digits, next = ROUTES.dashboard }: { digits: st
     try {
       await verifyCode(client, digits, value);
       setDone(true);
+      if (onVerified) {
+        await onVerified();
+        return;
+      }
       router.replace(next);
       router.refresh();
     } catch (failure) {

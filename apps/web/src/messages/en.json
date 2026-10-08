@@ -375,7 +375,9 @@
       },
       "planLabel": "Your plan",
       "planValue": "{days} days · {tests} mock tests",
-      "target": "{level} · {min}+"
+      "target": "{level} · {min}+",
+      "skip": "I don't know the date yet",
+      "planEmpty": "No date? We'll build a flexible plan"
     },
     "account": {
       "title": "Let's save your plan",
@@ -393,7 +395,9 @@
         "dailyValue": "{minutes} minutes",
         "plan": "Plan",
         "planValue": "{tests} mock tests · {drills} drills",
-        "tip": "Your first mock test is free — we'll find your starting level."
+        "tip": "Your first mock test is free — we'll find your starting level.",
+        "empty": "Not set",
+        "planFlexible": "Flexible plan"
       }
     },
     "done": {
