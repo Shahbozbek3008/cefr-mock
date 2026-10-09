@@ -13,5 +13,5 @@ export function PageHeader({ meta, title, actions }: PageHeaderProps) {
 }
 
 export function AppMain({ children, className = 'gap-5' }: { children: ReactNode; className?: string }) {
-  return <main className={`stagger flex min-w-0 flex-1 flex-col px-10 py-7 ${className}`}>{children}</main>;
+  return <main className={`stagger flex min-w-0 flex-1 flex-col px-4 py-5 sm:px-6 lg:px-10 lg:py-7 ${className}`}>{children}</main>;
 }

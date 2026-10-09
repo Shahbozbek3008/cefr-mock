@@ -21,7 +21,7 @@ const LINKS = [
 
 const phoneLabel = (phone: string | null) => (phone ? `+998 ${formatPhone(phone.replace(/^\+998/, ''))}` : '');
 
-export function UserMenu() {
+export function UserMenu({ collapsed = false }: { collapsed?: boolean }) {
   const t = useTranslations('app');
   const locale = useLocale() as Locale;
   const signOut = useSignOut();
@@ -38,29 +38,36 @@ export function UserMenu() {
     <DropdownMenu.Root modal={false}>
       <DropdownMenu.Trigger
         aria-label={t('user.menu')}
-        className="group flex w-full items-center gap-2.5 rounded-[11px] p-1.5 text-left transition-colors duration-(--t-fast) outline-none hover:bg-hover focus-visible:shadow-focus data-[state=open]:bg-hover"
+        className={cn(
+          'group flex items-center gap-2.5 rounded-[11px] text-left transition-colors duration-(--t-fast) outline-none hover:bg-hover focus-visible:shadow-focus data-[state=open]:bg-hover',
+          collapsed ? 'mx-auto p-1' : 'w-full p-1.5',
+        )}
       >
-        {profile ? (
+        {profile ? <Avatar initial={initial} size={32} src={profile.avatarUrl} /> : <Skeleton className="size-8 shrink-0 rounded-full" />}
+        {!collapsed && (
           <>
-            <Avatar initial={initial} size={32} src={profile.avatarUrl} />
-            <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
-              <span className="truncate text-[13px] font-medium text-ink">{fullName || phoneLabel(profile.phone)}</span>
-              <span className="truncate text-[11px] text-ink-3">{t(`plan.${profile.isPro ? 'pro' : 'free'}`)}</span>
-            </span>
-          </>
-        ) : (
-          <>
-            <Skeleton className="size-8 shrink-0 rounded-full" />
-            <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
-              <SkeletonText className="w-24 text-[13px]" />
-              <SkeletonText className="w-12 text-[11px]" />
-            </span>
+            {profile ? (
+              <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
+                <span className="truncate text-[13px] font-medium text-ink">{fullName || phoneLabel(profile.phone)}</span>
+                <span className="truncate text-[11px] text-ink-3">{t(`plan.${profile.isPro ? 'pro' : 'free'}`)}</span>
+              </span>
+            ) : (
+              <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
+                <SkeletonText className="w-24 text-[13px]" />
+                <SkeletonText className="w-12 text-[11px]" />
+              </span>
+            )}
+            <Icon as={ChevronsUpDown} size={14} strokeWidth={1.6} className="text-ink-3" />
           </>
         )}
-        <Icon as={ChevronsUpDown} size={14} strokeWidth={1.6} className="text-ink-3" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content side="top" align="start" sideOffset={8} className={cn(menuContent, 'w-(--radix-dropdown-menu-trigger-width)')}>
+        <DropdownMenu.Content
+          side={collapsed ? 'right' : 'top'}
+          align={collapsed ? 'end' : 'start'}
+          sideOffset={collapsed ? 12 : 8}
+          className={cn(menuContent, collapsed ? 'w-[220px]' : 'w-(--radix-dropdown-menu-trigger-width)')}
+        >
           <div className="flex flex-col px-2.5 pt-1.5 pb-2">
             <span className="text-[13px] font-medium">{fullName}</span>
             <span className="font-mono text-[11px] text-ink-3">{phoneLabel(profile?.phone ?? null)}</span>

@@ -46,14 +46,25 @@
     },
     "topbar": {
       "notifications": "Уведомления",
-      "newTest": "Новый тест",
-      "exam": "Осталось {days} дн."
+      "newTest": "Новый тест"
     },
     "user": {
       "settings": "Настройки",
       "billing": "Подписка и оплата",
       "logout": "Выйти",
       "menu": "Меню пользователя"
+    },
+    "sidebar": {
+      "collapse": "Свернуть меню",
+      "expand": "Развернуть меню",
+      "open": "Открыть меню",
+      "close": "Закрыть меню"
+    },
+    "exam": {
+      "title": "До экзамена",
+      "days": "{count, plural, one {день} few {дня} many {дней} other {дня}}",
+      "left": "Осталось {days} дн.",
+      "pick": "Укажите дату экзамена"
     }
   },
   "landing": {

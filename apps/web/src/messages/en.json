@@ -46,14 +46,25 @@
     },
     "topbar": {
       "notifications": "Notifications",
-      "newTest": "New test",
-      "exam": "{days} days left"
+      "newTest": "New test"
     },
     "user": {
       "settings": "Settings",
       "billing": "Billing & plans",
       "logout": "Log out",
       "menu": "User menu"
+    },
+    "sidebar": {
+      "collapse": "Collapse sidebar",
+      "expand": "Expand sidebar",
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "exam": {
+      "title": "Until exam",
+      "days": "{count, plural, one {day} other {days}}",
+      "left": "{days} days left",
+      "pick": "Set your exam date"
     }
   },
   "landing": {

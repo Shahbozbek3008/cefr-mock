@@ -3,7 +3,7 @@ import { ROUTES } from '@/lib/constants';
 
 export type NavKey = 'home' | 'tests' | 'progress' | 'profile' | 'billing';
 
-export type NavItem = { key: NavKey; href: string; icon: LucideIcon; badge?: number; match: (path: string) => boolean };
+export type NavItem = { key: NavKey; href: string; icon: LucideIcon; match: (path: string) => boolean };
 
 export type NavGroup = { key: 'workspace' | 'account'; items: readonly NavItem[] };
 
@@ -12,7 +12,7 @@ export const APP_NAV: readonly NavGroup[] = [
     key: 'workspace',
     items: [
       { key: 'home', href: ROUTES.dashboard, icon: House, match: (p) => p === ROUTES.dashboard },
-      { key: 'tests', href: ROUTES.catalog, icon: Layers, badge: 3, match: (p) => p.startsWith(ROUTES.catalog) || p.startsWith('/app/results') },
+      { key: 'tests', href: ROUTES.catalog, icon: Layers, match: (p) => p.startsWith(ROUTES.catalog) || p.startsWith('/app/results') },
       { key: 'progress', href: ROUTES.progress, icon: ChartLine, match: (p) => p.startsWith(ROUTES.progress) },
     ],
   },

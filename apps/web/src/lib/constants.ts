@@ -21,6 +21,8 @@ export type LevelCode = (typeof LEVELS)[number]['code'];
 
 export const SCALE_SEGMENTS = [38, 13, 14, 10] as const;
 
+export const SIDEBAR_COOKIE = 'sidebar_collapsed';
+
 export const ROUTES = {
   home: '/',
   login: '/login',

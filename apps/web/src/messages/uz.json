@@ -46,14 +46,25 @@
     },
     "topbar": {
       "notifications": "Bildirishnomalar",
-      "newTest": "Yangi test",
-      "exam": "{days} kun qoldi"
+      "newTest": "Yangi test"
     },
     "user": {
       "settings": "Sozlamalar",
       "billing": "Obuna va to'lov",
       "logout": "Chiqish",
       "menu": "Foydalanuvchi menyusi"
+    },
+    "sidebar": {
+      "collapse": "Menyuni yig'ish",
+      "expand": "Menyuni yoyish",
+      "open": "Menyuni ochish",
+      "close": "Menyuni yopish"
+    },
+    "exam": {
+      "title": "Imtihongacha",
+      "days": "kun",
+      "left": "{days} kun qoldi",
+      "pick": "Imtihon sanasini belgilang"
     }
   },
   "landing": {
