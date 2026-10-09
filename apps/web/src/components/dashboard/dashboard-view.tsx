@@ -19,14 +19,15 @@ import {
   type TestSummary,
 } from '@cefr/core';
 import { AppMain } from '@/components/layout/page-header';
-import { KpiCards, type KpiData } from './kpi-cards';
-import { ScoreChart } from './score-chart';
-import { ContinueCard } from './continue-card';
-import { InsightCard } from './insight-card';
-import { SkillsCard, type SkillScore } from './skills-card';
-import { ActivityCard } from './activity-card';
-import { TodayPlan } from './today-plan';
-import { RecommendedTable } from './recommended-table';
+import { SkeletonText } from '@/components/ui/skeleton';
+import { KpiCards, KpiCardsSkeleton, type KpiData, type WeekDay } from './kpi-cards';
+import { ScoreChart, ScoreChartSkeleton } from './score-chart';
+import { ContinueCard, ContinueCardSkeleton } from './continue-card';
+import { InsightCard, InsightCardSkeleton } from './insight-card';
+import { SkillsCard, SkillsCardSkeleton, type SkillScore } from './skills-card';
+import { ActivityCard, ActivityCardSkeleton } from './activity-card';
+import { TodayPlan, TodayPlanSkeleton } from './today-plan';
+import { RecommendedTable, RecommendedTableSkeleton } from './recommended-table';
 
 const TREND_LENGTH = 8;
 const RECOMMENDED_LIMIT = 5;
@@ -39,21 +40,61 @@ const useToday = () => {
   return useMemo(() => (key ? new Date(`${key}T12:00:00`) : null), [key]);
 };
 
+const useWeekdays = () => useTranslations('calendar')('weekdays').split(',');
+
+function DashboardSkeleton() {
+  const t = useTranslations('dashboard');
+  const week: WeekDay[] = useWeekdays().map((label) => ({ key: label, label, minutes: 0 }));
+
+  return (
+    <AppMain className="gap-5">
+      <div className="flex flex-col gap-1 pb-1">
+        <SkeletonText className="h-5 w-44 text-[13px]" />
+        <SkeletonText className="w-72 text-[26px] leading-tight" />
+        <SkeletonText className="w-80 text-sm" />
+      </div>
+      <KpiCardsSkeleton week={week} />
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <ScoreChartSkeleton />
+        <div className="flex flex-col gap-4">
+          <ContinueCardSkeleton />
+          <InsightCardSkeleton />
+        </div>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+        <SkillsCardSkeleton title={t('skills.title')} subtitle={t('skills.subtitle')} />
+        <ActivityCardSkeleton week={week} />
+        <TodayPlanSkeleton />
+      </div>
+      <RecommendedTableSkeleton />
+    </AppMain>
+  );
+}
+
 export function DashboardView() {
   const t = useTranslations('dashboard');
-  const weekdays = useTranslations('calendar')('weekdays').split(',');
+  const weekdays = useWeekdays();
   const format = useFormatter();
   const today = useToday();
-  const profile = useProfile().data;
-  const results = useResults().data ?? [];
-  const tests = useTests().data ?? [];
-  const minutesByDay = useStudyDays().data ?? {};
+  const profileQuery = useProfile();
+  const resultsQuery = useResults();
+  const testsQuery = useTests();
+  const studyDaysQuery = useStudyDays();
+
+  if (!today || [profileQuery, resultsQuery, testsQuery, studyDaysQuery].some((query) => query.isPending)) {
+    return <DashboardSkeleton />;
+  }
+
+  const profile = profileQuery.data;
+  const results = resultsQuery.data ?? [];
+  const tests = testsQuery.data ?? [];
+  const minutesByDay = studyDaysQuery.data ?? {};
 
   const latest = results[0];
   const goal = profile?.dailyMinutes ?? DEFAULT_DAILY_MINUTES;
-  const todayIndex = today ? weekdayIndex(today) : -1;
-  const week = (today ? weekDays(today) : []).map((key, i) => ({ key, label: weekdays[i], minutes: minutesByDay[key] ?? 0 }));
-  const studiedToday = today ? (minutesByDay[dayKey(today)] ?? 0) : 0;
+  const todayIndex = weekdayIndex(today);
+  const week = weekDays(today).map((key, i) => ({ key, label: weekdays[i], minutes: minutesByDay[key] ?? 0 }));
+  const studiedToday = minutesByDay[dayKey(today)] ?? 0;
   const daysLeft = profile?.examDate ? daysUntil(profile.examDate) : null;
 
   const kpi: KpiData = {
@@ -63,13 +104,13 @@ export function DashboardView() {
     daysLeft,
     examLabel: profile?.examDate ? format.dateTime(new Date(`${profile.examDate}T00:00:00`), { day: 'numeric', month: 'long' }) : null,
     target: profile?.targetLevel ?? null,
-    streak: today ? streakOf(minutesByDay, today) : 0,
+    streak: streakOf(minutesByDay, today),
     week,
     weekGoal: goal * 7,
   };
 
   const scores: SectionScores = Object.fromEntries(latest?.sections.map((s) => [s.kind, s.score]) ?? []);
-  const plan = today ? todayPlanOf(weeklyPlan(scores)[todayIndex], goal, studiedToday) : [];
+  const plan = todayPlanOf(weeklyPlan(scores)[todayIndex], goal, studiedToday);
   const skills: SkillScore[] = latest?.sections.map((s) => ({ skill: s.kind, score: s.score, delta: s.delta, weak: s.focus })) ?? [];
   const resume = tests.find((test) => test.status === 'in_progress');
   const recommended = tests
@@ -80,7 +121,7 @@ export function DashboardView() {
   return (
     <AppMain className="gap-5">
       <div className="flex flex-col gap-1 pb-1">
-        <span className="min-h-5 text-[13px] text-ink-3">{today && format.dateTime(today, { weekday: 'long', day: 'numeric', month: 'long' })}</span>
+        <span className="min-h-5 text-[13px] text-ink-3">{format.dateTime(today, { weekday: 'long', day: 'numeric', month: 'long' })}</span>
         <h1 className="m-0 text-[26px] leading-tight font-medium tracking-[-0.035em]">{t('greeting', { name: profile?.firstName ?? '' })}</h1>
         <p className="m-0 text-sm text-ink-2">{daysLeft === null ? t('subtitleNoExam') : t('subtitle', { days: daysLeft })}</p>
       </div>

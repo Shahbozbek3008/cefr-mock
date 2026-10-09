@@ -16,7 +16,7 @@ import {
   type SectionScore,
 } from '@cefr/core';
 import { Link } from '@/i18n/navigation';
-import { ROUTES, SKILL_ICONS } from '@/lib/constants';
+import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
@@ -24,14 +24,20 @@ import { Tag } from '@/components/ui/tag';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Gauge, ScoreValue } from '@/components/ui/gauge';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/motion/count-up';
 import { ScaleBar, LEVEL_LABELS } from '@/components/app/scale-bar';
 import { Delta } from '@/components/app/delta';
 import { panelSurface } from '@/components/dashboard/panel';
 import { Trend } from '@/components/dashboard/trend';
-import { LinkRow, ResultsTopbar, SkeletonBlocks, StatePanel } from './shared';
+import { LinkRow, LinkRowSkeleton, ResultsTopbar, StatePanel } from './shared';
 
 const AI_KINDS: SectionKind[] = ['writing', 'speaking'];
+const SUMMARY_GRID = 'grid gap-4 xl:grid-cols-[380px_minmax(0,1fr)]';
+const GAUGE_PANEL = 'flex flex-col items-center gap-3.5 p-6';
+const SECTION_CARD = 'flex flex-col gap-3.5 p-5';
+const RECOMMENDATION = 'flex flex-col gap-1 rounded-card-sm bg-blue-50 px-5 py-4';
+const TOPBAR_BUTTON = 'h-10 rounded-[13px]';
 
 const sectionHref = (id: string, kind: SectionKind) =>
   kind === 'writing' ? ROUTES.aiWriting(id) : kind === 'speaking' ? ROUTES.aiSpeaking(id) : `${ROUTES.review(id)}?tab=${kind}`;
@@ -41,7 +47,7 @@ function SectionCard({ id, section, pending }: { id: string; section: SectionSco
   return (
     <Link
       href={sectionHref(id, section.kind)}
-      className={cn(panelSurface, 'group flex flex-col gap-3.5 p-5 text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}
+      className={cn(panelSurface, SECTION_CARD, 'group text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}
     >
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2.5 text-sm text-ink-body">
@@ -69,6 +75,69 @@ function SectionCard({ id, section, pending }: { id: string; section: SectionSco
   );
 }
 
+function SectionCardSkeleton() {
+  return (
+    <div className={cn(panelSurface, SECTION_CARD)}>
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-2.5 text-sm">
+          <Skeleton className="size-4 rounded-[4px]" />
+          <SkeletonText className="w-20" />
+        </span>
+        <SkeletonText className="w-8 text-xs" />
+      </div>
+      <Skeleton className="h-9 w-20" />
+      <Skeleton className="h-1 w-full rounded-[2px]" />
+      <SkeletonText className="w-24 text-[13px]" />
+    </div>
+  );
+}
+
+function ResultOverviewSkeleton() {
+  const t = useTranslations('exam');
+  return (
+    <>
+      <ResultsTopbar
+        back={ROUTES.catalog}
+        title={<SkeletonText className="w-56" />}
+        meta={<SkeletonText className="w-36" />}
+        actions={
+          <>
+            <Skeleton className={cn(TOPBAR_BUTTON, 'w-28')} />
+            <Skeleton className={cn(TOPBAR_BUTTON, 'w-32')} />
+          </>
+        }
+      />
+      <div className={SUMMARY_GRID}>
+        <div className={cn(panelSurface, GAUGE_PANEL)}>
+          <Gauge value={0} max={MAX_SCORE} size={200} stroke={12} labelOffset={20}>
+            <Skeleton className="h-[54px] w-24" />
+            <span className="font-mono text-xs text-ink-3">/ {MAX_SCORE}</span>
+          </Gauge>
+          <Skeleton className="h-7 w-36 rounded-chip" />
+          <div className="w-full pt-3">
+            <ScaleBar value={0} variant="light" labels={LEVEL_LABELS} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SKILLS.map((skill) => <SectionCardSkeleton key={skill} />)}
+          </div>
+          <div className={RECOMMENDATION}>
+            <SkeletonText className="w-3/5 text-[15px]" />
+            <SkeletonText className="w-2/5 text-[13px]" />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <span className="text-sm font-medium">{t('result.aiScore')}</span>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {AI_KINDS.map((kind) => <LinkRowSkeleton key={kind} />)}
+        </div>
+      </div>
+    </>
+  );
+}
+
 export function ResultOverview({ id }: { id: string }) {
   const t = useTranslations('exam');
   const locale = useLocale() as ReviewLocale;
@@ -81,7 +150,7 @@ export function ResultOverview({ id }: { id: string }) {
   if (result.isError) {
     return <StatePanel title={t('result.notFound')} message={t(`common.${failureKey(result.error)}`)} action={t('common.retry')} onAction={() => result.refetch()} />;
   }
-  if (!data) return <SkeletonBlocks count={3} />;
+  if (!data) return <ResultOverviewSkeleton />;
 
   const level = levelFor(data.total);
   const full = data.scope === 'full';
@@ -112,8 +181,8 @@ export function ResultOverview({ id }: { id: string }) {
           </>
         }
       />
-      <div className="grid gap-4 xl:grid-cols-[380px_minmax(0,1fr)]">
-        <div className={cn(panelSurface, 'flex flex-col items-center gap-3.5 p-6')}>
+      <div className={SUMMARY_GRID}>
+        <div className={cn(panelSurface, GAUGE_PANEL)}>
           <Gauge value={data.total} max={MAX_SCORE} size={200} stroke={12} labelOffset={20}>
             <ScoreValue value={data.total} max={MAX_SCORE} size={60} />
           </Gauge>
@@ -134,7 +203,7 @@ export function ResultOverview({ id }: { id: string }) {
             ))}
           </div>
           {full && (
-            <div className="flex flex-col gap-1 rounded-card-sm bg-blue-50 px-5 py-4">
+            <div className={RECOMMENDATION}>
               <span className="text-[15px] font-medium text-blue-text">
                 {data.recommendation.level ? t('result.toLevel', { level: data.recommendation.level, points: data.recommendation.points }) : t('result.topLevel')}
               </span>

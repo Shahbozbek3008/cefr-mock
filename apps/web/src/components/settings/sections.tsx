@@ -35,11 +35,15 @@ import { Switch } from '@/components/ui/controls';
 import { Field, TextInput } from '@/components/ui/field';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { SegmentedControl } from '@/components/ui/segmented-control';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { LocaleSwitcher } from '@/components/layout/locale-switcher';
 import { ExamCalendar } from '@/components/auth/exam-calendar';
-import { Panel, panelSurface } from '@/components/dashboard/panel';
+import { Panel } from '@/components/dashboard/panel';
 
 const compactButton = 'h-9 rounded-[10px] px-3.5 text-[13px]';
+const controlSkeleton = 'h-9 rounded-[10px]';
+const inputSkeleton = 'h-12 rounded-input';
+const switchSkeleton = 'h-[26px] w-11 rounded-[13px]';
 const dangerButton = 'bg-none bg-error hover:bg-error';
 const iconTile = (tone: string) => `grid size-[52px] place-items-center rounded-2xl ${tone}`;
 
@@ -95,11 +99,30 @@ const useSaver = () => {
   return { save, state, pending: update.isPending };
 };
 
-function SectionSkeleton({ rows = 2 }: { rows?: number }) {
+function ProfileFormSkeleton() {
+  const t = useTranslations('settings.profile');
   return (
-    <>
-      {Array.from({ length: rows }, (_, i) => <div key={i} className={cn(panelSurface, 'h-40 animate-pulse')} />)}
-    </>
+    <Panel title={t('title')} subtitle={t('subtitle')}>
+      <div className="flex flex-col gap-5 p-5">
+        <div className="flex flex-wrap items-center gap-4">
+          <Skeleton className="size-16 rounded-full" />
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <SkeletonText className="w-40 text-[15px]" />
+            <SkeletonText className="w-28 text-xs" />
+          </div>
+          <Skeleton className={cn(controlSkeleton, 'w-32')} />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label={t('firstName')} htmlFor="firstName"><Skeleton className={inputSkeleton} /></Field>
+          <Field label={t('lastName')} htmlFor="lastName"><Skeleton className={inputSkeleton} /></Field>
+          <Field label={t('phone')} htmlFor="phone" className="sm:col-span-2"><Skeleton className={inputSkeleton} /></Field>
+        </div>
+        <div className="flex items-center justify-end gap-3 pt-1">
+          <Skeleton className={cn(controlSkeleton, 'w-24')} />
+          <Skeleton className={cn(controlSkeleton, 'w-24')} />
+        </div>
+      </div>
+    </Panel>
   );
 }
 
@@ -192,20 +215,25 @@ function ProfileForm({ profile }: { profile: Profile }) {
   );
 }
 
-export function ProfileSection() {
+function InterfacePanel() {
   const t = useTranslations('settings');
+  return (
+    <Panel title={t('interface.title')} subtitle={t('interface.subtitle')}>
+      <Rows>
+        <SettingRow title={t('preferences.language')} hint={t('preferences.languageHint')}>
+          <LocaleSwitcher className="h-9 rounded-[10px] px-3 shadow-inset" />
+        </SettingRow>
+      </Rows>
+    </Panel>
+  );
+}
+
+export function ProfileSection() {
   const profile = useProfile().data;
-  if (!profile) return <SectionSkeleton />;
   return (
     <>
-      <ProfileForm key={profile.id} profile={profile} />
-      <Panel title={t('interface.title')} subtitle={t('interface.subtitle')}>
-        <Rows>
-          <SettingRow title={t('preferences.language')} hint={t('preferences.languageHint')}>
-            <LocaleSwitcher className="h-9 rounded-[10px] px-3 shadow-inset" />
-          </SettingRow>
-        </Rows>
-      </Panel>
+      {profile ? <ProfileForm key={profile.id} profile={profile} /> : <ProfileFormSkeleton />}
+      <InterfacePanel />
     </>
   );
 }
@@ -228,6 +256,25 @@ function ExamDateDialog({ open, value, onClose, onPick }: { open: boolean; value
   );
 }
 
+function ExamSectionSkeleton() {
+  const t = useTranslations('settings');
+  return (
+    <Panel title={t('exam.title')} subtitle={t('exam.subtitle')}>
+      <Rows>
+        <SettingRow title={t('preferences.target')} hint={t('preferences.targetHint')}>
+          <Skeleton className={cn(controlSkeleton, 'w-[168px]')} />
+        </SettingRow>
+        <SettingRow title={t('preferences.examDate')} hint={<SkeletonText className="w-28" />}>
+          <Skeleton className={cn(controlSkeleton, 'w-36')} />
+        </SettingRow>
+        <SettingRow title={t('exam.daily')} hint={t('exam.dailyHint')}>
+          <Skeleton className={cn(controlSkeleton, 'w-[280px]')} />
+        </SettingRow>
+      </Rows>
+    </Panel>
+  );
+}
+
 export function ExamSection() {
   const t = useTranslations('settings');
   const td = useTranslations('onboarding.date.options');
@@ -235,7 +282,7 @@ export function ExamSection() {
   const profile = useProfile().data;
   const { save, state } = useSaver();
   const [dateOpen, setDateOpen] = useState(false);
-  if (!profile) return <SectionSkeleton rows={1} />;
+  if (!profile) return <ExamSectionSkeleton />;
 
   const examDate = profile.examDate;
   const pickDate = (iso: string | null) => {
@@ -277,6 +324,32 @@ export function ExamSection() {
 
 const ALWAYS_ON = ['results', 'newTests'] as const;
 
+function AlwaysOnRows() {
+  const t = useTranslations('settings.notifications');
+  return ALWAYS_ON.map((key) => (
+    <SettingRow key={key} title={t(`items.${key}.title`)} hint={t(`items.${key}.hint`)} icon={<IconTile><Icon as={Sparkles} size={16} strokeWidth={1.7} /></IconTile>}>
+      <Tag tone="neutral" size="sm">{t('alwaysOn')}</Tag>
+    </SettingRow>
+  ));
+}
+
+function NotificationsSectionSkeleton() {
+  const t = useTranslations('settings.notifications');
+  return (
+    <Panel title={t('title')} subtitle={t('subtitle')}>
+      <Rows>
+        <SettingRow title={t('items.reminder.title')} hint={t('items.reminder.hint')} icon={<IconTile><Icon as={MonitorSmartphone} size={16} strokeWidth={1.7} /></IconTile>}>
+          <Skeleton className={switchSkeleton} />
+        </SettingRow>
+        <SettingRow title={t('browser.title')} hint={<SkeletonText className="w-48" />} icon={<IconTile><Icon as={BellRing} size={16} strokeWidth={1.7} /></IconTile>}>
+          <Skeleton className={switchSkeleton} />
+        </SettingRow>
+        <AlwaysOnRows />
+      </Rows>
+    </Panel>
+  );
+}
+
 export function NotificationsSection() {
   const t = useTranslations('settings.notifications');
   const client = useCefrClient();
@@ -284,7 +357,7 @@ export function NotificationsSection() {
   const { save, state } = useSaver();
   const browser = useWebPush(client);
   const [browserBusy, setBrowserBusy] = useState(false);
-  if (!profile) return <SectionSkeleton rows={1} />;
+  if (!profile) return <NotificationsSectionSkeleton />;
 
   const toggleBrowser = async (checked: boolean) => {
     setBrowserBusy(true);
@@ -309,12 +382,31 @@ export function NotificationsSection() {
             onCheckedChange={toggleBrowser}
           />
         </SettingRow>
-        {ALWAYS_ON.map((key) => (
-          <SettingRow key={key} title={t(`items.${key}.title`)} hint={t(`items.${key}.hint`)} icon={<IconTile><Icon as={Sparkles} size={16} strokeWidth={1.7} /></IconTile>}>
-            <Tag tone="neutral" size="sm">{t('alwaysOn')}</Tag>
-          </SettingRow>
-        ))}
+        <AlwaysOnRows />
       </Rows>
+    </Panel>
+  );
+}
+
+function PlanBadge() {
+  return (
+    <span className="grid size-11 shrink-0 place-items-center rounded-[12px] bg-surface shadow-[0_0_0_1px_var(--border),0_4px_10px_-6px_rgba(20,22,30,.2)]">
+      <LogoMark size="md" />
+    </span>
+  );
+}
+
+function SubscriptionSectionSkeleton() {
+  return (
+    <Panel>
+      <div className="flex flex-wrap items-center gap-4 p-5">
+        <PlanBadge />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <SkeletonText className="w-40 text-[15px]" />
+          <SkeletonText className="w-56 text-xs" />
+        </div>
+        <Skeleton className={cn(controlSkeleton, 'w-28')} />
+      </div>
     </Panel>
   );
 }
@@ -322,14 +414,12 @@ export function NotificationsSection() {
 export function SubscriptionSection() {
   const t = useTranslations('settings.subscription');
   const profile = useProfile().data;
-  if (!profile) return <SectionSkeleton rows={1} />;
+  if (!profile) return <SubscriptionSectionSkeleton />;
 
   return (
     <Panel>
       <div className="flex flex-wrap items-center gap-4 p-5">
-        <span className="grid size-11 shrink-0 place-items-center rounded-[12px] bg-surface shadow-[0_0_0_1px_var(--border),0_4px_10px_-6px_rgba(20,22,30,.2)]">
-          <LogoMark size="md" />
-        </span>
+        <PlanBadge />
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="flex items-center gap-2 text-[15px] font-medium">
             {profile.isPro ? 'CEFR Mock Pro' : t('free')}
@@ -387,10 +477,14 @@ export function SecuritySection() {
       <Panel>
         <Rows>
           <SettingRow title={t('phone.title')} hint={t('phone.hint')} icon={<IconTile><Icon as={Smartphone} size={16} strokeWidth={1.7} /></IconTile>}>
-            <span className="flex items-center gap-2">
-              <span className="font-mono text-xs">{phoneLabel(profile?.phone ?? null)}</span>
-              {profile?.phone && <Tag tone="success" size="sm"><Icon as={Check} size={10} strokeWidth={2.5} />{tp('verified')}</Tag>}
-            </span>
+            {profile ? (
+              <span className="flex items-center gap-2">
+                <span className="font-mono text-xs">{phoneLabel(profile.phone)}</span>
+                {profile.phone && <Tag tone="success" size="sm"><Icon as={Check} size={10} strokeWidth={2.5} />{tp('verified')}</Tag>}
+              </span>
+            ) : (
+              <SkeletonText className="w-36 text-xs" />
+            )}
           </SettingRow>
           <SettingRow title={t('signOut.title')} hint={t('signOut.hint')} icon={<IconTile><Icon as={LogOut} size={16} strokeWidth={1.7} /></IconTile>}>
             <Button variant="secondary" size="xs" disabled={busy} className={compactButton} onClick={() => setConfirm('signOut')}>{t('signOut.action')}</Button>

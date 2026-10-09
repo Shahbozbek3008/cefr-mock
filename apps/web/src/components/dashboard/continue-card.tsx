@@ -5,8 +5,25 @@ import { ROUTES } from '@/lib/constants';
 import { Icon } from '@/components/ui/icon';
 import { Ring } from '@/components/ui/gauge';
 import { ButtonLink } from '@/components/ui/button';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/motion/count-up';
 import { Panel } from './panel';
+
+export function ContinueCardSkeleton() {
+  return (
+    <Panel className="gap-4 p-5">
+      <SkeletonText className="w-28 text-[13px]" />
+      <div className="flex items-center gap-4">
+        <Skeleton className="size-16 shrink-0 rounded-full" />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <SkeletonText className="w-40 text-[17px]" />
+          <SkeletonText className="w-28 text-[13px] leading-snug" />
+        </div>
+      </div>
+      <Skeleton className="h-9 w-full rounded-[10px]" />
+    </Panel>
+  );
+}
 
 export function ContinueCard({ test }: { test?: TestSummary }) {
   const t = useTranslations('dashboard.continue');

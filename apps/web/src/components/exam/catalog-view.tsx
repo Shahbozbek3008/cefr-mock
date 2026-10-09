@@ -29,8 +29,12 @@ import { Tag } from '@/components/ui/tag';
 import { Chip } from '@/components/ui/chip';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { ActivePill } from '@/components/motion/active-pill';
 import { panelSurface } from '@/components/dashboard/panel';
+
+const CARD = 'flex min-h-[188px] flex-col gap-4 p-5';
+const SKELETON_CARDS = 6;
 
 const hrefOf = (test: TestSummary) => {
   if (test.status === 'locked') return ROUTES.billing;
@@ -47,7 +51,7 @@ function TestCard({ test }: { test: TestSummary }) {
   return (
     <Link
       href={hrefOf(test)}
-      className={cn(panelSurface, 'group flex min-h-[188px] flex-col gap-4 p-5 text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}
+      className={cn(panelSurface, CARD, 'group text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap gap-1.5">
@@ -91,6 +95,22 @@ function TestCard({ test }: { test: TestSummary }) {
         )}
       </div>
     </Link>
+  );
+}
+
+function TestCardSkeleton() {
+  return (
+    <div className={cn(panelSurface, CARD)}>
+      <div className="flex items-start justify-between gap-2">
+        <Skeleton className="h-[22px] w-14 rounded-chip" />
+        <SkeletonText className="w-14 text-xs" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <SkeletonText className="w-3/5 text-[17px]" />
+        <SkeletonText className="w-4/5 text-[13px]" />
+      </div>
+      <SkeletonText className="mt-auto w-20 text-[13px]" />
+    </div>
   );
 }
 
@@ -158,7 +178,11 @@ export function CatalogView() {
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
-          {tests.data && <span className="text-[13px] text-ink-2">{t('units.tests', { count: tests.data.length })}</span>}
+          {tests.isPending ? (
+            <SkeletonText className="w-16 text-[13px]" />
+          ) : (
+            tests.data && <span className="text-[13px] text-ink-2">{t('units.tests', { count: tests.data.length })}</span>
+          )}
           <h1 className="m-0 text-[30px] leading-[1.1] font-medium tracking-[-0.04em]">{t('catalog.title')}</h1>
         </div>
         <label className="flex h-10 w-full max-w-[320px] items-center gap-2.5 rounded-[12px] bg-surface px-3.5 text-sm shadow-inset focus-within:shadow-focus">
@@ -197,7 +221,7 @@ export function CatalogView() {
         </div>
       ) : !tests.data ? (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: 6 }, (_, i) => <div key={i} className={cn(panelSurface, 'h-[188px] animate-pulse')} />)}
+          {Array.from({ length: SKELETON_CARDS }, (_, i) => <TestCardSkeleton key={i} />)}
         </div>
       ) : list.length === 0 ? (
         <div className={cn(panelSurface, 'flex flex-col items-center gap-1 p-10 text-center')}>

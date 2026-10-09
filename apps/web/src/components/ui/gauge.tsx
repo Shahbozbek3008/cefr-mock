@@ -12,6 +12,7 @@ type ArcProps = { half: number; r: number; stroke: number; length: number; circu
 
 function AnimatedArc({ half, r, stroke, length, circumference, rotate }: ArcProps) {
   const reduced = useReducedMotion();
+  if (length <= 0) return null;
   return (
     <motion.circle
       cx={half}

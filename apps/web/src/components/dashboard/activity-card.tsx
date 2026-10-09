@@ -4,11 +4,40 @@ import { useTranslations } from 'next-intl';
 import { motion, useReducedMotion } from 'motion/react';
 import { EASE_OUT, VIEWPORT } from '@/lib/motion';
 import { cn } from '@/lib/cn';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/motion/count-up';
 import { Panel } from './panel';
 import type { WeekDay } from './kpi-cards';
 
+const SKELETON_BARS = [45, 70, 30, 85, 55, 25, 60];
+
 type ActivityCardProps = { week: readonly WeekDay[]; todayIndex: number; goal: number };
+
+function DayLabels({ week, todayIndex }: Omit<ActivityCardProps, 'goal'>) {
+  return (
+    <div className="flex gap-2.5">
+      {week.map((day, i) => (
+        <span key={day.key} className={cn('flex-1 text-center font-mono text-[10px]', i === todayIndex ? 'font-medium text-green-text' : 'text-ink-3')}>{day.label}</span>
+      ))}
+    </div>
+  );
+}
+
+export function ActivityCardSkeleton({ week }: { week: readonly WeekDay[] }) {
+  const t = useTranslations('dashboard.activity');
+  return (
+    <Panel title={t('title')} subtitle={t('subtitle')} action={<SkeletonText className="w-16 text-[13px]" />}>
+      <div className="flex flex-1 flex-col gap-2 px-5 pt-5 pb-4">
+        <div className="flex h-36 items-end gap-2.5">
+          {SKELETON_BARS.map((height, i) => (
+            <Skeleton key={i} className="flex-1 rounded-t-[6px] rounded-b-[3px]" style={{ height: `${height}%` }} />
+          ))}
+        </div>
+        <DayLabels week={week} todayIndex={-1} />
+      </div>
+    </Panel>
+  );
+}
 
 export function ActivityCard({ week, todayIndex, goal }: ActivityCardProps) {
   const t = useTranslations('dashboard.activity');
@@ -48,11 +77,7 @@ export function ActivityCard({ week, todayIndex, goal }: ActivityCardProps) {
             </div>
           ))}
         </div>
-        <div className="flex gap-2.5">
-          {week.map((day, i) => (
-            <span key={day.key} className={cn('flex-1 text-center font-mono text-[10px]', i === todayIndex ? 'font-medium text-green-text' : 'text-ink-3')}>{day.label}</span>
-          ))}
-        </div>
+        <DayLabels week={week} todayIndex={todayIndex} />
       </div>
     </Panel>
   );

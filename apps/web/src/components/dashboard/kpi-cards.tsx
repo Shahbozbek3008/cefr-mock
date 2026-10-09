@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { CountUp } from '@/components/motion/count-up';
 import { panelSurface } from './panel';
 import { Sparkline } from './sparkline';
@@ -41,6 +42,19 @@ function KpiCard({ label, icon, value, unit, aside, footer, accent = false }: Kp
 }
 
 export type WeekDay = { key: string; label: string; minutes: number };
+
+function StreakWeek({ week, loading = false }: { week: readonly WeekDay[]; loading?: boolean }) {
+  return (
+    <div className="flex gap-1" aria-hidden>
+      {week.map((day) => (
+        <span key={day.key} className="flex flex-col items-center gap-1">
+          {loading ? <Skeleton className="h-5 w-2 rounded-[3px]" /> : <span className={cn('h-5 w-2 rounded-[3px]', day.minutes > 0 ? 'bg-warning' : 'bg-track')} />}
+          <span className="font-mono text-[9px] text-ink-3">{day.label[0]}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export type KpiData = {
   score: number | null;
@@ -88,16 +102,7 @@ export function KpiCards({ data }: { data: KpiData }) {
         icon={Flame}
         value={<CountUp value={data.streak} />}
         unit={t('streakUnit')}
-        aside={
-          <div className="flex gap-1" aria-hidden>
-            {data.week.map((day) => (
-              <span key={day.key} className="flex flex-col items-center gap-1">
-                <span className={cn('h-5 w-2 rounded-[3px]', day.minutes > 0 ? 'bg-warning' : 'bg-track')} />
-                <span className="font-mono text-[9px] text-ink-3">{day.label[0]}</span>
-              </span>
-            ))}
-          </div>
-        }
+        aside={<StreakWeek week={data.week} />}
         footer={data.streak === 0 && t('streakNone')}
       />
       <KpiCard
@@ -109,6 +114,31 @@ export function KpiCards({ data }: { data: KpiData }) {
           <span className="flex flex-col gap-2">
             <ProgressBar value={Math.min(weekMinutes, data.weekGoal)} max={data.weekGoal} tone="green" />
             {t('timeHint', { goal: data.weekGoal })}
+          </span>
+        }
+      />
+    </div>
+  );
+}
+
+export function KpiCardsSkeleton({ week }: { week: readonly WeekDay[] }) {
+  const t = useTranslations('dashboard.kpi');
+  const tc = useTranslations('dashboard.countdown');
+
+  return (
+    <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <KpiCard label={t('score')} icon={ChartNoAxesColumnIncreasing} value={<Skeleton className="h-8 w-16" />} unit={`/ ${MAX_SCORE}`} footer={<SkeletonText className="w-28" />} />
+      <KpiCard accent label={t('exam')} icon={CalendarDays} value={<Skeleton tone="inverse" className="h-8 w-12" />} unit={tc('days')} footer={<SkeletonText tone="inverse" className="w-36" />} />
+      <KpiCard label={t('streak')} icon={Flame} value={<Skeleton className="h-8 w-10" />} unit={t('streakUnit')} aside={<StreakWeek week={week} loading />} footer={<SkeletonText className="w-24" />} />
+      <KpiCard
+        label={t('time')}
+        icon={Clock3}
+        value={<Skeleton className="h-8 w-14" />}
+        unit={t('timeUnit')}
+        footer={
+          <span className="flex flex-col gap-2">
+            <Skeleton className="h-1 w-full rounded-[2px]" />
+            <SkeletonText className="w-32" />
           </span>
         }
       />

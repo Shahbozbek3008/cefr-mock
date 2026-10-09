@@ -16,12 +16,16 @@ import {
 import { useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 type Group = 'today' | 'yesterday' | 'earlier';
 
 const GROUPS: Group[] = ['today', 'yesterday', 'earlier'];
 const DAY_MS = 86_400_000;
 const BADGE_MAX = 9;
+const SKELETON_ROWS = 3;
+const GROUP_LIST = 'flex flex-col px-1.5 pb-1';
+const ROW = 'flex w-full items-start gap-3 rounded-[12px] px-2.5 py-2.5';
 
 const KINDS: Record<NotificationKind, { icon: LucideIcon; tone: string }> = {
   result: { icon: ChartNoAxesColumnIncreasing, tone: 'bg-green-50 text-green-text' },
@@ -58,7 +62,7 @@ function NotificationRow({ item, now, onOpen }: { item: AppNotification; now: Da
     <button
       type="button"
       onClick={() => onOpen(item)}
-      className="group flex w-full items-start gap-3 rounded-[12px] px-2.5 py-2.5 text-left transition-colors duration-(--t-fast) hover:bg-surface-muted"
+      className={cn(ROW, 'group text-left transition-colors duration-(--t-fast) hover:bg-surface-muted')}
     >
       <span className={cn('mt-0.5 grid size-9 shrink-0 place-items-center rounded-[10px]', kind.tone)}>
         <Icon as={kind.icon} size={16} strokeWidth={1.7} />
@@ -74,6 +78,28 @@ function NotificationRow({ item, now, onOpen }: { item: AppNotification; now: Da
         </span>
       </span>
     </button>
+  );
+}
+
+function NotificationListSkeleton() {
+  return (
+    <div className={GROUP_LIST}>
+      <span className="px-2.5 pt-2.5 pb-1">
+        <SkeletonText className="w-14 text-[11px]" />
+      </span>
+      {Array.from({ length: SKELETON_ROWS }, (_, i) => (
+        <div key={i} className={ROW}>
+          <Skeleton className="mt-0.5 size-9 shrink-0 rounded-[10px]" />
+          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span className="flex items-center justify-between gap-2">
+              <SkeletonText className="w-3/5 text-[13px]" />
+              <SkeletonText className="w-9 text-[10.5px]" />
+            </span>
+            <SkeletonText className="w-full text-xs leading-normal" />
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -98,13 +124,7 @@ function PanelBody({ onNavigate }: { onNavigate: () => void }) {
   };
 
   const list = () => {
-    if (notifications.isPending) {
-      return (
-        <div className="flex flex-col gap-1 p-2">
-          {Array.from({ length: 3 }, (_, i) => <div key={i} className="h-14 animate-pulse rounded-[12px] bg-surface-muted" />)}
-        </div>
-      );
-    }
+    if (notifications.isPending) return <NotificationListSkeleton />;
     if (notifications.isError) {
       return (
         <div className="flex flex-col items-center gap-2 px-6 py-10 text-center">
@@ -126,7 +146,7 @@ function PanelBody({ onNavigate }: { onNavigate: () => void }) {
       const section = items.filter((item) => groupOf(item.createdAt, now) === group);
       if (section.length === 0) return null;
       return (
-        <div key={group} className="flex flex-col px-1.5 pb-1">
+        <div key={group} className={GROUP_LIST}>
           <span className="px-2.5 pt-2.5 pb-1 text-[11px] font-medium text-ink-3">{t(group)}</span>
           {section.map((item) => <NotificationRow key={item.id} item={item} now={now} onOpen={open} />)}
         </div>

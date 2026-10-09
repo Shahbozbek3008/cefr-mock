@@ -11,7 +11,29 @@ import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Panel } from './panel';
+
+export function TodayPlanSkeleton() {
+  const t = useTranslations('dashboard.plan');
+  return (
+    <Panel title={t('title')} subtitle={<SkeletonText className="w-20" />}>
+      <div className="px-5 pt-3">
+        <Skeleton className="h-1 w-full rounded-[2px]" />
+      </div>
+      <ul className="m-0 flex list-none flex-col gap-1 p-3">
+        <li className="flex items-center gap-3 rounded-[10px] px-2 py-2.5">
+          <Skeleton className="size-8 shrink-0 rounded-[9px]" />
+          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <SkeletonText className="w-36 text-[13px]" />
+            <SkeletonText className="w-14 font-mono text-[11px]" />
+          </span>
+          <Skeleton className="h-8 w-16 rounded-[9px]" />
+        </li>
+      </ul>
+    </Panel>
+  );
+}
 
 export function TodayPlan({ items, studied }: { items: readonly PlanItem[]; studied: number }) {
   const t = useTranslations('dashboard.plan');

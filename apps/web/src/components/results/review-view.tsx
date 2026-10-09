@@ -25,10 +25,24 @@ import { Icon } from '@/components/ui/icon';
 import { Tag } from '@/components/ui/tag';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/controls';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
-import { ResultsTopbar, SkeletonBlocks, StatePanel } from './shared';
+import { ResultsTopbar, StatePanel } from './shared';
 
 type Tab = 'listening' | 'reading';
+
+const LAYOUT = 'grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]';
+const SIDE_PANEL = 'flex h-fit flex-col gap-4 p-5';
+const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-divider-muted';
+const STAT_CELL = 'flex flex-col gap-0.5 bg-surface-muted px-3.5 py-3';
+const QUESTION_GRID = 'grid grid-cols-7 gap-1.5';
+const FILTER_ROW = 'flex items-center justify-between pt-3 text-sm shadow-[0_-1px_0_var(--divider)]';
+const DETAIL_PANEL = 'flex flex-col gap-5 p-6';
+const ANSWER_BOX = 'flex flex-col gap-1 rounded-2xl px-4 py-3.5';
+const NAV_BUTTON = 'h-10 w-28 rounded-[13px]';
+const STAT_KEYS = ['correct', 'wrong', 'empty'] as const;
+const ANSWER_KEYS = ['yourAnswer', 'correctAnswer'] as const;
+const SKELETON_QUESTIONS = 35;
 
 const STATUS_CELL: Record<ReviewStatus, string> = {
   correct: 'bg-success-50 text-success',
@@ -52,7 +66,7 @@ const answerText = (question: Question, value: string, choices?: Choice[]) => {
 function AnswerDetail({ item, question, choices }: { item: AnswerReview; question: Question; choices?: Choice[] }) {
   const t = useTranslations('exam.review');
   return (
-    <div className={cn(panelSurface, 'flex flex-col gap-5 p-6')}>
+    <div className={cn(panelSurface, DETAIL_PANEL)}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tag tone={STATUS_TONE[item.status]} size="lg" className="font-mono">Q{item.number} · {t(`status.${item.status}`)}</Tag>
         {item.audioAt !== undefined && (
@@ -64,11 +78,11 @@ function AnswerDetail({ item, question, choices }: { item: AnswerReview; questio
       </div>
       <span className="text-[19px] leading-snug tracking-[-0.015em]">{item.prompt}</span>
       <div className="grid gap-2.5 sm:grid-cols-2">
-        <div className={cn('flex flex-col gap-1 rounded-2xl px-4 py-3.5', item.status === 'correct' ? 'bg-success-50 text-success' : item.status === 'wrong' ? 'bg-error-50 text-error-text' : 'bg-surface-muted text-ink-2')}>
+        <div className={cn(ANSWER_BOX, item.status === 'correct' ? 'bg-success-50 text-success' : item.status === 'wrong' ? 'bg-error-50 text-error-text' : 'bg-surface-muted text-ink-2')}>
           <span className="text-xs">{t('yourAnswer')}</span>
           <span className={cn('font-mono text-lg', item.status === 'wrong' && 'line-through decoration-error/60')}>{answerText(question, item.yourAnswer, choices)}</span>
         </div>
-        <div className="flex flex-col gap-1 rounded-2xl bg-success-50 px-4 py-3.5 text-success">
+        <div className={cn(ANSWER_BOX, 'bg-success-50 text-success')}>
           <span className="text-xs">{t('correctAnswer')}</span>
           <span className="font-mono text-lg font-medium">{item.correctAnswer || '—'}</span>
         </div>
@@ -110,6 +124,53 @@ function TranscriptCard({ transcript, questionNumber }: { transcript: PartTransc
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function ReviewSkeleton() {
+  const t = useTranslations('exam.review');
+  return (
+    <div className={LAYOUT}>
+      <div className={cn(panelSurface, SIDE_PANEL)}>
+        <div className={STATS_GRID}>
+          {STAT_KEYS.map((key) => (
+            <div key={key} className={STAT_CELL}>
+              <SkeletonText className="w-8 font-mono text-[22px]" />
+              <span className="text-xs text-ink-2">{t(key)}</span>
+            </div>
+          ))}
+        </div>
+        <div className={QUESTION_GRID}>
+          {Array.from({ length: SKELETON_QUESTIONS }, (_, i) => <Skeleton key={i} className="h-[38px] rounded-[11px]" />)}
+        </div>
+        <div className={FILTER_ROW}>
+          {t('onlyWrong')}
+          <Skeleton className="h-[26px] w-11 rounded-[13px]" />
+        </div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <div className={cn(panelSurface, DETAIL_PANEL)}>
+          <Skeleton className="h-7 w-32 rounded-chip" />
+          <div className="flex flex-col text-[19px] leading-snug">
+            <SkeletonText className="w-full" />
+            <SkeletonText className="w-2/3" />
+          </div>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {ANSWER_KEYS.map((key) => (
+              <div key={key} className={cn(ANSWER_BOX, 'bg-surface-muted text-ink-2')}>
+                <span className="text-xs">{t(key)}</span>
+                <SkeletonText className="w-24 font-mono text-lg" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          <Skeleton className={NAV_BUTTON} />
+          <SkeletonText className="w-28 text-[13px]" />
+          <Skeleton className={NAV_BUTTON} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -156,7 +217,7 @@ export function ReviewView({ id, initialTab }: { id: string; initialTab?: string
       <ResultsTopbar
         back={ROUTES.result(id)}
         title={t('review.title')}
-        meta={test.data && activeTab ? t('review.subtitle', { number: test.data.number, section: sectionTitles[activeTab] }) : undefined}
+        meta={test.data ? activeTab && t('review.subtitle', { number: test.data.number, section: sectionTitles[activeTab] }) : <SkeletonText className="w-40" />}
         actions={
           tabs.length > 1 && (
             <div role="tablist" className="flex h-9 rounded-[11px] bg-seg-track p-[3px] text-[13px]">
@@ -170,19 +231,19 @@ export function ReviewView({ id, initialTab }: { id: string; initialTab?: string
         }
       />
       {!review || !current || !question ? (
-        <SkeletonBlocks count={2} />
+        <ReviewSkeleton />
       ) : (
-        <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
-          <div className={cn(panelSurface, 'flex h-fit flex-col gap-4 p-5')}>
-            <div className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-divider-muted">
+        <div className={LAYOUT}>
+          <div className={cn(panelSurface, SIDE_PANEL)}>
+            <div className={STATS_GRID}>
               {([['correct', review.correct, 'text-success'], ['wrong', review.wrong, 'text-error-text'], ['empty', review.empty, 'text-ink']] as const).map(([key, value, tone]) => (
-                <div key={key} className="flex flex-col gap-0.5 bg-surface-muted px-3.5 py-3">
+                <div key={key} className={STAT_CELL}>
                   <span className={cn('font-mono text-[22px]', tone)}>{value}</span>
                   <span className="text-xs text-ink-2">{t(`review.${key}`)}</span>
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-7 gap-1.5">
+            <div className={QUESTION_GRID}>
               {review.items.map((item, i) => (
                 <button
                   key={item.questionId}
@@ -196,7 +257,7 @@ export function ReviewView({ id, initialTab }: { id: string; initialTab?: string
                 </button>
               ))}
             </div>
-            <label className="flex items-center justify-between pt-3 text-sm shadow-[0_-1px_0_var(--divider)]">
+            <label className={FILTER_ROW}>
               {t('review.onlyWrong')}
               <Switch label={t('review.onlyWrongA11y')} checked={onlyWrong} onCheckedChange={setOnlyWrong} />
             </label>

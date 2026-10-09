@@ -14,7 +14,7 @@ import {
   type AttemptMode,
 } from '@cefr/core';
 import { Link, useRouter } from '@/i18n/navigation';
-import { ROUTES, SKILL_ICONS } from '@/lib/constants';
+import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { failureKey } from '@/lib/exam/session';
@@ -22,7 +22,18 @@ import { Icon } from '@/components/ui/icon';
 import { Tag } from '@/components/ui/tag';
 import { Button } from '@/components/ui/button';
 import { RadioDot } from '@/components/ui/controls';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Panel, panelSurface } from '@/components/dashboard/panel';
+
+const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-6 px-6 py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
+const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgba(20,22,30,.06)]';
+const STAT_CELL = 'flex flex-col gap-0.5 bg-surface px-5 py-4';
+const SECTION_ROW = 'grid h-16 grid-cols-[36px_1fr_auto] items-center gap-4 shadow-[0_1px_0_var(--divider)] last:shadow-none';
+const SECTION_ICON = 'grid size-9 place-items-center rounded-[10px] bg-surface-sunken text-ink-body';
+const SIDE_PANEL = 'flex flex-col gap-5 p-6 lg:sticky lg:top-6';
+const MODE_CARD = 'flex items-center gap-3 rounded-[14px] p-3.5';
+const RULES_BLOCK = 'flex flex-col gap-2.5 pt-4 shadow-[0_-1px_0_var(--divider)]';
+const STAT_LABELS = ['hours', 'sectionsCount', 'score'] as const;
 
 const MODES: { mode: AttemptMode; icon: LucideIcon }[] = [
   { mode: 'exam', icon: ShieldCheck },
@@ -44,6 +55,65 @@ const RULES: Record<AttemptMode, { icon: LucideIcon; key: RuleKey }[]> = {
     { icon: Wifi, key: 'ruleOffline' },
   ],
 };
+
+function TestIntroSkeleton() {
+  const t = useTranslations('exam.testIntro');
+  return (
+    <div className={LAYOUT}>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-1.5">
+            <Skeleton className="h-6 w-20 rounded-chip" />
+            <Skeleton className="h-6 w-24 rounded-chip" />
+          </div>
+          <SkeletonText className="w-80 text-[40px] leading-[1.05]" />
+          <SkeletonText className="w-56 text-[15px]" />
+        </div>
+        <div className={STATS_GRID}>
+          {STAT_LABELS.map((key) => (
+            <div key={key} className={STAT_CELL}>
+              <SkeletonText className="w-16 font-mono text-[22px]" />
+              <span className="text-xs text-ink-2">{t(key)}</span>
+            </div>
+          ))}
+        </div>
+        <Panel>
+          <div className="flex flex-col px-5 py-1">
+            {SKILLS.map((skill) => (
+              <div key={skill} className={SECTION_ROW}>
+                <span className={SECTION_ICON}><Icon as={SKILL_ICONS[skill]} size={17} strokeWidth={1.5} /></span>
+                <span className="flex flex-col leading-[1.35]">
+                  <SkeletonText className="w-24 text-[15px]" />
+                  <SkeletonText className="w-40 text-[13px]" />
+                </span>
+                <SkeletonText className="w-14 text-[13px]" />
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+      <div className={cn(panelSurface, SIDE_PANEL)}>
+        <div className="flex flex-col gap-2.5">
+          <span className="text-sm font-medium">{t('mode')}</span>
+          {MODES.map(({ mode }) => (
+            <div key={mode} className={cn(MODE_CARD, 'bg-surface shadow-inset')}>
+              <Skeleton className="size-10 shrink-0 rounded-[11px]" />
+              <span className="flex flex-1 flex-col gap-0.5">
+                <SkeletonText className="w-28 text-sm" />
+                <SkeletonText className="w-full text-xs leading-snug" />
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className={RULES_BLOCK}>
+          <span className="text-sm font-medium">{t('rules')}</span>
+          {RULES.exam.map((rule) => <SkeletonText key={rule.key} className="w-4/5 text-[13px] leading-normal" />)}
+        </div>
+        <Skeleton className="h-11 w-full rounded-[12px]" />
+      </div>
+    </div>
+  );
+}
 
 export function TestIntro({ id }: { id: string }) {
   const t = useTranslations('exam');
@@ -92,9 +162,9 @@ export function TestIntro({ id }: { id: string }) {
           </div>
         </div>
       ) : !data ? (
-        <div className="grid flex-1 place-items-center"><span className="size-8 animate-spin rounded-full border-2 border-line border-t-green" /></div>
+        <TestIntroSkeleton />
       ) : (
-        <div className="stagger mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-6 px-6 py-10 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className={cn('stagger', LAYOUT)}>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
               <div className="flex gap-1.5">
@@ -104,13 +174,13 @@ export function TestIntro({ id }: { id: string }) {
               <h1 className="m-0 text-[40px] leading-[1.05] font-medium tracking-[-0.045em]">{data.title}</h1>
               <span className="text-[15px] text-ink-2">{t('testIntro.officialFormat', { period })}</span>
             </div>
-            <div className="grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgba(20,22,30,.06)]">
+            <div className={STATS_GRID}>
               {[
                 { value: data.durationLabel, label: t('testIntro.hours') },
                 { value: String(data.sectionsCount), label: t('testIntro.sectionsCount') },
                 { value: data.scoreRange, label: t('testIntro.score') },
               ].map((item) => (
-                <div key={item.label} className="flex flex-col gap-0.5 bg-surface px-5 py-4">
+                <div key={item.label} className={STAT_CELL}>
                   <span className="font-mono text-[22px] tracking-[-0.03em]">{item.value}</span>
                   <span className="text-xs text-ink-2">{item.label}</span>
                 </div>
@@ -119,8 +189,8 @@ export function TestIntro({ id }: { id: string }) {
             <Panel>
               <div className="flex flex-col px-5 py-1">
                 {data.sections.map((section) => (
-                  <div key={section.kind} className="grid h-16 grid-cols-[36px_1fr_auto] items-center gap-4 shadow-[0_1px_0_var(--divider)] last:shadow-none">
-                    <span className="grid size-9 place-items-center rounded-[10px] bg-surface-sunken text-ink-body"><Icon as={SKILL_ICONS[section.kind]} size={17} strokeWidth={1.5} /></span>
+                  <div key={section.kind} className={SECTION_ROW}>
+                    <span className={SECTION_ICON}><Icon as={SKILL_ICONS[section.kind]} size={17} strokeWidth={1.5} /></span>
                     <span className="flex flex-col leading-[1.35]">
                       <span className="text-[15px] font-medium">{section.title}</span>
                       <span className="text-[13px] text-ink-2">{t(`sections.${section.kind}Detail`, { parts: section.parts, questions: section.questions ?? 0 })}</span>
@@ -132,7 +202,7 @@ export function TestIntro({ id }: { id: string }) {
             </Panel>
           </div>
 
-          <div className={cn(panelSurface, 'flex flex-col gap-5 p-6 lg:sticky lg:top-6')}>
+          <div className={cn(panelSurface, SIDE_PANEL)}>
             <div className="flex flex-col gap-2.5">
               <span className="text-sm font-medium">{t('testIntro.mode')}</span>
               {MODES.filter((item) => !resuming || item.mode === mode).map(({ mode: value, icon }) => {
@@ -145,7 +215,8 @@ export function TestIntro({ id }: { id: string }) {
                     onClick={() => setChosen(value)}
                     data-state={selected ? 'checked' : 'unchecked'}
                     className={cn(
-                      'group flex items-center gap-3 rounded-[14px] p-3.5 text-left transition-[background-color,box-shadow] duration-(--t-base)',
+                      MODE_CARD,
+                      'group text-left transition-[background-color,box-shadow] duration-(--t-base)',
                       selected ? 'bg-green-50 shadow-[inset_0_0_0_1.5px_var(--green-500)]' : 'bg-surface shadow-inset hover:bg-bg-app',
                     )}
                   >
@@ -162,7 +233,7 @@ export function TestIntro({ id }: { id: string }) {
               })}
               {resuming && <span className="text-xs text-ink-3">{t('testIntro.modeLocked')}</span>}
             </div>
-            <div className="flex flex-col gap-2.5 pt-4 shadow-[0_-1px_0_var(--divider)]">
+            <div className={RULES_BLOCK}>
               <span className="text-sm font-medium">{t('testIntro.rules')}</span>
               {RULES[mode].map((rule) => (
                 <span key={rule.key} className="flex gap-2.5 text-[13px] leading-normal text-ink-body">

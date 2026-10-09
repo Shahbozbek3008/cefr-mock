@@ -10,9 +10,13 @@ import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 
-export function ResultsTopbar({ back, title, meta, actions }: { back: string; title: string; meta?: ReactNode; actions?: ReactNode }) {
+const CRITERIA_ROW = 'grid h-12 grid-cols-[minmax(0,1fr)_minmax(80px,140px)_52px] items-center gap-4 text-sm shadow-[0_1px_0_var(--divider)] last:shadow-none';
+const LINK_ROW = 'flex items-center gap-3.5 p-4';
+
+export function ResultsTopbar({ back, title, meta, actions }: { back: string; title: ReactNode; meta?: ReactNode; actions?: ReactNode }) {
   const t = useTranslations('exam.common');
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
@@ -53,14 +57,6 @@ export function AiPendingCard() {
   );
 }
 
-export function SkeletonBlocks({ count = 3 }: { count?: number }) {
-  return (
-    <div className="flex flex-col gap-3">
-      {Array.from({ length: count }, (_, i) => <div key={i} className={cn(panelSurface, 'h-28 animate-pulse')} />)}
-    </div>
-  );
-}
-
 const MARK = {
   grammar: 'bg-error-50 underline decoration-error decoration-2 underline-offset-4',
   grammarSoft: 'bg-warning-50 underline decoration-warning decoration-2 underline-offset-4',
@@ -97,7 +93,7 @@ export function CriteriaBars({ criteria }: { criteria: Criterion[] }) {
   return (
     <div className={cn(panelSurface, 'flex flex-col px-5 py-1')}>
       {criteria.map((c, i) => (
-        <div key={c.label} className="grid h-12 grid-cols-[minmax(0,1fr)_minmax(80px,140px)_52px] items-center gap-4 text-sm shadow-[0_1px_0_var(--divider)] last:shadow-none">
+        <div key={c.label} className={CRITERIA_ROW}>
           <span>{c.label}</span>
           <ProgressBar value={c.score} max={c.max} tone={c.label === weakest ? 'warning' : 'blue'} delay={i * 0.08} />
           <span className="text-right font-mono text-[13px]">{c.score}<span className="text-ink-3">/{c.max}</span></span>
@@ -107,9 +103,32 @@ export function CriteriaBars({ criteria }: { criteria: Criterion[] }) {
   );
 }
 
+export function CriteriaBarsSkeleton({ rows }: { rows: number }) {
+  return (
+    <div className={cn(panelSurface, 'flex flex-col px-5 py-1')}>
+      {Array.from({ length: rows }, (_, i) => (
+        <div key={i} className={CRITERIA_ROW}>
+          <SkeletonText className="w-28" />
+          <Skeleton className="h-1 w-full rounded-[2px]" />
+          <SkeletonText className="ml-auto w-9 text-[13px]" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function LinkRowSkeleton() {
+  return (
+    <div className={cn(panelSurface, LINK_ROW)}>
+      <Skeleton className="size-10 shrink-0 rounded-[11px]" />
+      <SkeletonText className="w-40 text-sm" />
+    </div>
+  );
+}
+
 export function LinkRow({ href, icon, title, detail }: { href: string; icon: ReactNode; title: string; detail?: ReactNode }) {
   return (
-    <Link href={href} className={cn(panelSurface, 'group flex items-center gap-3.5 p-4 text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}>
+    <Link href={href} className={cn(panelSurface, LINK_ROW, 'group text-ink transition-[box-shadow,translate] duration-(--t-sheet) ease-out-expo hover:-translate-y-0.5 hover:text-ink hover:shadow-e1')}>
       <span className="grid size-10 shrink-0 place-items-center rounded-[11px] bg-blue-50 text-blue-text">{icon}</span>
       <span className="flex flex-1 flex-col gap-0.5">
         <span className="text-sm font-medium">{title}</span>

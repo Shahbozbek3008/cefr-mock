@@ -21,15 +21,72 @@ import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
-import { AiPendingCard, MarkedText, ResultsTopbar, SkeletonBlocks, StatePanel } from './shared';
+import { AiPendingCard, MarkedText, ResultsTopbar, StatePanel } from './shared';
+
+const TILES_GRID = 'grid grid-cols-2 gap-2.5 lg:grid-cols-4';
+const TILE = 'flex flex-col gap-2.5 p-4';
+const TIPS_PANEL = 'flex flex-col gap-2.5 px-5 py-4';
+const ANSWERS_GRID = 'grid gap-3 xl:grid-cols-2';
+const ANSWER_CARD = 'flex flex-col gap-3.5 p-5';
+const PLAYER = 'flex items-center gap-3 rounded-2xl bg-surface-muted px-3 py-2.5';
+const SKELETON_CRITERIA = 4;
+const SKELETON_TIPS = 3;
+const SKELETON_ANSWERS = 2;
+const SKELETON_TRANSCRIPT = ['w-full', 'w-full', 'w-3/5'];
+
+function SpeakingReviewSkeleton() {
+  const t = useTranslations('exam.aiReview');
+  return (
+    <>
+      <div className={TILES_GRID}>
+        {Array.from({ length: SKELETON_CRITERIA }, (_, i) => (
+          <div key={i} className={cn(panelSurface, TILE)}>
+            <SkeletonText className="w-20 text-[13px]" />
+            <Skeleton className="h-[30px] w-14" />
+            <Skeleton className="h-[3px] w-full rounded-[2px]" />
+          </div>
+        ))}
+      </div>
+      <div className={cn(panelSurface, TIPS_PANEL)}>
+        {Array.from({ length: SKELETON_TIPS }, (_, i) => (
+          <div key={i} className="flex items-start gap-2.5">
+            <Skeleton className="size-[22px] shrink-0 rounded-full" />
+            <SkeletonText className="w-3/4 text-sm leading-normal" />
+          </div>
+        ))}
+      </div>
+      <span className="pt-1 text-sm font-medium">{t('answers')}</span>
+      <div className={ANSWERS_GRID}>
+        {Array.from({ length: SKELETON_ANSWERS }, (_, i) => (
+          <div key={i} className={cn(panelSurface, ANSWER_CARD)}>
+            <div className="flex items-center justify-between gap-3">
+              <SkeletonText className="w-20 text-sm" />
+              <SkeletonText className="w-24 text-xs" />
+            </div>
+            <SkeletonText className="w-4/5 text-[13px] leading-normal" />
+            <div className={PLAYER}>
+              <Skeleton className="size-9 shrink-0 rounded-full" />
+              <Skeleton className="h-1 flex-1 rounded-[2px]" />
+              <SkeletonText className="w-20 text-xs" />
+            </div>
+            <div className="flex flex-col text-[16px] leading-[1.85]">
+              {SKELETON_TRANSCRIPT.map((width, line) => <SkeletonText key={line} className={width} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
 function CriteriaTiles({ criteria }: { criteria: Criterion[] }) {
   const weakest = weakestLabel(criteria);
   return (
-    <div className="stagger grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+    <div className={cn('stagger', TILES_GRID)}>
       {criteria.map((c) => (
-        <div key={c.label} className={cn(panelSurface, 'flex flex-col gap-2.5 p-4')}>
+        <div key={c.label} className={cn(panelSurface, TILE)}>
           <span className="text-[13px] text-ink-2">{c.label}</span>
           <span className="text-[30px] leading-none font-light tracking-[-0.05em]">
             {c.score}
@@ -44,7 +101,7 @@ function CriteriaTiles({ criteria }: { criteria: Criterion[] }) {
 
 function TipList({ tips }: { tips: SpeakingReviewData['tips'] }) {
   return (
-    <div className={cn(panelSurface, 'flex flex-col gap-2.5 px-5 py-4')}>
+    <div className={cn(panelSurface, TIPS_PANEL)}>
       {tips.map((tip) => (
         <div key={tip.text} className="flex items-start gap-2.5">
           <span className={cn('grid size-[22px] shrink-0 place-items-center rounded-full text-xs font-semibold', tip.tone === 'good' ? 'bg-success-50 text-success' : 'bg-warning-50 text-warning-text')}>
@@ -73,7 +130,7 @@ function RecordingPlayer({ path, durationSec }: { path: string; durationSec: num
   };
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-surface-muted px-3 py-2.5">
+    <div className={PLAYER}>
       {url.data && (
         <audio
           ref={audioRef}
@@ -100,7 +157,7 @@ function AnswerCard({ answer }: { answer: SpeakingAnswer }) {
   const t = useTranslations('exam.aiReview');
   const [sampleOpen, setSampleOpen] = useState(false);
   return (
-    <div className={cn(panelSurface, 'flex flex-col gap-3.5 p-5')}>
+    <div className={cn(panelSurface, ANSWER_CARD)}>
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium">{answer.part}</span>
         <span className="font-mono text-xs text-ink-3">{t('transcriptMeta', { words: answer.words, wpm: answer.wpm })}</span>
@@ -126,9 +183,15 @@ export function SpeakingReview({ id }: { id: string }) {
   const query = useSpeakingReview(id);
   const { request } = useAiReviewRequest(id, query.data?.status, locale);
   const review = query.data?.status === 'ready' ? query.data.review : null;
+  const failed = query.isError || query.data?.status === 'failed';
+
+  const meta = () => {
+    if (review) return `${review.score} · ${levelFor(review.score)}`;
+    return !failed && <SkeletonText className="w-16" />;
+  };
 
   const body = () => {
-    if (query.isError || query.data?.status === 'failed') {
+    if (failed) {
       return (
         <StatePanel
           title={t('common.error')}
@@ -142,7 +205,7 @@ export function SpeakingReview({ id }: { id: string }) {
       return (
         <>
           {query.data && <AiPendingCard />}
-          <SkeletonBlocks count={3} />
+          <SpeakingReviewSkeleton />
         </>
       );
     }
@@ -152,7 +215,7 @@ export function SpeakingReview({ id }: { id: string }) {
         <CriteriaTiles criteria={review.criteria} />
         {review.tips.length > 0 && <TipList tips={review.tips} />}
         <span className="pt-1 text-sm font-medium">{t('aiReview.answers')}</span>
-        <div className="grid gap-3 xl:grid-cols-2">
+        <div className={ANSWERS_GRID}>
           {review.answers.map((answer) => <AnswerCard key={answer.questionId} answer={answer} />)}
         </div>
       </>
@@ -161,7 +224,7 @@ export function SpeakingReview({ id }: { id: string }) {
 
   return (
     <>
-      <ResultsTopbar back={ROUTES.result(id)} title={t('aiReview.speakingTitle')} meta={review ? `${review.score} · ${levelFor(review.score)}` : undefined} />
+      <ResultsTopbar back={ROUTES.result(id)} title={t('aiReview.speakingTitle')} meta={meta()} />
       {body()}
     </>
   );

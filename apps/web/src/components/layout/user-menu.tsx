@@ -11,6 +11,7 @@ import { cn } from '@/lib/cn';
 import { useSignOut } from '@/lib/supabase/sign-out';
 import { Icon } from '@/components/ui/icon';
 import { Avatar } from '@/components/ui/avatar';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { menuContent, menuItem, menuSeparator } from '@/components/ui/menu';
 
 const LINKS = [
@@ -39,11 +40,23 @@ export function UserMenu() {
         aria-label={t('user.menu')}
         className="group flex w-full items-center gap-2.5 rounded-[11px] p-1.5 text-left transition-colors duration-(--t-fast) outline-none hover:bg-hover focus-visible:shadow-focus data-[state=open]:bg-hover"
       >
-        <Avatar initial={initial} size={32} src={profile?.avatarUrl} />
-        <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
-          <span className="truncate text-[13px] font-medium text-ink">{fullName || phoneLabel(profile?.phone ?? null)}</span>
-          <span className="truncate text-[11px] text-ink-3">{profile && t(`plan.${profile.isPro ? 'pro' : 'free'}`)}</span>
-        </span>
+        {profile ? (
+          <>
+            <Avatar initial={initial} size={32} src={profile.avatarUrl} />
+            <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
+              <span className="truncate text-[13px] font-medium text-ink">{fullName || phoneLabel(profile.phone)}</span>
+              <span className="truncate text-[11px] text-ink-3">{t(`plan.${profile.isPro ? 'pro' : 'free'}`)}</span>
+            </span>
+          </>
+        ) : (
+          <>
+            <Skeleton className="size-8 shrink-0 rounded-full" />
+            <span className="flex min-w-0 flex-1 flex-col leading-[1.3]">
+              <SkeletonText className="w-24 text-[13px]" />
+              <SkeletonText className="w-12 text-[11px]" />
+            </span>
+          </>
+        )}
         <Icon as={ChevronsUpDown} size={14} strokeWidth={1.6} className="text-ink-3" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
