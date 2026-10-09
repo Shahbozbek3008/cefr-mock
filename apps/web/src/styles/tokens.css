@@ -76,6 +76,6 @@
   --t-fast: 140ms; --t-base: 220ms; --t-sheet: 320ms; --t-slow: 700ms;
   --glow-green: oklch(0.72 0.17 140 / .55); --glow-blue: oklch(0.62 0.13 258 / .45);
 
-  --font-sans: var(--font-geist), 'Geist', system-ui, sans-serif;
+  --font-sans: var(--font-onest), 'Onest', system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono', ui-monospace, monospace;
 }

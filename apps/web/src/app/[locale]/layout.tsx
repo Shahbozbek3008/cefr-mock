@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { geist, geistMono } from '@/lib/fonts';
+import { geistMono, onest } from '@/lib/fonts';
 import { initLocale, resolveLocale, type LocaleParams } from '@/lib/i18n';
 import { MotionProvider } from '@/components/motion/motion-provider';
 import { AppProviders } from '@/components/providers/app-providers';
@@ -27,7 +27,7 @@ export const viewport: Viewport = { themeColor: '#FAFAFA', width: 'device-width'
 export default async function LocaleLayout({ children, params }: { children: ReactNode; params: LocaleParams }) {
   const locale = await initLocale(params);
   return (
-    <html lang={locale} className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang={locale} className={`${onest.variable} ${geistMono.variable}`}>
       <body>
         <NextIntlClientProvider>
           <MotionProvider>

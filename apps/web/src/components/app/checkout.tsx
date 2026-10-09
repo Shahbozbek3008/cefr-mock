@@ -29,7 +29,7 @@ function Step({ index, title, hint, children }: { index: number; title: string; 
           {hint && <span className="text-xs text-ink-3">{hint}</span>}
         </div>
       </div>
-      <div className="pl-[38px]">{children}</div>
+      <div className="sm:pl-[38px]">{children}</div>
     </section>
   );
 }
@@ -46,7 +46,7 @@ function PaymentForm({ planId, onPlanChange }: { planId: PlanId; onPlanChange: (
       <Step index={2} title={t('paymentMethod')} hint={t('redirect')}>
         <PaymentMethods />
       </Step>
-      <div className="flex flex-col gap-3 pl-[38px]">
+      <div className="flex flex-col gap-3 sm:pl-[38px]">
         <ButtonLink href={ROUTES.billingSuccess} size="md" block icon={<Icon as={Lock} size={14} strokeWidth={2} />} className="h-11 gap-2 rounded-[12px]">
           {t('pay', { amount: total })}
         </ButtonLink>

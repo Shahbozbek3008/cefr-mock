@@ -74,7 +74,7 @@ export function KpiCards({ data }: { data: KpiData }) {
   const weekMinutes = data.week.reduce((sum, day) => sum + day.minutes, 0);
 
   return (
-    <div className="stagger grid grid-cols-2 gap-4 xl:grid-cols-4">
+    <div className="stagger grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <KpiCard
         label={t('score')}
         icon={ChartNoAxesColumnIncreasing}
@@ -126,7 +126,7 @@ export function KpiCardsSkeleton({ week }: { week: readonly WeekDay[] }) {
   const tc = useTranslations('dashboard.countdown');
 
   return (
-    <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <KpiCard label={t('score')} icon={ChartNoAxesColumnIncreasing} value={<Skeleton className="h-8 w-16" />} unit={`/ ${MAX_SCORE}`} footer={<SkeletonText className="w-28" />} />
       <KpiCard accent label={t('exam')} icon={CalendarDays} value={<Skeleton tone="inverse" className="h-8 w-12" />} unit={tc('days')} footer={<SkeletonText tone="inverse" className="w-36" />} />
       <KpiCard label={t('streak')} icon={Flame} value={<Skeleton className="h-8 w-10" />} unit={t('streakUnit')} aside={<StreakWeek week={week} loading />} footer={<SkeletonText className="w-24" />} />

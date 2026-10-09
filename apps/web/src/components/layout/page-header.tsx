@@ -5,7 +5,7 @@ type PageHeaderProps = { meta?: ReactNode; title: ReactNode; actions?: ReactNode
 
 export function PageHeader({ meta, title, actions }: PageHeaderProps) {
   return (
-    <div className="flex items-end justify-between gap-5">
+    <div className="flex flex-wrap items-end justify-between gap-x-5 gap-y-4">
       <PageTitle meta={meta} title={title} />
       {actions && <div className="flex items-center gap-2">{actions}</div>}
     </div>

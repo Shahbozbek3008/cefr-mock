@@ -33,7 +33,7 @@ export function AppTopbar() {
       </nav>
       <NotificationsMenu label={t('topbar.notifications')} />
       <NextTestLink size="xs" icon={<Icon as={Plus} size={14} strokeWidth={2} />} className="h-8 gap-1.5 rounded-[9px] px-3 text-[13px]">
-        {t('topbar.newTest')}
+        <span className="max-sm:sr-only">{t('topbar.newTest')}</span>
       </NextTestLink>
     </header>
   );

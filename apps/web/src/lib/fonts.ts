@@ -1,10 +1,9 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Onest } from 'next/font/google';
 
-export const geist = Geist({
+export const onest = Onest({
   subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['300', '400', '500', '600'],
   display: 'swap',
-  variable: '--font-geist',
+  variable: '--font-onest',
 });
 
 export const geistMono = Geist_Mono({

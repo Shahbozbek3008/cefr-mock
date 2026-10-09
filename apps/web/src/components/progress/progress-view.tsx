@@ -6,6 +6,7 @@ import { ChevronRight } from 'lucide-react';
 import { nextLevelGap, sectionOrder, useProgress, type AxisMark, type ProgressData, type ProgressPeriod } from '@cefr/core';
 import { Link } from '@/i18n/navigation';
 import { LEVELS, MAX_SCORE, ROUTES } from '@/lib/constants';
+import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { Tag } from '@/components/ui/tag';
 import { LineChart } from '@/components/ui/line-chart';
@@ -21,8 +22,9 @@ import { Delta } from '@/components/app/delta';
 
 const THRESHOLDS = LEVELS.slice(1).map((l) => ({ value: l.min, label: `${l.code} · ${l.min}` }));
 const PERIODS = ['1m', '3m', 'all'] as const satisfies readonly ProgressPeriod[];
-const COLUMNS = 'grid-cols-[72px_minmax(0,1fr)_72px_64px_56px_16px]';
-const ROW = `grid min-w-[440px] ${COLUMNS} h-12 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
+const COLUMNS = 'grid-cols-[minmax(0,1fr)_auto_auto_16px] sm:min-w-[440px] sm:grid-cols-[72px_minmax(0,1fr)_72px_64px_56px_16px]';
+const WIDE_ONLY = 'max-sm:hidden';
+const ROW = `grid ${COLUMNS} h-12 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
 const CHART_HEIGHT = 280;
 const SKELETON_AXIS = 4;
 const SKELETON_ROWS = 4;
@@ -102,11 +104,11 @@ function HistoryPanel({ children }: { children: ReactNode }) {
   return (
     <Panel title={t('history')} subtitle={t('historySubtitle')}>
       <div className="flex flex-col overflow-x-auto px-3 pt-3 pb-2">
-        <div className={`grid min-w-[440px] ${COLUMNS} gap-4 px-3 pb-2 text-[11px] font-medium text-ink-3 shadow-[0_1px_0_var(--divider)]`}>
-          <span>{t('columns.date')}</span>
+        <div className={`grid ${COLUMNS} gap-4 px-3 pb-2 text-[11px] font-medium text-ink-3 shadow-[0_1px_0_var(--divider)]`}>
+          <span className={WIDE_ONLY}>{t('columns.date')}</span>
           <span>{t('columns.test')}</span>
           <span>{t('columns.score')}</span>
-          <span>{t('columns.level')}</span>
+          <span className={WIDE_ONLY}>{t('columns.level')}</span>
           <span className="text-right">{t('columns.change')}</span>
           <span />
         </div>
@@ -121,10 +123,10 @@ function HistoryTableSkeleton() {
     <HistoryPanel>
       {Array.from({ length: SKELETON_ROWS }, (_, i) => (
         <div key={i} className={ROW}>
-          <SkeletonText className="w-12 text-xs" />
+          <SkeletonText className={cn('w-12 text-xs', WIDE_ONLY)} />
           <SkeletonText className="w-32" />
           <SkeletonText className="w-10 text-xs" />
-          <Skeleton className="h-[22px] w-9 rounded-chip" />
+          <Skeleton className={cn('h-[22px] w-9 rounded-chip', WIDE_ONLY)} />
           <SkeletonText className="ml-auto w-8 text-xs" />
           <span />
         </div>
@@ -146,10 +148,10 @@ function HistoryTable({ data }: { data: ProgressData }) {
             href={ROUTES.result(item.resultId)}
             className={`group ${ROW} text-ink transition-colors duration-(--t-fast) hover:bg-surface-muted hover:text-ink`}
           >
-            <span className="font-mono text-xs text-ink-3">{item.dateLabel}</span>
+            <span className={cn('font-mono text-xs text-ink-3', WIDE_ONLY)}>{item.dateLabel}</span>
             <span className="truncate font-medium">{item.title}</span>
             <span className="font-mono text-xs">{item.score}<span className="text-ink-3">/{MAX_SCORE}</span></span>
-            <Tag size="sm" className="justify-self-start">{item.level}</Tag>
+            <Tag size="sm" className={cn('justify-self-start', WIDE_ONLY)}>{item.level}</Tag>
             {previous ? <Delta value={item.score - previous.score} className="text-right" /> : <span className="text-right font-mono text-xs text-ink-4">—</span>}
             <Icon as={ChevronRight} size={14} strokeWidth={1.75} className="justify-self-end text-ink-4 transition-[translate,color] duration-(--t-base) group-hover:translate-x-0.5 group-hover:text-ink-2" />
           </Link>

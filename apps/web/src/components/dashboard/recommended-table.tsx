@@ -4,13 +4,15 @@ import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { sectionTitles, type TestSummary } from '@cefr/core';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
+import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { Tag, type TagTone } from '@/components/ui/tag';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Panel } from './panel';
 
-const COLUMNS = 'grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_80px_24px]';
-const ROW = `grid min-w-[560px] ${COLUMNS} h-14 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
+const COLUMNS = 'grid-cols-[minmax(0,1fr)_auto_16px] sm:min-w-[560px] sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_80px_24px]';
+const WIDE_ONLY = 'max-sm:hidden';
+const ROW = `grid ${COLUMNS} h-14 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
 const SKELETON_ROWS = 5;
 
 const TONE: Partial<Record<TestSummary['status'], TagTone>> = { in_progress: 'blue', new: 'green', completed: 'neutral' };
@@ -43,11 +45,11 @@ function TableBody({ children }: { children: ReactNode }) {
   const t = useTranslations('dashboard.recommended');
   return (
     <div className="flex flex-col overflow-x-auto px-3 pt-3 pb-2">
-      <div className={`grid min-w-[560px] ${COLUMNS} gap-4 px-3 pb-2 text-[11px] font-medium text-ink-3 shadow-[0_1px_0_var(--divider)]`}>
+      <div className={`grid ${COLUMNS} gap-4 px-3 pb-2 text-[11px] font-medium text-ink-3 shadow-[0_1px_0_var(--divider)]`}>
         <span>{t('columns.test')}</span>
-        <span>{t('columns.duration')}</span>
+        <span className={WIDE_ONLY}>{t('columns.duration')}</span>
         <span>{t('columns.status')}</span>
-        <span className="text-right">{t('columns.result')}</span>
+        <span className={cn('text-right', WIDE_ONLY)}>{t('columns.result')}</span>
         <span />
       </div>
       {children}
@@ -65,9 +67,9 @@ export function RecommendedTableSkeleton() {
               <SkeletonText className="w-40" />
               <SkeletonText className="w-24 text-xs" />
             </span>
-            <SkeletonText className="w-12 text-xs" />
+            <SkeletonText className={cn('w-12 text-xs', WIDE_ONLY)} />
             <Skeleton className="h-[22px] w-16 rounded-chip" />
-            <SkeletonText className="ml-auto w-12 text-xs" />
+            <SkeletonText className={cn('ml-auto w-12 text-xs', WIDE_ONLY)} />
             <span />
           </div>
         ))}
@@ -105,9 +107,9 @@ export function RecommendedTable({ tests }: { tests: readonly TestSummary[] }) {
                 <span className="truncate font-medium">{test.title}</span>
                 <span className="truncate text-xs text-ink-3">{detail(test)}</span>
               </span>
-              <span className="font-mono text-xs text-ink-2">{test.durationLabel}</span>
+              <span className={cn('font-mono text-xs text-ink-2', WIDE_ONLY)}>{test.durationLabel}</span>
               <Tag tone={TONE[test.status]} size="sm" className="justify-self-start">{tag(test)}</Tag>
-              <span className="text-right font-mono text-xs">{test.score !== undefined ? `${test.score} · ${test.level}` : '—'}</span>
+              <span className={cn('text-right font-mono text-xs', WIDE_ONLY)}>{test.score !== undefined ? `${test.score} · ${test.level}` : '—'}</span>
               <Icon as={ChevronRight} size={15} strokeWidth={1.75} className="justify-self-end text-ink-4 transition-[translate,color] duration-(--t-base) ease-out-expo group-hover:translate-x-0.5 group-hover:text-ink-2" />
             </Link>
           ))}

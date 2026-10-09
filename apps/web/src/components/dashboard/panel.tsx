@@ -9,7 +9,7 @@ export function Panel({ title, subtitle, action, className, children, ...rest }:
   return (
     <section className={cn(panelSurface, 'flex flex-col', className)} {...rest}>
       {title && (
-        <header className="flex items-start justify-between gap-4 px-5 pt-4">
+        <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 px-5 pt-4">
           <div className="flex flex-col gap-0.5">
             <h2 className="m-0 text-sm font-medium tracking-[-0.01em]">{title}</h2>
             {subtitle && <span className="text-xs text-ink-3">{subtitle}</span>}
