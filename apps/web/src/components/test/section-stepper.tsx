@@ -38,3 +38,14 @@ export function SectionStepper({ current }: { current: Skill }) {
     </ol>
   );
 }
+
+export function SectionProgress({ current }: { current: Skill }) {
+  const currentIndex = SKILLS.indexOf(current);
+  return (
+    <span aria-hidden className="absolute inset-x-0 bottom-0 grid grid-cols-4 gap-0.5 lg:hidden">
+      {SKILLS.map((skill, i) => (
+        <span key={skill} className={cn('h-[3px]', i < currentIndex ? 'bg-green' : i === currentIndex ? 'bg-green-300' : 'bg-transparent')} />
+      ))}
+    </span>
+  );
+}

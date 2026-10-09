@@ -8,17 +8,17 @@ import { useAttemptStore } from '@/lib/attempt-store';
 import { useSessionControls } from '@/lib/exam/session';
 import { Button } from '@/components/ui/button';
 import { AudioPlayer } from './audio-player';
-import { ExamHeader, SectionTimer } from './exam-header';
+import { ExamFooter, ExamHeader, SectionTimer, footerNavigator } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 import { FlagButton, GapInput, InstructionBlock, MatchChips, McqOptions, QuestionNavigator } from './question-inputs';
 
 const card = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]';
 const qTag = (current: boolean) =>
-  cn('rounded-[7px] px-1.5 py-0.5 font-mono text-[11px] font-medium', current ? 'bg-green-100 text-green-text' : 'bg-surface-sunken text-ink-2');
+  cn('shrink-0 rounded-[7px] px-1.5 py-0.5 font-mono text-[11px] font-medium', current ? 'bg-green-100 text-green-text' : 'bg-surface-sunken text-ink-2');
 
 function MapCard({ map }: { map: MapSpec }) {
   return (
-    <div className={cn(card, 'p-3')}>
+    <div className={cn(card, 'p-2 sm:p-3')}>
       <svg viewBox={`0 0 ${map.width} ${map.height}`} className="h-auto w-full" role="img">
         {map.roads.map((road, i) => (
           <polyline key={`r${i}`} points={road.points.map(([x, y]) => `${x},${y}`).join(' ')} fill="none" stroke="var(--surface-sunken)" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
@@ -42,7 +42,7 @@ type QuestionsProps = { questions: Question[]; currentId: string; onFocus: (id: 
 
 function NotesCard({ title, questions, onFocus, register }: QuestionsProps & { title: string }) {
   return (
-    <div className={cn(card, 'flex flex-col px-6 py-5')}>
+    <div className={cn(card, 'flex flex-col px-4 py-4 sm:px-6 sm:py-5')}>
       <span className="pb-2 text-[17px] font-medium tracking-[-0.02em]">{title}</span>
       {questions.map((q) => (
         <div key={q.id} ref={(el) => register(q.id, el)} className="grid min-h-14 items-center gap-x-5 gap-y-2 py-2 text-[15px] shadow-[0_1px_0_var(--divider)] last:shadow-none sm:grid-cols-[minmax(0,1fr)_auto]">
@@ -56,7 +56,7 @@ function NotesCard({ title, questions, onFocus, register }: QuestionsProps & { t
 
 function ChoicesCard({ choices }: { choices: Choice[] }) {
   return (
-    <div className={cn(card, 'grid gap-x-6 gap-y-2 px-6 py-4 sm:grid-cols-2')}>
+    <div className={cn(card, 'grid gap-x-6 gap-y-2 px-4 py-4 sm:grid-cols-2 sm:px-6')}>
       {choices.map((c) => (
         <span key={c.key} className="flex gap-3 text-sm">
           <span className="font-mono text-[13px] font-medium text-ink-2">{c.key}</span>
@@ -69,10 +69,10 @@ function ChoicesCard({ choices }: { choices: Choice[] }) {
 
 function MatchCard({ choices, questions, currentId, onFocus, register }: QuestionsProps & { choices: Choice[] }) {
   return (
-    <div className={cn(card, 'flex flex-col px-6 py-2')}>
+    <div className={cn(card, 'flex flex-col px-4 py-2 sm:px-6')}>
       {questions.map((q) => (
         <div key={q.id} ref={(el) => register(q.id, el)} className="flex flex-wrap items-center justify-between gap-3 py-3.5 shadow-[0_1px_0_var(--divider)] last:shadow-none">
-          <span className="flex items-center gap-2.5 text-[15px]">
+          <span className="flex items-start gap-2.5 text-[15px] leading-snug">
             <span className={qTag(q.id === currentId)}>Q{q.number}</span>
             {q.prompt}
           </span>
@@ -90,8 +90,8 @@ function McqList({ questions, currentId, onFocus, register }: QuestionsProps) {
         q.kind === 'mcq' ? (
           <div key={q.id} ref={(el) => register(q.id, el)} className="flex flex-col gap-2">
             {q.group && q.group !== questions[i - 1]?.group && <span className="px-1 text-xs font-medium text-ink-2">{q.group}</span>}
-            <div className={cn(card, 'flex flex-col gap-3 p-5')}>
-              <span className="flex items-center gap-2.5 text-[15px] font-medium">
+            <div className={cn(card, 'flex flex-col gap-3 p-4 sm:p-5')}>
+              <span className="flex items-start gap-2.5 text-[15px] leading-snug font-medium">
                 <span className={qTag(q.id === currentId)}>Q{q.number}</span>
                 {q.prompt}
               </span>
@@ -170,7 +170,7 @@ export function ListeningSection({ test }: { test: TestDetail }) {
         onFinish={requestFinish}
       />
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto flex w-full max-w-[860px] flex-col gap-5 px-6 py-6">
+        <div className="mx-auto flex w-full max-w-[860px] flex-col gap-4 px-4 py-4 sm:gap-5 sm:px-6 sm:py-6">
           {part.audio && (
             <AudioPlayer
               key={part.id}
@@ -195,15 +195,13 @@ export function ListeningSection({ test }: { test: TestDetail }) {
           )}
         </div>
       </div>
-      <footer className="flex shrink-0 flex-wrap items-center gap-3 bg-surface px-6 py-3 shadow-[0_-1px_0_rgba(20,22,30,.06)]">
+      <ExamFooter>
         <FlagButton questionId={currentId} />
-        <div className="min-w-0 flex-1">
-          <QuestionNavigator questions={part.questions} currentId={currentId} onSelect={select} />
-        </div>
-        <Button size="md" arrow onClick={goNext} className="min-w-[180px]">
+        <QuestionNavigator questions={part.questions} currentId={currentId} onSelect={select} className={footerNavigator} />
+        <Button size="md" arrow onClick={goNext} className="max-sm:flex-1 sm:min-w-[180px]">
           {next ? t(nextInOtherPart ? 'session.nextPart' : 'session.nextQuestion') : t('common.finish')}
         </Button>
-      </footer>
+      </ExamFooter>
       <SessionDialogs controls={controls} onReview={onReview} />
     </>
   );

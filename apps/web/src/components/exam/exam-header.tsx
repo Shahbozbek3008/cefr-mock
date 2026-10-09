@@ -2,13 +2,14 @@
 
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { X } from 'lucide-react';
+import { CheckCheck, X } from 'lucide-react';
 import { formatClock, type SectionKind } from '@cefr/core';
+import { cn } from '@/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { TimerPill } from '@/components/test/timer-pill';
-import { SectionStepper } from '@/components/test/section-stepper';
+import { SectionProgress, SectionStepper } from '@/components/test/section-stepper';
 import { useSecondsLeft } from './use-seconds-left';
 
 const WARNING_SEC = 300;
@@ -32,8 +33,8 @@ type ExamHeaderProps = {
 export function ExamHeader({ title, subtitle, section, timer, onExit, onFinish }: ExamHeaderProps) {
   const t = useTranslations('exam');
   return (
-    <header className="grid h-(--test-header-h) shrink-0 grid-cols-[1fr_auto_1fr] items-center bg-surface px-6 shadow-[0_1px_0_rgba(20,22,30,.06)]">
-      <div className="flex min-w-0 items-center gap-[14px]">
+    <header className="relative flex h-(--test-header-h) shrink-0 items-center gap-3 bg-surface px-4 shadow-[0_1px_0_rgba(20,22,30,.06)] sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-[14px]">
         <button
           type="button"
           onClick={onExit}
@@ -48,12 +49,30 @@ export function ExamHeader({ title, subtitle, section, timer, onExit, onFinish }
         </div>
       </div>
       <SectionStepper current={section} />
-      <div className="flex items-center gap-2.5 justify-self-end">
+      <div className="flex shrink-0 items-center gap-2 justify-self-end sm:gap-2.5">
         {timer}
-        <Button variant="secondary" size="xs" className="rounded-[13px] px-4 text-[13px]" onClick={onFinish}>
-          {t('session.finishSection')}
+        <Button
+          variant="secondary"
+          size="xs"
+          aria-label={t('session.finishSection')}
+          icon={<Icon as={CheckCheck} size={15} strokeWidth={1.9} />}
+          className="rounded-[13px] text-[13px] max-sm:w-9 max-sm:gap-0 max-sm:px-0 sm:px-4"
+          onClick={onFinish}
+        >
+          <span className="max-sm:sr-only">{t('session.finishSection')}</span>
         </Button>
       </div>
+      <SectionProgress current={section} />
     </header>
+  );
+}
+
+export const footerNavigator = 'order-first w-full min-w-0 sm:order-none sm:w-auto sm:flex-1';
+
+export function ExamFooter({ className, children }: { className?: string; children: ReactNode }) {
+  return (
+    <footer className={cn('flex shrink-0 flex-wrap items-center gap-3 bg-surface px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-1px_0_rgba(20,22,30,.06)] sm:px-6', className)}>
+      {children}
+    </footer>
   );
 }

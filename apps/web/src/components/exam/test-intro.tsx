@@ -25,12 +25,12 @@ import { RadioDot } from '@/components/ui/controls';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Panel, panelSurface } from '@/components/dashboard/panel';
 
-const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-6 px-6 py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
+const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
 const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgba(20,22,30,.06)]';
-const STAT_CELL = 'flex flex-col gap-0.5 bg-surface px-5 py-4';
-const SECTION_ROW = 'grid h-16 grid-cols-[36px_1fr_auto] items-center gap-4 shadow-[0_1px_0_var(--divider)] last:shadow-none';
+const STAT_CELL = 'flex min-w-0 flex-col gap-0.5 bg-surface px-3 py-3 sm:px-5 sm:py-4';
+const SECTION_ROW = 'grid min-h-16 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-3 py-3 sm:gap-4 shadow-[0_1px_0_var(--divider)] last:shadow-none';
 const SECTION_ICON = 'grid size-9 place-items-center rounded-[10px] bg-surface-sunken text-ink-body';
-const SIDE_PANEL = 'flex flex-col gap-5 p-6 lg:sticky lg:top-6';
+const SIDE_PANEL = 'flex flex-col gap-5 p-5 sm:p-6 lg:sticky lg:top-6';
 const MODE_CARD = 'flex items-center gap-3 rounded-[14px] p-3.5';
 const RULES_BLOCK = 'flex flex-col gap-2.5 pt-4 shadow-[0_-1px_0_var(--divider)]';
 const STAT_LABELS = ['hours', 'sectionsCount', 'score'] as const;
@@ -66,13 +66,13 @@ function TestIntroSkeleton() {
             <Skeleton className="h-6 w-20 rounded-chip" />
             <Skeleton className="h-6 w-24 rounded-chip" />
           </div>
-          <SkeletonText className="w-80 text-[40px] leading-[1.05]" />
+          <SkeletonText className="w-4/5 text-[30px] leading-[1.1] sm:text-[40px] sm:leading-[1.05]" />
           <SkeletonText className="w-56 text-[15px]" />
         </div>
         <div className={STATS_GRID}>
           {STAT_LABELS.map((key) => (
             <div key={key} className={STAT_CELL}>
-              <SkeletonText className="w-16 font-mono text-[22px]" />
+              <SkeletonText className="w-16 font-mono text-lg sm:text-[22px]" />
               <span className="text-xs text-ink-2">{t(key)}</span>
             </div>
           ))}
@@ -149,7 +149,7 @@ export function TestIntro({ id }: { id: string }) {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="flex h-(--test-header-h) items-center bg-surface px-6 shadow-[0_1px_0_rgba(20,22,30,.06)]">
+      <header className="flex h-(--test-header-h) items-center bg-surface px-4 sm:px-6 shadow-[0_1px_0_rgba(20,22,30,.06)]">
         <Link href={ROUTES.catalog} aria-label={t('common.back')} className="grid size-10 place-items-center rounded-full bg-surface text-ink-body shadow-inset hover:bg-bg-app hover:text-ink">
           <Icon as={ChevronLeft} size={16} strokeWidth={1.7} />
         </Link>
@@ -167,11 +167,11 @@ export function TestIntro({ id }: { id: string }) {
         <div className={cn('stagger', LAYOUT)}>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <div className="flex gap-1.5">
+              <div className="flex flex-wrap gap-1.5">
                 <Tag>{t('testIntro.fullMock')}</Tag>
                 <Tag tone="neutral">{t(mode === 'exam' ? 'testIntro.examMode' : 'testIntro.practiceMode')}</Tag>
               </div>
-              <h1 className="m-0 text-[40px] leading-[1.05] font-medium tracking-[-0.045em]">{data.title}</h1>
+              <h1 className="m-0 text-[30px] leading-[1.1] font-medium tracking-[-0.04em] sm:text-[40px] sm:leading-[1.05] sm:tracking-[-0.045em]">{data.title}</h1>
               <span className="text-[15px] text-ink-2">{t('testIntro.officialFormat', { period })}</span>
             </div>
             <div className={STATS_GRID}>
@@ -181,7 +181,7 @@ export function TestIntro({ id }: { id: string }) {
                 { value: data.scoreRange, label: t('testIntro.score') },
               ].map((item) => (
                 <div key={item.label} className={STAT_CELL}>
-                  <span className="font-mono text-[22px] tracking-[-0.03em]">{item.value}</span>
+                  <span className="truncate font-mono text-lg tracking-[-0.03em] sm:text-[22px]">{item.value}</span>
                   <span className="text-xs text-ink-2">{item.label}</span>
                 </div>
               ))}
@@ -191,11 +191,11 @@ export function TestIntro({ id }: { id: string }) {
                 {data.sections.map((section) => (
                   <div key={section.kind} className={SECTION_ROW}>
                     <span className={SECTION_ICON}><Icon as={SKILL_ICONS[section.kind]} size={17} strokeWidth={1.5} /></span>
-                    <span className="flex flex-col leading-[1.35]">
+                    <span className="flex min-w-0 flex-col leading-[1.35]">
                       <span className="text-[15px] font-medium">{section.title}</span>
                       <span className="text-[13px] text-ink-2">{t(`sections.${section.kind}Detail`, { parts: section.parts, questions: section.questions ?? 0 })}</span>
                     </span>
-                    <span className="font-mono text-[13px] text-ink-body">{t(section.approx ? 'units.minutesApprox' : 'units.minutes', { count: section.minutes })}</span>
+                    <span className="font-mono text-[13px] whitespace-nowrap text-ink-body">{t(section.approx ? 'units.minutesApprox' : 'units.minutes', { count: section.minutes })}</span>
                   </div>
                 ))}
               </div>

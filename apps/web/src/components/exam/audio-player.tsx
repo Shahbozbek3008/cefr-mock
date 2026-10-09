@@ -23,8 +23,8 @@ type FrameProps = {
 function Frame({ mode, label, active, position, duration, action }: FrameProps) {
   const t = useTranslations('exam.listening');
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <span className={cn('flex items-center gap-2 text-[13px] font-medium', active ? 'text-green-text' : 'text-ink-2')}>
           <span className={cn('relative grid size-2 place-items-center')}>
             {active && <span className="absolute size-2 animate-ping-soft rounded-full bg-blue" />}
@@ -38,12 +38,12 @@ function Frame({ mode, label, active, position, duration, action }: FrameProps) 
         </span>
       </div>
       <div className="flex items-center gap-4">
-        <span className="font-mono text-sm tabular-nums">
+        <span className="shrink-0 font-mono text-sm tabular-nums">
           {formatClock(position)} <span className="text-ink-3">/ {formatClock(duration)}</span>
         </span>
         <Waveform progress={duration > 0 ? position / duration : 0} className="h-8" />
       </div>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <span className="text-xs text-ink-2">{t(mode === 'exam' ? 'onceNote' : 'practiceNote')}</span>
         {action}
       </div>

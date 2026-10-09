@@ -9,7 +9,8 @@ import { useAttemptStore } from '@/lib/attempt-store';
 import { useSessionControls } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
-import { ExamHeader, SectionTimer } from './exam-header';
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { ExamFooter, ExamHeader, SectionTimer, footerNavigator } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 import { FlagButton, GapInput, McqOptions, QuestionNavigator, TfngChoices } from './question-inputs';
 
@@ -30,9 +31,9 @@ function Paragraph({ paragraph, highlight, serif, selected, onSelect, onPick }: 
   const [before, after] = phrase ? paragraph.text.split(phrase) : [paragraph.text, ''];
 
   return (
-    <div className="relative grid grid-cols-[24px_1fr] gap-[14px]">
+    <div className="relative grid grid-cols-[20px_1fr] gap-2.5 sm:grid-cols-[24px_1fr] sm:gap-[14px]">
       <button type="button" onClick={onSelect} className="h-fit pt-1.5 text-left font-mono text-xs text-ink-3 hover:text-ink">{paragraph.label}</button>
-      <p onDoubleClick={onSelect} className={cn('m-0 max-w-[68ch] text-[17px] leading-[1.8] text-ink-reading', serif && 'font-serif')}>
+      <p onDoubleClick={onSelect} className={cn('m-0 max-w-[68ch] text-base leading-[1.75] text-ink-reading sm:text-[17px] sm:leading-[1.8]', serif && 'font-serif')}>
         {phrase && fill ? (
           <>
             {before}
@@ -44,7 +45,7 @@ function Paragraph({ paragraph, highlight, serif, selected, onSelect, onPick }: 
         )}
       </p>
       {selected && (
-        <div role="toolbar" className="absolute -top-11 left-9 z-10 flex h-[38px] animate-pop items-center gap-1.5 rounded-[12px] bg-surface px-2 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_14px_28px_-12px_rgba(20,22,30,.3)]">
+        <div role="toolbar" className="absolute -top-11 left-7 z-10 sm:left-9 flex h-[38px] animate-pop items-center gap-1.5 rounded-[12px] bg-surface px-2 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_14px_28px_-12px_rgba(20,22,30,.3)]">
           <button type="button" aria-label={t('highlightYellow')} onClick={() => onPick('yellow')} className={cn('size-5 rounded-full bg-highlight', highlight?.color === 'yellow' && 'ring-2 ring-white ring-offset-1 ring-offset-line-strong')} />
           <button type="button" aria-label={t('highlightBlue')} onClick={() => onPick('blue')} className={cn('size-5 rounded-full bg-blue-100', highlight?.color === 'blue' && 'ring-2 ring-white ring-offset-1 ring-offset-line-strong')} />
         </div>
@@ -53,14 +54,14 @@ function Paragraph({ paragraph, highlight, serif, selected, onSelect, onPick }: 
   );
 }
 
-function Passage({ part, serif }: { part: ReadingPart; serif: boolean }) {
+function Passage({ part, serif, className }: { part: ReadingPart; serif: boolean; className?: string }) {
   const highlights = useAttemptStore((s) => s.highlights[part.id] ?? EMPTY);
   const toggleHighlight = useAttemptStore((s) => s.toggleHighlight);
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <article className="flex min-h-0 flex-col gap-6 overflow-y-auto bg-surface px-10 py-8 shadow-[1px_0_0_rgba(20,22,30,.06)] max-lg:px-6">
-      <h2 className="m-0 text-[28px] leading-[1.15] font-medium tracking-[-0.035em]">{part.title}</h2>
+    <article className={cn('flex min-h-0 flex-col gap-5 overflow-y-auto bg-surface px-4 py-5 shadow-[1px_0_0_rgba(20,22,30,.06)] sm:gap-6 sm:px-6 sm:py-6 lg:px-10 lg:py-8', className)}>
+      <h2 className="m-0 text-[22px] leading-[1.2] font-medium tracking-[-0.03em] sm:text-[28px] sm:leading-[1.15] sm:tracking-[-0.035em]">{part.title}</h2>
       {part.passage.map((paragraph) => (
         <Paragraph
           key={paragraph.label}
@@ -87,7 +88,7 @@ function QuestionPanel({ question, part }: { question: Question; part: ReadingPa
         <span className="rounded-[7px] bg-green-100 px-1.5 py-0.5 font-mono text-[11px] font-medium text-green-text">Q{question.number}</span>
         <span className="text-[13px] text-ink-2">{t(`kinds.${question.kind}`)}</span>
       </div>
-      <p className="m-0 text-[17px] leading-[1.55]">{question.prompt}</p>
+      <p className="m-0 text-base leading-[1.55] sm:text-[17px]">{question.prompt}</p>
       {question.kind === 'tfng' && <TfngChoices questionId={question.id} />}
       {question.kind === 'mcq' && <McqOptions question={question} />}
       {question.kind === 'gap' && <GapInput questionId={question.id} number={question.number} variant="field" />}
@@ -95,6 +96,8 @@ function QuestionPanel({ question, part }: { question: Question; part: ReadingPa
     </div>
   );
 }
+
+type Pane = 'text' | 'questions';
 
 export function ReadingSection({ test }: { test: TestDetail }) {
   const t = useTranslations('exam');
@@ -104,6 +107,7 @@ export function ReadingSection({ test }: { test: TestDetail }) {
   const setPosition = useAttemptStore((s) => s.setPosition);
   const [index, setIndex] = useState(() => useAttemptStore.getState().position.reading ?? 0);
   const [serif, setSerif] = useState(false);
+  const [pane, setPane] = useState<Pane>('text');
 
   const question = questions[index];
   const partIndex = parts.findIndex((p) => p.questions.includes(question));
@@ -114,8 +118,13 @@ export function ReadingSection({ test }: { test: TestDetail }) {
     setPosition('reading', index);
   }, [index, setPosition]);
 
-  const selectById = (id: string) => setIndex(questions.findIndex((q) => q.id === id));
-  const onReview = (number: number) => setIndex(questions.findIndex((q) => q.number === number));
+  const goTo = (target: number) => {
+    setIndex(Math.max(0, Math.min(lastIndex, target)));
+    setPane('questions');
+  };
+
+  const selectById = (id: string) => goTo(questions.findIndex((q) => q.id === id));
+  const onReview = (number: number) => goTo(questions.findIndex((q) => q.number === number));
   const first = part.questions[0].number;
   const last = part.questions[part.questions.length - 1].number;
 
@@ -129,9 +138,20 @@ export function ReadingSection({ test }: { test: TestDetail }) {
         onExit={controls.requestExit}
         onFinish={controls.requestFinish}
       />
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[1.15fr_1fr]">
-        <Passage key={part.id} part={part} serif={serif} />
-        <div className="flex min-h-0 flex-col gap-6 overflow-y-auto px-10 py-8 max-lg:px-6">
+      <div className="shrink-0 bg-surface px-4 py-2.5 shadow-[0_1px_0_rgba(20,22,30,.06)] sm:px-6 lg:hidden">
+        <SegmentedControl
+          label={t('reading.modes.text')}
+          value={pane}
+          onValueChange={(value) => setPane(value as Pane)}
+          options={[
+            { value: 'text', label: t('reading.modes.text') },
+            { value: 'questions', label: `${t('reading.modes.questions')} ${first}–${last}` },
+          ]}
+        />
+      </div>
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)] lg:grid-cols-[1.15fr_1fr]">
+        <Passage key={part.id} part={part} serif={serif} className={cn(pane !== 'text' && 'max-lg:hidden')} />
+        <div className={cn('flex min-h-0 flex-col gap-5 overflow-y-auto px-4 py-5 sm:gap-6 sm:px-6 sm:py-6 lg:px-10 lg:py-8', pane !== 'questions' && 'max-lg:hidden')}>
           <div className="flex items-center justify-between gap-4">
             <span className="font-mono text-xs text-ink-3 uppercase">{t('session.questions')} {first}–{last}</span>
             <button
@@ -148,19 +168,24 @@ export function ReadingSection({ test }: { test: TestDetail }) {
           <QuestionPanel question={question} part={part} />
         </div>
       </div>
-      <footer className="flex shrink-0 flex-wrap items-center gap-3 bg-surface px-6 py-3 shadow-[0_-1px_0_rgba(20,22,30,.06)]">
+      <ExamFooter>
         <FlagButton questionId={question.id} />
-        <div className="min-w-0 flex-1">
-          <QuestionNavigator questions={part.questions} currentId={question.id} onSelect={selectById} />
-        </div>
-        <Button variant="secondary" size="md" disabled={index === 0} onClick={() => setIndex((i) => Math.max(0, i - 1))} icon={<Icon as={ChevronLeft} size={16} />}>
-          {t('common.previous')}
+        <QuestionNavigator questions={part.questions} currentId={question.id} onSelect={selectById} className={footerNavigator} />
+        <Button
+          variant="secondary"
+          size="md"
+          disabled={index === 0}
+          onClick={() => goTo(index - 1)}
+          icon={<Icon as={ChevronLeft} size={16} />}
+          className="max-sm:w-11 max-sm:gap-0 max-sm:px-0"
+        >
+          <span className="max-sm:sr-only">{t('common.previous')}</span>
         </Button>
-        <Button size="md" onClick={() => (index === lastIndex ? controls.requestFinish() : setIndex(index + 1))}>
+        <Button size="md" onClick={() => (index === lastIndex ? controls.requestFinish() : goTo(index + 1))} className="max-sm:flex-1">
           {index === lastIndex ? t('common.finish') : t('common.next')}
           <Icon as={ChevronRight} size={16} />
         </Button>
-      </footer>
+      </ExamFooter>
       <SessionDialogs controls={controls} onReview={onReview} />
     </>
   );

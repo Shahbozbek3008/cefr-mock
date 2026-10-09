@@ -11,7 +11,7 @@ const cell = cva('w-full text-center font-mono outline-none transition-[box-shad
       success: 'animate-pop bg-success-50 text-success shadow-[inset_0_0_0_1.5px_var(--success-text)]',
       error: 'bg-error-50 text-error-text shadow-[inset_0_0_0_1.5px_var(--error-500)]',
     },
-    size: { lg: 'h-[60px] rounded-[14px] text-2xl', md: 'h-14 rounded-[14px] text-[22px]' },
+    size: { lg: 'h-[52px] rounded-[12px] text-xl sm:h-[60px] sm:rounded-[14px] sm:text-2xl', md: 'h-12 rounded-[12px] text-xl sm:h-14 sm:rounded-[14px] sm:text-[22px]' },
   },
 });
 
@@ -54,7 +54,7 @@ export function OtpInput({ length = 6, defaultValue = '', success = false, size 
   };
 
   return (
-    <div role="group" aria-label={label} className="grid grid-cols-6 gap-2">
+    <div role="group" aria-label={label} className="grid grid-cols-6 gap-1.5 sm:gap-2">
       {digits.map((d, i) => (
         <input
           key={i}

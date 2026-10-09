@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Flag } from 'lucide-react';
 import { tfngChoices, type Choice, type McqQuestion, type Question } from '@cefr/core';
@@ -22,7 +22,7 @@ export const GapInput = forwardRef<HTMLInputElement, GapInputProps>(function Gap
     <label
       className={cn(
         'group inline-flex items-center gap-2 rounded-[11px] bg-surface px-3 transition-[box-shadow,width] duration-(--t-sheet) ease-out-expo focus-within:shadow-focus',
-        variant === 'inline' ? 'h-[38px] w-[170px]' : 'h-12 w-full max-w-[360px]',
+        variant === 'inline' ? 'h-[38px] w-full sm:w-[170px]' : 'h-12 w-full sm:max-w-[360px]',
         filled ? 'shadow-[inset_0_0_0_1px_var(--border-strong)]' : 'shadow-inset',
       )}
     >
@@ -144,18 +144,31 @@ export function TfngChoices({ questionId }: { questionId: string }) {
   );
 }
 
+const centerInScroller = (cell: HTMLElement) => {
+  const scroller = cell.parentElement;
+  if (!scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+  scroller.scrollTo({ left: cell.offsetLeft - (scroller.clientWidth - cell.offsetWidth) / 2, behavior: 'smooth' });
+};
+
 export function QuestionCell({ question, current, onSelect }: { question: Question; current: boolean; onSelect: (id: string) => void }) {
   const t = useTranslations('exam.session');
   const answered = useAnswer(question.id).trim() !== '';
   const flagged = useIsFlagged(question.id);
+  const ref = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (current && ref.current) centerInScroller(ref.current);
+  }, [current]);
+
   return (
     <button
+      ref={ref}
       type="button"
       aria-label={t('question', { number: question.number })}
       aria-current={current || undefined}
       onClick={() => onSelect(question.id)}
       className={cn(
-        'relative grid h-9 min-w-9 place-items-center rounded-[10px] px-1 font-mono text-xs transition-[background-color,color,scale] duration-(--t-base) ease-spring hover:scale-105',
+        'relative grid h-9 min-w-9 shrink-0 place-items-center rounded-[10px] px-1 font-mono text-xs transition-[background-color,color,scale] duration-(--t-base) ease-spring hover:scale-105',
         current ? 'bg-action font-medium text-white shadow-[0_0_0_3px_var(--green-100)]' : answered ? 'bg-green-100 text-green-text' : 'bg-surface text-ink-2 shadow-inset',
       )}
     >
@@ -165,9 +178,11 @@ export function QuestionCell({ question, current, onSelect }: { question: Questi
   );
 }
 
-export function QuestionNavigator({ questions, currentId, onSelect }: { questions: Question[]; currentId: string; onSelect: (id: string) => void }) {
+type QuestionNavigatorProps = { questions: Question[]; currentId: string; onSelect: (id: string) => void; className?: string };
+
+export function QuestionNavigator({ questions, currentId, onSelect, className }: QuestionNavigatorProps) {
   return (
-    <div className="flex flex-wrap items-center gap-1.5">
+    <div className={cn('relative flex items-center gap-1.5 max-sm:-my-1 max-sm:overflow-x-auto max-sm:p-1 max-sm:[scrollbar-width:none] sm:flex-wrap', className)}>
       {questions.map((q) => (
         <QuestionCell key={q.id} question={q} current={q.id === currentId} onSelect={onSelect} />
       ))}

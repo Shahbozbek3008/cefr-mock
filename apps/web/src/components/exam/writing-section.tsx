@@ -10,7 +10,7 @@ import { useSessionControls } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { ExamHeader, SectionTimer } from './exam-header';
+import { ExamFooter, ExamHeader, SectionTimer } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 
 const AUTOSAVE_MS = 2000;
@@ -74,16 +74,16 @@ function SavedNote() {
 function TaskBrief({ task }: { task: WritingTask }) {
   const t = useTranslations('exam');
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
       <span className="font-mono text-xs text-ink-3 uppercase">{`${task.label} · ${task.kind}`}</span>
       {task.context && <p className="m-0 rounded-[12px] bg-surface-muted px-4 py-3 text-sm leading-relaxed whitespace-pre-line text-ink-body">{task.context}</p>}
-      <p className="m-0 text-[17px] leading-[1.6] tracking-[-0.01em] whitespace-pre-line">{task.prompt}</p>
+      <p className="m-0 text-base leading-[1.6] tracking-[-0.01em] whitespace-pre-line sm:text-[17px]">{task.prompt}</p>
       <dl className="m-0 flex flex-col gap-2.5 pt-4 text-sm text-ink-body shadow-[0_-1px_0_var(--divider)]">
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <dt>{t('writing.minVolume')}</dt>
           <dd className="m-0 font-mono">{t('units.words', { count: task.minWords })}</dd>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <dt>{t('writing.recommended')}</dt>
           <dd className="m-0 font-mono">{t('units.words', { count: task.targetWords })}</dd>
         </div>
@@ -99,24 +99,24 @@ function Editor({ task, value, onChange }: { task: WritingTask; value: string; o
   const ratio = Math.min(1, words / task.targetWords);
 
   return (
-    <div className="flex min-h-[420px] flex-col rounded-card-sm bg-surface shadow-inset transition-shadow duration-(--t-sheet) focus-within:shadow-[inset_0_0_0_1.5px_var(--green-500),0_0_0_6px_oklch(0.6_0.16_138/.12)]">
+    <div className="flex min-h-[360px] flex-col rounded-card-sm sm:min-h-[420px] bg-surface shadow-inset transition-shadow duration-(--t-sheet) focus-within:shadow-[inset_0_0_0_1.5px_var(--green-500),0_0_0_6px_oklch(0.6_0.16_138/.12)]">
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={t('placeholder')}
         aria-label={t('answerA11y')}
         spellCheck={false}
-        className="min-h-0 flex-1 resize-none bg-transparent px-7 py-6 text-[17px] leading-[1.85] text-ink caret-green outline-none placeholder:text-ink-disabled"
+        className="min-h-0 flex-1 resize-none bg-transparent px-4 py-4 text-base leading-[1.8] sm:px-7 sm:py-6 sm:text-[17px] sm:leading-[1.85] text-ink caret-green outline-none placeholder:text-ink-disabled"
       />
-      <div className="flex flex-wrap items-center gap-4 px-6 py-3.5 shadow-[0_-1px_0_var(--divider)]">
-        <div className="relative h-1.5 w-[220px] overflow-hidden rounded-[3px] bg-track">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 shadow-[0_-1px_0_var(--divider)] sm:px-6 sm:py-3.5">
+        <div className="relative h-1.5 min-w-[120px] flex-1 overflow-hidden rounded-[3px] bg-track sm:w-[220px] sm:flex-none">
           <span className={cn('absolute inset-y-0 left-0 rounded-[3px] transition-[width] duration-(--t-sheet)', enough ? 'bg-green' : 'bg-blue')} style={{ width: `${ratio * 100}%` }} />
           <span className="absolute inset-y-0 w-px bg-ink-3" style={{ left: `${(task.minWords / task.targetWords) * 100}%` }} />
         </div>
         <span className="font-mono text-[13px] text-ink-2">
           <span className={cn('font-medium', enough ? 'text-green-text' : 'text-ink')}>{words}</span> / {task.targetWords}
         </span>
-        <span className="ml-auto"><SavedNote /></span>
+        <span className="max-sm:w-full sm:ml-auto"><SavedNote /></span>
       </div>
     </div>
   );
@@ -164,7 +164,7 @@ export function WritingSection({ test }: { test: TestDetail }) {
         onFinish={submit}
       />
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="grid gap-5 px-6 py-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
+        <div className="grid gap-4 px-4 py-4 sm:gap-5 sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
           <div className="flex flex-col gap-4">
             {tasks.length > 1 && (
               <div role="tablist" className="flex h-11 rounded-[14px] bg-seg-track p-1 text-sm">
@@ -188,9 +188,9 @@ export function WritingSection({ test }: { test: TestDetail }) {
           <Editor key={task.id} task={task} value={drafts[task.id] ?? ''} onChange={(text) => update(task.id, text)} />
         </div>
       </div>
-      <footer className="flex shrink-0 items-center justify-end gap-2 bg-surface px-6 py-3 shadow-[0_-1px_0_rgba(20,22,30,.06)]">
-        <Button size="md" arrow onClick={submit} className="min-w-[180px]">{t('writing.submit')}</Button>
-      </footer>
+      <ExamFooter className="justify-end">
+        <Button size="md" arrow onClick={submit} className="max-sm:flex-1 sm:min-w-[180px]">{t('writing.submit')}</Button>
+      </ExamFooter>
       <Dialog open={shortWarning !== null} onOpenChange={(open) => !open && setShortWarning(null)}>
         <DialogContent title={t('writing.shortTitle')} description={t('writing.shortMessage', { items: shortWarning ?? '' })} closeLabel={t('common.close')}>
           <div className="grid grid-cols-2 gap-2.5">

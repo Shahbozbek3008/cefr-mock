@@ -10,7 +10,7 @@ import { uploads, useSessionControls } from '@/lib/exam/session';
 import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { TimerPill } from '@/components/test/timer-pill';
-import { ExamHeader } from './exam-header';
+import { ExamFooter, ExamHeader } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 import { useAnswerRecorder, type MicIssue, type RecorderPhase } from './use-answer-recorder';
 
@@ -28,7 +28,7 @@ const lockIcon = () => (
 function MicIssueCard({ issue, onRetry }: { issue: MicIssue; onRetry: () => void }) {
   const t = useTranslations('mic');
   return (
-    <div className="flex animate-fade-up flex-col gap-5 rounded-card-sm bg-surface p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)] sm:flex-row sm:items-start">
+    <div className="flex animate-fade-up flex-col gap-5 rounded-card-sm bg-surface p-5 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)] sm:flex-row sm:items-start">
       <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-error-50 text-error-text">
         <Icon as={ISSUE_ICONS[issue]} size={22} strokeWidth={1.7} />
       </span>
@@ -60,13 +60,13 @@ function PromptCard({ question }: { question: SpeakingQuestion }) {
   return (
     <div className="grid gap-5 lg:grid-cols-2">
       {question.image && (
-        <div className="grid min-h-60 place-items-center rounded-card-sm bg-[repeating-linear-gradient(135deg,#f1f1f3_0_12px,#ebebee_12px_24px)] font-mono text-xs text-ink-3 shadow-[0_0_0_1px_rgba(20,22,30,.05)]">
+        <div className="grid min-h-44 place-items-center sm:min-h-60 rounded-card-sm bg-[repeating-linear-gradient(135deg,#f1f1f3_0_12px,#ebebee_12px_24px)] font-mono text-xs text-ink-3 shadow-[0_0_0_1px_rgba(20,22,30,.05)]">
           {t('image', { caption: question.image })}
         </div>
       )}
       <div className={cn('flex flex-col justify-center gap-4', !question.image && 'lg:col-span-2')}>
         <span className="font-mono text-xs text-ink-3 uppercase">Part {question.part}</span>
-        <p className="m-0 text-[28px] leading-[1.3] tracking-[-0.03em] whitespace-pre-line">{question.prompt}</p>
+        <p className="m-0 text-xl leading-[1.35] tracking-[-0.02em] whitespace-pre-line sm:text-[28px] sm:leading-[1.3] sm:tracking-[-0.03em]">{question.prompt}</p>
       </div>
     </div>
   );
@@ -76,7 +76,7 @@ function RecorderCard({ question, phase, elapsed, bars }: { question: SpeakingQu
   const t = useTranslations('exam.speaking');
   const recording = phase === 'recording';
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_16px_32px_-20px_rgba(20,22,30,.18)]">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_16px_32px_-20px_rgba(20,22,30,.18)]">
       <div className="flex items-center justify-between">
         <span className={cn('flex items-center gap-2 text-sm font-medium', recording ? 'text-error-text' : 'text-ink-2')} aria-live="polite">
           <span className="relative grid size-[9px] place-items-center">
@@ -92,7 +92,7 @@ function RecorderCard({ question, phase, elapsed, bars }: { question: SpeakingQu
           <span key={i} className={cn('flex-1 rounded-full transition-[height] duration-150', bars[i] ? 'bg-blue' : 'bg-wave-idle')} style={{ height: `${Math.max(bars[i] ?? 0.12, 0.08) * 100}%` }} />
         ))}
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <span className="rounded-[8px] bg-surface-sunken px-2.5 py-1 text-xs text-ink-2">
           {t('prepChip', { count: question.prepSec })}{phase === 'recording' || phase === 'done' ? ' ✓' : ''}
         </span>
@@ -134,7 +134,7 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
         onFinish={onFinish}
       />
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto flex w-full max-w-[960px] flex-col gap-6 px-6 py-8">
+        <div className="mx-auto flex w-full max-w-[960px] flex-col gap-5 px-4 py-5 sm:gap-6 sm:px-6 sm:py-8">
           <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }} aria-hidden>
             {Array.from({ length: total }, (_, i) => (
               <span key={i} className={cn('h-1 rounded-[2px]', i < index ? 'bg-green' : i === index ? 'bg-green-300' : 'bg-line')} />
@@ -148,7 +148,7 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
           )}
         </div>
       </div>
-      <footer className="flex shrink-0 items-center justify-center gap-3 bg-surface px-6 py-3 shadow-[0_-1px_0_rgba(20,22,30,.06)]">
+      <ExamFooter className="justify-center">
         <button type="button" aria-label={t('speaking.restart')} onClick={restart} disabled={phase !== 'recording' && phase !== 'done'} className={roundButton}>
           <Icon as={RotateCcw} size={18} strokeWidth={1.7} />
         </button>
@@ -164,7 +164,7 @@ function QuestionView({ question, index, total, onExit, onNext, onFinish }: {
         <button type="button" aria-label={t('session.nextQuestion')} onClick={next} className={roundButton}>
           <Icon as={ChevronsRight} size={18} strokeWidth={1.7} />
         </button>
-      </footer>
+      </ExamFooter>
     </>
   );
 }
