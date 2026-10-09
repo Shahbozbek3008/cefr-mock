@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CEFR Mock — prepare for the CEFR exam in real conditions",
+    "title": "CEFR Multilevel — prepare for the CEFR exam in real conditions",
     "description": "Full mock tests, AI scoring for Writing and Speaking, and an explanation for every mistake."
   },
   "common": {
@@ -766,7 +766,7 @@
     "saveFailed": "Couldn't save."
   },
   "billing": {
-    "title": "CEFR Mock Pro",
+    "title": "CEFR Multilevel Pro",
     "untilExam": "enough until the exam",
     "paymentMethod": "Payment method",
     "order": "Order",
@@ -1111,7 +1111,7 @@
       "writingReview": "Writing feedback",
       "speakingReview": "Speaking feedback",
       "details": "Detailed review",
-      "shareMessage": "CEFR Mock · {title}: {score}/{max} ({level})"
+      "shareMessage": "CEFR Multilevel · {title}: {score}/{max} ({level})"
     },
     "review": {
       "title": "Detailed review",

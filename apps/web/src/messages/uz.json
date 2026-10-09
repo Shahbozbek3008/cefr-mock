@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CEFR Mock — CEFR imtihoniga real sharoitda tayyorlaning",
+    "title": "CEFR Multilevel — CEFR imtihoniga real sharoitda tayyorlaning",
     "description": "To'liq mock testlar, Writing va Speaking uchun AI baholash va har bir xato bo'yicha tushuntirish."
   },
   "common": {
@@ -766,7 +766,7 @@
     "saveFailed": "Saqlab bo'lmadi."
   },
   "billing": {
-    "title": "CEFR Mock Pro",
+    "title": "CEFR Multilevel Pro",
     "untilExam": "imtihongacha yetarli",
     "paymentMethod": "To'lov usuli",
     "order": "Buyurtma",
@@ -1111,7 +1111,7 @@
       "writingReview": "Writing bahosi",
       "speakingReview": "Speaking bahosi",
       "details": "Batafsil tahlil",
-      "shareMessage": "CEFR Mock · {title}: {score}/{max} ({level})"
+      "shareMessage": "CEFR Multilevel · {title}: {score}/{max} ({level})"
     },
     "review": {
       "title": "Batafsil tahlil",

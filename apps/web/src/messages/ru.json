@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CEFR Mock — подготовка к экзамену CEFR в реальных условиях",
+    "title": "CEFR Multilevel — подготовка к экзамену CEFR в реальных условиях",
     "description": "Полные пробные тесты, AI-оценка Writing и Speaking и объяснение каждой ошибки."
   },
   "common": {
@@ -766,7 +766,7 @@
     "saveFailed": "Не удалось сохранить."
   },
   "billing": {
-    "title": "CEFR Mock Pro",
+    "title": "CEFR Multilevel Pro",
     "untilExam": "хватит до экзамена",
     "paymentMethod": "Способ оплаты",
     "order": "Заказ",
@@ -1111,7 +1111,7 @@
       "writingReview": "Оценка Writing",
       "speakingReview": "Оценка Speaking",
       "details": "Подробный разбор",
-      "shareMessage": "CEFR Mock · {title}: {score}/{max} ({level})"
+      "shareMessage": "CEFR Multilevel · {title}: {score}/{max} ({level})"
     },
     "review": {
       "title": "Подробный разбор",

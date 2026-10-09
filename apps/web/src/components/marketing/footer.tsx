@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { LifeBuoy } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { Logo } from '@/components/ui/logo';
+import { BRAND_NAME, Logo } from '@/components/ui/logo';
 import { Icon } from '@/components/ui/icon';
 import { LocaleSwitcher } from '@/components/layout/locale-switcher';
 import { LANDING_NAV, LEGAL_LINKS, SOCIAL_LINKS } from './nav-links';
@@ -30,7 +30,7 @@ export function MarketingFooter() {
       <div className="mx-auto flex max-w-page flex-col gap-8 px-5 pt-10 pb-6 text-[13px] md:px-8 md:pt-12">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div className="col-span-2 flex flex-col gap-3 md:col-span-1">
-            <Link href={ROUTES.home} aria-label="CEFR Mock" className="w-fit"><Logo /></Link>
+            <Link href={ROUTES.home} aria-label={BRAND_NAME} className="w-fit"><Logo /></Link>
             <p className="m-0 max-w-[280px] leading-[1.55] text-ink-2">{tf('tagline')}</p>
             <span className="flex w-fit items-center gap-2 rounded-pill bg-surface px-2.5 py-1 text-[11.5px] text-ink-2 shadow-e0">
               <span className="relative grid size-1.5 place-items-center">
@@ -64,7 +64,7 @@ export function MarketingFooter() {
           </Column>
         </div>
         <div className="flex flex-col-reverse gap-3 pt-5 text-xs text-ink-3 shadow-[0_-1px_0_var(--divider-page)] md:flex-row md:items-center md:justify-between">
-          <span>© 2026 CEFR Mock. {tf('rights')}</span>
+          <span>© 2026 {BRAND_NAME}. {tf('rights')}</span>
           <LocaleSwitcher side="top" />
         </div>
       </div>

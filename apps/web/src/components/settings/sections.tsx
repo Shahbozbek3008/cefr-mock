@@ -29,7 +29,7 @@ import { useWebPush } from '@/lib/firebase/web-push';
 import { Tag } from '@/components/ui/tag';
 import { Icon } from '@/components/ui/icon';
 import { Avatar } from '@/components/ui/avatar';
-import { LogoMark } from '@/components/ui/logo';
+import { BRAND_NAME, LogoMark } from '@/components/ui/logo';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Switch } from '@/components/ui/controls';
 import { Field, TextInput } from '@/components/ui/field';
@@ -110,9 +110,9 @@ function ProfileFormSkeleton() {
             <SkeletonText className="w-40 text-[15px]" />
             <SkeletonText className="w-28 text-xs" />
           </div>
-          <Skeleton className={cn(controlSkeleton, 'w-32')} />
+          <Skeleton className={cn(controlSkeleton, 'w-full sm:w-32')} />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={t('firstName')} htmlFor="firstName"><Skeleton className={inputSkeleton} /></Field>
           <Field label={t('lastName')} htmlFor="lastName"><Skeleton className={inputSkeleton} /></Field>
           <Field label={t('phone')} htmlFor="phone" className="sm:col-span-2"><Skeleton className={inputSkeleton} /></Field>
@@ -173,18 +173,18 @@ function ProfileForm({ profile }: { profile: Profile }) {
             </span>
           </div>
           <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
-          <div className="flex gap-2">
+          <div className="flex w-full gap-2 sm:w-auto">
             {profile.avatarPath && (
-              <Button variant="ghost" size="xs" disabled={photoBusy} className={`${compactButton} text-ink-2`} onClick={() => replacePhoto(async () => null)}>
+              <Button variant="ghost" size="xs" disabled={photoBusy} className={`${compactButton} text-ink-2 max-sm:flex-1`} onClick={() => replacePhoto(async () => null)}>
                 {t('profile.removePhoto')}
               </Button>
             )}
-            <Button variant="secondary" size="xs" loading={photoBusy} className={compactButton} onClick={() => fileRef.current?.click()}>
+            <Button variant="secondary" size="xs" loading={photoBusy} className={`${compactButton} max-sm:flex-1`} onClick={() => fileRef.current?.click()}>
               {t('profile.changePhoto')}
             </Button>
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={t('profile.firstName')} htmlFor="firstName">
             <TextInput size="md" id="firstName" autoComplete="given-name" maxLength={40} value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           </Field>
@@ -268,7 +268,7 @@ function ExamSectionSkeleton() {
           <Skeleton className={cn(controlSkeleton, 'w-36')} />
         </SettingRow>
         <SettingRow title={t('exam.daily')} hint={t('exam.dailyHint')}>
-          <Skeleton className={cn(controlSkeleton, 'w-[280px]')} />
+          <Skeleton className={cn(controlSkeleton, 'w-full sm:w-[280px]')} />
         </SettingRow>
       </Rows>
     </Panel>
@@ -312,7 +312,7 @@ export function ExamSection() {
             label={t('exam.daily')}
             value={String(profile.dailyMinutes ?? DEFAULT_DAILY_MINUTES)}
             onValueChange={(value) => save({ dailyMinutes: Number(value) as DailyMinutes })}
-            className="h-9 w-[280px] rounded-[10px] text-xs [&>button]:rounded-[7px] [&>button]:px-2"
+            className="h-9 w-full rounded-[10px] text-xs sm:w-[280px] [&>button]:rounded-[7px] [&>button]:px-2"
             options={DAILY_MINUTES.map((m) => ({ value: String(m), label: td('minutes', { count: m }) }))}
           />
         </SettingRow>
@@ -422,7 +422,7 @@ export function SubscriptionSection() {
         <PlanBadge />
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="flex items-center gap-2 text-[15px] font-medium">
-            {profile.isPro ? 'CEFR Mock Pro' : t('free')}
+            {profile.isPro ? `${BRAND_NAME} Pro` : t('free')}
             <Tag tone={profile.isPro ? 'pro' : 'success'} size="sm">{t('active')}</Tag>
           </span>
           <span className="text-xs text-ink-3">{t(profile.isPro ? 'proHint' : 'freeHint')}</span>

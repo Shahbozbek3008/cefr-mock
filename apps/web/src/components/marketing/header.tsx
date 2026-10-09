@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { Logo } from '@/components/ui/logo';
+import { BRAND_NAME, Logo } from '@/components/ui/logo';
 import { ButtonLink } from '@/components/ui/button';
 import { LocaleSwitcher } from '@/components/layout/locale-switcher';
 import { ScrollProgress } from '@/components/motion/scroll-progress';
@@ -17,7 +17,7 @@ export function MarketingHeader() {
     <HeaderFrame>
       <ScrollProgress />
       <div className="mx-auto flex h-14 max-w-page items-center gap-10 px-5 transition-[max-width,height,border-radius,background-color,box-shadow,padding] duration-(--t-slow) ease-out-expo max-md:bg-[rgba(250,250,250,.78)] max-md:shadow-[0_1px_0_rgba(20,22,30,.06)] max-md:backdrop-blur-[20px] max-md:backdrop-saturate-150 md:h-(--header-h) md:px-8 md:group-data-[scrolled=true]/header:h-[58px] md:group-data-[scrolled=true]/header:backdrop-blur-[20px] md:group-data-[scrolled=true]/header:backdrop-saturate-150 md:group-data-[scrolled=true]/header:max-w-[1080px] md:group-data-[scrolled=true]/header:rounded-[20px] md:group-data-[scrolled=true]/header:bg-white/72 md:group-data-[scrolled=true]/header:pr-2.5 md:group-data-[scrolled=true]/header:pl-5 md:group-data-[scrolled=true]/header:shadow-[0_0_0_1px_rgba(20,22,30,.06),0_18px_40px_-20px_rgba(20,22,30,.22)]">
-        <Link href={ROUTES.home} aria-label="CEFR Mock" className="transition-opacity hover:opacity-80">
+        <Link href={ROUTES.home} aria-label={BRAND_NAME} className="transition-opacity hover:opacity-80">
           <Logo size="lg" className="max-md:hidden" />
           <Logo size="md" className="md:hidden" />
         </Link>

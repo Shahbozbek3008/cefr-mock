@@ -6,7 +6,7 @@ import { DASHBOARD_SKILLS, PROGRESS_HISTORY } from '@/lib/mock/results';
 import { richTags } from '@/lib/rich';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
-import { LogoMark } from '@/components/ui/logo';
+import { BRAND_NAME, LogoMark } from '@/components/ui/logo';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { LineChart } from '@/components/ui/line-chart';
 import { SectionHeading } from '@/components/ui/typography';
@@ -51,7 +51,7 @@ function MiniSidebar() {
   const t = useTranslations('app.nav');
   return (
     <div className="flex w-[200px] shrink-0 flex-col gap-5 bg-bg-sidebar px-3 py-5 shadow-[1px_0_0_rgba(20,22,30,.06)] max-lg:hidden">
-      <span className="flex items-center gap-2 px-2 text-[13px] font-medium"><LogoMark size="sm" />CEFR Mock</span>
+      <span className="flex items-center gap-2 px-2 text-[13px] font-medium"><LogoMark size="sm" />{BRAND_NAME}</span>
       <div className="flex flex-col gap-0.5">
         {NAV.map((n, i) => (
           <span

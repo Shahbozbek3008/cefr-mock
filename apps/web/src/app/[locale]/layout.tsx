@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { geistMono, onest } from '@/lib/fonts';
+import { BRAND_NAME } from '@/components/ui/logo';
 import { initLocale, resolveLocale, type LocaleParams } from '@/lib/i18n';
 import { MotionProvider } from '@/components/motion/motion-provider';
 import { AppProviders } from '@/components/providers/app-providers';
@@ -16,7 +17,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
   const t = await getTranslations({ locale: await resolveLocale(params), namespace: 'metadata' });
   return {
-    title: { default: t('title'), template: `%s · CEFR Mock` },
+    title: { default: t('title'), template: `%s · ${BRAND_NAME}` },
     description: t('description'),
     alternates: { languages: Object.fromEntries(routing.locales.map((l) => [l, l === routing.defaultLocale ? '/' : `/${l}`])) },
   };
