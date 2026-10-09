@@ -45,3 +45,6 @@ GoogleService-Info.plist
 # generated native folders
 /apps/mobile/ios
 /apps/mobile/android
+
+.vercel
+.env*
