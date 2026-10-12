@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@cefr/ui'],
+  // OG/Twitter images read these fonts from disk at render time.
+  outputFileTracingIncludes: { '/*': ['./src/assets/fonts/**'] },
   experimental: {
     optimizePackageImports: ['lucide-react', 'radix-ui'],
   },

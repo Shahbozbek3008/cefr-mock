@@ -9,11 +9,13 @@ import { TestimonialsSection } from '@/components/testimonials-section';
 import { PricingSection } from '@/components/pricing-section';
 import { FaqSection } from '@/components/faq-section';
 import { CtaBanner } from '@/components/cta-banner';
+import { StructuredData } from '@/components/structured-data';
 
 export default async function LandingPage({ params }: { params: LocaleParams }) {
-  await initLocale(params);
+  const locale = await initLocale(params);
   return (
     <>
+      <StructuredData locale={locale} />
       <Hero />
       <StatsBand />
       <ProductPreview />

@@ -1,7 +1,11 @@
 {
   "metadata": {
     "title": "CEFR Multilevel — CEFR imtihoniga real sharoitda tayyorlaning",
-    "description": "To'liq mock testlar, Writing va Speaking uchun AI baholash va har bir xato bo'yicha tushuntirish."
+    "description": "Rasmiy formatdagi CEFR Multilevel mock testlari: Listening, Reading, Writing, Speaking. AI baholash, 0–75 ball va har bir xato bo'yicha tushuntirish.",
+    "keywords": "CEFR, CEFR Multilevel, multilevel imtihon, CEFR mock test, ingliz tili imtihoni, B2 sertifikat, CEFR tayyorlov, Speaking mashq, Writing tekshirish, AI baholash",
+    "ogHeadline": "CEFR imtihoniga real sharoitda tayyorlaning",
+    "ogTagline": "Mock testlar · AI baholash · 0–75 ball",
+    "productDescription": "CEFR Multilevel'ga tayyorlanish uchun obuna: barcha mock testlar, Writing va Speaking uchun AI baholash va batafsil tahlil."
   },
   "common": {
     "language": "Til",

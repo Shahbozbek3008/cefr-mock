@@ -1,7 +1,9 @@
 import { MarketingFooter } from "@/components/footer";
 import { MarketingHeader } from "@/components/header";
 import { StickyCta } from "@/components/sticky-cta";
+import { OG_LOCALES, SEARCH_VERIFICATION, SITE_URL } from "@/constants/seo";
 import { geistMono, onest } from "@/lib/fonts";
+import { languageAlternates, localePath } from "@/lib/seo";
 import "@/styles/globals.css";
 import { BRAND_NAME } from "@cefr/ui/components/logo";
 import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
@@ -23,21 +25,58 @@ export async function generateMetadata({
 }: {
   params: LocaleParams;
 }): Promise<Metadata> {
-  const t = await getTranslations({
-    locale: await resolveLocale(params),
-    namespace: "metadata",
-  });
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  const title = t("title");
+  const description = t("description");
+  const url = localePath(locale);
+
   return {
-    title: { default: t("title"), template: `%s · ${BRAND_NAME}` },
-    description: t("description"),
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: `%s · ${BRAND_NAME}` },
+    description,
+    keywords: t("keywords").split(",").map((keyword) => keyword.trim()),
+    applicationName: BRAND_NAME,
+    authors: [{ name: BRAND_NAME, url: SITE_URL }],
+    creator: BRAND_NAME,
+    publisher: BRAND_NAME,
+    category: "education",
     alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [
-          l,
-          l === routing.defaultLocale ? "/" : `/${l}`,
-        ]),
-      ),
+      canonical: url,
+      languages: languageAlternates(),
     },
+    openGraph: {
+      type: "website",
+      siteName: BRAND_NAME,
+      title,
+      description,
+      url,
+      locale: OG_LOCALES[locale],
+      alternateLocale: routing.locales
+        .filter((l) => l !== locale)
+        .map((l) => OG_LOCALES[l]),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    verification: {
+      google: SEARCH_VERIFICATION.google,
+      yandex: SEARCH_VERIFICATION.yandex,
+    },
+    formatDetection: { telephone: false, email: false, address: false },
   };
 }
 
