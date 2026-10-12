@@ -2,12 +2,12 @@ import type { ReactNode } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { sectionTitles, type TestSummary } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Tag, type TagTone } from '@/components/ui/tag';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Tag, type TagTone } from '@cefr/ui/components/tag';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { Panel } from './panel';
 
 const COLUMNS = 'grid-cols-[minmax(0,1fr)_auto_16px] sm:min-w-[560px] sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_80px_24px]';

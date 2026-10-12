@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useProgress, type ProgressPeriod } from '@cefr/core';
 import { LEVELS, MAX_SCORE } from '@/lib/constants';
-import { LineChart } from '@/components/ui/line-chart';
-import { SegmentedControl } from '@/components/ui/segmented-control';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { CountUp } from '@/components/motion/count-up';
+import { LineChart } from '@cefr/ui/components/line-chart';
+import { SegmentedControl } from '@cefr/ui/components/segmented-control';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { CountUp } from '@cefr/ui/motion/count-up';
 import { Panel } from './panel';
 import { Trend } from './trend';
 

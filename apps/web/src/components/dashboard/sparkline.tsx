@@ -2,7 +2,7 @@
 
 import { useId } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { EASE_OUT, VIEWPORT } from '@/lib/motion';
+import { EASE_OUT, VIEWPORT } from '@cefr/ui/lib/motion';
 
 type SparklineProps = { data: readonly number[]; width?: number; height?: number; color?: string };
 

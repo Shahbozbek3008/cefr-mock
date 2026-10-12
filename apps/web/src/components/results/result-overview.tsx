@@ -15,18 +15,18 @@ import {
   type SectionKind,
   type SectionScore,
 } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Tag } from '@/components/ui/tag';
-import { Button, ButtonLink } from '@/components/ui/button';
-import { Gauge, ScoreValue } from '@/components/ui/gauge';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { CountUp } from '@/components/motion/count-up';
-import { ScaleBar, LEVEL_LABELS } from '@/components/app/scale-bar';
+import { Icon } from '@cefr/ui/components/icon';
+import { Tag } from '@cefr/ui/components/tag';
+import { Button, ButtonLink } from '@cefr/ui/components/button';
+import { Gauge, ScoreValue } from '@cefr/ui/components/gauge';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { CountUp } from '@cefr/ui/motion/count-up';
+import { ScaleBar, LEVEL_LABELS } from '@cefr/ui/components/scale-bar';
 import { Delta } from '@/components/app/delta';
 import { panelSurface } from '@/components/dashboard/panel';
 import { Trend } from '@/components/dashboard/trend';

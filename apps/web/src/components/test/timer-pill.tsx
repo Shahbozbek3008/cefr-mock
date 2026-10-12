@@ -1,4 +1,4 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 
 export function TimerPill({ value, warning = false }: { value: string; warning?: boolean }) {
   return (

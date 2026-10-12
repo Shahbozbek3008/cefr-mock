@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { PAYMENT_METHODS } from '@/lib/mock/plans';
-import { RadioCardGroup, RadioDot } from '@/components/ui/controls';
-import { PaymeLogo } from '@/components/ui/payme-logo';
+import { PAYMENT_METHODS } from '@cefr/ui/lib/plans';
+import { RadioCardGroup, RadioDot } from '@cefr/ui/components/controls';
+import { PaymeLogo } from '@cefr/ui/components/payme-logo';
 import clickLogo from '@/assets/brands/click.png';
 
 const LOGO_HEIGHT = 20;

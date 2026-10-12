@@ -2,10 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { motion, useReducedMotion } from 'motion/react';
-import { EASE_OUT, VIEWPORT } from '@/lib/motion';
-import { cn } from '@/lib/cn';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { CountUp } from '@/components/motion/count-up';
+import { EASE_OUT, VIEWPORT } from '@cefr/ui/lib/motion';
+import { cn } from '@cefr/ui/lib/cn';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { CountUp } from '@cefr/ui/motion/count-up';
 import { Panel } from './panel';
 import type { WeekDay } from './kpi-cards';
 

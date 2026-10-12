@@ -2,8 +2,8 @@
 
 import { useId, useState, type ReactNode } from 'react';
 import { Tabs } from 'radix-ui';
-import { cn } from '@/lib/cn';
-import { ActivePill } from '@/components/motion/active-pill';
+import { cn } from '@cefr/ui/lib/cn';
+import { ActivePill } from '@cefr/ui/motion/active-pill';
 
 export type SettingsSection = { key: string; label: string; content: ReactNode };
 

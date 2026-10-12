@@ -19,13 +19,13 @@ import {
   type ReviewStatus,
 } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Tag } from '@/components/ui/tag';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/controls';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { Icon } from '@cefr/ui/components/icon';
+import { Tag } from '@cefr/ui/components/tag';
+import { Button } from '@cefr/ui/components/button';
+import { Switch } from '@cefr/ui/components/controls';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { ResultsTopbar, StatePanel } from './shared';
 

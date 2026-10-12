@@ -1,4 +1,4 @@
-import { initLocale, type LocaleParams } from "@/lib/i18n";
+import { initLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
 import type { ReactNode } from "react";
 
 interface AuthLayoutProps {

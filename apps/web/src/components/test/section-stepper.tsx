@@ -2,8 +2,8 @@ import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import { SKILLS, type Skill } from '@/lib/constants';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
 
 export function SectionStepper({ current }: { current: Skill }) {
   const t = useTranslations('skills');

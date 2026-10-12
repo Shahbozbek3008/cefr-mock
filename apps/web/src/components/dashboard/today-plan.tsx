@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import { fetchPracticeTest, sectionTitles, useCefrClient, type PlanItem } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES, SKILL_ICONS } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { Icon } from '@cefr/ui/components/icon';
+import { Button } from '@cefr/ui/components/button';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { Panel } from './panel';
 
 export function TodayPlanSkeleton() {

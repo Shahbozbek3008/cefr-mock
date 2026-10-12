@@ -14,13 +14,13 @@ firebase.messaging().onBackgroundMessage((payload) => {
     body: data.body,
     icon: '/push-icon.png',
     badge: '/push-badge.png',
-    data: { url: data.url || '/app' },
+    data: { url: data.url || '/' },
   });
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const target = new URL((event.notification.data && event.notification.data.url) || '/app', self.location.origin).href;
+  const target = new URL((event.notification.data && event.notification.data.url) || '/', self.location.origin).href;
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windows) => {
       const open = windows.find((client) => client.url.startsWith(self.location.origin));

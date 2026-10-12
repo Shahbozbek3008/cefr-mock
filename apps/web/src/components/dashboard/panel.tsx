@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 
 export const panelSurface = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]';
 

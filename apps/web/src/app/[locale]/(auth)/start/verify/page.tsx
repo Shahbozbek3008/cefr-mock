@@ -1,7 +1,7 @@
 import { PHONE_DIGITS, sanitizeDigits } from '@cefr/core';
-import { redirect } from '@/i18n/navigation';
+import { redirect } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
+import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
 import { AuthTopBar, BackLink, StepIndicator } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { VerifyStep } from '@/components/auth/onboarding-steps';

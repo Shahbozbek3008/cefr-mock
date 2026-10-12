@@ -4,9 +4,9 @@ import { useId, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { buildMonthGrid, dayKey, isOfficialExamDay } from '@cefr/core';
-import { cn } from '@/lib/cn';
-import { IconButton } from '@/components/ui/icon-button';
-import { ActivePill } from '@/components/motion/active-pill';
+import { cn } from '@cefr/ui/lib/cn';
+import { IconButton } from '@cefr/ui/components/icon-button';
+import { ActivePill } from '@cefr/ui/motion/active-pill';
 
 type ExamCalendarProps = {
   value?: string | null;

@@ -71,7 +71,7 @@ export const showForegroundPush = async (payload: MessagePayload) => {
   const data = payload.data ?? {};
   if (!data.title) return;
   const registration = await navigator.serviceWorker.getRegistration(WORKER_SCOPE);
-  await registration?.showNotification(data.title, { body: data.body, icon: '/push-icon.png', badge: '/push-badge.png', data: { url: data.url ?? '/app' } });
+  await registration?.showNotification(data.title, { body: data.body, icon: '/push-icon.png', badge: '/push-badge.png', data: { url: data.url ?? '/' } });
 };
 
 const statusNow = async (): Promise<WebPushStatus> => {

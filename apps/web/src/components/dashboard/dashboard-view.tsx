@@ -19,7 +19,7 @@ import {
   type TestSummary,
 } from '@cefr/core';
 import { AppMain } from '@/components/layout/page-header';
-import { SkeletonText } from '@/components/ui/skeleton';
+import { SkeletonText } from '@cefr/ui/components/skeleton';
 import { KpiCards, KpiCardsSkeleton, type KpiData, type WeekDay } from './kpi-cards';
 import { ScoreChart, ScoreChartSkeleton } from './score-chart';
 import { ContinueCard, ContinueCardSkeleton } from './continue-card';

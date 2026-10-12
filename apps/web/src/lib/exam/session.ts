@@ -20,7 +20,7 @@ import {
   type SectionStats,
   type TestDetail,
 } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { useAttemptStore } from '@/lib/attempt-store';
 

@@ -4,10 +4,10 @@ import { useTranslations } from 'next-intl';
 import { DoorOpen, Flag } from 'lucide-react';
 import { nextSection, sectionTitles } from '@cefr/core';
 import type { SessionControls } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { StatGrid } from '@/components/ui/stat-grid';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Icon } from '@cefr/ui/components/icon';
+import { Button } from '@cefr/ui/components/button';
+import { StatGrid } from '@cefr/ui/components/stat-grid';
+import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
 
 const iconTile = (tone: string) => `grid size-[52px] place-items-center rounded-2xl ${tone}`;
 const chip = 'flex h-[30px] items-center rounded-[9px] px-2.5 font-mono text-xs transition-colors duration-(--t-fast)';

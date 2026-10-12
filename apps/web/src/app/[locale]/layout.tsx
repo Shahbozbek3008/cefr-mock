@@ -1,9 +1,9 @@
-import { MotionProvider } from "@/components/motion/motion-provider";
+import { MotionProvider } from "@cefr/ui/motion/motion-provider";
 import { AppProviders } from "@/components/providers/app-providers";
-import { BRAND_NAME } from "@/components/ui/logo";
-import { routing } from "@/i18n/routing";
+import { BRAND_NAME } from "@cefr/ui/components/logo";
+import { routing } from "@cefr/ui/i18n/routing";
 import { geistMono, onest } from "@/lib/fonts";
-import { initLocale, resolveLocale, type LocaleParams } from "@/lib/i18n";
+import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";

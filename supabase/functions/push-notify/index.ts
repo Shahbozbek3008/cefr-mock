@@ -12,9 +12,9 @@ const admin = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUP
 type Target = { token: string; platform: PushPlatform };
 
 const webPathOf = (url: string | null) => {
-  if (url?.startsWith('/result/')) return url.replace('/result/', '/app/results/');
-  if (url?.startsWith('/test/')) return url.replace('/test/', '/app/tests/');
-  return '/app';
+  if (url?.startsWith('/result/')) return url.replace('/result/', '/results/');
+  if (url?.startsWith('/test/')) return url.replace('/test/', '/tests/');
+  return '/';
 };
 
 const targetsOf = async (userId: string, legacyToken: string | null): Promise<Target[]> => {

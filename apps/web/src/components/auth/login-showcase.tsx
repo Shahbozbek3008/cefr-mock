@@ -3,11 +3,11 @@ import { useTranslations } from 'next-intl';
 import { Sparkle } from 'lucide-react';
 import { MAX_SCORE } from '@/lib/constants';
 import { LATEST_RESULT } from '@/lib/mock/results';
-import { Icon } from '@/components/ui/icon';
-import { Ring } from '@/components/ui/gauge';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { CountUp } from '@/components/motion/count-up';
-import { Aurora } from '@/components/marketing/aurora';
+import { Icon } from '@cefr/ui/components/icon';
+import { Ring } from '@cefr/ui/components/gauge';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { CountUp } from '@cefr/ui/motion/count-up';
+import { Aurora } from '@cefr/ui/components/aurora';
 
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 

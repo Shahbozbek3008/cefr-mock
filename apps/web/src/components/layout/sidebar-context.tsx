@@ -2,7 +2,7 @@
 
 import { createContext, use, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { SIDEBAR_COOKIE } from '@/lib/constants';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@cefr/ui/components/tooltip';
 
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 const TOGGLE_KEY = 'b';

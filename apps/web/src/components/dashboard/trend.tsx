@@ -1,7 +1,7 @@
 import { TrendingDown, TrendingUp } from 'lucide-react';
-import { cn } from '@/lib/cn';
-import { signed } from '@/lib/format';
-import { Icon } from '@/components/ui/icon';
+import { cn } from '@cefr/ui/lib/cn';
+import { signed } from '@cefr/ui/lib/format';
+import { Icon } from '@cefr/ui/components/icon';
 
 export function Trend({ value, className }: { value: number; className?: string }) {
   const up = value >= 0;

@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { AppleIcon, GoogleIcon } from '@/components/ui/brand-icons';
+import { AppleIcon, GoogleIcon } from '@cefr/ui/components/brand-icons';
 
 const PROVIDERS = [
   { key: 'google', mark: <GoogleIcon size={18} /> },

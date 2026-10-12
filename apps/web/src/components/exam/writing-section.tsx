@@ -4,12 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import type { TestDetail, WritingTask } from '@cefr/core';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { useSessionControls } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Icon } from '@cefr/ui/components/icon';
+import { Button } from '@cefr/ui/components/button';
+import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
 import { ExamFooter, ExamHeader, SectionTimer } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 

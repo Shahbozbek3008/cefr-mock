@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronLeft } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Logo } from '@/components/ui/logo';
-import { Grow } from '@/components/motion/grow';
+import { Link } from '@cefr/ui/i18n/navigation';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Logo } from '@cefr/ui/components/logo';
+import { Grow } from '@cefr/ui/motion/grow';
 
 export function BackLink({ href }: { href: string }) {
   const t = useTranslations('auth');

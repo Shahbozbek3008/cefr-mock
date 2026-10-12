@@ -5,11 +5,11 @@ import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { MAX_SCORE, useAiReviewRequest, useWritingReview, type Correction, type ReviewLocale, type TextSegment } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Button } from '@cefr/ui/components/button';
+import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { AiPendingCard, CriteriaBars, CriteriaBarsSkeleton, MarkedText, ResultsTopbar, StatePanel } from './shared';
 

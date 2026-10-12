@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { OTP_LENGTH, RESEND_SECONDS, requestCode, useCefrClient, verifyCode } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { Button } from '@/components/ui/button';
-import { OtpInput } from '@/components/ui/otp-input';
+import { Button } from '@cefr/ui/components/button';
+import { OtpInput } from '@cefr/ui/components/otp-input';
 import { ResendTimer } from './resend-timer';
 import { authErrorKey } from './auth-error';
 

@@ -1,46 +1,29 @@
-import { BookOpen, Headphones, Mic, PenLine, type LucideIcon } from 'lucide-react';
+import type { Skill } from '@cefr/ui/lib/constants';
 
-export const MAX_SCORE = 75;
-
-export const SKILLS = ['listening', 'reading', 'writing', 'speaking'] as const;
-export type Skill = (typeof SKILLS)[number];
-
-export const SKILL_ICONS: Record<Skill, LucideIcon> = {
-  listening: Headphones,
-  reading: BookOpen,
-  writing: PenLine,
-  speaking: Mic,
-};
-
-export const LEVELS = [
-  { code: 'B1', min: 38, max: 50 },
-  { code: 'B2', min: 51, max: 64 },
-  { code: 'C1', min: 65, max: 75 },
-] as const;
-export type LevelCode = (typeof LEVELS)[number]['code'];
-
-export const SCALE_SEGMENTS = [38, 13, 14, 10] as const;
+export * from '@cefr/ui/lib/constants';
 
 export const SIDEBAR_COOKIE = 'sidebar_collapsed';
 
+export const LANDING_URL = process.env.NEXT_PUBLIC_LANDING_URL ?? 'http://localhost:3001';
+
 export const ROUTES = {
-  home: '/',
   login: '/login',
   loginVerify: '/login/verify',
   start: '/start',
   startDate: '/start/date',
   startAccount: '/start/account',
   startVerify: '/start/verify',
-  dashboard: '/app',
-  catalog: '/app/tests',
-  progress: '/app/progress',
-  settings: '/app/settings',
-  billing: '/app/billing',
-  billingSuccess: '/app/billing/success',
-  test: (id: string) => `/app/tests/${id}`,
-  testSection: (id: string, section: Skill) => `/app/tests/${id}/${section}`,
-  result: (attemptId: string) => `/app/results/${attemptId}`,
-  review: (attemptId: string) => `/app/results/${attemptId}/review`,
-  aiWriting: (attemptId: string) => `/app/results/${attemptId}/writing`,
-  aiSpeaking: (attemptId: string) => `/app/results/${attemptId}/speaking`,
+  dashboard: '/',
+  catalog: '/tests',
+  progress: '/progress',
+  settings: '/settings',
+  billing: '/billing',
+  billingSuccess: '/billing/success',
+  results: '/results',
+  test: (id: string) => `/tests/${id}`,
+  testSection: (id: string, section: Skill) => `/tests/${id}/${section}`,
+  result: (attemptId: string) => `/results/${attemptId}`,
+  review: (attemptId: string) => `/results/${attemptId}/review`,
+  aiWriting: (attemptId: string) => `/results/${attemptId}/writing`,
+  aiSpeaking: (attemptId: string) => `/results/${attemptId}/speaking`,
 } as const;

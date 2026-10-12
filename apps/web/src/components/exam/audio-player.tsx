@@ -4,9 +4,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Lock, Play, RotateCcw } from 'lucide-react';
 import { formatClock, type AttemptMode } from '@cefr/core';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Waveform } from '@/components/ui/waveform';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Waveform } from '@cefr/ui/components/waveform';
 
 const END_TOLERANCE_SEC = 0.5;
 const EXAM_ROUNDS = 2;

@@ -18,10 +18,10 @@ import {
   type SpeakingReview as SpeakingReviewData,
 } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { AiPendingCard, MarkedText, ResultsTopbar, StatePanel } from './shared';
 

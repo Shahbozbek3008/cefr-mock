@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { MAX_SCORE, SKILLS, SKILL_ICONS, type Skill } from '@/lib/constants';
-import { Icon } from '@/components/ui/icon';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { CountUp } from '@/components/motion/count-up';
+import { Icon } from '@cefr/ui/components/icon';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { CountUp } from '@cefr/ui/motion/count-up';
 import { Delta } from '@/components/app/delta';
 import { Panel } from './panel';
 

@@ -1,8 +1,8 @@
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
-import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
-import { Logo } from '@/components/ui/logo';
+import { Link } from '@cefr/ui/i18n/navigation';
+import { LANDING_URL, ROUTES } from '@/lib/constants';
+import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { Logo } from '@cefr/ui/components/logo';
 import { PhoneLoginForm } from '@/components/auth/phone-login-form';
 import { OrDivider, SocialButtons } from '@/components/auth/social-buttons';
 import { LoginShowcase } from '@/components/auth/login-showcase';
@@ -15,7 +15,7 @@ function LoginView() {
     <div className="grid min-h-dvh bg-surface lg:grid-cols-[560px_1fr]">
       <div className="flex flex-col px-5 pt-6 pb-8 max-lg:items-center sm:px-16 sm:py-10">
         <div className="w-full max-w-[400px] lg:max-w-none">
-          <Link href={ROUTES.home} className="inline-flex"><Logo /></Link>
+          <a href={LANDING_URL} className="inline-flex"><Logo /></a>
         </div>
         <div className="my-auto flex w-full max-w-[400px] flex-col gap-7 py-10 sm:gap-8">
           <div className="flex flex-col gap-2.5">

@@ -1,5 +1,5 @@
 import { ROUTES } from '@/lib/constants';
-import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
+import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
 import { AuthTopBar, BackLink, StepIndicator } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { AccountStep } from '@/components/auth/onboarding-steps';

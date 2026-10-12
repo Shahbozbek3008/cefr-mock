@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Mark, type MarkKind } from '@/components/ui/mark';
+import { Mark, type MarkKind } from '@cefr/ui/components/mark';
 
 type Segment = string | { text: string; mark: MarkKind | 'filler' };
 

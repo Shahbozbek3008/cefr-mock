@@ -5,14 +5,14 @@ import { useLocale, useTranslations } from 'next-intl';
 import { DropdownMenu } from 'radix-ui';
 import { ChevronsUpDown, CreditCard, LogOut, Settings } from 'lucide-react';
 import { formatPhone, useProfile, useUpdateProfile, type Locale } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { useSignOut } from '@/lib/supabase/sign-out';
-import { Icon } from '@/components/ui/icon';
-import { Avatar } from '@/components/ui/avatar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { menuContent, menuItem, menuSeparator } from '@/components/ui/menu';
+import { Icon } from '@cefr/ui/components/icon';
+import { Avatar } from '@cefr/ui/components/avatar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { menuContent, menuItem, menuSeparator } from '@cefr/ui/components/menu';
 
 const LINKS = [
   { key: 'settings', href: ROUTES.settings, icon: Settings },

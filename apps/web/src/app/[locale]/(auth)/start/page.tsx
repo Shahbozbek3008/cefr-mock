@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
+import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
 import { AuthTopBar, StepIndicator } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { GoalStep } from '@/components/auth/onboarding-steps';

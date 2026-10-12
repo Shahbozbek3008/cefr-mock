@@ -2,11 +2,11 @@ import { useTranslations } from 'next-intl';
 import { Clock3, Layers } from 'lucide-react';
 import { formatClock, sectionTitles, type TestSummary } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { Icon } from '@/components/ui/icon';
-import { Ring } from '@/components/ui/gauge';
-import { ButtonLink } from '@/components/ui/button';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { CountUp } from '@/components/motion/count-up';
+import { Icon } from '@cefr/ui/components/icon';
+import { Ring } from '@cefr/ui/components/gauge';
+import { ButtonLink } from '@cefr/ui/components/button';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { CountUp } from '@cefr/ui/motion/count-up';
 import { Panel } from './panel';
 
 export function ContinueCardSkeleton() {

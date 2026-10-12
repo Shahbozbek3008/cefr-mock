@@ -6,7 +6,7 @@ export const MOCK_USER = {
   initial: 'A',
   phone: '90 123 45 67',
   memberSince: '2026-07-01',
-  planByRoute: (pathname: string): Plan => (pathname === '/app' ? 'free' : 'pro'),
+  planByRoute: (pathname: string): Plan => (pathname === '/' ? 'free' : 'pro'),
 } as const;
 
 export const MOCK_EXAM = {

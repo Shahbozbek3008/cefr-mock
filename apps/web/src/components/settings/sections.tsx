@@ -21,22 +21,22 @@ import {
   type TargetLevel,
 } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { toSquareJpeg } from '@/lib/image';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { useSignOut } from '@/lib/supabase/sign-out';
 import { useWebPush } from '@/lib/firebase/web-push';
-import { Tag } from '@/components/ui/tag';
-import { Icon } from '@/components/ui/icon';
-import { Avatar } from '@/components/ui/avatar';
-import { BRAND_NAME, LogoMark } from '@/components/ui/logo';
-import { Button, ButtonLink } from '@/components/ui/button';
-import { Switch } from '@/components/ui/controls';
-import { Field, TextInput } from '@/components/ui/field';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { SegmentedControl } from '@/components/ui/segmented-control';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { LocaleSwitcher } from '@/components/layout/locale-switcher';
+import { Tag } from '@cefr/ui/components/tag';
+import { Icon } from '@cefr/ui/components/icon';
+import { Avatar } from '@cefr/ui/components/avatar';
+import { BRAND_NAME, LogoMark } from '@cefr/ui/components/logo';
+import { Button, ButtonLink } from '@cefr/ui/components/button';
+import { Switch } from '@cefr/ui/components/controls';
+import { Field, TextInput } from '@cefr/ui/components/field';
+import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
+import { SegmentedControl } from '@cefr/ui/components/segmented-control';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
 import { ExamCalendar } from '@/components/auth/exam-calendar';
 import { Panel } from '@/components/dashboard/panel';
 

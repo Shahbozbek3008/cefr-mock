@@ -1,4 +1,4 @@
-import type { MarkKind } from '@/components/ui/mark';
+import type { MarkKind } from '@cefr/ui/components/mark';
 
 export type Segment = string | { text: string; mark: MarkKind };
 

@@ -13,10 +13,10 @@ import {
   type AppNotification,
   type NotificationKind,
 } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { useRouter } from '@cefr/ui/i18n/navigation';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 
 type Group = 'today' | 'yesterday' | 'earlier';
 
@@ -44,8 +44,8 @@ const groupOf = (iso: string, now: Date): Group => {
 };
 
 const webPathOf = (url?: string) => {
-  if (url?.startsWith('/result/')) return url.replace('/result/', '/app/results/');
-  if (url?.startsWith('/test/')) return url.replace('/test/', '/app/tests/');
+  if (url?.startsWith('/result/')) return url.replace('/result/', '/results/');
+  if (url?.startsWith('/test/')) return url.replace('/test/', '/tests/');
   return null;
 };
 

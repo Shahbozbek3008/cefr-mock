@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { listeningAudioUrl, useCefrClient, type Choice, type MapSpec, type McqQuestion, type Question, type TestDetail } from '@cefr/core';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { useSessionControls } from '@/lib/exam/session';
-import { Button } from '@/components/ui/button';
+import { Button } from '@cefr/ui/components/button';
 import { AudioPlayer } from './audio-player';
 import { ExamFooter, ExamHeader, SectionTimer, footerNavigator } from './exam-header';
 import { SessionDialogs } from './session-dialogs';

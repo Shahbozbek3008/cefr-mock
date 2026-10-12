@@ -3,11 +3,11 @@
 import { useEffect, type ComponentType } from 'react';
 import { useTranslations } from 'next-intl';
 import { sectionOrder, useAttemptAutosave, useAttemptSession, useTest, type AttemptScope, type SectionKind, type TestDetail } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { failureKey } from '@/lib/exam/session';
-import { Button } from '@/components/ui/button';
+import { Button } from '@cefr/ui/components/button';
 import { ListeningSection } from './listening-section';
 import { ReadingSection } from './reading-section';
 import { WritingSection } from './writing-section';

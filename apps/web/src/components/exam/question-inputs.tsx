@@ -4,9 +4,9 @@ import { forwardRef, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Flag } from 'lucide-react';
 import { tfngChoices, type Choice, type McqQuestion, type Question } from '@cefr/core';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { useAnswer, useAttemptStore, useIsFlagged } from '@/lib/attempt-store';
-import { Icon } from '@/components/ui/icon';
+import { Icon } from '@cefr/ui/components/icon';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 

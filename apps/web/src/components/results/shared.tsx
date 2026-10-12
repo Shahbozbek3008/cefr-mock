@@ -5,12 +5,12 @@ import { useTranslations } from 'next-intl';
 import { ArrowRight, ChevronLeft, Sparkles } from 'lucide-react';
 import type { Criterion, TextSegment } from '@cefr/core';
 import { weakestLabel } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
-import { cn } from '@/lib/cn';
-import { Icon } from '@/components/ui/icon';
-import { Button } from '@/components/ui/button';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { Link } from '@cefr/ui/i18n/navigation';
+import { cn } from '@cefr/ui/lib/cn';
+import { Icon } from '@cefr/ui/components/icon';
+import { Button } from '@cefr/ui/components/button';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 
 const CRITERIA_ROW = 'grid h-12 grid-cols-[minmax(0,1fr)_minmax(80px,140px)_52px] items-center gap-4 text-sm shadow-[0_1px_0_var(--divider)] last:shadow-none';

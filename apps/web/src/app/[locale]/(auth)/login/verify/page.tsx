@@ -1,12 +1,12 @@
 import { useTranslations } from 'next-intl';
 import { Smartphone } from 'lucide-react';
 import { PHONE_DIGITS, formatPhone, sanitizeDigits } from '@cefr/core';
-import { Link, redirect } from '@/i18n/navigation';
+import { Link, redirect } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { richTags } from '@/lib/rich';
-import { initLocale, metadataTitle, type LocaleParams } from '@/lib/i18n';
-import { Icon } from '@/components/ui/icon';
-import { Logo, LogoMark } from '@/components/ui/logo';
+import { richTags } from '@cefr/ui/lib/rich';
+import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { Icon } from '@cefr/ui/components/icon';
+import { Logo, LogoMark } from '@cefr/ui/components/logo';
 import { AuthTopBar, BackLink } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { VerifyCodeForm } from '@/components/auth/verify-code-form';

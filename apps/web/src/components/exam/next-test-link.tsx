@@ -2,7 +2,7 @@
 
 import { useTests, type TestSummary } from '@cefr/core';
 import { ROUTES } from '@/lib/constants';
-import { ButtonLink, type ButtonLinkProps } from '@/components/ui/button';
+import { ButtonLink, type ButtonLinkProps } from '@cefr/ui/components/button';
 
 const hrefOf = (tests: readonly TestSummary[] | undefined) => {
   const resume = tests?.find((test) => test.status === 'in_progress');

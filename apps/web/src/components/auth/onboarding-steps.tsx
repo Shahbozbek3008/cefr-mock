@@ -19,20 +19,20 @@ import {
   type DailyMinutes,
   type TargetLevel,
 } from '@cefr/core';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@cefr/ui/i18n/navigation';
 import { LEVELS, ROUTES } from '@/lib/constants';
-import { richTags } from '@/lib/rich';
+import { richTags } from '@cefr/ui/lib/rich';
 import { useOnboardingHydrated, useOnboardingStore } from '@/lib/onboarding-store';
-import { Button, ButtonLink } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Tag } from '@/components/ui/tag';
-import { AiTip } from '@/components/ui/ai-tip';
-import { StatGrid } from '@/components/ui/stat-grid';
-import { Checkbox } from '@/components/ui/controls';
-import { KeyValueList } from '@/components/ui/key-value-list';
-import { SuccessBadge } from '@/components/ui/success-badge';
-import { Field, PhoneInput, TextInput } from '@/components/ui/field';
-import { SegmentedControl } from '@/components/ui/segmented-control';
+import { Button, ButtonLink } from '@cefr/ui/components/button';
+import { Card } from '@cefr/ui/components/card';
+import { Tag } from '@cefr/ui/components/tag';
+import { AiTip } from '@cefr/ui/components/ai-tip';
+import { StatGrid } from '@cefr/ui/components/stat-grid';
+import { Checkbox } from '@cefr/ui/components/controls';
+import { KeyValueList } from '@cefr/ui/components/key-value-list';
+import { SuccessBadge } from '@cefr/ui/components/success-badge';
+import { Field, PhoneInput, TextInput } from '@cefr/ui/components/field';
+import { SegmentedControl } from '@cefr/ui/components/segmented-control';
 import { NextTestLink } from '@/components/exam/next-test-link';
 import { authErrorKey } from './auth-error';
 import { ExamCalendar } from './exam-calendar';

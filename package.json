@@ -8,6 +8,7 @@
   "scripts": {
     "mobile": "npm run start --workspace @cefr/mobile",
     "web": "npm run dev --workspace @cefr/web",
+    "landing": "npm run dev --workspace @cefr/landing",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "db:seed": "node scripts/generate-test-seed.mjs",

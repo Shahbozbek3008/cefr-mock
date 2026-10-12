@@ -2,12 +2,12 @@ import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
 import { MAX_SCORE, SKILL_ICONS } from '@/lib/constants';
 import type { SkillScore } from '@/components/dashboard/skills-card';
-import { Link } from '@/i18n/navigation';
-import { Card } from '@/components/ui/card';
-import { Icon } from '@/components/ui/icon';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { BigNumber } from '@/components/ui/typography';
-import { CountUp } from '@/components/motion/count-up';
+import { Link } from '@cefr/ui/i18n/navigation';
+import { Card } from '@cefr/ui/components/card';
+import { Icon } from '@cefr/ui/components/icon';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { BigNumber } from '@cefr/ui/components/typography';
+import { CountUp } from '@cefr/ui/motion/count-up';
 import { Delta } from './delta';
 
 type SkillStatCardProps = SkillScore & { variant?: 'compact' | 'detailed'; href?: string };

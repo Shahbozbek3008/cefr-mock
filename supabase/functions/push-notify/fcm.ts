@@ -80,7 +80,7 @@ const mobileMessage = (token: string, message: PushMessage) => ({
 
 const webMessage = (token: string, message: PushMessage) => ({
   token,
-  data: { title: message.title, body: message.body, url: message.url ?? '/app' },
+  data: { title: message.title, body: message.body, url: message.url ?? '/' },
   webpush: { headers: { Urgency: 'high' } },
 });
 

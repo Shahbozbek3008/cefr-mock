@@ -1,10 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { PLANS, RECOMMENDED_PLAN, type PlanId } from '@/lib/mock/plans';
-import { formatSum } from '@/lib/format';
-import { Tag } from '@/components/ui/tag';
-import { RadioCardGroup, RadioDot } from '@/components/ui/controls';
+import { PLANS, RECOMMENDED_PLAN, type PlanId } from '@cefr/ui/lib/plans';
+import { formatSum } from '@cefr/ui/lib/format';
+import { Tag } from '@cefr/ui/components/tag';
+import { RadioCardGroup, RadioDot } from '@cefr/ui/components/controls';
 
 type PlanPickerProps = { value: PlanId; onChange: (value: PlanId) => void };
 

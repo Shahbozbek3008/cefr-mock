@@ -2,10 +2,10 @@ import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import type { TestResult } from '@cefr/core';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/lib/constants';
-import { Icon } from '@/components/ui/icon';
-import { SkeletonText } from '@/components/ui/skeleton';
+import { Icon } from '@cefr/ui/components/icon';
+import { SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from './panel';
 
 function InsightShell({ children }: { children: ReactNode }) {

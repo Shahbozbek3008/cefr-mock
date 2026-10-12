@@ -19,18 +19,18 @@ import {
   type PracticeItem,
   type TestSummary,
 } from '@cefr/core';
-import { Link, useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES, SKILL_ICONS } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Spinner } from '@/components/ui/spinner';
-import { Tag } from '@/components/ui/tag';
-import { Chip } from '@/components/ui/chip';
-import { Button } from '@/components/ui/button';
-import { ProgressBar } from '@/components/ui/progress-bar';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { ActivePill } from '@/components/motion/active-pill';
+import { Icon } from '@cefr/ui/components/icon';
+import { Spinner } from '@cefr/ui/components/spinner';
+import { Tag } from '@cefr/ui/components/tag';
+import { Chip } from '@cefr/ui/components/chip';
+import { Button } from '@cefr/ui/components/button';
+import { ProgressBar } from '@cefr/ui/components/progress-bar';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
+import { ActivePill } from '@cefr/ui/motion/active-pill';
 import { panelSurface } from '@/components/dashboard/panel';
 
 const CARD = 'flex min-h-[188px] flex-col gap-4 p-5';

@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cefr/core'],
+  transpilePackages: ['@cefr/core', '@cefr/ui'],
   experimental: {
     optimizePackageImports: ['lucide-react', 'radix-ui'],
   },

@@ -1,12 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import { routing } from '@cefr/ui/i18n/routing';
 import { readSessionUser } from './lib/supabase/session';
 
 const intl = createMiddleware(routing);
 
 const LOCALE_PREFIX = new RegExp(`^/(${routing.locales.join('|')})(?=/|$)`);
-const PROTECTED = /^\/app(\/|$)/;
 const GUEST_ONLY = /^\/(login|start)(\/|$)/;
 
 const redirectTo = (request: NextRequest, response: NextResponse, path: string) => {
@@ -23,8 +22,10 @@ export default async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname.replace(LOCALE_PREFIX, '') || '/';
   const user = await readSessionUser(request, response);
 
-  if (PROTECTED.test(path) && !user) return redirectTo(request, response, '/login');
-  if (GUEST_ONLY.test(path) && user) return redirectTo(request, response, '/app');
+  const guestOnly = GUEST_ONLY.test(path);
+
+  if (!guestOnly && !user) return redirectTo(request, response, '/login');
+  if (guestOnly && user) return redirectTo(request, response, '/');
   return response;
 }
 

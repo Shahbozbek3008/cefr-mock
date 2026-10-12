@@ -2,10 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { ChevronRight, Menu, Plus } from 'lucide-react';
-import { usePathname } from '@/i18n/navigation';
-import { Icon } from '@/components/ui/icon';
-import { IconButton } from '@/components/ui/icon-button';
-import { BRAND_NAME } from '@/components/ui/logo';
+import { usePathname } from '@cefr/ui/i18n/navigation';
+import { Icon } from '@cefr/ui/components/icon';
+import { IconButton } from '@cefr/ui/components/icon-button';
+import { BRAND_NAME } from '@cefr/ui/components/logo';
 import { NextTestLink } from '@/components/exam/next-test-link';
 import { findActiveNav } from './app-nav';
 import { NotificationsMenu } from './notifications-menu';

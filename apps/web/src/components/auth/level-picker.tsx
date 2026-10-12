@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import { LEVELS } from '@/lib/constants';
-import { RadioCardGroup } from '@/components/ui/controls';
-import { Icon } from '@/components/ui/icon';
+import { RadioCardGroup } from '@cefr/ui/components/controls';
+import { Icon } from '@cefr/ui/components/icon';
 
 export function LevelPicker({ value, onChange }: { value: string | null; onChange: (value: string) => void }) {
   const t = useTranslations('onboarding.goal');

@@ -1,4 +1,4 @@
-import type { TagTone } from '@/components/ui/tag';
+import type { TagTone } from '@cefr/ui/components/tag';
 
 export type CatalogStatus = 'new' | 'inProgress' | 'done' | 'free' | 'pro';
 

@@ -13,16 +13,16 @@ import {
   useTests,
   type AttemptMode,
 } from '@cefr/core';
-import { Link, useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@cefr/ui/i18n/navigation';
 import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { failureKey } from '@/lib/exam/session';
-import { Icon } from '@/components/ui/icon';
-import { Tag } from '@/components/ui/tag';
-import { Button } from '@/components/ui/button';
-import { RadioDot } from '@/components/ui/controls';
-import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { Icon } from '@cefr/ui/components/icon';
+import { Tag } from '@cefr/ui/components/tag';
+import { Button } from '@cefr/ui/components/button';
+import { RadioDot } from '@cefr/ui/components/controls';
+import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { Panel, panelSurface } from '@/components/dashboard/panel';
 
 const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
