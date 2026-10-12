@@ -5,7 +5,8 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
 import { nextLevelGap, sectionOrder, useProgress, type AxisMark, type ProgressData, type ProgressPeriod } from '@cefr/core';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { LEVELS, MAX_SCORE, ROUTES } from '@/lib/constants';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Tag } from '@cefr/ui/components/tag';
@@ -19,17 +20,11 @@ import { Panel, panelSurface } from '@/components/dashboard/panel';
 import { Trend } from '@/components/dashboard/trend';
 import { SkillsCard, SkillsCardSkeleton } from '@/components/dashboard/skills-card';
 import { Delta } from '@/components/app/delta';
-
-const THRESHOLDS = LEVELS.slice(1).map((l) => ({ value: l.min, label: `${l.code} · ${l.min}` }));
-const PERIODS = ['1m', '3m', 'all'] as const satisfies readonly ProgressPeriod[];
+import { PROGRESS_CHART_HEIGHT, PROGRESS_PERIODS, PROGRESS_SKELETON_AXIS, PROGRESS_SKELETON_ROWS, PROGRESS_THRESHOLDS } from '@/constants/progress';
+import type { OverallPanelProps } from '@/types/progress';
 const COLUMNS = 'grid-cols-[minmax(0,1fr)_auto_auto_16px] sm:min-w-[440px] sm:grid-cols-[72px_minmax(0,1fr)_72px_64px_56px_16px]';
 const WIDE_ONLY = 'max-sm:hidden';
 const ROW = `grid ${COLUMNS} h-12 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
-const CHART_HEIGHT = 280;
-const SKELETON_AXIS = 4;
-const SKELETON_ROWS = 4;
-
-type OverallPanelProps = { score: ReactNode; trend?: ReactNode; badge: ReactNode; children: ReactNode };
 
 function OverallPanel({ score, trend, badge, children }: OverallPanelProps) {
   const t = useTranslations('progress');
@@ -55,9 +50,9 @@ function OverallChartSkeleton() {
   return (
     <OverallPanel score={<Skeleton className="h-11 w-24" />} badge={<Skeleton className="h-7 w-36 rounded-[8px]" />}>
       <div className="flex flex-col gap-2">
-        <Skeleton className="rounded-2xl" style={{ height: CHART_HEIGHT }} />
+        <Skeleton className="rounded-2xl" style={{ height: PROGRESS_CHART_HEIGHT }} />
         <div className="flex justify-between text-[10px]">
-          {Array.from({ length: SKELETON_AXIS }, (_, i) => <SkeletonText key={i} className="w-10" />)}
+          {Array.from({ length: PROGRESS_SKELETON_AXIS }, (_, i) => <SkeletonText key={i} className="w-10" />)}
         </div>
       </div>
     </OverallPanel>
@@ -84,14 +79,14 @@ function OverallChart({ data }: { data: ProgressData }) {
       {data.values.length > 1 ? (
         <LineChart
           data={data.values}
-          thresholds={THRESHOLDS}
+          thresholds={PROGRESS_THRESHOLDS}
           label={t('chartLabel')}
-          height={CHART_HEIGHT}
+          height={PROGRESS_CHART_HEIGHT}
           axisLabels={data.axis.map(axisLabel)}
           pointLabels={data.history.map((h) => h.title).reverse()}
         />
       ) : (
-        <div className="grid place-items-center rounded-2xl bg-surface-muted px-6 text-center text-[13px] text-ink-2" style={{ height: CHART_HEIGHT }}>
+        <div className="grid place-items-center rounded-2xl bg-surface-muted px-6 text-center text-[13px] text-ink-2" style={{ height: PROGRESS_CHART_HEIGHT }}>
           {t('emptyText')}
         </div>
       )}
@@ -121,7 +116,7 @@ function HistoryPanel({ children }: { children: ReactNode }) {
 function HistoryTableSkeleton() {
   return (
     <HistoryPanel>
-      {Array.from({ length: SKELETON_ROWS }, (_, i) => (
+      {Array.from({ length: PROGRESS_SKELETON_ROWS }, (_, i) => (
         <div key={i} className={ROW}>
           <SkeletonText className={cn('w-12 text-xs', WIDE_ONLY)} />
           <SkeletonText className="w-32" />
@@ -226,7 +221,7 @@ export function ProgressView() {
             value={period}
             onValueChange={(value) => setPeriod(value as ProgressPeriod)}
             className="h-8 w-[220px] rounded-[10px] text-xs [&>button]:rounded-[7px]"
-            options={PERIODS.map((v) => ({ value: v, label: t(`range.${v}`) }))}
+            options={PROGRESS_PERIODS.map((v) => ({ value: v, label: t(`range.${v}`) }))}
           />
         }
       />

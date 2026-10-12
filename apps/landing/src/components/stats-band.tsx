@@ -2,13 +2,7 @@ import { useTranslations } from 'next-intl';
 import { CountUp } from '@cefr/ui/motion/count-up';
 import { Stagger, StaggerItem } from '@cefr/ui/motion/reveal';
 import { Container } from './container';
-
-const STATS = [
-  { key: 'students', value: 12_000, prefix: '', suffix: '+', grouped: true },
-  { key: 'tests', value: 48_000, prefix: '', suffix: '+', grouped: true },
-  { key: 'speed', value: 2, prefix: '', unit: 'speedUnit', grouped: false },
-  { key: 'growth', value: 14, prefix: '+', unit: 'growthUnit', grouped: false },
-] as const;
+import { STATS } from '@/constants/sections';
 
 export function StatsBand() {
   const t = useTranslations('landing.stats');

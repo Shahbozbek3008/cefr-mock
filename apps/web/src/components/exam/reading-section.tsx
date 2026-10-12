@@ -13,6 +13,7 @@ import { SegmentedControl } from '@cefr/ui/components/segmented-control';
 import { ExamFooter, ExamHeader, SectionTimer, footerNavigator } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 import { FlagButton, GapInput, McqOptions, QuestionNavigator, TfngChoices } from './question-inputs';
+import type { ReadingPane } from '@/types/exam';
 
 const EMPTY: Highlight[] = [];
 const FILL: Record<Highlight['color'], string> = { yellow: 'bg-highlight', blue: 'bg-blue-100' };
@@ -97,8 +98,6 @@ function QuestionPanel({ question, part }: { question: Question; part: ReadingPa
   );
 }
 
-type Pane = 'text' | 'questions';
-
 export function ReadingSection({ test }: { test: TestDetail }) {
   const t = useTranslations('exam');
   const parts = test.reading;
@@ -107,7 +106,7 @@ export function ReadingSection({ test }: { test: TestDetail }) {
   const setPosition = useAttemptStore((s) => s.setPosition);
   const [index, setIndex] = useState(() => useAttemptStore.getState().position.reading ?? 0);
   const [serif, setSerif] = useState(false);
-  const [pane, setPane] = useState<Pane>('text');
+  const [pane, setPane] = useState<ReadingPane>('text');
 
   const question = questions[index];
   const partIndex = parts.findIndex((p) => p.questions.includes(question));
@@ -142,7 +141,7 @@ export function ReadingSection({ test }: { test: TestDetail }) {
         <SegmentedControl
           label={t('reading.modes.text')}
           value={pane}
-          onValueChange={(value) => setPane(value as Pane)}
+          onValueChange={(value) => setPane(value as ReadingPane)}
           options={[
             { value: 'text', label: t('reading.modes.text') },
             { value: 'questions', label: `${t('reading.modes.questions')} ${first}–${last}` },

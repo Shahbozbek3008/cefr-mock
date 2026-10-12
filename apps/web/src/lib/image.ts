@@ -1,5 +1,4 @@
-const AVATAR_SIZE = 512;
-const AVATAR_QUALITY = 0.88;
+import { AVATAR_QUALITY, AVATAR_SIZE } from '@/constants/profile';
 
 export const toSquareJpeg = async (file: Blob) => {
   const bitmap = await createImageBitmap(file);

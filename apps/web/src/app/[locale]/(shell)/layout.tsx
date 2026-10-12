@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 import { initLocale, type LocaleParams } from '@cefr/ui/i18n/locale';
-import { SIDEBAR_COOKIE } from '@/lib/constants';
+import { SIDEBAR_COOKIE } from '@/constants/layout';
 import { MobileSidebar, Sidebar } from '@/components/layout/sidebar';
 import { SidebarProvider } from '@/components/layout/sidebar-context';
 import { AppTopbar } from '@/components/layout/app-topbar';

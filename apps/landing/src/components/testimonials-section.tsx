@@ -1,24 +1,13 @@
 import { useTranslations } from 'next-intl';
 import { ArrowRight, Quote } from 'lucide-react';
-import { MAX_SCORE } from '@/lib/constants';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
 import { richTags } from '@cefr/ui/lib/rich';
 import { Icon } from '@cefr/ui/components/icon';
 import { SectionHeading } from '@cefr/ui/components/typography';
 import { Marquee } from '@cefr/ui/motion/marquee';
 import { Reveal } from '@cefr/ui/motion/reveal';
-
-const TESTIMONIALS = [
-  { key: 't1', from: 'B1', to: 'B2', score: 58, hue: 135 },
-  { key: 't2', from: 'B1', to: 'B2', score: 55, hue: 258 },
-  { key: 't3', from: 'B1', to: 'B2', score: 59, hue: 75 },
-  { key: 't4', from: 'B2', to: 'C1', score: 66, hue: 190 },
-  { key: 't5', from: 'B1', to: 'B2', score: 53, hue: 28 },
-  { key: 't6', from: 'B2', to: 'C1', score: 68, hue: 300 },
-] as const;
-
-type Testimonial = (typeof TESTIMONIALS)[number];
-
-const ROTATED = [...TESTIMONIALS.slice(3), ...TESTIMONIALS.slice(0, 3)];
+import { ROTATED_TESTIMONIALS, TESTIMONIALS } from '@/constants/sections';
+import type { Testimonial } from '@/types/sections';
 
 function TestimonialCard({ item }: { item: Testimonial }) {
   const t = useTranslations('landing.testimonials.items');
@@ -63,7 +52,7 @@ export function TestimonialsSection() {
           {TESTIMONIALS.map((item) => <TestimonialCard key={item.key} item={item} />)}
         </Marquee>
         <Marquee duration={70} reverse className="py-2 max-md:hidden">
-          {ROTATED.map((item) => <TestimonialCard key={item.key} item={item} />)}
+          {ROTATED_TESTIMONIALS.map((item) => <TestimonialCard key={item.key} item={item} />)}
         </Marquee>
       </Reveal>
     </section>

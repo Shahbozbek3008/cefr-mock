@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { PHONE_DIGITS, formatPhone, isPhoneComplete, requestCode, sanitizeDigits, useCefrClient } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@cefr/ui/components/button';
 import { Field, PhoneInput } from '@cefr/ui/components/field';
 import { authErrorKey } from './auth-error';

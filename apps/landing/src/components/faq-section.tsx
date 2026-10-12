@@ -7,8 +7,7 @@ import { SectionHeading } from '@cefr/ui/components/typography';
 import { Icon } from '@cefr/ui/components/icon';
 import { Reveal, Stagger, StaggerItem } from '@cefr/ui/motion/reveal';
 import { Container } from './container';
-
-const FAQ_KEYS = ['format', 'accuracy', 'free', 'offline'] as const;
+import { FAQ_KEYS } from '@/constants/sections';
 
 export function FaqSection() {
   const t = useTranslations('landing.faq');

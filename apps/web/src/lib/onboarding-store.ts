@@ -3,35 +3,18 @@
 import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { DEFAULT_DAILY_MINUTES, type DailyMinutes, type OnboardingDraft, type TargetLevel } from '@cefr/core';
-
-type OnboardingState = Omit<Required<OnboardingDraft>, 'dailyMinutes'> & {
-  dailyMinutes: DailyMinutes;
-  phone: string;
-  setTargetLevel: (targetLevel: TargetLevel) => void;
-  setExamDate: (examDate: string | null) => void;
-  setDailyMinutes: (dailyMinutes: DailyMinutes) => void;
-  setAccount: (firstName: string, phone: string) => void;
-  reset: () => void;
-};
-
-const INITIAL = {
-  targetLevel: null,
-  examDate: null,
-  dailyMinutes: DEFAULT_DAILY_MINUTES as DailyMinutes,
-  firstName: '',
-  phone: '',
-};
+import type { OnboardingState } from '@/types/auth';
+import { ONBOARDING_INITIAL } from '@/constants/auth';
 
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
     (set) => ({
-      ...INITIAL,
+      ...ONBOARDING_INITIAL,
       setTargetLevel: (targetLevel) => set({ targetLevel }),
       setExamDate: (examDate) => set({ examDate }),
       setDailyMinutes: (dailyMinutes) => set({ dailyMinutes }),
       setAccount: (firstName, phone) => set({ firstName, phone }),
-      reset: () => set(INITIAL),
+      reset: () => set(ONBOARDING_INITIAL),
     }),
     {
       name: 'onboarding',

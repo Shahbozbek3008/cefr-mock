@@ -3,17 +3,14 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useProgress, type ProgressPeriod } from '@cefr/core';
-import { LEVELS, MAX_SCORE } from '@/lib/constants';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
 import { LineChart } from '@cefr/ui/components/line-chart';
 import { SegmentedControl } from '@cefr/ui/components/segmented-control';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { CountUp } from '@cefr/ui/motion/count-up';
 import { Panel } from './panel';
 import { Trend } from './trend';
-
-const THRESHOLDS = LEVELS.slice(0, 2).map((l) => ({ value: l.min, label: `${l.code} · ${l.min}` }));
-const PERIODS = ['1m', '3m', 'all'] as const satisfies readonly ProgressPeriod[];
-const HEIGHT = 260;
+import { SCORE_CHART_HEIGHT, SCORE_PERIODS, SCORE_THRESHOLDS } from '@/constants/dashboard';
 const PERIOD_CONTROL = 'h-8 w-[200px] rounded-[10px]';
 
 function ChartBodySkeleton() {
@@ -24,7 +21,7 @@ function ChartBodySkeleton() {
         <span className="font-mono text-xs text-ink-3">/ {MAX_SCORE}</span>
       </div>
       <div className="px-5 pt-4 pb-5">
-        <Skeleton className="rounded-2xl" style={{ height: HEIGHT }} />
+        <Skeleton className="rounded-2xl" style={{ height: SCORE_CHART_HEIGHT }} />
       </div>
     </>
   );
@@ -64,9 +61,9 @@ export function ScoreChart() {
         )}
         <div className="px-5 pt-4 pb-5">
           {data && data.values.length > 1 ? (
-            <LineChart data={data.values} thresholds={THRESHOLDS} label={tp('chartLabel')} height={HEIGHT} pointLabels={data.history.map((h) => h.title).reverse()} />
+            <LineChart data={data.values} thresholds={SCORE_THRESHOLDS} label={tp('chartLabel')} height={SCORE_CHART_HEIGHT} pointLabels={data.history.map((h) => h.title).reverse()} />
           ) : (
-            <div className="grid place-items-center rounded-2xl bg-surface-muted px-6 text-center text-[13px] text-ink-2" style={{ height: HEIGHT }}>
+            <div className="grid place-items-center rounded-2xl bg-surface-muted px-6 text-center text-[13px] text-ink-2" style={{ height: SCORE_CHART_HEIGHT }}>
               {t('empty')}
             </div>
           )}
@@ -85,7 +82,7 @@ export function ScoreChart() {
           value={period}
           onValueChange={(value) => setPeriod(value as ProgressPeriod)}
           className={`${PERIOD_CONTROL} text-xs [&>button]:rounded-[7px]`}
-          options={PERIODS.map((v) => ({ value: v, label: tp(`range.${v}`) }))}
+          options={SCORE_PERIODS.map((v) => ({ value: v, label: tp(`range.${v}`) }))}
         />
       }
     >

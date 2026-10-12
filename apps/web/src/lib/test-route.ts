@@ -1,7 +1,5 @@
 import { notFound } from 'next/navigation';
-import { SKILLS, type Skill } from '@/lib/constants';
-
-export type TestSectionParams = Promise<{ locale: string; id: string; section: string }>;
+import { SKILLS, type Skill } from '@cefr/ui/lib/constants';
 
 export function assertSkill(section: string): Skill {
   if (!(SKILLS as readonly string[]).includes(section)) notFound();

@@ -18,7 +18,7 @@ import {
   type Question,
   type ReviewStatus,
 } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@cefr/ui/components/icon';
@@ -28,8 +28,8 @@ import { Switch } from '@cefr/ui/components/controls';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { ResultsTopbar, StatePanel } from './shared';
-
-type Tab = 'listening' | 'reading';
+import type { ReviewTab } from '@/types/results';
+import { ANSWER_KEYS, REVIEW_STAT_KEYS, SKELETON_QUESTIONS, STATUS_TONE, VOICES } from '@/constants/results';
 
 const LAYOUT = 'grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)]';
 const SIDE_PANEL = 'flex h-fit flex-col gap-4 p-5';
@@ -40,19 +40,12 @@ const FILTER_ROW = 'flex items-center justify-between pt-3 text-sm shadow-[0_-1p
 const DETAIL_PANEL = 'flex flex-col gap-5 p-6';
 const ANSWER_BOX = 'flex flex-col gap-1 rounded-2xl px-4 py-3.5';
 const NAV_BUTTON = 'h-10 w-28 rounded-[13px]';
-const STAT_KEYS = ['correct', 'wrong', 'empty'] as const;
-const ANSWER_KEYS = ['yourAnswer', 'correctAnswer'] as const;
-const SKELETON_QUESTIONS = 35;
 
 const STATUS_CELL: Record<ReviewStatus, string> = {
   correct: 'bg-success-50 text-success',
   wrong: 'bg-error-50 text-error-text',
   empty: 'bg-surface-sunken text-ink-3',
 };
-
-const STATUS_TONE = { correct: 'success', wrong: 'error', empty: 'neutral' } as const;
-
-const VOICES = ['narrator', 'woman', 'man', 'woman2', 'man2', 'woman3', 'man3'] as const;
 
 const audioMarks = (parts: ListeningPart[]): Record<number, number> => Object.assign({}, ...parts.map((part) => part.audioAt));
 
@@ -134,7 +127,7 @@ function ReviewSkeleton() {
     <div className={LAYOUT}>
       <div className={cn(panelSurface, SIDE_PANEL)}>
         <div className={STATS_GRID}>
-          {STAT_KEYS.map((key) => (
+          {REVIEW_STAT_KEYS.map((key) => (
             <div key={key} className={STAT_CELL}>
               <SkeletonText className="w-8 font-mono text-[22px]" />
               <span className="text-xs text-ink-2">{t(key)}</span>
@@ -183,7 +176,7 @@ export function ReviewView({ id, initialTab }: { id: string; initialTab?: string
   const keys = useTestKeys(testId);
   const scripts = useTestScripts(testId);
   const tabs = (['listening', 'reading'] as const).filter((tab) => !result.data || result.data.scope === 'full' || result.data.scope === tab);
-  const [tab, setTab] = useState<Tab>(() => (initialTab === 'reading' ? 'reading' : 'listening'));
+  const [tab, setTab] = useState<ReviewTab>(() => (initialTab === 'reading' ? 'reading' : 'listening'));
   const activeTab = tabs.includes(tab) ? tab : tabs[0];
   const [onlyWrong, setOnlyWrong] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);

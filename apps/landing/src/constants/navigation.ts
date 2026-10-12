@@ -17,3 +17,5 @@ export const LEGAL_LINKS = [
   { key: 'terms', href: '#' },
   { key: 'privacy', href: '#' },
 ] as const;
+
+export const MENU_ITEMS = LANDING_NAV.filter((i) => i.key !== 'app');

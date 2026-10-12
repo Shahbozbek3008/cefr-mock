@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, DoorOpen, Dumbbell, Headphones, RotateCcw, ShieldCheck, Timer, Wifi, type LucideIcon } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import {
   beginAttempt,
   fetchActiveAttempt,
@@ -14,7 +14,8 @@ import {
   type AttemptMode,
 } from '@cefr/core';
 import { Link, useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
+import { SKILLS, SKILL_ICONS } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { failureKey } from '@/lib/exam/session';
@@ -24,6 +25,7 @@ import { Button } from '@cefr/ui/components/button';
 import { RadioDot } from '@cefr/ui/components/controls';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { Panel, panelSurface } from '@/components/dashboard/panel';
+import { ATTEMPT_MODES, ATTEMPT_RULES, INTRO_STAT_LABELS } from '@/constants/exam';
 
 const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
 const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgba(20,22,30,.06)]';
@@ -33,28 +35,6 @@ const SECTION_ICON = 'grid size-9 place-items-center rounded-[10px] bg-surface-s
 const SIDE_PANEL = 'flex flex-col gap-5 p-5 sm:p-6 lg:sticky lg:top-6';
 const MODE_CARD = 'flex items-center gap-3 rounded-[14px] p-3.5';
 const RULES_BLOCK = 'flex flex-col gap-2.5 pt-4 shadow-[0_-1px_0_var(--divider)]';
-const STAT_LABELS = ['hours', 'sectionsCount', 'score'] as const;
-
-const MODES: { mode: AttemptMode; icon: LucideIcon }[] = [
-  { mode: 'exam', icon: ShieldCheck },
-  { mode: 'practice', icon: Dumbbell },
-];
-
-type RuleKey = 'ruleAudio' | 'ruleNoExit' | 'ruleTimer' | 'ruleOffline' | 'rulePracticeReplay' | 'rulePracticeResume';
-
-const RULES: Record<AttemptMode, { icon: LucideIcon; key: RuleKey }[]> = {
-  exam: [
-    { icon: Headphones, key: 'ruleAudio' },
-    { icon: DoorOpen, key: 'ruleNoExit' },
-    { icon: Timer, key: 'ruleTimer' },
-    { icon: Wifi, key: 'ruleOffline' },
-  ],
-  practice: [
-    { icon: RotateCcw, key: 'rulePracticeReplay' },
-    { icon: DoorOpen, key: 'rulePracticeResume' },
-    { icon: Wifi, key: 'ruleOffline' },
-  ],
-};
 
 function TestIntroSkeleton() {
   const t = useTranslations('exam.testIntro');
@@ -70,7 +50,7 @@ function TestIntroSkeleton() {
           <SkeletonText className="w-56 text-[15px]" />
         </div>
         <div className={STATS_GRID}>
-          {STAT_LABELS.map((key) => (
+          {INTRO_STAT_LABELS.map((key) => (
             <div key={key} className={STAT_CELL}>
               <SkeletonText className="w-16 font-mono text-lg sm:text-[22px]" />
               <span className="text-xs text-ink-2">{t(key)}</span>
@@ -95,7 +75,7 @@ function TestIntroSkeleton() {
       <div className={cn(panelSurface, SIDE_PANEL)}>
         <div className="flex flex-col gap-2.5">
           <span className="text-sm font-medium">{t('mode')}</span>
-          {MODES.map(({ mode }) => (
+          {ATTEMPT_MODES.map(({ mode }) => (
             <div key={mode} className={cn(MODE_CARD, 'bg-surface shadow-inset')}>
               <Skeleton className="size-10 shrink-0 rounded-[11px]" />
               <span className="flex flex-1 flex-col gap-0.5">
@@ -107,7 +87,7 @@ function TestIntroSkeleton() {
         </div>
         <div className={RULES_BLOCK}>
           <span className="text-sm font-medium">{t('rules')}</span>
-          {RULES.exam.map((rule) => <SkeletonText key={rule.key} className="w-4/5 text-[13px] leading-normal" />)}
+          {ATTEMPT_RULES.exam.map((rule) => <SkeletonText key={rule.key} className="w-4/5 text-[13px] leading-normal" />)}
         </div>
         <Skeleton className="h-11 w-full rounded-[12px]" />
       </div>
@@ -205,7 +185,7 @@ export function TestIntro({ id }: { id: string }) {
           <div className={cn(panelSurface, SIDE_PANEL)}>
             <div className="flex flex-col gap-2.5">
               <span className="text-sm font-medium">{t('testIntro.mode')}</span>
-              {MODES.filter((item) => !resuming || item.mode === mode).map(({ mode: value, icon }) => {
+              {ATTEMPT_MODES.filter((item) => !resuming || item.mode === mode).map(({ mode: value, icon }) => {
                 const selected = value === mode;
                 return (
                   <button
@@ -235,7 +215,7 @@ export function TestIntro({ id }: { id: string }) {
             </div>
             <div className={RULES_BLOCK}>
               <span className="text-sm font-medium">{t('testIntro.rules')}</span>
-              {RULES[mode].map((rule) => (
+              {ATTEMPT_RULES[mode].map((rule) => (
                 <span key={rule.key} className="flex gap-2.5 text-[13px] leading-normal text-ink-body">
                   <Icon as={rule.icon} size={15} className="mt-0.5 shrink-0 text-blue" />
                   {t(`testIntro.${rule.key}`)}

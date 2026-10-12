@@ -8,7 +8,7 @@ import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import type { ReactNode } from "react";
+import type { LocaleLayoutProps } from '@/types/pages';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -42,11 +42,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
 };
-
-interface LocaleLayoutProps {
-  children: ReactNode;
-  params: LocaleParams;
-}
 
 export default async function LocaleLayout({
   children,

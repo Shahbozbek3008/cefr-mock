@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { PageTitle } from '@cefr/ui/components/typography';
-
-type PageHeaderProps = { meta?: ReactNode; title: ReactNode; actions?: ReactNode };
+import type { PageHeaderProps } from '@/types/layout';
 
 export function PageHeader({ meta, title, actions }: PageHeaderProps) {
   return (

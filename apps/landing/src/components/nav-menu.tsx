@@ -3,8 +3,7 @@
 import { useEffect, useId, useState } from 'react';
 import { cn } from '@cefr/ui/lib/cn';
 import { ActivePill } from '@cefr/ui/motion/active-pill';
-
-type NavItem = { href: string; label: string };
+import type { NavItem } from '@/types/navigation';
 
 function useActiveSection(ids: readonly string[]) {
   const [active, setActive] = useState<string | null>(null);

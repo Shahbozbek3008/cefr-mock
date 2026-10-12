@@ -1,5 +1,5 @@
-import { GoogleIcon } from "@cefr/ui/components/brand-icons";
 import { useTranslations } from "next-intl";
+import { GoogleIcon } from "@cefr/ui/components/brand-icons";
 
 const PROVIDERS = [{ key: "google", mark: <GoogleIcon size={18} /> }] as const;
 

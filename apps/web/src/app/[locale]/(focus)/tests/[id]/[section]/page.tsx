@@ -1,10 +1,9 @@
 import { initLocale, metadataTitle } from '@cefr/ui/i18n/locale';
-import { assertSkill, type TestSectionParams } from '@/lib/test-route';
+import { assertSkill } from '@/lib/test-route';
 import { ExamSectionScreen } from '@/components/exam/exam-section-screen';
+import type { TestSectionPageProps } from '@/types/pages';
 
 export const generateMetadata = metadataTitle('test.metaTitle');
-
-type TestSectionPageProps = { params: TestSectionParams; searchParams: Promise<{ scope?: string }> };
 
 export default async function TestSectionPage({ params, searchParams }: TestSectionPageProps) {
   await initLocale(params);

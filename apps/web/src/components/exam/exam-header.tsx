@@ -11,8 +11,8 @@ import { Button } from '@cefr/ui/components/button';
 import { TimerPill } from '@/components/test/timer-pill';
 import { SectionProgress, SectionStepper } from '@/components/test/section-stepper';
 import { useSecondsLeft } from './use-seconds-left';
-
-const WARNING_SEC = 300;
+import { WARNING_SEC } from '@/constants/exam';
+import type { ExamHeaderProps } from '@/types/exam';
 
 export function SectionTimer({ section, onExpire }: { section: SectionKind; onExpire: () => void }) {
   const endsAt = useAttemptStore((s) => s.endsAt[section]);
@@ -20,15 +20,6 @@ export function SectionTimer({ section, onExpire }: { section: SectionKind; onEx
   if (!endsAt) return null;
   return <TimerPill value={formatClock(left)} warning={left <= WARNING_SEC} />;
 }
-
-type ExamHeaderProps = {
-  title: string;
-  subtitle?: string;
-  section: SectionKind;
-  timer: ReactNode;
-  onExit: () => void;
-  onFinish: () => void;
-};
 
 export function ExamHeader({ title, subtitle, section, timer, onExit, onFinish }: ExamHeaderProps) {
   const t = useTranslations('exam');

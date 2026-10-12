@@ -2,14 +2,15 @@ import { useTranslations } from 'next-intl';
 import { Smartphone } from 'lucide-react';
 import { PHONE_DIGITS, formatPhone, sanitizeDigits } from '@cefr/core';
 import { Link, redirect } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { richTags } from '@cefr/ui/lib/rich';
-import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { initLocale, metadataTitle } from '@cefr/ui/i18n/locale';
 import { Icon } from '@cefr/ui/components/icon';
 import { Logo, LogoMark } from '@cefr/ui/components/logo';
 import { AuthTopBar, BackLink } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { VerifyCodeForm } from '@/components/auth/verify-code-form';
+import type { VerifyPageProps } from '@/types/pages';
 
 export const generateMetadata = metadataTitle('auth.verify.title');
 
@@ -44,8 +45,6 @@ function VerifyView({ digits }: { digits: string }) {
     </Stage>
   );
 }
-
-type VerifyPageProps = { params: LocaleParams; searchParams: Promise<{ phone?: string }> };
 
 export default async function VerifyPage({ params, searchParams }: VerifyPageProps) {
   const locale = await initLocale(params);

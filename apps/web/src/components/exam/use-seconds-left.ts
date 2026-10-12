@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { secondsUntil } from '@cefr/core';
-
-const TICK_MS = 250;
+import { COUNTDOWN_TICK_MS } from '@/constants/exam';
 
 export const useSecondsLeft = (endsAt: number | undefined, onExpire?: () => void) => {
   const [left, setLeft] = useState(() => (endsAt ? secondsUntil(endsAt) : 0));
@@ -26,7 +25,7 @@ export const useSecondsLeft = (endsAt: number | undefined, onExpire?: () => void
       }
     };
     tick();
-    const id = setInterval(tick, TICK_MS);
+    const id = setInterval(tick, COUNTDOWN_TICK_MS);
     return () => clearInterval(id);
   }, [endsAt]);
 

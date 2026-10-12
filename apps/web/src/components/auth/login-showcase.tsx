@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useTranslations } from 'next-intl';
 import { Sparkle } from 'lucide-react';
-import { MAX_SCORE } from '@/lib/constants';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
 import { LATEST_RESULT } from '@/lib/mock/results';
 import { Icon } from '@cefr/ui/components/icon';
 import { Ring } from '@cefr/ui/components/gauge';

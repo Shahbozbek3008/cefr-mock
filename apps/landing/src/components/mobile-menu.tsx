@@ -9,9 +9,7 @@ import { Icon } from '@cefr/ui/components/icon';
 import { Logo } from '@cefr/ui/components/logo';
 import { ButtonLink } from '@cefr/ui/components/button';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
-import { LANDING_NAV, SOCIAL_LINKS } from './nav-links';
-
-const MENU_ITEMS = LANDING_NAV.filter((i) => i.key !== 'app');
+import { MENU_ITEMS, SOCIAL_LINKS } from '@/constants/navigation';
 
 const squareBtn = 'grid size-10 place-items-center rounded-[12px] bg-surface text-ink shadow-inset transition-[scale,box-shadow] duration-(--t-base) active:scale-95';
 

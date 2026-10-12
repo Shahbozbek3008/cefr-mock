@@ -1,10 +1,5 @@
-import { initLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
-import type { ReactNode } from "react";
-
-interface AuthLayoutProps {
-  children: ReactNode;
-  params: LocaleParams;
-}
+import { initLocale } from "@cefr/ui/i18n/locale";
+import type { AuthLayoutProps } from '@/types/pages';
 
 export default async function AuthLayout({
   children,

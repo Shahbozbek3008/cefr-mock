@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
-import { LEVELS } from '@/lib/constants';
+import { LEVELS } from '@cefr/ui/lib/constants';
 import { RadioCardGroup } from '@cefr/ui/components/controls';
 import { Icon } from '@cefr/ui/components/icon';
 

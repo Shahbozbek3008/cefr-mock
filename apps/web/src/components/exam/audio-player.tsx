@@ -1,26 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Lock, Play, RotateCcw } from 'lucide-react';
-import { formatClock, type AttemptMode } from '@cefr/core';
+import { formatClock } from '@cefr/core';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Waveform } from '@cefr/ui/components/waveform';
+import { END_TOLERANCE_SEC, EXAM_ROUNDS } from '@/constants/exam';
+import type { AudioPlayerProps, PlayerFrameProps, PlayerProps } from '@/types/exam';
 
-const END_TOLERANCE_SEC = 0.5;
-const EXAM_ROUNDS = 2;
-
-type FrameProps = {
-  mode: AttemptMode;
-  label: string;
-  active: boolean;
-  position: number;
-  duration: number;
-  action?: ReactNode;
-};
-
-function Frame({ mode, label, active, position, duration, action }: FrameProps) {
+function Frame({ mode, label, active, position, duration, action }: PlayerFrameProps) {
   const t = useTranslations('exam.listening');
   return (
     <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
@@ -50,8 +40,6 @@ function Frame({ mode, label, active, position, duration, action }: FrameProps) 
     </div>
   );
 }
-
-type PlayerProps = { src: string; durationSec: number; mode: AttemptMode; onStart: () => void; onEnded: () => void };
 
 function Player({ src, durationSec, mode, onStart, onEnded }: PlayerProps) {
   const t = useTranslations('exam');
@@ -137,8 +125,6 @@ function Player({ src, durationSec, mode, onStart, onEnded }: PlayerProps) {
     </>
   );
 }
-
-type AudioPlayerProps = PlayerProps & { played: boolean };
 
 export function AudioPlayer({ played, ...props }: AudioPlayerProps) {
   const t = useTranslations('exam.listening');

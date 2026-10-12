@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
-import { SKILLS, type Skill } from '@/lib/constants';
+import { SKILLS, type Skill } from '@cefr/ui/lib/constants';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 

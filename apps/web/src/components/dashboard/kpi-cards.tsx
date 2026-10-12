@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { CalendarDays, ChartNoAxesColumnIncreasing, Clock3, Flame, type LucideIcon } from 'lucide-react';
-import { MAX_SCORE, ROUTES } from '@/lib/constants';
+import { CalendarDays, ChartNoAxesColumnIncreasing, Clock3, Flame } from 'lucide-react';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { Link } from '@cefr/ui/i18n/navigation';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
@@ -11,8 +11,7 @@ import { CountUp } from '@cefr/ui/motion/count-up';
 import { panelSurface } from './panel';
 import { Sparkline } from './sparkline';
 import { Trend } from './trend';
-
-type KpiCardProps = { label: string; icon: LucideIcon; value: ReactNode; unit?: ReactNode; aside?: ReactNode; footer: ReactNode; accent?: boolean };
+import type { KpiCardProps, KpiData, WeekDay } from '@/types/dashboard';
 
 function KpiCard({ label, icon, value, unit, aside, footer, accent = false }: KpiCardProps) {
   return (
@@ -41,8 +40,6 @@ function KpiCard({ label, icon, value, unit, aside, footer, accent = false }: Kp
   );
 }
 
-export type WeekDay = { key: string; label: string; minutes: number };
-
 function StreakWeek({ week, loading = false }: { week: readonly WeekDay[]; loading?: boolean }) {
   return (
     <div className="flex gap-1" aria-hidden>
@@ -55,18 +52,6 @@ function StreakWeek({ week, loading = false }: { week: readonly WeekDay[]; loadi
     </div>
   );
 }
-
-export type KpiData = {
-  score: number | null;
-  delta: number;
-  trend: number[];
-  daysLeft: number | null;
-  examLabel: string | null;
-  target: string | null;
-  streak: number;
-  week: WeekDay[];
-  weekGoal: number;
-};
 
 export function KpiCards({ data }: { data: KpiData }) {
   const t = useTranslations('dashboard.kpi');

@@ -1,8 +1,7 @@
 import { useLocale } from 'next-intl';
 import { routing } from '@cefr/ui/i18n/routing';
-import { APP_ROUTES, APP_URL } from './constants';
-
-type AppLinks = Record<keyof typeof APP_ROUTES, string>;
+import { APP_ROUTES, APP_URL } from '@/constants/routes';
+import type { AppLinks } from '@/types/navigation';
 
 export function useAppLinks(): AppLinks {
   const locale = useLocale();

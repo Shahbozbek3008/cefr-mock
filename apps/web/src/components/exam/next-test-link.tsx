@@ -1,7 +1,7 @@
 'use client';
 
 import { useTests, type TestSummary } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { ButtonLink, type ButtonLinkProps } from '@cefr/ui/components/button';
 
 const hrefOf = (tests: readonly TestSummary[] | undefined) => {

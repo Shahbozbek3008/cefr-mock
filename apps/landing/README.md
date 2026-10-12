@@ -17,7 +17,7 @@ npm run i18n:check --workspace @cefr/landing
 
 | O'zgaruvchi | Default | Vazifasi |
 | --- | --- | --- |
-| `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` | Dashboard (`apps/web`) manzili. "Kirish" va "Boshlash" tugmalari `{APP_URL}/{locale}/login` / `/start` ga olib boradi (`src/lib/app-links.ts`). |
+| `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` | Dashboard (`apps/web`) manzili. "Kirish" va "Boshlash" tugmalari `{APP_URL}/{locale}/login` / `/start` ga olib boradi (`src/lib/app-links.ts`, `src/constants/routes.ts`). |
 
 ## Tuzilma
 
@@ -25,6 +25,8 @@ npm run i18n:check --workspace @cefr/landing
 src/
   app/[locale]/   layout (header/footer/sticky CTA) + page
   components/     landing bo'limlari (hero, pricing, faq…)
-  lib/            constants, app-links (dashboard havolalari), demo (preview uchun namunaviy ma'lumot), fonts
+  constants/      routes, navigation, sections (bo'lim kontenti), ui (animatsiya/layout qiymatlari), demo
+  types/          navigation, sections, demo
+  lib/            app-links (dashboard havolalari), fonts
   messages/       faqat landing matnlari: metadata, common, skills, landing, plans
 ```

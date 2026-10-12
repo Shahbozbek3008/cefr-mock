@@ -6,6 +6,7 @@ import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Logo } from '@cefr/ui/components/logo';
 import { Grow } from '@cefr/ui/motion/grow';
+import type { StepIndicatorProps } from '@/types/auth';
 
 export function BackLink({ href }: { href: string }) {
   const t = useTranslations('auth');
@@ -16,8 +17,6 @@ export function BackLink({ href }: { href: string }) {
     </Link>
   );
 }
-
-type StepIndicatorProps = { current: number; total?: number; partial?: boolean };
 
 export function StepIndicator({ current, total = 3, partial = false }: StepIndicatorProps) {
   const t = useTranslations('onboarding');

@@ -3,19 +3,17 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { sectionTitles, type TestSummary } from '@cefr/core';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
-import { Tag, type TagTone } from '@cefr/ui/components/tag';
+import { Tag } from '@cefr/ui/components/tag';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { Panel } from './panel';
+import { RECOMMENDED_SKELETON_ROWS, TEST_STATUS_TONE } from '@/constants/dashboard';
 
 const COLUMNS = 'grid-cols-[minmax(0,1fr)_auto_16px] sm:min-w-[560px] sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_80px_24px]';
 const WIDE_ONLY = 'max-sm:hidden';
 const ROW = `grid ${COLUMNS} h-14 items-center gap-4 rounded-[10px] px-3 text-[13px]`;
-const SKELETON_ROWS = 5;
-
-const TONE: Partial<Record<TestSummary['status'], TagTone>> = { in_progress: 'blue', new: 'green', completed: 'neutral' };
 
 const hrefOf = (test: TestSummary) => {
   if (test.status === 'in_progress') return ROUTES.testSection(test.id, test.resumeSection ?? 'listening');
@@ -61,7 +59,7 @@ export function RecommendedTableSkeleton() {
   return (
     <TablePanel>
       <TableBody>
-        {Array.from({ length: SKELETON_ROWS }, (_, i) => (
+        {Array.from({ length: RECOMMENDED_SKELETON_ROWS }, (_, i) => (
           <div key={i} className={ROW}>
             <span className="flex min-w-0 flex-col leading-[1.35]">
               <SkeletonText className="w-40" />
@@ -108,7 +106,7 @@ export function RecommendedTable({ tests }: { tests: readonly TestSummary[] }) {
                 <span className="truncate text-xs text-ink-3">{detail(test)}</span>
               </span>
               <span className={cn('font-mono text-xs text-ink-2', WIDE_ONLY)}>{test.durationLabel}</span>
-              <Tag tone={TONE[test.status]} size="sm" className="justify-self-start">{tag(test)}</Tag>
+              <Tag tone={TEST_STATUS_TONE[test.status]} size="sm" className="justify-self-start">{tag(test)}</Tag>
               <span className={cn('text-right font-mono text-xs', WIDE_ONLY)}>{test.score !== undefined ? `${test.score} · ${test.level}` : '—'}</span>
               <Icon as={ChevronRight} size={15} strokeWidth={1.75} className="justify-self-end text-ink-4 transition-[translate,color] duration-(--t-base) ease-out-expo group-hover:translate-x-0.5 group-hover:text-ink-2" />
             </Link>

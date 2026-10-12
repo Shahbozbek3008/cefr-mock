@@ -16,7 +16,8 @@ import {
   type SectionScore,
 } from '@cefr/core';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES, SKILLS, SKILL_ICONS } from '@/lib/constants';
+import { SKILLS, SKILL_ICONS } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@cefr/ui/components/icon';
@@ -31,8 +32,7 @@ import { Delta } from '@/components/app/delta';
 import { panelSurface } from '@/components/dashboard/panel';
 import { Trend } from '@/components/dashboard/trend';
 import { LinkRow, LinkRowSkeleton, ResultsTopbar, StatePanel } from './shared';
-
-const AI_KINDS: SectionKind[] = ['writing', 'speaking'];
+import { AI_KINDS } from '@/constants/results';
 const SUMMARY_GRID = 'grid gap-4 xl:grid-cols-[380px_minmax(0,1fr)]';
 const GAUGE_PANEL = 'flex flex-col items-center gap-3.5 p-6';
 const SECTION_CARD = 'flex flex-col gap-3.5 p-5';

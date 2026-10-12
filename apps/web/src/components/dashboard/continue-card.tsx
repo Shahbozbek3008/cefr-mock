@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Clock3, Layers } from 'lucide-react';
 import { formatClock, sectionTitles, type TestSummary } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { Icon } from '@cefr/ui/components/icon';
 import { Ring } from '@cefr/ui/components/gauge';
 import { ButtonLink } from '@cefr/ui/components/button';

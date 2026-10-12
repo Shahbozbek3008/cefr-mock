@@ -4,13 +4,12 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { OTP_LENGTH, RESEND_SECONDS, requestCode, useCefrClient, verifyCode } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@cefr/ui/components/button';
 import { OtpInput } from '@cefr/ui/components/otp-input';
 import { ResendTimer } from './resend-timer';
 import { authErrorKey } from './auth-error';
-
-type VerifyCodeFormProps = { digits: string; next?: string; onVerified?: () => Promise<void> };
+import type { VerifyCodeFormProps } from '@/types/auth';
 
 export function VerifyCodeForm({ digits, next = ROUTES.dashboard, onVerified }: VerifyCodeFormProps) {
   const t = useTranslations('auth');

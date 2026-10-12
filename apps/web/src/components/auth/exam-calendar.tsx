@@ -7,13 +7,7 @@ import { buildMonthGrid, dayKey, isOfficialExamDay } from '@cefr/core';
 import { cn } from '@cefr/ui/lib/cn';
 import { IconButton } from '@cefr/ui/components/icon-button';
 import { ActivePill } from '@cefr/ui/motion/active-pill';
-
-type ExamCalendarProps = {
-  value?: string | null;
-  defaultValue?: string | null;
-  onChange?: (iso: string) => void;
-  className?: string;
-};
+import type { ExamCalendarProps } from '@/types/auth';
 
 const monthOf = (iso: string | null | undefined) => {
   const date = iso ? new Date(`${iso}T00:00:00`) : new Date();

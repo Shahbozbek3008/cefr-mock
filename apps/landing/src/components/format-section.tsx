@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Lock } from 'lucide-react';
-import { SKILL_ICONS, type Skill } from '@/lib/constants';
+import { SKILL_ICONS } from '@cefr/ui/lib/constants';
 import { richTags } from '@cefr/ui/lib/rich';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
@@ -13,8 +12,7 @@ import { Reveal, Stagger, StaggerItem } from '@cefr/ui/motion/reveal';
 import { Spotlight } from '@cefr/ui/motion/spotlight';
 import { Grow } from '@cefr/ui/motion/grow';
 import { Container } from './container';
-
-type FormatCardProps = { skill: Skill; wide: boolean; children: ReactNode };
+import type { FormatCard as FormatCardItem, FormatCardProps } from '@/types/sections';
 
 function FormatCard({ skill, wide, children }: FormatCardProps) {
   const t = useTranslations('landing.format.cards');
@@ -120,7 +118,7 @@ function SpeakingDemo() {
   );
 }
 
-const CARDS: readonly { skill: Skill; wide: boolean; Demo: () => ReactNode }[] = [
+const CARDS: readonly FormatCardItem[] = [
   { skill: 'listening', wide: true, Demo: ListeningDemo },
   { skill: 'reading', wide: false, Demo: ReadingDemo },
   { skill: 'writing', wide: false, Demo: WritingDemo },

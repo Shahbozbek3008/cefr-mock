@@ -2,36 +2,19 @@
 
 import { useMemo, useSyncExternalStore } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
-import {
-  DEFAULT_DAILY_MINUTES,
-  dayKey,
-  daysUntil,
-  streakOf,
-  todayPlanOf,
-  useProfile,
-  useResults,
-  useStudyDays,
-  useTests,
-  weekDays,
-  weekdayIndex,
-  weeklyPlan,
-  type SectionScores,
-  type TestSummary,
-} from '@cefr/core';
+import { DEFAULT_DAILY_MINUTES, dayKey, daysUntil, streakOf, todayPlanOf, useProfile, useResults, useStudyDays, useTests, weekDays, weekdayIndex, weeklyPlan, type SectionScores } from '@cefr/core';
 import { AppMain } from '@/components/layout/page-header';
 import { SkeletonText } from '@cefr/ui/components/skeleton';
-import { KpiCards, KpiCardsSkeleton, type KpiData, type WeekDay } from './kpi-cards';
+import { KpiCards, KpiCardsSkeleton } from './kpi-cards';
 import { ScoreChart, ScoreChartSkeleton } from './score-chart';
 import { ContinueCard, ContinueCardSkeleton } from './continue-card';
 import { InsightCard, InsightCardSkeleton } from './insight-card';
-import { SkillsCard, SkillsCardSkeleton, type SkillScore } from './skills-card';
+import { SkillsCard, SkillsCardSkeleton } from './skills-card';
 import { ActivityCard, ActivityCardSkeleton } from './activity-card';
 import { TodayPlan, TodayPlanSkeleton } from './today-plan';
 import { RecommendedTable, RecommendedTableSkeleton } from './recommended-table';
-
-const TREND_LENGTH = 8;
-const RECOMMENDED_LIMIT = 5;
-const STATUS_RANK: Record<TestSummary['status'], number> = { in_progress: 0, new: 1, completed: 2, locked: 3 };
+import { RECOMMENDED_LIMIT, TEST_STATUS_RANK, TREND_LENGTH } from '@/constants/dashboard';
+import type { KpiData, SkillScore, WeekDay } from '@/types/dashboard';
 
 const noop = () => () => undefined;
 
@@ -115,7 +98,7 @@ export function DashboardView() {
   const resume = tests.find((test) => test.status === 'in_progress');
   const recommended = tests
     .filter((test) => test.status !== 'locked')
-    .sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status])
+    .sort((a, b) => TEST_STATUS_RANK[a.status] - TEST_STATUS_RANK[b.status])
     .slice(0, RECOMMENDED_LIMIT);
 
   return (

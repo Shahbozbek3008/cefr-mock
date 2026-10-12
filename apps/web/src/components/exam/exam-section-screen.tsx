@@ -4,7 +4,7 @@ import { useEffect, type ComponentType } from 'react';
 import { useTranslations } from 'next-intl';
 import { sectionOrder, useAttemptAutosave, useAttemptSession, useTest, type AttemptScope, type SectionKind, type TestDetail } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { failureKey } from '@/lib/exam/session';
 import { Button } from '@cefr/ui/components/button';

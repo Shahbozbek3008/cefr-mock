@@ -12,9 +12,7 @@ import { Button } from '@cefr/ui/components/button';
 import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
 import { ExamFooter, ExamHeader, SectionTimer } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
-
-const AUTOSAVE_MS = 2000;
-const STATUS_TICK_MS = 5000;
+import { AUTOSAVE_MS, SAVE_STATUS_TICK_MS } from '@/constants/exam';
 
 export const countWords = (text: string) => {
   const trimmed = text.trim();
@@ -56,7 +54,7 @@ function SavedNote() {
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), STATUS_TICK_MS);
+    const id = setInterval(() => setNow(Date.now()), SAVE_STATUS_TICK_MS);
     return () => clearInterval(id);
   }, []);
 

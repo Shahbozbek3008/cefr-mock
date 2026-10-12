@@ -20,7 +20,7 @@ import {
   type Profile,
   type TargetLevel,
 } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { toSquareJpeg } from '@/lib/image';
 import { useAttemptStore } from '@/lib/attempt-store';
@@ -39,6 +39,8 @@ import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
 import { ExamCalendar } from '@/components/auth/exam-calendar';
 import { Panel } from '@/components/dashboard/panel';
+import type { SaveState, SettingsConfirm } from '@/types/settings';
+import { ALWAYS_ON_NOTIFICATIONS } from '@/constants/settings';
 
 const compactButton = 'h-9 rounded-[10px] px-3.5 text-[13px]';
 const controlSkeleton = 'h-9 rounded-[10px]';
@@ -69,8 +71,6 @@ function SettingRow({ title, hint, icon, children }: { title: string; hint: Reac
 function IconTile({ children, className }: { children: ReactNode; className?: string }) {
   return <span className={cn('grid size-9 shrink-0 place-items-center rounded-[10px] bg-surface-sunken text-ink-2', className)}>{children}</span>;
 }
-
-type SaveState = 'idle' | 'saved' | 'failed';
 
 function SaveNote({ state }: { state: SaveState }) {
   const t = useTranslations('settings');
@@ -322,11 +322,9 @@ export function ExamSection() {
   );
 }
 
-const ALWAYS_ON = ['results', 'newTests'] as const;
-
 function AlwaysOnRows() {
   const t = useTranslations('settings.notifications');
-  return ALWAYS_ON.map((key) => (
+  return ALWAYS_ON_NOTIFICATIONS.map((key) => (
     <SettingRow key={key} title={t(`items.${key}.title`)} hint={t(`items.${key}.hint`)} icon={<IconTile><Icon as={Sparkles} size={16} strokeWidth={1.7} /></IconTile>}>
       <Tag tone="neutral" size="sm">{t('alwaysOn')}</Tag>
     </SettingRow>
@@ -437,8 +435,6 @@ export function SubscriptionSection() {
   );
 }
 
-type Confirm = 'signOut' | 'reset' | null;
-
 export function SecuritySection() {
   const t = useTranslations('settings.security');
   const tp = useTranslations('settings.profile');
@@ -447,7 +443,7 @@ export function SecuritySection() {
   const queryClient = useQueryClient();
   const signOut = useSignOut();
   const profile = useProfile().data;
-  const [confirm, setConfirm] = useState<Confirm>(null);
+  const [confirm, setConfirm] = useState<SettingsConfirm>(null);
   const [busy, setBusy] = useState(false);
   const [resetNote, setResetNote] = useState<'done' | 'failed' | null>(null);
 

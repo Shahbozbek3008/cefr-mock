@@ -3,14 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SpeakingQuestion } from '@cefr/core';
 import { useSecondsLeft } from './use-seconds-left';
-
-export type RecorderPhase = 'pending' | 'prep' | 'recording' | 'done' | 'denied';
-
-export type MicIssue = 'denied' | 'missing' | 'busy' | 'unsupported';
-
-const WAVE_BARS = 24;
-const METER_MS = 120;
-const MIME_TYPES = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg'];
+import type { MicIssue, RecorderPhase } from '@/types/exam';
+import { METER_MS, MIME_TYPES, WAVE_BARS } from '@/constants/exam';
 
 const issueOf = (error: unknown): MicIssue => {
   if (!window.isSecureContext) return 'unsupported';

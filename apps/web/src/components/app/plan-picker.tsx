@@ -5,8 +5,7 @@ import { PLANS, RECOMMENDED_PLAN, type PlanId } from '@cefr/ui/lib/plans';
 import { formatSum } from '@cefr/ui/lib/format';
 import { Tag } from '@cefr/ui/components/tag';
 import { RadioCardGroup, RadioDot } from '@cefr/ui/components/controls';
-
-type PlanPickerProps = { value: PlanId; onChange: (value: PlanId) => void };
+import type { PlanPickerProps } from '@/types/billing';
 
 export function PlanPicker({ value, onChange }: PlanPickerProps) {
   const t = useTranslations('plans');

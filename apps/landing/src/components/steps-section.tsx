@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-import { ClipboardCheck, Target, TrendingUp } from 'lucide-react';
 import { richTags } from '@cefr/ui/lib/rich';
 import { Icon } from '@cefr/ui/components/icon';
 import { SectionHeading } from '@cefr/ui/components/typography';
@@ -7,14 +6,8 @@ import { Grow } from '@cefr/ui/motion/grow';
 import { Stagger, StaggerItem } from '@cefr/ui/motion/reveal';
 import { Spotlight } from '@cefr/ui/motion/spotlight';
 import { Container } from './container';
-
-const STEPS = [
-  { key: 'goal', icon: Target },
-  { key: 'test', icon: ClipboardCheck },
-  { key: 'review', icon: TrendingUp },
-] as const;
-
-const STEP_DELAY = 0.35;
+import { STEPS } from '@/constants/sections';
+import { STEP_DELAY } from '@/constants/ui';
 
 export function StepsSection() {
   const t = useTranslations('landing.steps');

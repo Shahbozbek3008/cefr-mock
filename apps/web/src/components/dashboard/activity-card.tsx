@@ -7,11 +7,9 @@ import { cn } from '@cefr/ui/lib/cn';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { CountUp } from '@cefr/ui/motion/count-up';
 import { Panel } from './panel';
-import type { WeekDay } from './kpi-cards';
-
-const SKELETON_BARS = [45, 70, 30, 85, 55, 25, 60];
-
-type ActivityCardProps = { week: readonly WeekDay[]; todayIndex: number; goal: number };
+import { ACTIVITY_SKELETON_BARS } from '@/constants/dashboard';
+import type { ActivityCardProps } from '@/types/dashboard';
+import type { WeekDay } from '@/types/dashboard';
 
 function DayLabels({ week, todayIndex }: Omit<ActivityCardProps, 'goal'>) {
   return (
@@ -29,7 +27,7 @@ export function ActivityCardSkeleton({ week }: { week: readonly WeekDay[] }) {
     <Panel title={t('title')} subtitle={t('subtitle')} action={<SkeletonText className="w-16 text-[13px]" />}>
       <div className="flex flex-1 flex-col gap-2 px-5 pt-5 pb-4">
         <div className="flex h-36 items-end gap-2.5">
-          {SKELETON_BARS.map((height, i) => (
+          {ACTIVITY_SKELETON_BARS.map((height, i) => (
             <Skeleton key={i} className="flex-1 rounded-t-[6px] rounded-b-[3px]" style={{ height: `${height}%` }} />
           ))}
         </div>

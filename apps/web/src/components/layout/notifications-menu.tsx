@@ -3,41 +3,20 @@
 import { useState } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { Popover } from 'radix-ui';
-import { AlarmClock, Bell, BellOff, CalendarDays, ChartNoAxesColumnIncreasing, CheckCheck, FilePlus2, Sparkles, Trash2, type LucideIcon } from 'lucide-react';
-import {
-  useClearNotifications,
-  useMarkAllRead,
-  useMarkRead,
-  useNotifications,
-  useUnreadCount,
-  type AppNotification,
-  type NotificationKind,
-} from '@cefr/core';
+import { Bell, BellOff, CheckCheck, Trash2 } from 'lucide-react';
+import { useClearNotifications, useMarkAllRead, useMarkRead, useNotifications, useUnreadCount, type AppNotification } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
-
-type Group = 'today' | 'yesterday' | 'earlier';
-
-const GROUPS: Group[] = ['today', 'yesterday', 'earlier'];
-const DAY_MS = 86_400_000;
-const BADGE_MAX = 9;
-const SKELETON_ROWS = 3;
+import type { NotificationGroup } from '@/types/layout';
+import { DAY_MS, NOTIFICATION_BADGE_MAX, NOTIFICATION_GROUPS, NOTIFICATION_KINDS, NOTIFICATION_SKELETON_ROWS } from '@/constants/layout';
 const GROUP_LIST = 'flex flex-col px-1.5 pb-1';
 const ROW = 'flex w-full items-start gap-3 rounded-[12px] px-2.5 py-2.5';
 
-const KINDS: Record<NotificationKind, { icon: LucideIcon; tone: string }> = {
-  result: { icon: ChartNoAxesColumnIncreasing, tone: 'bg-green-50 text-green-text' },
-  aiReview: { icon: Sparkles, tone: 'bg-blue-50 text-blue-text' },
-  reminder: { icon: AlarmClock, tone: 'bg-warning-50 text-warning-text' },
-  newTest: { icon: FilePlus2, tone: 'bg-blue-50 text-blue-text' },
-  exam: { icon: CalendarDays, tone: 'bg-error-50 text-error-text' },
-};
-
 const startOfDay = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 
-const groupOf = (iso: string, now: Date): Group => {
+const groupOf = (iso: string, now: Date): NotificationGroup => {
   const days = Math.round((startOfDay(now) - startOfDay(new Date(iso))) / DAY_MS);
   if (days <= 0) return 'today';
   return days === 1 ? 'yesterday' : 'earlier';
@@ -54,7 +33,7 @@ const toolButton = 'grid size-7 place-items-center rounded-[8px] text-ink-3 tran
 function NotificationRow({ item, now, onOpen }: { item: AppNotification; now: Date; onOpen: (item: AppNotification) => void }) {
   const t = useTranslations('exam.notifications.kinds');
   const format = useFormatter();
-  const kind = KINDS[item.kind];
+  const kind = NOTIFICATION_KINDS[item.kind];
   const created = new Date(item.createdAt);
   const time = groupOf(item.createdAt, now) === 'earlier' ? format.dateTime(created, { day: 'numeric', month: 'short' }) : format.dateTime(created, { hour: '2-digit', minute: '2-digit' });
 
@@ -87,7 +66,7 @@ function NotificationListSkeleton() {
       <span className="px-2.5 pt-2.5 pb-1">
         <SkeletonText className="w-14 text-[11px]" />
       </span>
-      {Array.from({ length: SKELETON_ROWS }, (_, i) => (
+      {Array.from({ length: NOTIFICATION_SKELETON_ROWS }, (_, i) => (
         <div key={i} className={ROW}>
           <Skeleton className="mt-0.5 size-9 shrink-0 rounded-[10px]" />
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -142,7 +121,7 @@ function PanelBody({ onNavigate }: { onNavigate: () => void }) {
         </div>
       );
     }
-    return GROUPS.map((group) => {
+    return NOTIFICATION_GROUPS.map((group) => {
       const section = items.filter((item) => groupOf(item.createdAt, now) === group);
       if (section.length === 0) return null;
       return (
@@ -192,7 +171,7 @@ export function NotificationsMenu({ label }: { label: string }) {
         <Icon as={Bell} size={16} strokeWidth={1.6} className={cn(unread > 0 && 'origin-top animate-bell')} />
         {unread > 0 && (
           <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 animate-pop place-items-center rounded-full bg-error px-1 font-mono text-[9.5px] leading-none font-medium text-white ring-2 ring-bg">
-            {unread > BADGE_MAX ? `${BADGE_MAX}+` : unread}
+            {unread > NOTIFICATION_BADGE_MAX ? `${NOTIFICATION_BADGE_MAX}+` : unread}
           </span>
         )}
       </Popover.Trigger>

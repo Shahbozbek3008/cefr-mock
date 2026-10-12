@@ -5,16 +5,12 @@ import { getApp, getApps, initializeApp } from 'firebase/app';
 import { deleteToken, getMessaging, getToken, isSupported, onMessage, type MessagePayload } from 'firebase/messaging';
 import { registerPushToken, unregisterPushToken, type CefrClient } from '@cefr/core';
 import { FIREBASE_VAPID_KEY, firebaseConfig } from './config';
-
-const WORKER_URL = '/firebase-messaging-sw.js';
-const WORKER_SCOPE = '/firebase-cloud-messaging-push-scope';
-const TOKEN_KEY = 'web-push-token';
-
-export type WebPushStatus = 'checking' | 'unavailable' | 'denied' | 'off' | 'on';
+import { PUSH_TOKEN_KEY, PUSH_WORKER_SCOPE, PUSH_WORKER_URL } from '@/constants/push';
+import type { WebPushStatus } from '@/types/push';
 
 const readToken = () => {
   try {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(PUSH_TOKEN_KEY);
   } catch {
     return null;
   }
@@ -22,8 +18,8 @@ const readToken = () => {
 
 const writeToken = (token: string | null) => {
   try {
-    if (token) localStorage.setItem(TOKEN_KEY, token);
-    else localStorage.removeItem(TOKEN_KEY);
+    if (token) localStorage.setItem(PUSH_TOKEN_KEY, token);
+    else localStorage.removeItem(PUSH_TOKEN_KEY);
   } catch {}
 };
 
@@ -32,7 +28,7 @@ const messaging = () => {
   return getMessaging(getApps().length ? getApp() : initializeApp(firebaseConfig));
 };
 
-const workerRegistration = () => navigator.serviceWorker.register(WORKER_URL, { scope: WORKER_SCOPE });
+const workerRegistration = () => navigator.serviceWorker.register(PUSH_WORKER_URL, { scope: PUSH_WORKER_SCOPE });
 
 export const webPushAvailable = async () =>
   Boolean(firebaseConfig) && typeof window !== 'undefined' && 'Notification' in window && 'serviceWorker' in navigator && (await isSupported().catch(() => false));
@@ -70,7 +66,7 @@ export const onForegroundPush = (handler: (payload: MessagePayload) => void) => 
 export const showForegroundPush = async (payload: MessagePayload) => {
   const data = payload.data ?? {};
   if (!data.title) return;
-  const registration = await navigator.serviceWorker.getRegistration(WORKER_SCOPE);
+  const registration = await navigator.serviceWorker.getRegistration(PUSH_WORKER_SCOPE);
   await registration?.showNotification(data.title, { body: data.body, icon: '/push-icon.png', badge: '/push-badge.png', data: { url: data.url ?? '/' } });
 };
 

@@ -1,11 +1,10 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useState } from 'react';
 import { Tabs } from 'radix-ui';
 import { cn } from '@cefr/ui/lib/cn';
 import { ActivePill } from '@cefr/ui/motion/active-pill';
-
-export type SettingsSection = { key: string; label: string; content: ReactNode };
+import type { SettingsSection } from '@/types/settings';
 
 export function SettingsTabs({ sections, label }: { sections: readonly SettingsSection[]; label: string }) {
   const [active, setActive] = useState(sections[0].key);

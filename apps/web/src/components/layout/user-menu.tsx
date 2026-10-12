@@ -3,21 +3,16 @@
 import { useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { DropdownMenu } from 'radix-ui';
-import { ChevronsUpDown, CreditCard, LogOut, Settings } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { formatPhone, useProfile, useUpdateProfile, type Locale } from '@cefr/core';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
 import { cn } from '@cefr/ui/lib/cn';
 import { useSignOut } from '@/lib/supabase/sign-out';
 import { Icon } from '@cefr/ui/components/icon';
 import { Avatar } from '@cefr/ui/components/avatar';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { menuContent, menuItem, menuSeparator } from '@cefr/ui/components/menu';
-
-const LINKS = [
-  { key: 'settings', href: ROUTES.settings, icon: Settings },
-  { key: 'billing', href: ROUTES.billing, icon: CreditCard },
-] as const;
+import { USER_MENU_LINKS } from '@/constants/layout';
 
 const phoneLabel = (phone: string | null) => (phone ? `+998 ${formatPhone(phone.replace(/^\+998/, ''))}` : '');
 
@@ -73,7 +68,7 @@ export function UserMenu({ collapsed = false }: { collapsed?: boolean }) {
             <span className="font-mono text-[11px] text-ink-3">{phoneLabel(profile?.phone ?? null)}</span>
           </div>
           <DropdownMenu.Separator className={menuSeparator} />
-          {LINKS.map((l) => (
+          {USER_MENU_LINKS.map((l) => (
             <DropdownMenu.Item key={l.key} asChild className={menuItem}>
               <Link href={l.href}>
                 <Icon as={l.icon} size={15} strokeWidth={1.6} />

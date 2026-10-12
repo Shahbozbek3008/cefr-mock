@@ -3,14 +3,13 @@
 import { forwardRef, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Flag } from 'lucide-react';
-import { tfngChoices, type Choice, type McqQuestion, type Question } from '@cefr/core';
+import { tfngChoices, type Question } from '@cefr/core';
 import { cn } from '@cefr/ui/lib/cn';
 import { useAnswer, useAttemptStore, useIsFlagged } from '@/lib/attempt-store';
 import { Icon } from '@cefr/ui/components/icon';
+import type { GapInputProps, MatchChipsProps, McqOptionsProps, QuestionNavigatorProps } from '@/types/exam';
 
 const pad = (n: number) => String(n).padStart(2, '0');
-
-type GapInputProps = { questionId: string; number: number; variant?: 'inline' | 'field'; onFocus?: (id: string) => void };
 
 export const GapInput = forwardRef<HTMLInputElement, GapInputProps>(function GapInput({ questionId, number, variant = 'inline', onFocus }, ref) {
   const t = useTranslations('exam.session');
@@ -42,8 +41,6 @@ export const GapInput = forwardRef<HTMLInputElement, GapInputProps>(function Gap
     </label>
   );
 });
-
-type McqOptionsProps = { question: McqQuestion; onAnswer?: (id: string) => void };
 
 export function McqOptions({ question, onAnswer }: McqOptionsProps) {
   const value = useAnswer(question.id);
@@ -82,8 +79,6 @@ export function McqOptions({ question, onAnswer }: McqOptionsProps) {
     </div>
   );
 }
-
-type MatchChipsProps = { questionId: string; choices: Choice[]; onAnswer?: (id: string) => void };
 
 export function MatchChips({ questionId, choices, onAnswer }: MatchChipsProps) {
   const value = useAnswer(questionId);
@@ -177,8 +172,6 @@ export function QuestionCell({ question, current, onSelect }: { question: Questi
     </button>
   );
 }
-
-type QuestionNavigatorProps = { questions: Question[]; currentId: string; onSelect: (id: string) => void; className?: string };
 
 export function QuestionNavigator({ questions, currentId, onSelect, className }: QuestionNavigatorProps) {
   return (

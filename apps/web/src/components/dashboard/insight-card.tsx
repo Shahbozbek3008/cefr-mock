@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import type { TestResult } from '@cefr/core';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { Icon } from '@cefr/ui/components/icon';
 import { SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from './panel';

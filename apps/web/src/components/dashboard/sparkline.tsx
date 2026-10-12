@@ -3,8 +3,7 @@
 import { useId } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { EASE_OUT, VIEWPORT } from '@cefr/ui/lib/motion';
-
-type SparklineProps = { data: readonly number[]; width?: number; height?: number; color?: string };
+import type { SparklineProps } from '@/types/dashboard';
 
 export function Sparkline({ data, width = 120, height = 36, color = 'var(--green-500)' }: SparklineProps) {
   const id = useId();

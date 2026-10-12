@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-
-const THRESHOLD = 16;
+import { HEADER_SCROLL_THRESHOLD } from '@/constants/ui';
 
 export function HeaderFrame({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > THRESHOLD);
+    const onScroll = () => setScrolled(window.scrollY > HEADER_SCROLL_THRESHOLD);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

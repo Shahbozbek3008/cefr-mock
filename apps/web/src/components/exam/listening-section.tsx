@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { listeningAudioUrl, useCefrClient, type Choice, type MapSpec, type McqQuestion, type Question, type TestDetail } from '@cefr/core';
+import { listeningAudioUrl, useCefrClient, type Choice, type MapSpec, type McqQuestion, type TestDetail } from '@cefr/core';
 import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
 import { useSessionControls } from '@/lib/exam/session';
@@ -11,6 +11,7 @@ import { AudioPlayer } from './audio-player';
 import { ExamFooter, ExamHeader, SectionTimer, footerNavigator } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
 import { FlagButton, GapInput, InstructionBlock, MatchChips, McqOptions, QuestionNavigator } from './question-inputs';
+import type { ListeningQuestionsProps } from '@/types/exam';
 
 const card = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]';
 const qTag = (current: boolean) =>
@@ -38,9 +39,7 @@ function MapCard({ map }: { map: MapSpec }) {
   );
 }
 
-type QuestionsProps = { questions: Question[]; currentId: string; onFocus: (id: string) => void; register: (id: string, el: HTMLElement | null) => void };
-
-function NotesCard({ title, questions, onFocus, register }: QuestionsProps & { title: string }) {
+function NotesCard({ title, questions, onFocus, register }: ListeningQuestionsProps & { title: string }) {
   return (
     <div className={cn(card, 'flex flex-col px-4 py-4 sm:px-6 sm:py-5')}>
       <span className="pb-2 text-[17px] font-medium tracking-[-0.02em]">{title}</span>
@@ -67,7 +66,7 @@ function ChoicesCard({ choices }: { choices: Choice[] }) {
   );
 }
 
-function MatchCard({ choices, questions, currentId, onFocus, register }: QuestionsProps & { choices: Choice[] }) {
+function MatchCard({ choices, questions, currentId, onFocus, register }: ListeningQuestionsProps & { choices: Choice[] }) {
   return (
     <div className={cn(card, 'flex flex-col px-4 py-2 sm:px-6')}>
       {questions.map((q) => (
@@ -83,7 +82,7 @@ function MatchCard({ choices, questions, currentId, onFocus, register }: Questio
   );
 }
 
-function McqList({ questions, currentId, onFocus, register }: QuestionsProps) {
+function McqList({ questions, currentId, onFocus, register }: ListeningQuestionsProps) {
   return (
     <div className="flex flex-col gap-3">
       {questions.map((q, i) =>

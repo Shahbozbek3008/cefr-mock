@@ -2,8 +2,8 @@
 
 import { useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { Check, Lock, ReceiptText, RotateCcw, ShieldCheck, Tag as TagIcon } from 'lucide-react';
-import { ROUTES } from '@/lib/constants';
+import { Check, Lock, Tag as TagIcon } from 'lucide-react';
+import { ROUTES } from '@/constants/routes';
 import { PLANS, PRO_FEATURES, RECOMMENDED_PLAN, type PlanId } from '@cefr/ui/lib/plans';
 import { formatSum } from '@cefr/ui/lib/format';
 import { Icon } from '@cefr/ui/components/icon';
@@ -12,12 +12,7 @@ import { ButtonLink } from '@cefr/ui/components/button';
 import { panelSurface } from '@/components/dashboard/panel';
 import { PlanPicker } from './plan-picker';
 import { PaymentMethods } from './payment-methods';
-
-const TRUST = [
-  { key: 'secure', icon: ShieldCheck },
-  { key: 'cancel', icon: RotateCcw },
-  { key: 'receipt', icon: ReceiptText },
-] as const;
+import { CHECKOUT_TRUST } from '@/constants/billing';
 
 function Step({ index, title, hint, children }: { index: number; title: string; hint?: string; children: ReactNode }) {
   return (
@@ -51,7 +46,7 @@ function PaymentForm({ planId, onPlanChange }: { planId: PlanId; onPlanChange: (
           {t('pay', { amount: total })}
         </ButtonLink>
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11.5px] text-ink-3">
-          {TRUST.map((item) => (
+          {CHECKOUT_TRUST.map((item) => (
             <span key={item.key} className="flex items-center gap-1.5">
               <Icon as={item.icon} size={12} strokeWidth={1.8} />
               {t(`trust.${item.key}`)}

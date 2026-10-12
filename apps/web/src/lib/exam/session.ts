@@ -21,12 +21,11 @@ import {
   type TestDetail,
 } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { useAttemptStore } from '@/lib/attempt-store';
+import type { FailureKey } from '@/types/exam';
 
 export const uploads = createUploadQueue(useAttemptStore, async (ref) => (await fetch(ref)).blob());
-
-export type FailureKey = 'checkInternet' | 'serverError';
 
 export const failureKey = (error: unknown): FailureKey => (isNetworkFailure(error) ? 'checkInternet' : 'serverError');
 
@@ -105,5 +104,3 @@ export const useSessionControls = (test: TestDetail, section: SectionKind, quest
     closeFinish: () => setFinishOpen(false),
   };
 };
-
-export type SessionControls = ReturnType<typeof useSessionControls>;

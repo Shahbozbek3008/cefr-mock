@@ -1,9 +1,8 @@
 import { Fragment } from 'react';
-import { Mark, type MarkKind } from '@cefr/ui/components/mark';
+import { Mark } from '@cefr/ui/components/mark';
+import type { AnnotatedSegment } from '@/types/results';
 
-type Segment = string | { text: string; mark: MarkKind | 'filler' };
-
-export function AnnotatedText({ segments }: { segments: readonly Segment[] }) {
+export function AnnotatedText({ segments }: { segments: readonly AnnotatedSegment[] }) {
   return (
     <>
       {segments.map((s, i) => {

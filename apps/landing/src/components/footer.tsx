@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { LifeBuoy } from 'lucide-react';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { BRAND_NAME, Logo } from '@cefr/ui/components/logo';
 import { Icon } from '@cefr/ui/components/icon';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
-import { LANDING_NAV, LEGAL_LINKS, SOCIAL_LINKS } from './nav-links';
+import { LANDING_NAV, LEGAL_LINKS, SOCIAL_LINKS } from '@/constants/navigation';
 
 const linkClass = 'group/link relative w-fit text-ink-2 hover:text-ink';
 const iconClass = 'shrink-0 text-ink-3 transition-colors duration-(--t-fast) group-hover/link:text-ink';

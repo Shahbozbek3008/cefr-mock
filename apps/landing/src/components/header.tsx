@@ -1,12 +1,12 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { useAppLinks } from '@/lib/app-links';
 import { BRAND_NAME, Logo } from '@cefr/ui/components/logo';
 import { ButtonLink } from '@cefr/ui/components/button';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
 import { ScrollProgress } from '@cefr/ui/motion/scroll-progress';
-import { LANDING_NAV } from './nav-links';
+import { LANDING_NAV } from '@/constants/navigation';
 import { NavMenu } from './nav-menu';
 import { HeaderFrame } from './header-frame';
 import { MobileMenu } from './mobile-menu';

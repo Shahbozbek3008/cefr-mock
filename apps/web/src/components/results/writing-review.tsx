@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { MAX_SCORE, useAiReviewRequest, useWritingReview, type Correction, type ReviewLocale, type TextSegment } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Button } from '@cefr/ui/components/button';
@@ -12,9 +12,9 @@ import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { AiPendingCard, CriteriaBars, CriteriaBarsSkeleton, MarkedText, ResultsTopbar, StatePanel } from './shared';
+import { SKELETON_CRITERIA } from '@/constants/results';
 
 const LAYOUT = 'grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px]';
-const SKELETON_CRITERIA = 4;
 const SKELETON_ESSAY = ['w-full', 'w-full', 'w-11/12', 'w-full', 'w-4/5', 'w-full', 'w-2/3'];
 
 function ErrorsPanel({ children }: { children: ReactNode }) {

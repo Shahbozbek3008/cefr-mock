@@ -6,7 +6,7 @@ import { Dialog } from 'radix-ui';
 import { CalendarDays, ChevronRight, PanelLeftClose, PanelLeftOpen, Sparkles, X } from 'lucide-react';
 import { daysUntil, useProfile, useTests, type Profile } from '@cefr/core';
 import { Link, usePathname } from '@cefr/ui/i18n/navigation';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { Logo, LogoMark } from '@cefr/ui/components/logo';
@@ -16,15 +16,14 @@ import { ProgressBar } from '@cefr/ui/components/progress-bar';
 import { Tooltip } from '@cefr/ui/components/tooltip';
 import { ActivePill } from '@cefr/ui/motion/active-pill';
 import { panelSurface } from '@/components/dashboard/panel';
-import { APP_NAV, type NavItem, type NavKey } from './app-nav';
 import { UserMenu } from './user-menu';
 import { useSidebar } from './sidebar-context';
-
-const DAY_MS = 86_400_000;
+import { DAY_MS } from '@/constants/layout';
+import type { NavLinkProps, SidebarContentProps } from '@/types/layout';
+import { APP_NAV } from '@/constants/layout';
+import type { NavKey } from '@/types/layout';
 const ghostButton = 'grid shrink-0 place-items-center rounded-[9px] text-ink-3 transition-colors duration-(--t-fast) hover:bg-[rgba(20,22,30,.045)] hover:text-ink';
 const tile = 'mx-auto grid size-10 place-items-center rounded-[10px]';
-
-type ContentProps = { collapsed: boolean; onClose?: () => void };
 
 const isMac = () => /Mac|iPhone|iPad/.test(navigator.userAgent);
 
@@ -32,7 +31,7 @@ function ShortcutHint() {
   return <kbd className="rounded-[5px] bg-white/14 px-1 font-mono text-[10px] text-white/75">{isMac() ? '⌘B' : 'Ctrl B'}</kbd>;
 }
 
-function SidebarHeader({ collapsed, onClose }: ContentProps) {
+function SidebarHeader({ collapsed, onClose }: SidebarContentProps) {
   const t = useTranslations('app.sidebar');
   const { toggle } = useSidebar();
 
@@ -65,8 +64,6 @@ function SidebarHeader({ collapsed, onClose }: ContentProps) {
   );
 }
 
-type NavLinkProps = ContentProps & { item: NavItem; active: boolean; badge?: number; layoutId: string };
-
 function NavLink({ item, active, badge, layoutId, collapsed, onClose }: NavLinkProps) {
   const t = useTranslations('app.nav');
   const label = t(item.key);
@@ -97,7 +94,7 @@ function NavLink({ item, active, badge, layoutId, collapsed, onClose }: NavLinkP
   );
 }
 
-function SidebarNav({ collapsed, onClose }: ContentProps) {
+function SidebarNav({ collapsed, onClose }: SidebarContentProps) {
   const t = useTranslations('app.nav');
   const pathname = usePathname();
   const layoutId = useId();
@@ -127,7 +124,7 @@ const examProgress = (profile: Profile, examDate: string, days: number) => {
   return { value: Math.min(span, Math.max(0, span - days)), max: span };
 };
 
-function ExamCard({ collapsed, onClose }: ContentProps) {
+function ExamCard({ collapsed, onClose }: SidebarContentProps) {
   const t = useTranslations('app.exam');
   const format = useFormatter();
   const profile = useProfile().data;
@@ -192,7 +189,7 @@ function ExamCard({ collapsed, onClose }: ContentProps) {
   );
 }
 
-function UpgradeCard({ collapsed, onClose }: ContentProps) {
+function UpgradeCard({ collapsed, onClose }: SidebarContentProps) {
   const t = useTranslations('app.upsell');
 
   if (collapsed) {
@@ -222,7 +219,7 @@ function UpgradeCard({ collapsed, onClose }: ContentProps) {
   );
 }
 
-function SidebarContent({ collapsed, onClose }: ContentProps) {
+function SidebarContent({ collapsed, onClose }: SidebarContentProps) {
   const profile = useProfile().data;
   return (
     <div className="flex h-full flex-col gap-5 px-3 pt-3 pb-3">

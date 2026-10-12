@@ -41,7 +41,9 @@ src/
     auth/        onboarding komponentlari
     app/         panel/natija/hisob komponentlari
     test/        test header/footer, navigator, reading, writing, recorder, yakunlash modal'i
-  lib/           constants (ROUTES + @cefr/ui konstantalari), mock ma'lumotlar, supabase, firebase
+  constants/     routes (ROUTES, LANDING_URL, proxy qoidalari), layout, auth, dashboard, exam, results, progress, settings, billing, push, profile
+  types/         sahifa Props + har bir bo'lim type'lari (auth, dashboard, exam, layout, results…)
+  lib/           mock ma'lumotlar, supabase, firebase, store'lar
   styles/        globals.css → @cefr/ui/styles/globals.css
 ```
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ChevronsRight, Headphones, Lock, Mic, MicOff, MonitorX, RotateCcw, type LucideIcon } from 'lucide-react';
+import { ChevronsRight, Lock, Mic, RotateCcw } from 'lucide-react';
 import { formatClock, useCefrClient, type SpeakingQuestion, type TestDetail } from '@cefr/core';
 import { cn } from '@cefr/ui/lib/cn';
 import { useAttemptStore } from '@/lib/attempt-store';
@@ -12,12 +12,10 @@ import { Button } from '@cefr/ui/components/button';
 import { TimerPill } from '@/components/test/timer-pill';
 import { ExamFooter, ExamHeader } from './exam-header';
 import { SessionDialogs } from './session-dialogs';
-import { useAnswerRecorder, type MicIssue, type RecorderPhase } from './use-answer-recorder';
-
-const WAVE_BARS = 24;
+import { useAnswerRecorder } from './use-answer-recorder';
+import { ISSUE_ICONS, WAVE_BARS } from '@/constants/exam';
+import type { MicIssue, RecorderPhase } from '@/types/exam';
 const roundButton = 'grid size-12 place-items-center rounded-full bg-surface text-ink-body shadow-inset transition-[background-color,scale] duration-(--t-base) hover:bg-bg-app active:scale-95 disabled:opacity-40';
-
-const ISSUE_ICONS: Record<MicIssue, LucideIcon> = { denied: MicOff, missing: Headphones, busy: Mic, unsupported: MonitorX };
 
 const lockIcon = () => (
   <span className="inline-grid size-5 place-items-center rounded-[6px] bg-surface-sunken align-middle text-ink-2">

@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
-import { ChartLine, House, Layers, Lock, UserRound } from 'lucide-react';
-import { LEVELS, MAX_SCORE } from '@/lib/constants';
-import { DASHBOARD_SKILLS, DEMO_EXAM, DEMO_USER, PROGRESS_SCORES } from '@/lib/demo';
+import { Lock } from 'lucide-react';
+import { LEVELS, MAX_SCORE } from '@cefr/ui/lib/constants';
+import { DASHBOARD_SKILLS, DEMO_EXAM, DEMO_USER, PROGRESS_SCORES } from '@/constants/demo';
 import { richTags } from '@cefr/ui/lib/rich';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
@@ -14,15 +14,7 @@ import { Reveal } from '@cefr/ui/motion/reveal';
 import { ScrollTilt } from '@cefr/ui/motion/scroll-tilt';
 import { ScaleBar } from '@cefr/ui/components/scale-bar';
 import { Container } from './container';
-
-const NAV = [
-  { key: 'home', icon: House },
-  { key: 'tests', icon: Layers },
-  { key: 'progress', icon: ChartLine },
-  { key: 'profile', icon: UserRound },
-] as const;
-
-const THRESHOLDS = LEVELS.slice(1).map((l) => ({ value: l.min, label: `${l.code} · ${l.min}` }));
+import { LEVEL_THRESHOLDS, PREVIEW_NAV } from '@/constants/sections';
 
 function BrowserChrome() {
   const t = useTranslations('landing.preview');
@@ -52,7 +44,7 @@ function MiniSidebar() {
     <div className="flex w-[200px] shrink-0 flex-col gap-5 bg-bg-sidebar px-3 py-5 shadow-[1px_0_0_rgba(20,22,30,.06)] max-lg:hidden">
       <span className="flex items-center gap-2 px-2 text-[13px] font-medium"><LogoMark size="sm" />{BRAND_NAME}</span>
       <div className="flex flex-col gap-0.5">
-        {NAV.map((n, i) => (
+        {PREVIEW_NAV.map((n, i) => (
           <span
             key={n.key}
             className={cn('flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-[13px]', i === 0 ? 'bg-surface font-medium shadow-[0_0_0_1px_rgba(20,22,30,.06)]' : 'text-ink-2')}
@@ -112,7 +104,7 @@ function ChartCard() {
   return (
     <div className="flex flex-col gap-2 rounded-card bg-surface px-5 pt-4 pb-1 shadow-[0_0_0_1px_rgba(20,22,30,.05)] lg:col-span-2">
       <span className="text-xs text-ink-2">{t('overall')}</span>
-      <LineChart data={PROGRESS_SCORES} thresholds={THRESHOLDS} label={t('chartLabel')} height={200} />
+      <LineChart data={PROGRESS_SCORES} thresholds={LEVEL_THRESHOLDS} label={t('chartLabel')} height={200} />
     </div>
   );
 }

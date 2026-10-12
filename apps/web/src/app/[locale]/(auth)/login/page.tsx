@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@cefr/ui/i18n/navigation';
-import { LANDING_URL, ROUTES } from '@/lib/constants';
+import { LANDING_URL, ROUTES } from '@/constants/routes';
 import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
 import { Logo } from '@cefr/ui/components/logo';
 import { PhoneLoginForm } from '@/components/auth/phone-login-form';

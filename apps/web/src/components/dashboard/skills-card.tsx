@@ -1,16 +1,13 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { MAX_SCORE, SKILLS, SKILL_ICONS, type Skill } from '@/lib/constants';
+import { MAX_SCORE, SKILLS, SKILL_ICONS, type Skill } from '@cefr/ui/lib/constants';
 import { Icon } from '@cefr/ui/components/icon';
 import { ProgressBar } from '@cefr/ui/components/progress-bar';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { CountUp } from '@cefr/ui/motion/count-up';
 import { Delta } from '@/components/app/delta';
 import { Panel } from './panel';
-
-export type SkillScore = { skill: Skill; score: number; delta: number; weak?: boolean };
-
-type SkillsCardProps = { skills: readonly SkillScore[]; title: string; subtitle: string };
+import type { SkillsCardProps } from '@/types/dashboard';
 
 function SkillRow({ skill, label, bar, score }: { skill: Skill; label: ReactNode; bar: ReactNode; score: ReactNode }) {
   return (

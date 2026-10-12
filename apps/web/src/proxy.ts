@@ -2,11 +2,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from '@cefr/ui/i18n/routing';
 import { readSessionUser } from './lib/supabase/session';
+import { GUEST_ONLY, LOCALE_PREFIX } from '@/constants/routes';
 
 const intl = createMiddleware(routing);
-
-const LOCALE_PREFIX = new RegExp(`^/(${routing.locales.join('|')})(?=/|$)`);
-const GUEST_ONLY = /^\/(login|start)(\/|$)/;
 
 const redirectTo = (request: NextRequest, response: NextResponse, path: string) => {
   const prefix = request.nextUrl.pathname.match(LOCALE_PREFIX)?.[0] ?? '';

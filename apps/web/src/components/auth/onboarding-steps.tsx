@@ -20,7 +20,8 @@ import {
   type TargetLevel,
 } from '@cefr/core';
 import { useRouter } from '@cefr/ui/i18n/navigation';
-import { LEVELS, ROUTES } from '@/lib/constants';
+import { LEVELS } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { richTags } from '@cefr/ui/lib/rich';
 import { useOnboardingHydrated, useOnboardingStore } from '@/lib/onboarding-store';
 import { Button, ButtonLink } from '@cefr/ui/components/button';
@@ -40,6 +41,7 @@ import { LevelPicker } from './level-picker';
 import { OnboardingSplit } from './onboarding-split';
 import { SocialButtons } from './social-buttons';
 import { VerifyCodeForm } from './verify-code-form';
+import type { OnboardingSummary } from '@/types/auth';
 
 const levelOf = (code: TargetLevel | null) => LEVELS.find((level) => level.code === code);
 
@@ -188,9 +190,7 @@ export function AccountStep() {
   );
 }
 
-type Summary = { days: number | null; tests: number | null; minutes: number };
-
-function DoneCard({ digits, summary }: { digits: string; summary: Summary }) {
+function DoneCard({ digits, summary }: { digits: string; summary: OnboardingSummary }) {
   const t = useTranslations('onboarding.done');
   return (
     <>
@@ -219,7 +219,7 @@ export function VerifyStep({ digits }: { digits: string }) {
   const client = useCefrClient();
   const queryClient = useQueryClient();
   useOnboardingHydrated();
-  const [summary, setSummary] = useState<Summary | null>(null);
+  const [summary, setSummary] = useState<OnboardingSummary | null>(null);
 
   const finish = async () => {
     const draft = useOnboardingStore.getState();

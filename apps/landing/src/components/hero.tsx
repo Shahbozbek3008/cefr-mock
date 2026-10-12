@@ -12,15 +12,7 @@ import { Words } from '@cefr/ui/motion/words';
 import { ParallaxLayer, ParallaxScene } from '@cefr/ui/motion/parallax';
 import { ResultPhone } from './result-phone';
 import { Aurora } from '@cefr/ui/components/aurora';
-
-const STUDENTS = 12_000;
-const AVATARS = [
-  { letter: 'D', hue: 135 },
-  { letter: 'J', hue: 258 },
-  { letter: 'M', hue: 75 },
-  { letter: 'S', hue: 190 },
-  { letter: 'N', hue: 28 },
-] as const;
+import { HERO_AVATARS, HERO_STUDENTS } from '@/constants/sections';
 
 const glass = 'bg-white/88 shadow-e2 backdrop-blur-xl';
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
@@ -46,7 +38,7 @@ function TrustRow() {
   return (
     <div className="flex animate-fade-up flex-wrap items-center gap-x-4 gap-y-3 pt-3" style={delay(720)}>
       <div className="flex -space-x-2">
-        {AVATARS.map((a) => (
+        {HERO_AVATARS.map((a) => (
           <span
             key={a.letter}
             className="grid size-8 place-items-center rounded-full text-xs font-medium text-white ring-2 ring-bg"
@@ -64,7 +56,7 @@ function TrustRow() {
           <span className="font-medium">4.9</span>
           <span className="text-ink-2">{t('rating')}</span>
         </span>
-        <span className="text-[13px] text-ink-2">{t('trust', { count: formatSum(STUDENTS) })}</span>
+        <span className="text-[13px] text-ink-2">{t('trust', { count: formatSum(HERO_STUDENTS) })}</span>
       </div>
     </div>
   );

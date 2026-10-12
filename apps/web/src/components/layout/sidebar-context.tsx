@@ -1,19 +1,10 @@
 'use client';
 
 import { createContext, use, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { SIDEBAR_COOKIE } from '@/lib/constants';
+import { SIDEBAR_COOKIE } from '@/constants/layout';
 import { TooltipProvider } from '@cefr/ui/components/tooltip';
-
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
-const TOGGLE_KEY = 'b';
-const TOOLTIP_DELAY = 250;
-
-type SidebarState = {
-  collapsed: boolean;
-  toggle: () => void;
-  mobileOpen: boolean;
-  setMobileOpen: (open: boolean) => void;
-};
+import { SIDEBAR_COOKIE_MAX_AGE, SIDEBAR_TOGGLE_KEY, SIDEBAR_TOOLTIP_DELAY } from '@/constants/layout';
+import type { SidebarState } from '@/types/layout';
 
 const SidebarContext = createContext<SidebarState | null>(null);
 
@@ -23,12 +14,12 @@ export function SidebarProvider({ defaultCollapsed, children }: { defaultCollaps
   const toggle = useCallback(() => setCollapsed((value) => !value), []);
 
   useEffect(() => {
-    document.cookie = `${SIDEBAR_COOKIE}=${collapsed ? 1 : 0}; path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`;
+    document.cookie = `${SIDEBAR_COOKIE}=${collapsed ? 1 : 0}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}; samesite=lax`;
   }, [collapsed]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() !== TOGGLE_KEY || !(event.metaKey || event.ctrlKey)) return;
+      if (event.key.toLowerCase() !== SIDEBAR_TOGGLE_KEY || !(event.metaKey || event.ctrlKey)) return;
       event.preventDefault();
       toggle();
     };
@@ -40,7 +31,7 @@ export function SidebarProvider({ defaultCollapsed, children }: { defaultCollaps
 
   return (
     <SidebarContext value={value}>
-      <TooltipProvider delayDuration={TOOLTIP_DELAY}>{children}</TooltipProvider>
+      <TooltipProvider delayDuration={SIDEBAR_TOOLTIP_DELAY}>{children}</TooltipProvider>
     </SidebarContext>
   );
 }

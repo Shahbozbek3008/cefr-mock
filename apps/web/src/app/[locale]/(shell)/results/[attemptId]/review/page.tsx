@@ -1,10 +1,9 @@
-import { initLocale, metadataTitle, type PageProps } from '@cefr/ui/i18n/locale';
+import { initLocale, metadataTitle } from '@cefr/ui/i18n/locale';
 import { AppMain } from '@/components/layout/page-header';
 import { ReviewView } from '@/components/results/review-view';
+import type { ReviewPageProps } from '@/types/pages';
 
 export const generateMetadata = metadataTitle('review.title');
-
-type ReviewPageProps = PageProps<{ attemptId: string }> & { searchParams: Promise<{ tab?: string }> };
 
 export default async function ReviewPage({ params, searchParams }: ReviewPageProps) {
   await initLocale(params);

@@ -5,8 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useAppLinks } from '@/lib/app-links';
 import { cn } from '@cefr/ui/lib/cn';
 import { ButtonLink } from '@cefr/ui/components/button';
-
-const SHOW_AFTER = 560;
+import { STICKY_CTA_SHOW_AFTER } from '@/constants/ui';
 
 export function StickyCta() {
   const t = useTranslations('landing.sticky');
@@ -14,7 +13,7 @@ export function StickyCta() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > SHOW_AFTER);
+    const onScroll = () => setVisible(window.scrollY > STICKY_CTA_SHOW_AFTER);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

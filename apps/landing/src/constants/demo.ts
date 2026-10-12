@@ -1,6 +1,4 @@
-import type { Skill } from '@/lib/constants';
-
-export type SkillScore = { skill: Skill; score: number; delta: number; weak?: boolean };
+import type { SkillScore } from '@/types/demo';
 
 export const DEMO_USER = { firstName: 'Aziza' } as const;
 

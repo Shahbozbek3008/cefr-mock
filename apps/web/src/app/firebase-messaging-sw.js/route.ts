@@ -1,9 +1,8 @@
-import { FIREBASE_SDK_VERSION, firebaseConfig } from '@/lib/firebase/config';
-
-const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
+import { firebaseConfig } from '@/lib/firebase/config';
+import { FIREBASE_CDN } from '@/constants/push';
 
 const worker = (config: string) => `
-importScripts('${CDN}/firebase-app-compat.js', '${CDN}/firebase-messaging-compat.js');
+importScripts('${FIREBASE_CDN}/firebase-app-compat.js', '${FIREBASE_CDN}/firebase-messaging-compat.js');
 
 firebase.initializeApp(${config});
 

@@ -17,13 +17,14 @@ import {
   type SpeakingAnswer,
   type SpeakingReview as SpeakingReviewData,
 } from '@cefr/core';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { Icon } from '@cefr/ui/components/icon';
 import { ProgressBar } from '@cefr/ui/components/progress-bar';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { panelSurface } from '@/components/dashboard/panel';
 import { AiPendingCard, MarkedText, ResultsTopbar, StatePanel } from './shared';
+import { SKELETON_ANSWERS, SKELETON_CRITERIA, SKELETON_TIPS } from '@/constants/results';
 
 const TILES_GRID = 'grid grid-cols-2 gap-2.5 lg:grid-cols-4';
 const TILE = 'flex flex-col gap-2.5 p-4';
@@ -31,9 +32,6 @@ const TIPS_PANEL = 'flex flex-col gap-2.5 px-5 py-4';
 const ANSWERS_GRID = 'grid gap-3 xl:grid-cols-2';
 const ANSWER_CARD = 'flex flex-col gap-3.5 p-5';
 const PLAYER = 'flex items-center gap-3 rounded-2xl bg-surface-muted px-3 py-2.5';
-const SKELETON_CRITERIA = 4;
-const SKELETON_TIPS = 3;
-const SKELETON_ANSWERS = 2;
 const SKELETON_TRANSCRIPT = ['w-full', 'w-full', 'w-3/5'];
 
 function SpeakingReviewSkeleton() {

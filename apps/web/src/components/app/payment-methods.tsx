@@ -6,8 +6,7 @@ import { PAYMENT_METHODS } from '@cefr/ui/lib/plans';
 import { RadioCardGroup, RadioDot } from '@cefr/ui/components/controls';
 import { PaymeLogo } from '@cefr/ui/components/payme-logo';
 import clickLogo from '@/assets/brands/click.png';
-
-const LOGO_HEIGHT = 20;
+import { LOGO_HEIGHT } from '@/constants/billing';
 
 export function PaymentMethods() {
   const t = useTranslations('billing');

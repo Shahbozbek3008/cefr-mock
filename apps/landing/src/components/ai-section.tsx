@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
-import { AudioLines, ChartColumn, PenLine, Sparkle } from 'lucide-react';
-import { MAX_SCORE } from '@/lib/constants';
-import { WRITING_CRITERIA } from '@/lib/demo';
+import { Sparkle } from 'lucide-react';
+import { MAX_SCORE } from '@cefr/ui/lib/constants';
+import { WRITING_CRITERIA } from '@/constants/demo';
 import { richTags } from '@cefr/ui/lib/rich';
 import { Icon } from '@cefr/ui/components/icon';
 import { Ring } from '@cefr/ui/components/gauge';
@@ -11,12 +11,7 @@ import { SectionHeading } from '@cefr/ui/components/typography';
 import { CountUp } from '@cefr/ui/motion/count-up';
 import { Reveal, Stagger, StaggerItem } from '@cefr/ui/motion/reveal';
 import { Container } from './container';
-
-const POINTS = [
-  { key: 'criteria', icon: ChartColumn },
-  { key: 'inline', icon: PenLine },
-  { key: 'transcript', icon: AudioLines },
-] as const;
+import { AI_POINTS } from '@/constants/sections';
 
 const panel = 'rounded-card bg-surface';
 
@@ -24,7 +19,7 @@ function Points() {
   const t = useTranslations('landing.ai');
   return (
     <Stagger as="ul" delay={0.15} className="m-0 mt-6 flex list-none flex-col p-0 max-md:hidden">
-      {POINTS.map((p) => (
+      {AI_POINTS.map((p) => (
         <StaggerItem as="li" key={p.key} className="group grid grid-cols-[36px_1fr] gap-[14px] py-[18px] shadow-[0_-1px_0_var(--divider-muted)]">
           <span className="grid size-9 place-items-center rounded-[11px] bg-surface-sunken text-ink-body transition-[background-color,color,scale] duration-(--t-sheet) ease-spring group-hover:scale-110 group-hover:bg-blue-50 group-hover:text-blue-text">
             <Icon as={p.icon} size={16} />

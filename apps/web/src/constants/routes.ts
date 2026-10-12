@@ -1,8 +1,5 @@
 import type { Skill } from '@cefr/ui/lib/constants';
-
-export * from '@cefr/ui/lib/constants';
-
-export const SIDEBAR_COOKIE = 'sidebar_collapsed';
+import { routing } from '@cefr/ui/i18n/routing';
 
 export const LANDING_URL = process.env.NEXT_PUBLIC_LANDING_URL ?? 'http://localhost:3001';
 
@@ -27,3 +24,7 @@ export const ROUTES = {
   aiWriting: (attemptId: string) => `/results/${attemptId}/writing`,
   aiSpeaking: (attemptId: string) => `/results/${attemptId}/speaking`,
 } as const;
+
+export const LOCALE_PREFIX = new RegExp(`^/(${routing.locales.join('|')})(?=/|$)`);
+
+export const GUEST_ONLY = /^\/(login|start)(\/|$)/;

@@ -1,6 +1,4 @@
-import type { ReactNode } from 'react';
-
-type OnboardingSplitProps = { title: string; text: string; children: ReactNode; aside: ReactNode };
+import type { OnboardingSplitProps } from '@/types/auth';
 
 export function OnboardingSplit({ title, text, children, aside }: OnboardingSplitProps) {
   return (

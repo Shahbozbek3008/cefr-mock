@@ -20,7 +20,8 @@ import {
   type TestSummary,
 } from '@cefr/core';
 import { Link, useRouter } from '@cefr/ui/i18n/navigation';
-import { ROUTES, SKILL_ICONS } from '@/lib/constants';
+import { SKILL_ICONS } from '@cefr/ui/lib/constants';
+import { ROUTES } from '@/constants/routes';
 import { cn } from '@cefr/ui/lib/cn';
 import { failureKey } from '@/lib/exam/session';
 import { Icon } from '@cefr/ui/components/icon';
@@ -32,9 +33,9 @@ import { ProgressBar } from '@cefr/ui/components/progress-bar';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { ActivePill } from '@cefr/ui/motion/active-pill';
 import { panelSurface } from '@/components/dashboard/panel';
+import { CATALOG_SKELETON_CARDS } from '@/constants/exam';
 
 const CARD = 'flex min-h-[188px] flex-col gap-4 p-5';
-const SKELETON_CARDS = 6;
 
 const hrefOf = (test: TestSummary) => {
   if (test.status === 'locked') return ROUTES.billing;
@@ -221,7 +222,7 @@ export function CatalogView() {
         </div>
       ) : !tests.data ? (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: SKELETON_CARDS }, (_, i) => <TestCardSkeleton key={i} />)}
+          {Array.from({ length: CATALOG_SKELETON_CARDS }, (_, i) => <TestCardSkeleton key={i} />)}
         </div>
       ) : list.length === 0 ? (
         <div className={cn(panelSurface, 'flex flex-col items-center gap-1 p-10 text-center')}>
