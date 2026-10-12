@@ -1,6 +1,6 @@
 import { askStructured, feedbackLanguage } from './claude.ts';
 import type { Locale } from './claude.ts';
-import { transcribe } from './deepgram.ts';
+import { contentTypeOf, transcribe } from './deepgram.ts';
 import type { Transcript } from './deepgram.ts';
 import { MAX_SCORE, alignSegments, segmentSchema } from './segments.ts';
 import type { Mark, Segment } from './segments.ts';
@@ -120,7 +120,10 @@ export const reviewSpeaking = async (
   const transcripts = new Map(
     await Promise.all(
       recorded.map(
-        async (question) => [question.id, await transcribe(await download(recordings[question.id]))] as const,
+        async (question) => {
+          const path = recordings[question.id];
+          return [question.id, await transcribe(await download(path), contentTypeOf(path))] as const;
+        },
       ),
     ),
   );

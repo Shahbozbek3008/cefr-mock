@@ -43,5 +43,8 @@ GoogleService-Info.plist
 *.tsbuildinfo
 
 # generated native folders
-/ios
-/android
+/apps/mobile/ios
+/apps/mobile/android
+
+.vercel
+.env*

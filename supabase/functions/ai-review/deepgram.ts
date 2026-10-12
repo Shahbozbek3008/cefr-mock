@@ -16,12 +16,21 @@ export type Transcript = {
   confidence: number;
 };
 
-export const transcribe = async (audio: ArrayBuffer): Promise<Transcript> => {
+const CONTENT_TYPES: Record<string, string> = {
+  m4a: 'audio/mp4',
+  mp4: 'audio/mp4',
+  webm: 'audio/webm',
+  ogg: 'audio/ogg',
+};
+
+export const contentTypeOf = (path: string) => CONTENT_TYPES[path.split('.').pop()?.toLowerCase() ?? ''] ?? 'audio/mp4';
+
+export const transcribe = async (audio: ArrayBuffer, contentType = 'audio/mp4'): Promise<Transcript> => {
   const response = await fetch(ENDPOINT, {
     method: 'POST',
     headers: {
       Authorization: `Token ${Deno.env.get('DEEPGRAM_API_KEY') ?? ''}`,
-      'Content-Type': 'audio/mp4',
+      'Content-Type': contentType,
     },
     body: audio,
   });
