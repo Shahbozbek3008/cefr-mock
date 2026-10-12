@@ -1,7 +1,15 @@
 {
   "metadata": {
     "title": "CEFR Multilevel — prepare for the CEFR exam in real conditions",
-    "description": "Full mock tests, AI scoring for Writing and Speaking, and an explanation for every mistake."
+    "description": "Your CEFR Multilevel dashboard: mock tests, AI scoring for Writing and Speaking, result analysis and a personal plan until exam day.",
+    "keywords": "CEFR Multilevel, CEFR mock test, multilevel exam, online English test, AI scoring, Speaking practice, Writing feedback, B2 preparation",
+    "ogHeadline": "CEFR mock tests and AI scoring in one dashboard",
+    "ogTagline": "Tests · Results · Personal plan",
+    "loginTitle": "Sign in to your account",
+    "loginDescription": "Sign in to CEFR Multilevel with your phone number or Google: mock tests, results and AI feedback in one place.",
+    "startTitle": "Sign up for free",
+    "startDescription": "Pick your target level and exam date — CEFR Multilevel prepares a free mock test and a personal study plan for you.",
+    "appDescription": "Online platform to prepare for the CEFR Multilevel exam: official-format mock tests and AI scoring."
   },
   "common": {
     "language": "Language",

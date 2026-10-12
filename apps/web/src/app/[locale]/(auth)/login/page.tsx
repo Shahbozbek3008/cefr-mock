@@ -1,13 +1,16 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@cefr/ui/i18n/navigation';
 import { LANDING_URL, ROUTES } from '@/constants/routes';
-import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { initLocale, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { StructuredData } from '@/components/seo/structured-data';
+import { PUBLIC_PAGES } from '@/constants/seo';
+import { publicPageMetadata } from '@/lib/seo';
 import { Logo } from '@cefr/ui/components/logo';
 import { PhoneLoginForm } from '@/components/auth/phone-login-form';
 import { OrDivider, SocialButtons } from '@/components/auth/social-buttons';
 import { LoginShowcase } from '@/components/auth/login-showcase';
 
-export const generateMetadata = metadataTitle('auth.login.title');
+export const generateMetadata = publicPageMetadata(PUBLIC_PAGES[0]);
 
 function LoginView() {
   const t = useTranslations('auth');
@@ -37,6 +40,11 @@ function LoginView() {
 }
 
 export default async function LoginPage({ params }: { params: LocaleParams }) {
-  await initLocale(params);
-  return <LoginView />;
+  const locale = await initLocale(params);
+  return (
+    <>
+      <StructuredData locale={locale} path={PUBLIC_PAGES[0].path} />
+      <LoginView />
+    </>
+  );
 }

@@ -1,7 +1,15 @@
 {
   "metadata": {
     "title": "CEFR Multilevel — подготовка к экзамену CEFR в реальных условиях",
-    "description": "Полные пробные тесты, AI-оценка Writing и Speaking и объяснение каждой ошибки."
+    "description": "Личный кабинет CEFR Multilevel: пробные тесты, AI-оценка Writing и Speaking, разбор результатов и персональный план до экзамена.",
+    "keywords": "CEFR Multilevel, пробный тест CEFR, экзамен multilevel, тест по английскому онлайн, AI-оценка, Speaking, Writing, подготовка B2",
+    "ogHeadline": "Пробные тесты CEFR и AI-оценка в одном кабинете",
+    "ogTagline": "Тесты · Результаты · Личный план",
+    "loginTitle": "Вход в аккаунт",
+    "loginDescription": "Войдите в CEFR Multilevel по номеру телефона или через Google: пробные тесты, результаты и AI-разбор в одном месте.",
+    "startTitle": "Бесплатная регистрация",
+    "startDescription": "Выберите целевой уровень и дату экзамена — CEFR Multilevel подготовит бесплатный пробный тест и персональный план подготовки.",
+    "appDescription": "Онлайн-платформа для подготовки к экзамену CEFR Multilevel: пробные тесты в официальном формате и AI-оценка."
   },
   "common": {
     "language": "Язык",

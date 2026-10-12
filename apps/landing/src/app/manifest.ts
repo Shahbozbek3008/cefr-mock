@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { BRAND_NAME } from '@cefr/ui/components/logo';
 import { routing } from '@cefr/ui/i18n/routing';
 import { THEME_COLORS } from '@cefr/ui/theme/constants';
-import { APPLE_ICON_SIZE } from '@/constants/seo';
+import { APPLE_ICON_SIZE } from '@cefr/ui/seo/constants';
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const t = await getTranslations({ locale: routing.defaultLocale, namespace: 'metadata' });

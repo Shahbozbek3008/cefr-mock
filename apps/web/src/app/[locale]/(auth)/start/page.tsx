@@ -1,12 +1,15 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@cefr/ui/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
-import { initLocale, metadataTitle, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { initLocale, type LocaleParams } from '@cefr/ui/i18n/locale';
+import { StructuredData } from '@/components/seo/structured-data';
+import { PUBLIC_PAGES } from '@/constants/seo';
+import { publicPageMetadata } from '@/lib/seo';
 import { AuthTopBar, StepIndicator } from '@/components/auth/auth-top-bar';
 import { Stage } from '@/components/layout/stage';
 import { GoalStep } from '@/components/auth/onboarding-steps';
 
-export const generateMetadata = metadataTitle('onboarding.goal.title');
+export const generateMetadata = publicPageMetadata(PUBLIC_PAGES[1]);
 
 function GoalView() {
   const t = useTranslations('onboarding');
@@ -31,6 +34,11 @@ function GoalView() {
 }
 
 export default async function GoalPage({ params }: { params: LocaleParams }) {
-  await initLocale(params);
-  return <GoalView />;
+  const locale = await initLocale(params);
+  return (
+    <>
+      <StructuredData locale={locale} path={PUBLIC_PAGES[1].path} />
+      <GoalView />
+    </>
+  );
 }

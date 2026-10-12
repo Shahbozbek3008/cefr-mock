@@ -1,7 +1,15 @@
 {
   "metadata": {
     "title": "CEFR Multilevel — CEFR imtihoniga real sharoitda tayyorlaning",
-    "description": "To'liq mock testlar, Writing va Speaking uchun AI baholash va har bir xato bo'yicha tushuntirish."
+    "description": "CEFR Multilevel shaxsiy kabineti: mock testlar, Writing va Speaking uchun AI baholash, natijalar tahlili va imtihongacha shaxsiy reja.",
+    "keywords": "CEFR Multilevel, CEFR mock test, multilevel imtihon, ingliz tili test onlayn, AI baholash, Speaking mashq, Writing tekshirish, B2 tayyorlov",
+    "ogHeadline": "CEFR mock testlar va AI baholash bitta kabinetda",
+    "ogTagline": "Testlar · Natijalar · Shaxsiy reja",
+    "loginTitle": "Hisobingizga kiring",
+    "loginDescription": "CEFR Multilevel hisobingizga telefon raqami yoki Google orqali kiring: mock testlar, natijalar va AI tahlil bir joyda.",
+    "startTitle": "Bepul ro'yxatdan o'ting",
+    "startDescription": "Maqsad darajangiz va imtihon sanangizni tanlang — CEFR Multilevel bepul mock test va shaxsiy tayyorgarlik rejasini tuzib beradi.",
+    "appDescription": "CEFR Multilevel imtihoniga tayyorlanish uchun onlayn platforma: rasmiy formatdagi mock testlar va AI baholash."
   },
   "common": {
     "language": "Til",

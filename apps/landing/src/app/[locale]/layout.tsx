@@ -1,7 +1,8 @@
 import { MarketingFooter } from "@/components/footer";
 import { MarketingHeader } from "@/components/header";
 import { StickyCta } from "@/components/sticky-cta";
-import { OG_LOCALES, SEARCH_VERIFICATION, SITE_URL } from "@/constants/seo";
+import { SEARCH_VERIFICATION, SITE_URL } from "@/constants/seo";
+import { INDEXABLE_ROBOTS, OG_LOCALES } from "@cefr/ui/seo/constants";
 import { geistMono, onest } from "@/lib/fonts";
 import { languageAlternates, localePath } from "@/lib/seo";
 import "@/styles/globals.css";
@@ -61,17 +62,7 @@ export async function generateMetadata({
       title,
       description,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-      },
-    },
+    robots: INDEXABLE_ROBOTS,
     verification: {
       google: SEARCH_VERIFICATION.google,
       yandex: SEARCH_VERIFICATION.yandex,

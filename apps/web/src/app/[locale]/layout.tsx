@@ -5,7 +5,10 @@ import { routing } from "@cefr/ui/i18n/routing";
 import { geistMono, onest } from "@/lib/fonts";
 import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
 import "@/styles/globals.css";
+import { OG_LOCALES, PRIVATE_ROBOTS } from "@cefr/ui/seo/constants";
 import { THEME_COLORS } from "@cefr/ui/theme/constants";
+import { LANDING_URL } from "@/constants/routes";
+import { SEARCH_VERIFICATION, SITE_URL } from "@/constants/seo";
 import { ThemeScript } from "@cefr/ui/theme/theme-script";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
@@ -21,21 +24,37 @@ export async function generateMetadata({
 }: {
   params: LocaleParams;
 }): Promise<Metadata> {
-  const t = await getTranslations({
-    locale: await resolveLocale(params),
-    namespace: "metadata",
-  });
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  const title = t("title");
+  const description = t("description");
+
+  // Signed-in pages stay out of search results; public pages opt in via publicPageMetadata().
   return {
-    title: { default: t("title"), template: `%s · ${BRAND_NAME}` },
-    description: t("description"),
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [
-          l,
-          l === routing.defaultLocale ? "/" : `/${l}`,
-        ]),
-      ),
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: `%s · ${BRAND_NAME}` },
+    description,
+    keywords: t("keywords").split(",").map((keyword) => keyword.trim()),
+    applicationName: BRAND_NAME,
+    authors: [{ name: BRAND_NAME, url: LANDING_URL }],
+    creator: BRAND_NAME,
+    publisher: BRAND_NAME,
+    category: "education",
+    robots: PRIVATE_ROBOTS,
+    openGraph: {
+      type: "website",
+      siteName: BRAND_NAME,
+      title,
+      description,
+      locale: OG_LOCALES[locale],
     },
+    twitter: { card: "summary_large_image", title, description },
+    verification: {
+      google: SEARCH_VERIFICATION.google,
+      yandex: SEARCH_VERIFICATION.yandex,
+    },
+    appleWebApp: { capable: true, title: BRAND_NAME, statusBarStyle: "default" },
+    formatDetection: { telephone: false, email: false, address: false },
   };
 }
 

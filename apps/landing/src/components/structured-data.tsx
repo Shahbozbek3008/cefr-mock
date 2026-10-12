@@ -3,7 +3,8 @@ import { BRAND_NAME } from '@cefr/ui/components/logo';
 import { routing, type Locale } from '@cefr/ui/i18n/routing';
 import { PLANS } from '@cefr/ui/lib/plans';
 import { FAQ_KEYS } from '@/constants/sections';
-import { PRICE_CURRENCY, SITE_URL } from '@/constants/seo';
+import { PRICE_CURRENCY } from '@cefr/ui/seo/constants';
+import { SITE_URL } from '@/constants/seo';
 import { absoluteUrl, localePath, serializeJsonLd } from '@/lib/seo';
 
 const stripTags = (text: string) => text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
