@@ -413,11 +413,11 @@ function SubscriptionSectionSkeleton() {
     <Panel>
       <div className="flex flex-wrap items-center gap-4 p-5">
         <PlanBadge />
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <div className="flex min-w-0 flex-1 basis-[200px] flex-col gap-0.5">
           <SkeletonText className="w-40 text-[15px]" />
           <SkeletonText className="w-56 text-xs" />
         </div>
-        <Skeleton className={cn(controlSkeleton, 'w-28')} />
+        <Skeleton className={cn(controlSkeleton, 'w-28 max-sm:w-full')} />
       </div>
     </Panel>
   );
@@ -432,17 +432,17 @@ export function SubscriptionSection() {
     <Panel>
       <div className="flex flex-wrap items-center gap-4 p-5">
         <PlanBadge />
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="flex items-center gap-2 text-[15px] font-medium">
+        <div className="flex min-w-0 flex-1 basis-[200px] flex-col gap-0.5">
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] font-medium">
             {profile.isPro ? `${BRAND_NAME} Pro` : t('free')}
             <Tag tone={profile.isPro ? 'pro' : 'success'} size="sm">{t('active')}</Tag>
           </span>
           <span className="text-xs text-ink-3">{t(profile.isPro ? 'proHint' : 'freeHint')}</span>
         </div>
         {profile.isPro ? (
-          <ButtonLink href={ROUTES.billing} variant="secondary" size="xs" className={compactButton}>{t('change')}</ButtonLink>
+          <ButtonLink href={ROUTES.billing} variant="secondary" size="xs" className={cn(compactButton, 'max-sm:w-full')}>{t('change')}</ButtonLink>
         ) : (
-          <ButtonLink href={ROUTES.billing} size="xs" arrow className={compactButton}>{t('upgrade')}</ButtonLink>
+          <ButtonLink href={ROUTES.billing} size="xs" arrow className={cn(compactButton, 'max-sm:w-full')}>{t('upgrade')}</ButtonLink>
         )}
       </div>
     </Panel>

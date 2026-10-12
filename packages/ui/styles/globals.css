@@ -62,6 +62,8 @@
   --animate-sheet-out: fade-out 0.2s ease-in forwards;
   --animate-drawer-in: drawer-in 0.42s var(--ease-out);
   --animate-drawer-out: drawer-out 0.22s ease-in forwards;
+  --animate-bottom-sheet-in: bottom-sheet-in 0.42s var(--ease-out);
+  --animate-bottom-sheet-out: bottom-sheet-out 0.24s ease-in forwards;
   --animate-accordion-down: accordion-down 0.42s var(--ease-out);
   --animate-accordion-up: accordion-up 0.32s var(--ease-out);
   --animate-progress-loop: progress-loop 6s var(--ease) infinite;
@@ -155,6 +157,12 @@
   }
   @keyframes drawer-out {
     to { translate: -100% 0; }
+  }
+  @keyframes bottom-sheet-in {
+    from { translate: 0 100%; }
+  }
+  @keyframes bottom-sheet-out {
+    to { translate: 0 100%; }
   }
   @keyframes sheet-in {
     from { opacity: 0; translate: 0 -12px; }
