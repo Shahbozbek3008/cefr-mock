@@ -244,7 +244,7 @@ export function ReviewView({ id, initialTab }: { id: string; initialTab?: string
                   onClick={() => setSelectedId(item.questionId)}
                   aria-current={item.questionId === current.questionId || undefined}
                   style={{ animationDelay: `${i * 14}ms` }}
-                  className={cn('grid h-[38px] animate-pop place-items-center rounded-[11px] font-mono text-xs transition-[scale,box-shadow] duration-(--t-base) ease-spring hover:scale-110', STATUS_CELL[item.status], item.questionId === current.questionId && 'shadow-[inset_0_0_0_1.5px_currentColor,0_0_0_3px_rgba(20,22,30,.06)]')}
+                  className={cn('grid h-[38px] animate-pop place-items-center rounded-[11px] font-mono text-xs transition-[scale,box-shadow] duration-(--t-base) ease-spring hover:scale-110', STATUS_CELL[item.status], item.questionId === current.questionId && 'shadow-[inset_0_0_0_1.5px_currentColor,0_0_0_3px_rgb(var(--line-rgb)/.06)]')}
                 >
                   {item.number}
                 </button>

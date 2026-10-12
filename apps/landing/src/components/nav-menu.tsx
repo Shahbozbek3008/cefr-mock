@@ -43,7 +43,7 @@ export function NavMenu({ items, label, className }: { items: readonly NavItem[]
             onFocus={() => setHovered(item.href)}
             className={cn('relative isolate flex h-[34px] items-center rounded-[10px] px-3 transition-colors duration-(--t-base)', on ? 'text-ink hover:text-ink' : 'text-ink-2 hover:text-ink')}
           >
-            {on && <ActivePill layoutId={layoutId} className="rounded-[10px] bg-[rgba(20,22,30,.055)]" />}
+            {on && <ActivePill layoutId={layoutId} className="rounded-[10px] bg-[rgb(var(--line-rgb)/.055)]" />}
             {item.label}
           </a>
         );

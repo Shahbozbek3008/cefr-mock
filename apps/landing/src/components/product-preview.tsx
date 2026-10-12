@@ -41,13 +41,13 @@ function BrowserChrome() {
 function MiniSidebar() {
   const t = useTranslations('landing.preview.nav');
   return (
-    <div className="flex w-[200px] shrink-0 flex-col gap-5 bg-bg-sidebar px-3 py-5 shadow-[1px_0_0_rgba(20,22,30,.06)] max-lg:hidden">
+    <div className="flex w-[200px] shrink-0 flex-col gap-5 bg-bg-sidebar px-3 py-5 shadow-[1px_0_0_rgb(var(--line-rgb)/.06)] max-lg:hidden">
       <span className="flex items-center gap-2 px-2 text-[13px] font-medium"><LogoMark size="sm" />{BRAND_NAME}</span>
       <div className="flex flex-col gap-0.5">
         {PREVIEW_NAV.map((n, i) => (
           <span
             key={n.key}
-            className={cn('flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-[13px]', i === 0 ? 'bg-surface font-medium shadow-[0_0_0_1px_rgba(20,22,30,.06)]' : 'text-ink-2')}
+            className={cn('flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-[13px]', i === 0 ? 'bg-surface font-medium shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]' : 'text-ink-2')}
           >
             <Icon as={n.icon} size={16} />
             {t(n.key)}
@@ -86,7 +86,7 @@ function SkillTiles() {
   return (
     <div className="grid grid-cols-2 gap-2.5">
       {DASHBOARD_SKILLS.map((s, i) => (
-        <div key={s.skill} className="flex flex-col gap-2.5 rounded-[18px] bg-surface p-4 shadow-[0_0_0_1px_rgba(20,22,30,.05)]">
+        <div key={s.skill} className="flex flex-col gap-2.5 rounded-[18px] bg-surface p-4 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)]">
           <span className="text-xs text-ink-2">{t(s.skill)}</span>
           <span className="text-[28px] leading-none font-light tracking-[-0.05em]">
             <CountUp value={s.score} delay={i * 0.1} />
@@ -102,7 +102,7 @@ function SkillTiles() {
 function ChartCard() {
   const t = useTranslations('landing.preview');
   return (
-    <div className="flex flex-col gap-2 rounded-card bg-surface px-5 pt-4 pb-1 shadow-[0_0_0_1px_rgba(20,22,30,.05)] lg:col-span-2">
+    <div className="flex flex-col gap-2 rounded-card bg-surface px-5 pt-4 pb-1 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)] lg:col-span-2">
       <span className="text-xs text-ink-2">{t('overall')}</span>
       <LineChart data={PROGRESS_SCORES} thresholds={LEVEL_THRESHOLDS} label={t('chartLabel')} height={200} />
     </div>
@@ -135,8 +135,8 @@ export function ProductPreview() {
         <Reveal delay={0.1} as="span" className="max-w-[520px] text-base leading-[1.6] text-ink-2">{t('text')}</Reveal>
       </div>
       <div className="relative w-full">
-        <div className="pointer-events-none absolute inset-x-[8%] -top-10 h-2/3 rounded-full bg-[radial-gradient(closest-side,oklch(0.9_0.08_140/.6),transparent)] blur-3xl" />
-        <ScrollTilt className="relative overflow-hidden rounded-[22px] bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.07),0_50px_100px_-40px_rgba(20,22,30,.35),0_30px_60px_-30px_rgba(20,22,30,.18)] md:rounded-hero">
+        <div className="pointer-events-none absolute inset-x-[8%] -top-10 h-2/3 rounded-full bg-[radial-gradient(closest-side,oklch(0.9_0.08_140/.6),transparent)] dark:opacity-15 blur-3xl" />
+        <ScrollTilt className="relative overflow-hidden rounded-[22px] bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07),0_50px_100px_-40px_rgba(20,22,30,.35),0_30px_60px_-30px_rgba(20,22,30,.18)] md:rounded-hero">
           <BrowserChrome />
           <div className="flex">
             <MiniSidebar />

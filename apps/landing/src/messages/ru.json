@@ -7,7 +7,13 @@
     "language": "Язык",
     "examDate": "1 ноября 2026",
     "done": "Готово",
-    "failed": "Ошибка"
+    "failed": "Ошибка",
+    "theme": {
+      "toggle": "Сменить тему",
+      "light": "Светлая",
+      "dark": "Тёмная",
+      "system": "Системная"
+    }
   },
   "skills": {
     "listening": "Listening",

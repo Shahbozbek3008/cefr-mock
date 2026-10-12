@@ -73,7 +73,7 @@ function PlanCard({ plan, highlighted }: { plan: PlanInfo; highlighted: boolean 
 export function PricingSection() {
   const t = useTranslations('landing.pricing');
   return (
-    <section id="pricing" className="relative scroll-mt-24 overflow-hidden md:bg-surface md:shadow-[0_-1px_0_rgba(20,22,30,.06),0_1px_0_rgba(20,22,30,.06)]">
+    <section id="pricing" className="relative scroll-mt-24 overflow-hidden md:bg-surface md:shadow-[0_-1px_0_rgb(var(--line-rgb)/.06),0_1px_0_rgb(var(--line-rgb)/.06)]">
       <div className="grid-backdrop pointer-events-none absolute inset-0 bg-size-[56px_56px] mask-[radial-gradient(ellipse_50%_40%_at_50%_0%,#000,transparent_80%)] max-md:hidden" />
       <Container className="relative flex flex-col gap-[14px] pt-16 md:gap-16 md:py-36">
         <div className="flex flex-col gap-2.5 pb-1.5 md:items-center md:gap-4 md:pb-0 md:text-center">

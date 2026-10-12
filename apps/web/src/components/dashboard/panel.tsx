@@ -1,7 +1,7 @@
 import { cn } from '@cefr/ui/lib/cn';
 import type { PanelProps } from '@/types/dashboard';
 
-export const panelSurface = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]';
+export const panelSurface = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_1px_2px_rgba(20,22,30,.04)]';
 
 export function Panel({ title, subtitle, action, className, children, ...rest }: PanelProps) {
   return (

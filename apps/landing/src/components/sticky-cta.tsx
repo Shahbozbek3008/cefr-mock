@@ -23,7 +23,7 @@ export function StickyCta() {
     <div
       aria-hidden={!visible}
       className={cn(
-        'fixed inset-x-3 bottom-7 z-30 flex items-center gap-2.5 rounded-[22px] bg-white/94 p-2 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_16px_32px_-14px_rgba(20,22,30,.25)] backdrop-blur-md transition-[opacity,translate] duration-(--t-sheet) ease-brand md:hidden',
+        'fixed inset-x-3 bottom-7 z-30 flex items-center gap-2.5 rounded-[22px] bg-surface/94 p-2 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_16px_32px_-14px_rgba(20,22,30,.25)] backdrop-blur-md transition-[opacity,translate] duration-(--t-sheet) ease-brand md:hidden',
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0',
       )}
     >

@@ -46,7 +46,7 @@ function Paragraph({ paragraph, highlight, serif, selected, onSelect, onPick }: 
         )}
       </p>
       {selected && (
-        <div role="toolbar" className="absolute -top-11 left-7 z-10 sm:left-9 flex h-[38px] animate-pop items-center gap-1.5 rounded-[12px] bg-surface px-2 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_14px_28px_-12px_rgba(20,22,30,.3)]">
+        <div role="toolbar" className="absolute -top-11 left-7 z-10 sm:left-9 flex h-[38px] animate-pop items-center gap-1.5 rounded-[12px] bg-surface px-2 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_14px_28px_-12px_rgba(20,22,30,.3)]">
           <button type="button" aria-label={t('highlightYellow')} onClick={() => onPick('yellow')} className={cn('size-5 rounded-full bg-highlight', highlight?.color === 'yellow' && 'ring-2 ring-white ring-offset-1 ring-offset-line-strong')} />
           <button type="button" aria-label={t('highlightBlue')} onClick={() => onPick('blue')} className={cn('size-5 rounded-full bg-blue-100', highlight?.color === 'blue' && 'ring-2 ring-white ring-offset-1 ring-offset-line-strong')} />
         </div>
@@ -61,7 +61,7 @@ function Passage({ part, serif, className }: { part: ReadingPart; serif: boolean
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <article className={cn('flex min-h-0 flex-col gap-5 overflow-y-auto bg-surface px-4 py-5 shadow-[1px_0_0_rgba(20,22,30,.06)] sm:gap-6 sm:px-6 sm:py-6 lg:px-10 lg:py-8', className)}>
+    <article className={cn('flex min-h-0 flex-col gap-5 overflow-y-auto bg-surface px-4 py-5 shadow-[1px_0_0_rgb(var(--line-rgb)/.06)] sm:gap-6 sm:px-6 sm:py-6 lg:px-10 lg:py-8', className)}>
       <h2 className="m-0 text-[22px] leading-[1.2] font-medium tracking-[-0.03em] sm:text-[28px] sm:leading-[1.15] sm:tracking-[-0.035em]">{part.title}</h2>
       {part.passage.map((paragraph) => (
         <Paragraph
@@ -137,7 +137,7 @@ export function ReadingSection({ test }: { test: TestDetail }) {
         onExit={controls.requestExit}
         onFinish={controls.requestFinish}
       />
-      <div className="shrink-0 bg-surface px-4 py-2.5 shadow-[0_1px_0_rgba(20,22,30,.06)] sm:px-6 lg:hidden">
+      <div className="shrink-0 bg-surface px-4 py-2.5 shadow-[0_1px_0_rgb(var(--line-rgb)/.06)] sm:px-6 lg:hidden">
         <SegmentedControl
           label={t('reading.modes.text')}
           value={pane}

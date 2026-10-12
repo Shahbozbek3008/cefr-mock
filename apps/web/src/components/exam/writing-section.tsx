@@ -72,7 +72,7 @@ function SavedNote() {
 function TaskBrief({ task }: { task: WritingTask }) {
   const t = useTranslations('exam');
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_1px_2px_rgba(20,22,30,.04)]">
       <span className="font-mono text-xs text-ink-3 uppercase">{`${task.label} · ${task.kind}`}</span>
       {task.context && <p className="m-0 rounded-[12px] bg-surface-muted px-4 py-3 text-sm leading-relaxed whitespace-pre-line text-ink-body">{task.context}</p>}
       <p className="m-0 text-base leading-[1.6] tracking-[-0.01em] whitespace-pre-line sm:text-[17px]">{task.prompt}</p>

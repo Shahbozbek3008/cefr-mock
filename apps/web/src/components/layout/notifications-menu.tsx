@@ -180,7 +180,7 @@ export function NotificationsMenu({ label }: { label: string }) {
           align="end"
           sideOffset={8}
           collisionPadding={12}
-          className="z-50 flex w-[min(380px,calc(100vw-24px))] origin-(--radix-popover-content-transform-origin) flex-col overflow-hidden rounded-[16px] bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.08),0_24px_48px_-20px_rgba(20,22,30,.3)] outline-none data-[state=closed]:animate-menu-out data-[state=open]:animate-menu-in"
+          className="z-50 flex w-[min(380px,calc(100vw-24px))] origin-(--radix-popover-content-transform-origin) flex-col overflow-hidden rounded-[16px] bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.08),0_24px_48px_-20px_rgba(20,22,30,.3)] outline-none data-[state=closed]:animate-menu-out data-[state=open]:animate-menu-in"
         >
           <PanelBody onNavigate={() => setOpen(false)} />
         </Popover.Content>

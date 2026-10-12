@@ -28,7 +28,7 @@ import { Panel, panelSurface } from '@/components/dashboard/panel';
 import { ATTEMPT_MODES, ATTEMPT_RULES, INTRO_STAT_LABELS } from '@/constants/exam';
 
 const LAYOUT = 'mx-auto grid w-full max-w-[1080px] flex-1 items-start gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_380px]';
-const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgba(20,22,30,.06)]';
+const STATS_GRID = 'grid grid-cols-3 gap-px overflow-hidden rounded-card-sm bg-divider-muted shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]';
 const STAT_CELL = 'flex min-w-0 flex-col gap-0.5 bg-surface px-3 py-3 sm:px-5 sm:py-4';
 const SECTION_ROW = 'grid min-h-16 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-3 py-3 sm:gap-4 shadow-[0_1px_0_var(--divider)] last:shadow-none';
 const SECTION_ICON = 'grid size-9 place-items-center rounded-[10px] bg-surface-sunken text-ink-body';
@@ -129,7 +129,7 @@ export function TestIntro({ id }: { id: string }) {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="flex h-(--test-header-h) items-center bg-surface px-4 sm:px-6 shadow-[0_1px_0_rgba(20,22,30,.06)]">
+      <header className="flex h-(--test-header-h) items-center bg-surface px-4 sm:px-6 shadow-[0_1px_0_rgb(var(--line-rgb)/.06)]">
         <Link href={ROUTES.catalog} aria-label={t('common.back')} className="grid size-10 place-items-center rounded-full bg-surface text-ink-body shadow-inset hover:bg-bg-app hover:text-ink">
           <Icon as={ChevronLeft} size={16} strokeWidth={1.7} />
         </Link>

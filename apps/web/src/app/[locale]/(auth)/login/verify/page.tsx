@@ -28,7 +28,7 @@ function VerifyView({ digits }: { digits: string }) {
   return (
     <Stage topBar={<AuthTopBar start={<BackLink href={ROUTES.login} />} center={<VerifyBrand />} />}>
       <div className="flex flex-1 justify-center px-5 pt-4 pb-10 sm:items-center sm:pt-0 sm:pb-18">
-        <div className="flex w-full max-w-[440px] flex-col gap-6 sm:gap-7 sm:rounded-card-lg sm:bg-surface sm:p-10 sm:shadow-[0_0_0_1px_rgba(20,22,30,.06),0_30px_60px_-30px_rgba(20,22,30,.2)]">
+        <div className="flex w-full max-w-[440px] flex-col gap-6 sm:gap-7 sm:rounded-card-lg sm:bg-surface sm:p-10 sm:shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_30px_60px_-30px_rgba(20,22,30,.2)]">
           <span className="grid size-12 place-items-center rounded-btn bg-green-100 text-green-text">
             <Icon as={Smartphone} size={22} />
           </span>

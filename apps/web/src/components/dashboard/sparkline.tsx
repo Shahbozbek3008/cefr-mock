@@ -40,7 +40,7 @@ export function Sparkline({ data, width = 120, height = 36, color = 'var(--green
         cx={lx}
         cy={ly}
         r="2.75"
-        fill="#fff"
+        fill="var(--surface)"
         stroke={color}
         strokeWidth="1.75"
         style={{ transformBox: 'fill-box', transformOrigin: 'center' }}

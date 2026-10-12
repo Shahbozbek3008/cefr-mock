@@ -14,7 +14,7 @@ type SectionHeadingProps = { eyebrow: string; title: ReactNode; align?: 'start' 
 
 export function EyebrowPill({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn('inline-flex h-7 items-center gap-2 self-start rounded-pill bg-surface pr-3 pl-2.5 text-[12.5px] font-medium text-green-eyebrow shadow-[0_0_0_1px_rgba(20,22,30,.07),0_1px_2px_rgba(20,22,30,.04)]', className)}>
+    <span className={cn('inline-flex h-7 items-center gap-2 self-start rounded-pill bg-surface pr-3 pl-2.5 text-[12.5px] font-medium text-green-eyebrow shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07),0_1px_2px_rgba(20,22,30,.04)]', className)}>
       <span className="relative grid size-1.5 place-items-center">
         <span className="absolute size-1.5 animate-ping-soft rounded-full bg-green" />
         <span className="size-1.5 rounded-full bg-green" />

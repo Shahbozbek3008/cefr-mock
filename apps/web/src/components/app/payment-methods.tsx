@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl';
 import { PAYMENT_METHODS } from '@cefr/ui/lib/plans';
 import { RadioCardGroup, RadioDot } from '@cefr/ui/components/controls';
 import { PaymeLogo } from '@cefr/ui/components/payme-logo';
-import clickLogo from '@/assets/brands/click.png';
+import clickLogoDark from '@/assets/brands/click-dark.png';
+import clickLogoLight from '@/assets/brands/click-light.png';
 import { LOGO_HEIGHT } from '@/constants/billing';
 
 export function PaymentMethods() {
@@ -21,7 +22,10 @@ export function PaymentMethods() {
         <>
           <span className="flex flex-1 items-center">
             {m.value === 'click' ? (
-              <Image src={clickLogo} alt={m.name} height={LOGO_HEIGHT} style={{ width: 'auto', height: LOGO_HEIGHT }} />
+              <>
+                <Image src={clickLogoLight} alt={m.name} height={LOGO_HEIGHT} className="dark:hidden" style={{ width: 'auto', height: LOGO_HEIGHT }} />
+                <Image src={clickLogoDark} alt={m.name} height={LOGO_HEIGHT} className="hidden dark:block" style={{ width: 'auto', height: LOGO_HEIGHT }} />
+              </>
             ) : (
               <PaymeLogo height={LOGO_HEIGHT} className="text-ink" />
             )}

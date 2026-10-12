@@ -12,7 +12,7 @@ export function Aurora({ className }: { className?: string }) {
       {BLOBS.map((b) => (
         <span
           key={b.className}
-          className={cn('absolute animate-aurora rounded-full blur-[90px] will-change-transform', b.className)}
+          className={cn('absolute animate-aurora rounded-full blur-[90px] will-change-transform dark:opacity-15', b.className)}
           style={{ animationDuration: b.duration, animationDelay: b.delay }}
         />
       ))}

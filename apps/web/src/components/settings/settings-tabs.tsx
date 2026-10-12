@@ -24,7 +24,7 @@ export function SettingsTabs({ sections, label }: { sections: readonly SettingsS
                 selected ? 'text-ink' : 'text-ink-2 hover:text-ink',
               )}
             >
-              <span className="rounded-[8px] px-2.5 py-1.5 transition-colors duration-(--t-fast) group-hover:bg-[rgba(20,22,30,.045)]">{s.label}</span>
+              <span className="rounded-[8px] px-2.5 py-1.5 transition-colors duration-(--t-fast) group-hover:bg-[rgb(var(--line-rgb)/.045)]">{s.label}</span>
               {selected && <ActivePill layoutId={layoutId} className="inset-x-1 top-auto -bottom-px z-0 h-[2px] rounded-full bg-ink" />}
             </Tabs.Trigger>
           );

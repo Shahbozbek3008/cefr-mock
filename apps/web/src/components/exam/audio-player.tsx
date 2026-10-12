@@ -13,7 +13,7 @@ import type { AudioPlayerProps, PlayerFrameProps, PlayerProps } from '@/types/ex
 function Frame({ mode, label, active, position, duration, action }: PlayerFrameProps) {
   const t = useTranslations('exam.listening');
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-5 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_1px_2px_rgba(20,22,30,.04)]">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className={cn('flex items-center gap-2 text-[13px] font-medium', active ? 'text-green-text' : 'text-ink-2')}>
           <span className={cn('relative grid size-2 place-items-center')}>

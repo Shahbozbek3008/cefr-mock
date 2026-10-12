@@ -12,7 +12,7 @@ function InsightShell({ children }: { children: ReactNode }) {
   const t = useTranslations('dashboard.insight');
   return (
     <section className={`${panelSurface} relative isolate flex flex-1 flex-col gap-3 overflow-hidden p-5`}>
-      <span aria-hidden className="pointer-events-none absolute -right-16 -bottom-20 -z-10 size-56 rounded-full bg-[radial-gradient(closest-side,oklch(0.93_0.05_258/.9),transparent)]" />
+      <span aria-hidden className="pointer-events-none absolute -right-16 -bottom-20 -z-10 size-56 rounded-full bg-[radial-gradient(closest-side,oklch(0.93_0.05_258/.9),transparent)] dark:opacity-15" />
       <span className="flex items-center gap-1.5 text-xs font-medium text-blue-text">
         <Icon as={Sparkles} size={13} strokeWidth={1.9} />
         {t('label')}

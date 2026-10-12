@@ -44,7 +44,7 @@ function ScoreCard() {
       </span>
       <Ring value={52} max={MAX_SCORE} size={88} stroke={7} className="max-md:size-[72px]! max-md:[&_svg]:size-[72px]">
         <span className="text-[22px] leading-none font-light tracking-[-0.05em] md:text-[28px]"><CountUp value={52} /></span>
-        <span className="font-mono text-[9px] text-[#93959d] max-md:hidden">/{MAX_SCORE}</span>
+        <span className="font-mono text-[9px] text-ink-3 max-md:hidden">/{MAX_SCORE}</span>
       </Ring>
       <div className="flex flex-col gap-1 md:gap-1.5">
         <span className="text-xs text-ink-2">{t('card.task')}</span>
@@ -60,7 +60,7 @@ function ScoreCard() {
 function EssayCard() {
   const t = useTranslations('landing.ai');
   return (
-    <StaggerItem className={`${panel} flex flex-col gap-[14px] px-[18px] py-4 shadow-[0_0_0_1px_rgba(20,22,30,.05)] md:px-[22px] md:py-5`}>
+    <StaggerItem className={`${panel} flex flex-col gap-[14px] px-[18px] py-4 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)] md:px-[22px] md:py-5`}>
       <p className="m-0 text-sm leading-[1.75] text-ink-reading md:text-[15px] md:leading-[1.8]">
         Many people <Mark kind="grammar">believes</Mark> that public transport <Mark kind="lexical">is very good</Mark> for a<span className="max-md:hidden"> sustainable</span> city.
       </p>
@@ -76,7 +76,7 @@ export function AiSection() {
   const t = useTranslations('landing.ai');
 
   return (
-    <section id="ai" className="relative scroll-mt-24 md:bg-surface md:shadow-[0_-1px_0_rgba(20,22,30,.06),0_1px_0_rgba(20,22,30,.06)]">
+    <section id="ai" className="relative scroll-mt-24 md:bg-surface md:shadow-[0_-1px_0_rgb(var(--line-rgb)/.06),0_1px_0_rgb(var(--line-rgb)/.06)]">
       <Container className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-center gap-[18px] pt-16 md:gap-18 md:py-36">
         <div className="flex flex-col gap-4">
           <SectionHeading eyebrow={t('eyebrow')} title={t.rich('title', richTags)} />
@@ -85,15 +85,15 @@ export function AiSection() {
         </div>
 
         <Reveal className="relative">
-          <div className="pointer-events-none absolute -inset-6 rounded-[48px] bg-[radial-gradient(closest-side,oklch(0.92_0.05_258/.7),transparent)] blur-2xl max-md:hidden" />
-          <Stagger step={0.14} delay={0.2} className="relative flex flex-col gap-[18px] md:gap-3 md:rounded-hero md:bg-[#f5f5f6] md:p-[clamp(20px,3vw,36px)] md:shadow-[inset_0_0_0_1px_rgba(20,22,30,.04)]">
+          <div className="pointer-events-none absolute -inset-6 rounded-[48px] bg-[radial-gradient(closest-side,oklch(0.92_0.05_258/.7),transparent)] dark:opacity-15 blur-2xl max-md:hidden" />
+          <Stagger step={0.14} delay={0.2} className="relative flex flex-col gap-[18px] md:gap-3 md:rounded-hero md:bg-bg-app md:p-[clamp(20px,3vw,36px)] md:shadow-[inset_0_0_0_1px_rgb(var(--line-rgb)/.04)]">
             <ScoreCard />
             <StaggerItem>
               <CriteriaList
                 items={WRITING_CRITERIA}
                 columns="1fr minmax(60px,120px) 44px"
                 rowClassName="max-md:text-[13px] md:h-12"
-                className={`${panel} px-[18px] py-0.5 shadow-[0_0_0_1px_rgba(20,22,30,.05)] md:px-[22px] md:py-1.5`}
+                className={`${panel} px-[18px] py-0.5 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)] md:px-[22px] md:py-1.5`}
               />
             </StaggerItem>
             <EssayCard />

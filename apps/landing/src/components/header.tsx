@@ -5,6 +5,7 @@ import { useAppLinks } from '@/lib/app-links';
 import { BRAND_NAME, Logo } from '@cefr/ui/components/logo';
 import { ButtonLink } from '@cefr/ui/components/button';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
+import { ThemeToggle } from '@cefr/ui/components/theme-toggle';
 import { ScrollProgress } from '@cefr/ui/motion/scroll-progress';
 import { LANDING_NAV } from '@/constants/navigation';
 import { NavMenu } from './nav-menu';
@@ -18,7 +19,7 @@ export function MarketingHeader() {
   return (
     <HeaderFrame>
       <ScrollProgress />
-      <div className="mx-auto flex h-14 max-w-page items-center gap-10 px-5 transition-[max-width,height,border-radius,background-color,box-shadow,padding] duration-(--t-slow) ease-out-expo max-md:bg-[rgba(250,250,250,.78)] max-md:shadow-[0_1px_0_rgba(20,22,30,.06)] max-md:backdrop-blur-[20px] max-md:backdrop-saturate-150 md:h-(--header-h) md:px-8 md:group-data-[scrolled=true]/header:h-[58px] md:group-data-[scrolled=true]/header:backdrop-blur-[20px] md:group-data-[scrolled=true]/header:backdrop-saturate-150 md:group-data-[scrolled=true]/header:max-w-[1080px] md:group-data-[scrolled=true]/header:rounded-[20px] md:group-data-[scrolled=true]/header:bg-white/72 md:group-data-[scrolled=true]/header:pr-2.5 md:group-data-[scrolled=true]/header:pl-5 md:group-data-[scrolled=true]/header:shadow-[0_0_0_1px_rgba(20,22,30,.06),0_18px_40px_-20px_rgba(20,22,30,.22)]">
+      <div className="mx-auto flex h-14 max-w-page items-center gap-10 px-5 transition-[max-width,height,border-radius,background-color,box-shadow,padding] duration-(--t-slow) ease-out-expo max-md:bg-(--glass) max-md:shadow-[0_1px_0_rgb(var(--line-rgb)/.06)] max-md:backdrop-blur-[20px] max-md:backdrop-saturate-150 md:h-(--header-h) md:px-8 md:group-data-[scrolled=true]/header:h-[58px] md:group-data-[scrolled=true]/header:backdrop-blur-[20px] md:group-data-[scrolled=true]/header:backdrop-saturate-150 md:group-data-[scrolled=true]/header:max-w-[1080px] md:group-data-[scrolled=true]/header:rounded-[20px] md:group-data-[scrolled=true]/header:bg-surface/72 md:group-data-[scrolled=true]/header:pr-2.5 md:group-data-[scrolled=true]/header:pl-5 md:group-data-[scrolled=true]/header:shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_18px_40px_-20px_rgba(20,22,30,.22)]">
         <Link href={ROUTES.home} aria-label={BRAND_NAME} className="transition-opacity hover:opacity-80">
           <Logo size="lg" className="max-md:hidden" />
           <Logo size="md" className="md:hidden" />
@@ -31,6 +32,7 @@ export function MarketingHeader() {
         />
 
         <div className="ml-auto flex items-center gap-1.5">
+          <ThemeToggle />
           <LocaleSwitcher variant="compact" className="mr-1 max-md:hidden" />
           <ButtonLink href={app.login} variant="ghost" size="xs" className="h-9 rounded-sm px-3 md:h-[38px] md:rounded-[11px] md:px-[14px]">
             {t('login')}

@@ -13,7 +13,7 @@ import { SessionDialogs } from './session-dialogs';
 import { FlagButton, GapInput, InstructionBlock, MatchChips, McqOptions, QuestionNavigator } from './question-inputs';
 import type { ListeningQuestionsProps } from '@/types/exam';
 
-const card = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)]';
+const card = 'rounded-card-sm bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_1px_2px_rgba(20,22,30,.04)]';
 const qTag = (current: boolean) =>
   cn('shrink-0 rounded-[7px] px-1.5 py-0.5 font-mono text-[11px] font-medium', current ? 'bg-green-100 text-green-text' : 'bg-surface-sunken text-ink-2');
 

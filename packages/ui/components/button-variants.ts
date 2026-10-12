@@ -8,7 +8,7 @@ export const buttonVariants = cva(
         primary: 'shine bg-action text-white hover:-translate-y-px hover:text-white hover:brightness-[1.06]',
         secondary: 'bg-surface text-ink shadow-inset hover:bg-bg-app hover:text-ink hover:shadow-[inset_0_0_0_1px_var(--border-strong)]',
         ghost: 'text-ink hover:bg-hover hover:text-ink',
-        onDark: 'shine bg-white text-ink hover:-translate-y-px hover:bg-white hover:text-ink hover:shadow-[0_18px_36px_-16px_rgba(0,0,0,.45)]',
+        onDark: 'shine bg-white text-ink-on-light hover:-translate-y-px hover:bg-white hover:text-ink-on-light hover:shadow-[0_18px_36px_-16px_rgba(0,0,0,.45)]',
         glass: 'bg-white/10 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,.18)] backdrop-blur-sm hover:bg-white/16 hover:text-white',
       },
       size: {

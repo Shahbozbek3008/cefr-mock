@@ -119,7 +119,7 @@ function PlanSummary() {
   const plan = studyPlanOf(examDate);
 
   return (
-    <div className="flex flex-col gap-[18px] rounded-card bg-surface p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_30px_60px_-30px_rgba(20,22,30,.18)]">
+    <div className="flex flex-col gap-[18px] rounded-card bg-surface p-6 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_30px_60px_-30px_rgba(20,22,30,.18)]">
       <span className="text-[13px] text-ink-2">{t('title')}</span>
       <KeyValueList
         items={[

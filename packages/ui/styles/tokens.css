@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --bg: #FAFAFA;
   --bg-app: #F6F6F7;
   --bg-sidebar: #FAFAFA;
@@ -8,6 +9,7 @@
   --track: #F1F1F3;
   --seg-track: #EBEBEE;
   --text: #1F2026;
+  --ink-on-light: #1F2026;
   --text-2: #5C5E66;
   --text-3: #9A9CA4;
   --text-4: #C8C9CF;
@@ -21,7 +23,8 @@
   --divider-page: #E6E7EA;
   --wave-idle: #DCDDE1;
   --hover: #F0F0F2;
-  --ring-card: rgba(20,22,30,.06);
+  --line-rgb: 20 22 30;
+  --ring-card: rgb(var(--line-rgb) / .06);
 
   --green-500: oklch(0.55 0.15 140);
   --green-btn-top: oklch(0.6 0.16 138);
@@ -55,15 +58,19 @@
   --gradient-pro: linear-gradient(155deg, oklch(0.55 0.1 256), oklch(0.45 0.1 262));
   --focus-ring: inset 0 0 0 1.5px var(--green-500), 0 0 0 4px oklch(0.6 0.16 138 / .14);
 
-  --e0: 0 0 0 1px rgba(20,22,30,.06);
-  --e1: 0 0 0 1px rgba(20,22,30,.05), 0 16px 32px -20px rgba(20,22,30,.16);
-  --e2: 0 0 0 1px rgba(20,22,30,.06), 0 24px 48px -20px rgba(20,22,30,.28);
+  --e0: 0 0 0 1px rgb(var(--line-rgb) / .06);
+  --e1: 0 0 0 1px rgb(var(--line-rgb) / .05), 0 16px 32px -20px rgba(20,22,30,.16);
+  --e2: 0 0 0 1px rgb(var(--line-rgb) / .06), 0 24px 48px -20px rgba(20,22,30,.28);
   --e3: 0 40px 80px -20px rgba(20,22,30,.40);
   --shadow-action: inset 0 1px 0 rgba(255,255,255,.22), 0 12px 24px -12px oklch(0.45 0.14 140 / .7);
   --shadow-action-sm: inset 0 1px 0 rgba(255,255,255,.22), 0 10px 20px -12px oklch(0.45 0.14 140 / .7);
   --shadow-selected: inset 0 0 0 1.5px var(--green-500), 0 16px 32px -20px oklch(0.45 0.14 140 / .4);
   --inset-border: inset 0 0 0 1px var(--border);
   --backdrop: rgba(24,26,34,.34);
+  --glass: rgba(250,250,250,.78);
+  --spotlight: oklch(0.95 0.06 135 / .55);
+  --selection: oklch(0.93 0.09 130);
+  --decor-opacity: 1;
 
   --r-chip: 8px; --r-sm: 10px; --r-input: 13px; --r-btn: 15px;
   --r-card-sm: 18px; --r-card: 24px; --r-card-lg: 28px; --r-hero: 32px; --r-banner: 36px; --r-pill: 999px;
@@ -78,4 +85,71 @@
 
   --font-sans: var(--font-onest), 'Onest', system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono', ui-monospace, monospace;
+}
+
+/* Dark — Telegram "Night" palitrasi (apps/mobile/src/shared/theme/colors.ts bilan bir xil) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0E1621;
+  --bg-app: #0E1621;
+  --bg-sidebar: #17212B;
+  --surface: #17212B;
+  --surface-muted: #1E2C3A;
+  --surface-sunken: #242F3D;
+  --track: #242F3D;
+  --seg-track: #2A3746;
+  --text: #F5F5F5;
+  --text-2: #93A3B4;
+  --text-3: #708499;
+  --text-4: #4A5A6B;
+  --text-body: #DCE3EA;
+  --text-reading: #E9EDF1;
+  --text-disabled: #5B6B7B;
+  --border: #2B3A4A;
+  --border-strong: #3A4B5D;
+  --divider: #1F2B38;
+  --divider-muted: #22303E;
+  --divider-page: #22303E;
+  --wave-idle: #3A4B5D;
+  --hover: #202B36;
+  --line-rgb: 255 255 255;
+
+  --green-500: #6DB323;
+  --green-50: #1D2F20;
+  --green-100: #233A24;
+  --green-300: #3D6B2A;
+  --green-text: #A5DC6C;
+  --green-hover: #C2EC8F;
+  --green-eyebrow: #8FCB55;
+  --blue-500: #6AB3F3;
+  --blue-50: #1B2B3D;
+  --blue-100: #2B5278;
+  --blue-text: #6AB3F3;
+  --blue-hero-top: #35699E;
+  --blue-hero-bottom: #22466F;
+  --warning-500: #E1A447;
+  --warning-50: #352A15;
+  --warning-200: #5A4520;
+  --warning-text: #F0C36D;
+  --error-500: #E5645A;
+  --error-50: #3A1F22;
+  --error-text: #FF9189;
+  --success-text: #7FD9AB;
+  --success-50: #16302A;
+  --highlight: #5C4E1B;
+
+  --gradient-avatar: linear-gradient(155deg, #233A24, #2D4A28);
+  --gradient-pro: linear-gradient(155deg, #35699E, #22466F);
+  --focus-ring: inset 0 0 0 1.5px var(--green-500), 0 0 0 4px rgba(148,213,60,.22);
+
+  --e1: 0 0 0 1px rgb(var(--line-rgb) / .06), 0 16px 32px -20px rgba(0,0,0,.5);
+  --e2: 0 0 0 1px rgb(var(--line-rgb) / .07), 0 24px 48px -20px rgba(0,0,0,.6);
+  --e3: 0 40px 80px -20px rgba(0,0,0,.7);
+  --backdrop: rgba(0,0,0,.5);
+  --glass: rgba(23,33,43,.82);
+  --spotlight: rgba(106,179,243,.08);
+  --selection: #2B5278;
+  --glow-green: rgba(109,179,35,.35);
+  --glow-blue: rgba(106,179,243,.3);
+  --decor-opacity: .18;
 }

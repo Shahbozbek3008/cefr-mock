@@ -24,7 +24,7 @@ export function SectionTimer({ section, onExpire }: { section: SectionKind; onEx
 export function ExamHeader({ title, subtitle, section, timer, onExit, onFinish }: ExamHeaderProps) {
   const t = useTranslations('exam');
   return (
-    <header className="relative flex h-(--test-header-h) shrink-0 items-center gap-3 bg-surface px-4 shadow-[0_1px_0_rgba(20,22,30,.06)] sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+    <header className="relative flex h-(--test-header-h) shrink-0 items-center gap-3 bg-surface px-4 shadow-[0_1px_0_rgb(var(--line-rgb)/.06)] sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
       <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-[14px]">
         <button
           type="button"
@@ -62,7 +62,7 @@ export const footerNavigator = 'order-first w-full min-w-0 sm:order-none sm:w-au
 
 export function ExamFooter({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <footer className={cn('flex shrink-0 flex-wrap items-center gap-3 bg-surface px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-1px_0_rgba(20,22,30,.06)] sm:px-6', className)}>
+    <footer className={cn('flex shrink-0 flex-wrap items-center gap-3 bg-surface px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-1px_0_rgb(var(--line-rgb)/.06)] sm:px-6', className)}>
       {children}
     </footer>
   );

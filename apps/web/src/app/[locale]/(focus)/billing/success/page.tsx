@@ -21,7 +21,7 @@ function SuccessView() {
   return (
     <Stage glow>
       <div className="flex flex-1 items-center justify-center px-5 py-10">
-        <div className="flex w-full max-w-[480px] flex-col items-center gap-6 rounded-hero bg-surface p-10 text-center shadow-[0_0_0_1px_rgba(20,22,30,.05),0_40px_80px_-40px_rgba(20,22,30,.3)] max-sm:p-6">
+        <div className="flex w-full max-w-[480px] flex-col items-center gap-6 rounded-hero bg-surface p-10 text-center shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05),0_40px_80px_-40px_rgba(20,22,30,.3)] max-sm:p-6">
           <SuccessBadge size="lg" />
           <div className="flex flex-col gap-2">
             <h1 className="m-0 text-[30px] font-medium tracking-[-0.04em]">

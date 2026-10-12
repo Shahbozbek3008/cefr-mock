@@ -7,7 +7,13 @@
     "language": "Language",
     "examDate": "November 1, 2026",
     "done": "Done",
-    "failed": "Failed"
+    "failed": "Failed",
+    "theme": {
+      "toggle": "Toggle theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "skills": {
     "listening": "Listening",

@@ -14,7 +14,7 @@ import { ResultPhone } from './result-phone';
 import { Aurora } from '@cefr/ui/components/aurora';
 import { HERO_AVATARS, HERO_STUDENTS } from '@/constants/sections';
 
-const glass = 'bg-white/88 shadow-e2 backdrop-blur-xl';
+const glass = 'bg-surface/88 shadow-e2 backdrop-blur-xl';
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
 
 function GrowthSparkline() {
@@ -28,7 +28,7 @@ function GrowthSparkline() {
       </defs>
       <polygon points="2,28 2,24 12,21 22,22 32,16 42,14 52,9 62,4 62,28" fill="url(#spark-fill)" />
       <polyline points="2,24 12,21 22,22 32,16 42,14 52,9 62,4" fill="none" stroke="var(--green-500)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="62" cy="4" r="3" fill="#fff" stroke="var(--green-500)" strokeWidth="2" />
+      <circle cx="62" cy="4" r="3" fill="var(--surface)" stroke="var(--green-500)" strokeWidth="2" />
     </svg>
   );
 }
@@ -69,7 +69,7 @@ function HeroCopy() {
     <div className="flex flex-col gap-[22px] md:gap-7">
       <a
         href="#format"
-        className="border-beam group flex h-[30px] animate-fade-up items-center gap-2 self-start rounded-pill bg-surface pr-2.5 pl-1 text-xs text-ink-body shadow-[0_0_0_1px_rgba(20,22,30,.07),0_1px_2px_rgba(20,22,30,.04)] hover:text-ink md:h-8 md:gap-2.5 md:pr-3 md:text-[13px]"
+        className="border-beam group flex h-[30px] animate-fade-up items-center gap-2 self-start rounded-pill bg-surface pr-2.5 pl-1 text-xs text-ink-body shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07),0_1px_2px_rgba(20,22,30,.04)] hover:text-ink md:h-8 md:gap-2.5 md:pr-3 md:text-[13px]"
       >
         <span className="flex h-[22px] items-center rounded-pill bg-green-100 px-2 text-[11px] font-medium text-green-text md:h-6 md:px-[9px] md:text-xs">2026</span>
         <span className="max-md:hidden">{t('announcement')}</span>
@@ -85,7 +85,7 @@ function HeroCopy() {
       <div className="flex animate-fade-up flex-col gap-1.5 md:flex-row md:flex-wrap md:items-center md:gap-2.5" style={delay(540)}>
         <ButtonLink href={app.start} arrow className="max-md:h-[54px] md:min-w-[220px]">{t('cta')}</ButtonLink>
         <a href="#steps" className="group flex h-[46px] items-center justify-center gap-2.5 rounded-btn px-[18px] text-[15px] font-medium text-ink transition-colors hover:bg-hover hover:text-ink md:h-[52px]">
-          <span className="relative grid size-[26px] place-items-center rounded-full bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.08)] transition-transform duration-(--t-sheet) ease-spring group-hover:scale-110 md:size-7">
+          <span className="relative grid size-[26px] place-items-center rounded-full bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.08)] transition-transform duration-(--t-sheet) ease-spring group-hover:scale-110 md:size-7">
             <span className="absolute inset-0 animate-ping-soft rounded-full bg-green-100" />
             <Play size={10} fill="currentColor" strokeWidth={0} aria-hidden className="relative" />
           </span>
@@ -119,7 +119,7 @@ function HeroVisual() {
   const t = useTranslations('landing.hero');
   return (
     <ParallaxScene className="relative flex justify-center md:h-[660px] md:items-center">
-      <div className="pointer-events-none absolute inset-x-[10%] top-[18%] bottom-[12%] rounded-full bg-[radial-gradient(closest-side,oklch(0.86_0.11_140/.55),transparent)] blur-2xl max-md:hidden" />
+      <div className="pointer-events-none absolute inset-x-[10%] top-[18%] bottom-[12%] rounded-full bg-[radial-gradient(closest-side,oklch(0.86_0.11_140/.55),transparent)] dark:opacity-15 blur-2xl max-md:hidden" />
       <ParallaxLayer depth={10} tilt={5} className="relative max-md:hidden">
         <div className="animate-fade-up" style={delay(260)}>
           <ResultPhone variant="full" />
@@ -134,7 +134,7 @@ function HeroVisual() {
               <Icon as={Sparkle} size={13} strokeWidth={1.8} className="text-blue" />
               {t('aiFix')}
             </span>
-            <span className="font-mono text-[10px] text-[#93959d]">Writing</span>
+            <span className="font-mono text-[10px] text-ink-3">Writing</span>
           </div>
           <div className="text-[13px] leading-[1.55] text-ink-body">
             People <span className="text-error-text line-through decoration-error/70">believes</span>{' '}
@@ -164,7 +164,7 @@ function HeroVisual() {
         </div>
       </FloatingCard>
 
-      <div className="absolute bottom-[110px] -left-1.5 flex animate-fade-up items-center gap-2 rounded-[14px] bg-surface px-[11px] py-[9px] shadow-[0_0_0_1px_rgba(20,22,30,.06),0_16px_32px_-14px_rgba(20,22,30,.3)] md:hidden" style={delay(600)}>
+      <div className="absolute bottom-[110px] -left-1.5 flex animate-fade-up items-center gap-2 rounded-[14px] bg-surface px-[11px] py-[9px] shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_16px_32px_-14px_rgba(20,22,30,.3)] md:hidden" style={delay(600)}>
         <span className="font-mono text-[13px] font-medium text-success">+14</span>
         <span className="text-[11px] text-ink-2">{t('growth')}</span>
       </div>

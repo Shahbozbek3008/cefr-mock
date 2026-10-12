@@ -22,7 +22,7 @@ import { DAY_MS } from '@/constants/layout';
 import type { NavLinkProps, SidebarContentProps } from '@/types/layout';
 import { APP_NAV } from '@/constants/layout';
 import type { NavKey } from '@/types/layout';
-const ghostButton = 'grid shrink-0 place-items-center rounded-[9px] text-ink-3 transition-colors duration-(--t-fast) hover:bg-[rgba(20,22,30,.045)] hover:text-ink';
+const ghostButton = 'grid shrink-0 place-items-center rounded-[9px] text-ink-3 transition-colors duration-(--t-fast) hover:bg-[rgb(var(--line-rgb)/.045)] hover:text-ink';
 const tile = 'mx-auto grid size-10 place-items-center rounded-[10px]';
 
 const isMac = () => /Mac|iPhone|iPad/.test(navigator.userAgent);
@@ -78,10 +78,10 @@ function NavLink({ item, active, badge, layoutId, collapsed, onClose }: NavLinkP
         className={cn(
           'group relative isolate flex h-9 items-center gap-2.5 rounded-[10px] text-[13px] transition-colors duration-(--t-fast)',
           collapsed ? 'justify-center' : 'px-2.5',
-          active ? 'font-medium text-ink hover:text-ink' : 'text-ink-2 hover:bg-[rgba(20,22,30,.045)] hover:text-ink',
+          active ? 'font-medium text-ink hover:text-ink' : 'text-ink-2 hover:bg-[rgb(var(--line-rgb)/.045)] hover:text-ink',
         )}
       >
-        {active && <ActivePill layoutId={layoutId} className="rounded-[10px] bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.07),0_1px_3px_rgba(20,22,30,.06)]" />}
+        {active && <ActivePill layoutId={layoutId} className="rounded-[10px] bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07),0_1px_3px_rgba(20,22,30,.06)]" />}
         <Icon as={item.icon} size={16} strokeWidth={active ? 1.9 : 1.6} className={active ? 'text-ink' : 'text-ink-3 transition-colors group-hover:text-ink-2'} />
         {!collapsed && <span className="flex-1 truncate">{label}</span>}
         {badge !== undefined && (collapsed ? (
@@ -140,7 +140,7 @@ function ExamCard({ collapsed, onClose }: SidebarContentProps) {
           aria-label={collapsed ? t('pick') : undefined}
           className={cn(
             'group flex items-center text-[13px] text-ink-2 transition-colors duration-(--t-fast) hover:text-ink',
-            collapsed ? cn(tile, 'bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.07)]') : 'gap-2.5 rounded-[12px] border border-dashed border-line-strong px-3 py-2.5 hover:bg-[rgba(20,22,30,.03)]',
+            collapsed ? cn(tile, 'bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07)]') : 'gap-2.5 rounded-[12px] border border-dashed border-line-strong px-3 py-2.5 hover:bg-[rgb(var(--line-rgb)/.03)]',
           )}
         >
           <Icon as={CalendarDays} size={15} strokeWidth={1.7} className="shrink-0 text-ink-3" />
@@ -161,7 +161,7 @@ function ExamCard({ collapsed, onClose }: SidebarContentProps) {
   if (collapsed) {
     return (
       <Tooltip label={t('left', { days })}>
-        <Link href={ROUTES.settings} aria-label={t('left', { days })} className={cn(tile, 'bg-surface font-mono text-[13px] font-medium text-ink shadow-[0_0_0_1px_rgba(20,22,30,.07),0_1px_2px_rgba(20,22,30,.04)] hover:text-ink')}>
+        <Link href={ROUTES.settings} aria-label={t('left', { days })} className={cn(tile, 'bg-surface font-mono text-[13px] font-medium text-ink shadow-[0_0_0_1px_rgb(var(--line-rgb)/.07),0_1px_2px_rgba(20,22,30,.04)] hover:text-ink')}>
           {days}
         </Link>
       </Tooltip>

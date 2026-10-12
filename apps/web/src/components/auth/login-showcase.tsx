@@ -15,14 +15,14 @@ export function LoginShowcase() {
   const t = useTranslations('auth.login.showcase');
   const tSkills = useTranslations('skills');
   return (
-    <div className="relative flex items-center justify-center overflow-hidden bg-[#f5f5f6] max-lg:hidden">
+    <div className="relative flex items-center justify-center overflow-hidden bg-bg-app max-lg:hidden">
       <Aurora />
       <div className="relative flex w-[400px] flex-col gap-3">
         <div className="animate-fade-up" style={delay(200)}>
-          <div className="flex animate-float items-center gap-5 rounded-card bg-white/90 p-[22px] shadow-[0_0_0_1px_rgba(20,22,30,.05),0_24px_48px_-24px_rgba(20,22,30,.25)] backdrop-blur-xl">
+          <div className="flex animate-float items-center gap-5 rounded-card bg-surface/90 p-[22px] shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05),0_24px_48px_-24px_rgba(20,22,30,.25)] backdrop-blur-xl">
             <Ring value={LATEST_RESULT.total} max={MAX_SCORE} size={88} stroke={7} r={38}>
               <span className="text-[28px] leading-none font-light tracking-[-0.05em]"><CountUp value={LATEST_RESULT.total} /></span>
-              <span className="font-mono text-[9px] text-[#93959d]">/{MAX_SCORE}</span>
+              <span className="font-mono text-[9px] text-ink-3">/{MAX_SCORE}</span>
             </Ring>
             <div className="flex flex-col gap-1.5">
               <span className="text-xs text-ink-2">{t('label')}</span>
@@ -32,7 +32,7 @@ export function LoginShowcase() {
           </div>
         </div>
         <div className="ml-10 animate-fade-up" style={delay(420)}>
-          <div className="flex animate-float-slow flex-col gap-2 rounded-[20px] bg-white/85 px-[18px] py-3 shadow-[0_0_0_1px_rgba(20,22,30,.05),0_20px_40px_-24px_rgba(20,22,30,.25)] backdrop-blur-xl" style={delay(-2000)}>
+          <div className="flex animate-float-slow flex-col gap-2 rounded-[20px] bg-surface/85 px-[18px] py-3 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05),0_20px_40px_-24px_rgba(20,22,30,.25)] backdrop-blur-xl" style={delay(-2000)}>
             {LATEST_RESULT.skills.slice(0, 3).map((s, i) => (
               <div key={s.skill} className="grid grid-cols-[80px_1fr_28px] items-center gap-3 text-xs">
                 <span className="text-ink-2">{tSkills(s.skill)}</span>

@@ -40,7 +40,7 @@ export function ExamCalendar({ value, defaultValue = null, onChange, className }
   };
 
   return (
-    <div className={cn('flex flex-col gap-4 rounded-[20px] bg-surface p-5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_24px_48px_-28px_rgba(20,22,30,.22)]', className)}>
+    <div className={cn('flex flex-col gap-4 rounded-[20px] bg-surface p-5 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_24px_48px_-28px_rgba(20,22,30,.22)]', className)}>
       <div className="flex items-center justify-between">
         <span className="text-[15px] font-medium">{t('monthTitle', { month: monthName, year })}</span>
         <div className="flex gap-1.5">

@@ -37,6 +37,9 @@ import { Dialog, DialogContent } from '@cefr/ui/components/dialog';
 import { SegmentedControl } from '@cefr/ui/components/segmented-control';
 import { Skeleton, SkeletonText } from '@cefr/ui/components/skeleton';
 import { LocaleSwitcher } from '@cefr/ui/components/locale-switcher';
+import { THEME_PREFERENCES } from '@cefr/ui/theme/constants';
+import type { ThemePreference } from '@cefr/ui/theme/types';
+import { useTheme } from '@cefr/ui/theme/use-theme';
 import { ExamCalendar } from '@/components/auth/exam-calendar';
 import { Panel } from '@/components/dashboard/panel';
 import type { SaveState, SettingsConfirm } from '@/types/settings';
@@ -217,11 +220,22 @@ function ProfileForm({ profile }: { profile: Profile }) {
 
 function InterfacePanel() {
   const t = useTranslations('settings');
+  const tt = useTranslations('common.theme');
+  const { preference, setPreference } = useTheme();
   return (
     <Panel title={t('interface.title')} subtitle={t('interface.subtitle')}>
       <Rows>
         <SettingRow title={t('preferences.language')} hint={t('preferences.languageHint')}>
           <LocaleSwitcher className="h-9 rounded-[10px] px-3 shadow-inset" />
+        </SettingRow>
+        <SettingRow title={t('preferences.theme')} hint={t('preferences.themeHint')}>
+          <SegmentedControl
+            label={t('preferences.theme')}
+            value={preference}
+            onValueChange={(value) => setPreference(value as ThemePreference)}
+            className="h-9 w-full rounded-[10px] text-xs sm:w-[280px] [&>button]:rounded-[7px] [&>button]:px-2"
+            options={THEME_PREFERENCES.map((value) => ({ value, label: tt(value) }))}
+          />
         </SettingRow>
       </Rows>
     </Panel>
@@ -246,7 +260,7 @@ function ExamDateDialog({ open, value, onClose, onPick }: { open: boolean; value
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
       <DialogContent title={t('pickTitle')} description={t('pickText')} closeLabel={tc('close')}>
-        <ExamCalendar value={draft} onChange={setDraft} className="p-4 shadow-[0_0_0_1px_rgba(20,22,30,.06)]" />
+        <ExamCalendar value={draft} onChange={setDraft} className="p-4 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]" />
         <div className="grid grid-cols-2 gap-2.5">
           <Button variant="secondary" onClick={() => onPick(null)}>{t('clearDate')}</Button>
           <Button disabled={!draft} onClick={() => onPick(draft)}>{t('confirm')}</Button>

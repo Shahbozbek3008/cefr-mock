@@ -21,7 +21,7 @@ function FormatCard({ skill, wide, children }: FormatCardProps) {
       <Spotlight className="group flex w-full flex-col gap-[18px] rounded-card bg-surface p-5 shadow-e0 transition-[box-shadow,translate] duration-(--t-slow) ease-out-expo hover:-translate-y-1 hover:shadow-e2 md:min-h-[340px] md:gap-8 md:rounded-card-lg md:p-8">
         <div className="flex flex-col gap-1.5 md:gap-2">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-ink-3 max-md:uppercase md:text-xs md:text-[#93959d]">{t(`${skill}.meta`)}</span>
+            <span className="font-mono text-[11px] text-ink-3 max-md:uppercase md:text-xs md:text-ink-3">{t(`${skill}.meta`)}</span>
             <span className="grid size-9 place-items-center rounded-[11px] bg-surface-sunken text-ink-body transition-[background-color,color,rotate,scale] duration-(--t-sheet) ease-spring group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-green-100 group-hover:text-green-text max-md:hidden">
               <Icon as={SKILL_ICONS[skill]} size={17} />
             </span>
@@ -40,7 +40,7 @@ function ListeningDemo() {
   return (
     <div className="flex flex-col gap-[14px]">
       <div className="flex items-center gap-2.5 md:gap-[14px]">
-        <span className="grid place-items-center text-ink-2 md:size-9 md:rounded-full md:bg-surface md:shadow-[0_0_0_1px_rgba(20,22,30,.06)]">
+        <span className="grid place-items-center text-ink-2 md:size-9 md:rounded-full md:bg-surface md:shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]">
           <Icon as={Lock} size={15} strokeWidth={1.75} className="max-md:size-[14px]" />
         </span>
         <div className="flex flex-1 flex-col gap-1.5">
@@ -49,14 +49,14 @@ function ListeningDemo() {
               <span className="absolute top-1/2 right-0 size-2.5 translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_0_2px_var(--blue-500)]" />
             </span>
           </div>
-          <div className="flex justify-between font-mono text-[11px] text-[#93959d] max-md:hidden">
+          <div className="flex justify-between font-mono text-[11px] text-ink-3 max-md:hidden">
             <span>02:14</span><span>{t('realMode')}</span><span>06:10</span>
           </div>
         </div>
         <span className="font-mono text-[11px] text-ink-2 md:hidden">02:14</span>
       </div>
       <div className="flex flex-wrap items-center gap-2.5 pt-[14px] text-[15px] shadow-[0_-1px_0_var(--divider-muted)] max-md:hidden">
-        <span className="font-mono text-xs text-[#93959d]">Q8</span>
+        <span className="font-mono text-xs text-ink-3">Q8</span>
         Student fee per year: £
         <span className="flex h-[34px] min-w-[84px] items-center rounded-sm bg-surface px-3 font-mono text-sm shadow-focus">
           35<span className="ml-0.5 h-4 w-[1.5px] animate-caret bg-green" />
@@ -70,7 +70,7 @@ function ReadingDemo() {
   const t = useTranslations('landing.format');
   return (
     <>
-      <div className="absolute -top-4 left-[76px] flex h-8 animate-float items-center gap-1.5 rounded-sm bg-surface px-1.5 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_10px_20px_-10px_rgba(20,22,30,.3)] max-md:hidden">
+      <div className="absolute -top-4 left-[76px] flex h-8 animate-float items-center gap-1.5 rounded-sm bg-surface px-1.5 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_10px_20px_-10px_rgba(20,22,30,.3)] max-md:hidden">
         <span className="size-4 rounded-full bg-highlight ring-2 ring-white ring-offset-1 ring-offset-line-strong" />
         <span className="size-4 rounded-full bg-blue-100" />
         <span className="h-4 w-px bg-divider-muted" />
@@ -108,7 +108,7 @@ function WritingDemo() {
 function SpeakingDemo() {
   return (
     <div className="flex items-center gap-3 md:gap-4">
-      <span className="relative grid size-[38px] shrink-0 place-items-center rounded-full bg-surface shadow-[0_0_0_1px_rgba(20,22,30,.06),0_10px_20px_-10px_oklch(0.6_0.17_28/.5)] md:size-12">
+      <span className="relative grid size-[38px] shrink-0 place-items-center rounded-full bg-surface shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_10px_20px_-10px_oklch(0.6_0.17_28/.5)] md:size-12">
         <span className="absolute inset-0 animate-ping-soft rounded-full bg-error/15" />
         <span className="size-3 rounded bg-error md:size-4 md:rounded-[5px]" />
       </span>

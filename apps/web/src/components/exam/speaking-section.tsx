@@ -26,7 +26,7 @@ const lockIcon = () => (
 function MicIssueCard({ issue, onRetry }: { issue: MicIssue; onRetry: () => void }) {
   const t = useTranslations('mic');
   return (
-    <div className="flex animate-fade-up flex-col gap-5 rounded-card-sm bg-surface p-5 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_1px_2px_rgba(20,22,30,.04)] sm:flex-row sm:items-start">
+    <div className="flex animate-fade-up flex-col gap-5 rounded-card-sm bg-surface p-5 sm:p-6 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_1px_2px_rgba(20,22,30,.04)] sm:flex-row sm:items-start">
       <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-error-50 text-error-text">
         <Icon as={ISSUE_ICONS[issue]} size={22} strokeWidth={1.7} />
       </span>
@@ -58,7 +58,7 @@ function PromptCard({ question }: { question: SpeakingQuestion }) {
   return (
     <div className="grid gap-5 lg:grid-cols-2">
       {question.image && (
-        <div className="grid min-h-44 place-items-center sm:min-h-60 rounded-card-sm bg-[repeating-linear-gradient(135deg,#f1f1f3_0_12px,#ebebee_12px_24px)] font-mono text-xs text-ink-3 shadow-[0_0_0_1px_rgba(20,22,30,.05)]">
+        <div className="grid min-h-44 place-items-center sm:min-h-60 rounded-card-sm bg-[repeating-linear-gradient(135deg,#f1f1f3_0_12px,#ebebee_12px_24px)] font-mono text-xs text-ink-3 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)]">
           {t('image', { caption: question.image })}
         </div>
       )}
@@ -74,7 +74,7 @@ function RecorderCard({ question, phase, elapsed, bars }: { question: SpeakingQu
   const t = useTranslations('exam.speaking');
   const recording = phase === 'recording';
   return (
-    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgba(20,22,30,.06),0_16px_32px_-20px_rgba(20,22,30,.18)]">
+    <div className="flex flex-col gap-4 rounded-card-sm bg-surface p-4 sm:p-6 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06),0_16px_32px_-20px_rgba(20,22,30,.18)]">
       <div className="flex items-center justify-between">
         <span className={cn('flex items-center gap-2 text-sm font-medium', recording ? 'text-error-text' : 'text-ink-2')} aria-live="polite">
           <span className="relative grid size-[9px] place-items-center">

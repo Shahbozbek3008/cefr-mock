@@ -2,6 +2,8 @@
 @import "./tokens.css";
 @source "..";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @property --angle {
   syntax: "<angle>";
   inherits: false;
@@ -14,7 +16,7 @@
   --color-bg: var(--bg); --color-bg-app: var(--bg-app); --color-bg-sidebar: var(--bg-sidebar); --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted); --color-surface-sunken: var(--surface-sunken); --color-track: var(--track);
   --color-seg-track: var(--seg-track); --color-hover: var(--hover); --color-wave-idle: var(--wave-idle);
-  --color-ink: var(--text); --color-ink-2: var(--text-2); --color-ink-3: var(--text-3); --color-ink-4: var(--text-4);
+  --color-ink: var(--text); --color-ink-on-light: var(--ink-on-light); --color-ink-2: var(--text-2); --color-ink-3: var(--text-3); --color-ink-4: var(--text-4);
   --color-ink-body: var(--text-body); --color-ink-reading: var(--text-reading); --color-ink-disabled: var(--text-disabled);
   --color-line: var(--border); --color-line-strong: var(--border-strong);
   --color-divider: var(--divider); --color-divider-muted: var(--divider-muted); --color-divider-page: var(--divider-page);
@@ -185,7 +187,7 @@
 @utility bg-avatar { background-image: var(--gradient-avatar); }
 @utility bg-pro { background-image: var(--gradient-pro); }
 @utility grid-backdrop {
-  background-image: linear-gradient(rgba(20,22,30,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(20,22,30,.045) 1px, transparent 1px);
+  background-image: linear-gradient(rgb(var(--line-rgb) / .045) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--line-rgb) / .045) 1px, transparent 1px);
 }
 @utility grid-backdrop-light {
   background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
@@ -242,7 +244,7 @@
   }
   .spotlight::before {
     z-index: -1;
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), oklch(0.95 0.06 135 / .55), transparent 42%);
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), var(--spotlight), transparent 42%);
   }
   .spotlight::after {
     padding: 1px;
@@ -270,7 +272,7 @@
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-  ::selection { background: oklch(0.93 0.09 130); }
+  ::selection { background: var(--selection); }
   a { color: var(--green-text); text-decoration: none; transition: color var(--t-fast) var(--ease); }
   a:hover { color: var(--green-hover); }
   :focus-visible { outline: none; box-shadow: var(--focus-ring); }

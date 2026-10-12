@@ -16,7 +16,7 @@ export function SkillStatCard({ skill, score, delta, weak, variant = 'compact', 
   const detailed = variant === 'detailed';
 
   return (
-    <Card interactive className={detailed ? 'group flex flex-col gap-[14px] p-5' : 'group flex flex-col gap-[14px] rounded-[20px] p-[18px] shadow-[0_0_0_1px_rgba(20,22,30,.05)]'}>
+    <Card interactive className={detailed ? 'group flex flex-col gap-[14px] p-5' : 'group flex flex-col gap-[14px] rounded-[20px] p-[18px] shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)]'}>
       <div className="flex items-center justify-between">
         <span className={detailed ? 'flex items-center gap-2.5 text-sm text-ink-body' : 'text-[13px] text-ink-2'}>
           {detailed && <Icon as={SKILL_ICONS[skill]} size={17} strokeWidth={1.5} className="text-ink-2" />}

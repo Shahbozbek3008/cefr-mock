@@ -7,7 +7,13 @@
     "language": "Til",
     "examDate": "1-noyabr 2026",
     "done": "Tayyor",
-    "failed": "Xatolik"
+    "failed": "Xatolik",
+    "theme": {
+      "toggle": "Mavzuni almashtirish",
+      "light": "Yorug'",
+      "dark": "Qorong'i",
+      "system": "Tizim"
+    }
   },
   "skills": {
     "listening": "Listening",
@@ -462,7 +468,9 @@
       "examDate": "Imtihon sanasi",
       "daysLeft": "{days} kun qoldi",
       "language": "Interfeys tili",
-      "languageHint": "O'zbekcha, ruscha yoki inglizcha"
+      "languageHint": "O'zbekcha, ruscha yoki inglizcha",
+      "theme": "Mavzu",
+      "themeHint": "Yorug', qorong'i yoki qurilma sozlamasi bo'yicha"
     },
     "interface": {
       "title": "Interfeys",

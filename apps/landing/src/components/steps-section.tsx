@@ -18,7 +18,7 @@ export function StepsSection() {
         {STEPS.map((step, i) => (
           <StaggerItem as="li" key={step.key} className="flex flex-col gap-5">
             <div className="flex items-center gap-3 max-md:hidden">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-surface font-mono text-xs text-green-eyebrow shadow-[0_0_0_1px_rgba(20,22,30,.08)]">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-surface font-mono text-xs text-green-eyebrow shadow-[0_0_0_1px_rgb(var(--line-rgb)/.08)]">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span className="h-0.5 flex-1 overflow-hidden rounded-[1px] bg-divider-page">

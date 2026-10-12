@@ -5,6 +5,8 @@ import { routing } from "@cefr/ui/i18n/routing";
 import { geistMono, onest } from "@/lib/fonts";
 import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
 import "@/styles/globals.css";
+import { THEME_COLORS } from "@cefr/ui/theme/constants";
+import { ThemeScript } from "@cefr/ui/theme/theme-script";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -38,7 +40,10 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: "#FAFAFA",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -49,7 +54,10 @@ export default async function LocaleLayout({
 }: LocaleLayoutProps) {
   const locale = await initLocale(params);
   return (
-    <html lang={locale} className={`${onest.variable} ${geistMono.variable}`}>
+    <html lang={locale} className={`${onest.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body>
         <NextIntlClientProvider>
           <MotionProvider>

@@ -7,7 +7,13 @@
     "language": "Til",
     "examDate": "1-noyabr 2026",
     "done": "Tayyor",
-    "failed": "Xatolik"
+    "failed": "Xatolik",
+    "theme": {
+      "toggle": "Mavzuni almashtirish",
+      "light": "Yorug'",
+      "dark": "Qorong'i",
+      "system": "Tizim"
+    }
   },
   "skills": {
     "listening": "Listening",
