@@ -15,9 +15,10 @@ interface ResultPhoneProps {
 }
 
 export function ResultPhone({ variant, className }: ResultPhoneProps) {
-  const t = useTranslations("landing.hero.phone");
   const tSkills = useTranslations("skills");
   const tAi = useTranslations("landing.ai.card");
+  const t = useTranslations("landing.hero.phone");
+
   const v = PHONE_VARIANTS[variant];
   const full = variant === "full";
 
