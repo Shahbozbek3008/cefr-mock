@@ -1,40 +1,47 @@
-import { MotionProvider } from "@cefr/ui/motion/motion-provider";
 import { AppProviders } from "@/components/providers/app-providers";
-import { BRAND_NAME } from "@cefr/ui/components/logo";
-import { routing } from "@cefr/ui/i18n/routing";
-import { geistMono, onest } from "@/lib/fonts";
-import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
-import "@/styles/globals.css";
-import { OG_LOCALES, PRIVATE_ROBOTS } from "@cefr/ui/seo/constants";
-import { THEME_COLORS } from "@cefr/ui/theme/constants";
 import { LANDING_URL } from "@/constants/routes";
 import { SEARCH_VERIFICATION, SITE_URL } from "@/constants/seo";
+import { geistMono, onest } from "@/lib/fonts";
+import "@/styles/globals.css";
+import type { LocaleLayoutProps } from "@/types/pages";
+import { BRAND_NAME } from "@cefr/ui/components/logo";
+import {
+  initLocale,
+  resolveLocale,
+  type LocaleParams,
+} from "@cefr/ui/i18n/locale";
+import { routing } from "@cefr/ui/i18n/routing";
+import { MotionProvider } from "@cefr/ui/motion/motion-provider";
+import { OG_LOCALES, PRIVATE_ROBOTS } from "@cefr/ui/seo/constants";
+import { THEME_COLORS } from "@cefr/ui/theme/constants";
 import { ThemeScript } from "@cefr/ui/theme/theme-script";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import type { LocaleLayoutProps } from '@/types/pages';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+interface MetadataParams {
+  params: LocaleParams;
+}
+
 export async function generateMetadata({
   params,
-}: {
-  params: LocaleParams;
-}): Promise<Metadata> {
+}: MetadataParams): Promise<Metadata> {
   const locale = await resolveLocale(params);
   const t = await getTranslations({ locale, namespace: "metadata" });
   const title = t("title");
   const description = t("description");
 
-  // Signed-in pages stay out of search results; public pages opt in via publicPageMetadata().
   return {
     metadataBase: new URL(SITE_URL),
     title: { default: title, template: `%s · ${BRAND_NAME}` },
     description,
-    keywords: t("keywords").split(",").map((keyword) => keyword.trim()),
+    keywords: t("keywords")
+      .split(",")
+      .map((keyword) => keyword.trim()),
     applicationName: BRAND_NAME,
     authors: [{ name: BRAND_NAME, url: LANDING_URL }],
     creator: BRAND_NAME,
@@ -53,7 +60,11 @@ export async function generateMetadata({
       google: SEARCH_VERIFICATION.google,
       yandex: SEARCH_VERIFICATION.yandex,
     },
-    appleWebApp: { capable: true, title: BRAND_NAME, statusBarStyle: "default" },
+    appleWebApp: {
+      capable: true,
+      title: BRAND_NAME,
+      statusBarStyle: "default",
+    },
     formatDetection: { telephone: false, email: false, address: false },
   };
 }
@@ -73,7 +84,11 @@ export default async function LocaleLayout({
 }: LocaleLayoutProps) {
   const locale = await initLocale(params);
   return (
-    <html lang={locale} className={`${onest.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${onest.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <ThemeScript />
       </head>
