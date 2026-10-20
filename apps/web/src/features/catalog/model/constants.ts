@@ -1,0 +1,1 @@
+export const CATALOG_SKELETON_CARDS = 6;

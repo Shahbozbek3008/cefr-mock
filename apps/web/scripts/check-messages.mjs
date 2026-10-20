@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 const SOURCE = 'uz';
 const LOCALES = ['ru', 'en'];
 
-const load = (l) => JSON.parse(readFileSync(new URL(`../src/messages/${l}.json`, import.meta.url), 'utf8'));
+const load = (l) => JSON.parse(readFileSync(new URL(`../src/shared/i18n/messages/${l}.json`, import.meta.url), 'utf8'));
 
 const flatten = (obj, prefix = '') =>
   Object.entries(obj).flatMap(([k, v]) => (v && typeof v === 'object' ? flatten(v, `${prefix}${k}.`) : [`${prefix}${k}`]));

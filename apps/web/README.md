@@ -2,53 +2,73 @@
 
 CEFR Multilevel platformasining web ilovasi: kirish/onboarding, dashboard, testlar va natijalar. Landing alohida loyiha — `apps/landing`; umumiy UI — `packages/ui` (`@cefr/ui`).
 
-**Stack:** Next.js 16 (App Router, RSC) · React 19 · TypeScript · Tailwind v4 · next-intl (uz / ru / en) · Radix UI · motion · lucide-react
+**Stack:** Vite 7 · React 19 · TypeScript · React Router 7 · Tailwind v4 · use-intl (uz / ru / en) · Radix UI · motion · lucide-react
 
 ## Ishga tushirish
 
-Node **≥ 20.9** kerak (`.nvmrc` → 22).
+Node **≥ 20.19** kerak (`.nvmrc` → 22).
 
 ```bash
 nvm use 22
 npm install
 npm run dev          # http://localhost:3000 (landing: npm run landing → :3001)
-npm run build && npm start
+npm run build        # dist/
+npm run preview      # build natijasini lokal ko'rish
 npm run typecheck    # tsc
 npm run lint         # eslint
 npm run i18n:check   # ru/en kalitlari uz bilan bir xilligini tekshiradi
 ```
 
-`.env.local` da Supabase/Firebase kalitlaridan tashqari `NEXT_PUBLIC_LANDING_URL` (default `http://localhost:3001`) — login sahifasidagi logo shu manzilga olib boradi.
+Muhit o'zgaruvchilari (`.env.local`, Vercel) — `VITE_*`; ilovada faqat `src/shared/config/env.ts` orqali o'qiladi:
+
+| O'zgaruvchi | Vazifasi |
+| --- | --- |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Supabase client |
+| `VITE_LANDING_URL` | Login sahifasidagi logo havolasi (default `http://localhost:3001`) |
+| `VITE_FIREBASE_*` | Web push; to'liq bo'lmasa `firebase-messaging-sw.js` o'zini o'chiradi |
 
 ## Lokalizatsiya
 
-- `uz` — default, prefiksiz (`/`, `/tests`), `ru` → `/ru/...`, `en` → `/en/...` (`@cefr/ui/i18n/routing`).
-- Matnlar: `src/messages/{uz,ru,en}.json`. `uz.json` — manba; kalitlar TypeScript orqali tekshiriladi (`src/global.d.ts`).
-- Test kontenti (savollar, passage, essay) README talabi bo'yicha inglizcha va `src/lib/mock/*` da turadi.
+- `uz` — default, prefiksiz (`/`, `/tests`), `ru` → `/ru/...`, `en` → `/en/...` (`@cefr/ui/i18n/locales`). `/uz/...` → prefiksiz manzilga yo'naltiriladi.
+- Prefiksiz manzilga kirishda til `NEXT_LOCALE` cookie'si (landing bilan umumiy nom), bo'lmasa brauzer tili bo'yicha tanlanadi (`src/shared/i18n/locale-detection.ts`).
+- Matnlar: `src/shared/i18n/messages/{uz,ru,en}.json`, tanlangan til bo'yicha alohida chunk bo'lib yuklanadi. `uz.json` — manba; kalitlar TypeScript orqali tekshiriladi (`src/global.d.ts`).
+- Test kontenti (savollar, passage, essay) inglizcha va `src/shared/mock/*` da turadi.
 - Til almashtirgich: Sozlamalar → "Interfeys tili".
-- `/login`, `/start` — faqat mehmonlar uchun; qolgan barcha sahifalar sessiya talab qiladi (`src/proxy.ts`).
 
-## Tuzilma
+## Auth
+
+- `/login`, `/start/*` — faqat mehmonlar uchun (`GuestOnly`); qolgan barcha sahifalar sessiya talab qiladi (`RequireAuth`), `src/app/guards/auth-gate.tsx`.
+- Tekshiruv faqat sahifaga o'tishda bajariladi — sahifa ichida sessiya paydo bo'lsa (masalan `/start/verify` da OTP tasdiqlangach) foydalanuvchi joyida qoladi.
+
+## SEO
+
+Ilova login ortida, shuning uchun qidiruvdan to'liq yopiq: `noindex` meta, `X-Robots-Tag` header (`vercel.json`) va `robots.txt` → `Disallow: /`. Qidiruv uchun SEO landing'da.
+
+## Arxitektura — Feature-Sliced Design
+
+`apps/mobile` bilan bir xil qatlamlar. Qatlam faqat o'zidan pastdagilardan import qiladi (`app → pages → widgets → features → entities → shared`), bir qatlam ichidagi slice'lar bir-birini import qilmaydi. Entities tashqaridan faqat public API (`index.ts`) orqali olinadi. Har slice ichida segmentlar: `ui/`, `model/` (`constants.ts`, `types.ts`, store/hook'lar), `lib/`, `config/`.
 
 ```
+index.html          HTML shablon (mavzu skripti plagin orqali qo'shiladi)
+vite.config.ts      alias, vendor chunk'lar
+plugins/            firebase-messaging-sw.js generatsiyasi, mavzu skripti
+public/             ikonka, manifest, robots.txt, push ikonkalari
 src/
-  app/[locale]/
-    (auth)/login, start/…   03     W1–W4b kirish va onboarding
-    (shell)/…               03–06  sidebar'li sahifalar: W5, W12–W19 (`/` — dashboard)
-    (focus)/…               04, 06 sidebar'siz: W6, W7–W11 (test), W20
-  components/
-    layout/      Sidebar, PageHeader/AppMain, Stage
-    auth/        onboarding komponentlari
-    app/         panel/natija/hisob komponentlari
-    test/        test header/footer, navigator, reading, writing, recorder, yakunlash modal'i
-  constants/     routes (ROUTES, LANDING_URL, proxy qoidalari), layout, auth, dashboard, exam, results, progress, settings, billing, push, profile
-  types/         sahifa Props + har bir bo'lim type'lari (auth, dashboard, exam, layout, results…)
-  lib/           mock ma'lumotlar, supabase, firebase, store'lar
-  styles/        globals.css → @cefr/ui/styles/globals.css
+  main.tsx          kirish nuqtasi: tilni aniqlash → router
+  app/              router, providers (query, intl, navigation), guards, layouts (auth / shell / focus / test-section), styles
+  pages/
+    auth/           kirish va onboarding (W1–W4b)
+    shell/          sidebar'li sahifalar: W5, W12–W19 (`/` — dashboard)
+    focus/          sidebar'siz: W6, W7–W11 (test), W20
+  widgets/          app-shell (sidebar, topbar, user-menu), settings, listening / reading / writing / speaking-section
+  features/         auth (login + onboarding), billing, catalog, dashboard, progress, result, review, ai-review,
+                    notifications, test-intro, test-session, web-push
+  entities/         attempt (store, savol inputlari), session (auth holati), result (natija bloklari), test
+  shared/           api (supabase, web-push, failure-key), config (env, routes), i18n, lib, ui, mock, assets
 ```
 
 ## Dizayn qoidalari
 
 - Barcha rang/radius/soya `packages/ui/styles/tokens.css` → `@theme` orqali (`bg-surface`, `text-ink-2`, `shadow-e1`, `rounded-card`, `bg-action`…). Arbitrary qiymat faqat tokenda yo'q bo'lsa.
 - Chegaralar `box-shadow` ring/inset bilan, `border` emas.
-- Sanalar (masalan "1-noyabr 2026") xabarlar faylida — server va brauzer ICU farqi hydration xatosiga olib kelmasligi uchun.
+- UI paketidagi `Link`-ga bog'liq komponentlar (`ButtonLink`, `LocaleSwitcher`) navigatsiyani `NavigationProvider` adapteridan oladi: web'da React Router, landing'da next-intl.

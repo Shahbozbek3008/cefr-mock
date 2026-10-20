@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { Moon, Sun } from 'lucide-react';
 import { cn } from '../lib/cn';
 import { useTheme } from '../theme/use-theme';

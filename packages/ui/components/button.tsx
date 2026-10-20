@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState, type ComponentProps, type MouseEvent, type ReactNode } from 'react';
-import { useLinkStatus } from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { AnimatePresence, motion, useReducedMotion, type TargetAndTransition, type Transition } from 'motion/react';
 import { ArrowRight, CircleAlert } from 'lucide-react';
-import { Link } from '../i18n/navigation';
+import { useNavigationAdapter, type NavigationLinkProps } from '../navigation/navigation-context';
 import { cn } from '../lib/cn';
 import { EASE_OUT } from '../lib/motion';
 import { Icon } from './icon';
@@ -163,13 +162,15 @@ export function Button({ variant, size, arrow, block, icon, className, children,
 }
 
 function LinkContent(props: OwnProps) {
-  const { pending } = useLinkStatus();
+  const { useLinkPending } = useNavigationAdapter();
+  const pending = useLinkPending();
   return <Content {...props} status={pending ? 'loading' : 'idle'} />;
 }
 
-export type ButtonLinkProps = OwnProps & Omit<ComponentProps<typeof Link>, keyof OwnProps>;
+export type ButtonLinkProps = OwnProps & Omit<NavigationLinkProps, keyof OwnProps>;
 
 export function ButtonLink({ variant, size, arrow, block, icon, className, children, ...rest }: ButtonLinkProps) {
+  const { Link } = useNavigationAdapter();
   return (
     <Link className={cn(buttonVariants({ variant, size, arrow, block }), 'overflow-hidden', className)} {...rest}>
       <LinkContent icon={icon} arrow={arrow} size={size}>{children}</LinkContent>

@@ -1,9 +1,9 @@
-import type { routing } from '@cefr/ui/i18n/routing';
-import type messages from '@/messages/uz.json';
+import type { Locale } from '@cefr/ui/i18n/locales';
+import type messages from '@/shared/i18n/messages/uz.json';
 
-declare module 'next-intl' {
+declare module 'use-intl' {
   interface AppConfig {
-    Locale: (typeof routing.locales)[number];
+    Locale: Locale;
     Messages: typeof messages;
   }
 }

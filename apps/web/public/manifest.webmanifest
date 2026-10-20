@@ -1,0 +1,16 @@
+{
+  "name": "CEFR Multilevel",
+  "short_name": "CEFR",
+  "description": "CEFR Multilevel imtihoniga tayyorlanish uchun onlayn platforma: rasmiy formatdagi mock testlar va AI baholash.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "uz",
+  "categories": ["education"],
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

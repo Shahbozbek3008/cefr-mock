@@ -1,11 +1,10 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'use-intl';
 import { DropdownMenu } from 'radix-ui';
 import { Check, ChevronsUpDown, Globe } from 'lucide-react';
-import { usePathname, useRouter } from '../i18n/navigation';
-import { routing, type Locale } from '../i18n/routing';
+import { locales, type Locale } from '../i18n/locales';
+import { useNavigationAdapter } from '../navigation/navigation-context';
 import { cn } from '../lib/cn';
 import { Icon } from './icon';
 import { menuContent, menuItem } from './menu';
@@ -26,12 +25,11 @@ type LocaleSwitcherProps = {
 export function LocaleSwitcher({ variant = 'full', align = 'end', side = 'bottom', className }: LocaleSwitcherProps) {
   const t = useTranslations('common');
   const locale = useLocale() as Locale;
-  const pathname = usePathname();
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const { useLocaleSwitch } = useNavigationAdapter();
+  const { switchLocale, pending } = useLocaleSwitch();
 
   const change = (next: string) => {
-    if (next !== locale) startTransition(() => router.replace(pathname, { locale: next as Locale }));
+    if (next !== locale) switchLocale(next as Locale);
   };
 
   return (
@@ -56,7 +54,7 @@ export function LocaleSwitcher({ variant = 'full', align = 'end', side = 'bottom
           className={menuContent}
         >
           <DropdownMenu.RadioGroup value={locale} onValueChange={change}>
-            {routing.locales.map((l) => (
+            {locales.map((l) => (
               <DropdownMenu.RadioItem
                 key={l}
                 value={l}

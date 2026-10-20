@@ -1,53 +1,72 @@
-import { useTranslations } from 'next-intl';
-import { Lock } from 'lucide-react';
-import { LEVELS, MAX_SCORE } from '@cefr/ui/lib/constants';
-import { DASHBOARD_SKILLS, DEMO_EXAM, DEMO_USER, PROGRESS_SCORES } from '@/constants/demo';
-import { richTags } from '@cefr/ui/lib/rich';
-import { cn } from '@cefr/ui/lib/cn';
-import { Icon } from '@cefr/ui/components/icon';
-import { BRAND_NAME, LogoMark } from '@cefr/ui/components/logo';
-import { ProgressBar } from '@cefr/ui/components/progress-bar';
-import { LineChart } from '@cefr/ui/components/line-chart';
-import { SectionHeading } from '@cefr/ui/components/typography';
-import { CountUp } from '@cefr/ui/motion/count-up';
-import { Reveal } from '@cefr/ui/motion/reveal';
-import { ScrollTilt } from '@cefr/ui/motion/scroll-tilt';
-import { ScaleBar } from '@cefr/ui/components/scale-bar';
-import { Container } from './container';
-import { LEVEL_THRESHOLDS, PREVIEW_NAV } from '@/constants/sections';
+import {
+  DASHBOARD_SKILLS,
+  DEMO_EXAM,
+  DEMO_USER,
+  PROGRESS_SCORES,
+} from "@/constants/demo";
+import { LEVEL_THRESHOLDS, PREVIEW_NAV } from "@/constants/sections";
+import { Icon } from "@cefr/ui/components/icon";
+import { LineChart } from "@cefr/ui/components/line-chart";
+import { BRAND_NAME, LogoMark } from "@cefr/ui/components/logo";
+import { ProgressBar } from "@cefr/ui/components/progress-bar";
+import { ScaleBar } from "@cefr/ui/components/scale-bar";
+import { SectionHeading } from "@cefr/ui/components/typography";
+import { cn } from "@cefr/ui/lib/cn";
+import { LEVELS, MAX_SCORE } from "@cefr/ui/lib/constants";
+import { richTags } from "@cefr/ui/lib/rich";
+import { CountUp } from "@cefr/ui/motion/count-up";
+import { Reveal } from "@cefr/ui/motion/reveal";
+import { ScrollTilt } from "@cefr/ui/motion/scroll-tilt";
+import { Lock } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Container } from "./container";
 
 function BrowserChrome() {
-  const t = useTranslations('landing.preview');
+  const t = useTranslations("landing.preview");
   return (
     <div className="flex h-11 items-center gap-3 px-4 shadow-[0_1px_0_var(--divider-muted)]">
       <div className="flex gap-1.5">
-        {['#ff5f57', '#febc2e', '#28c840'].map((c) => <span key={c} className="size-3 rounded-full" style={{ background: c }} />)}
+        {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+          <span
+            key={c}
+            className="size-3 rounded-full"
+            style={{ background: c }}
+          />
+        ))}
       </div>
       <div className="mx-auto flex h-7 w-full max-w-[340px] items-center justify-center gap-1.5 rounded-[9px] bg-surface-sunken font-mono text-[11px] text-ink-2">
         <Icon as={Lock} size={11} strokeWidth={2} />
-        {t('url')}
+        {t("url")}
       </div>
       <span className="flex items-center gap-1.5 text-[11px] text-ink-2 max-sm:hidden">
         <span className="relative grid size-1.5 place-items-center">
           <span className="absolute size-1.5 animate-ping-soft rounded-full bg-green" />
           <span className="size-1.5 rounded-full bg-green" />
         </span>
-        {t('live')}
+        {t("live")}
       </span>
     </div>
   );
 }
 
 function MiniSidebar() {
-  const t = useTranslations('landing.preview.nav');
+  const t = useTranslations("landing.preview.nav");
   return (
     <div className="flex w-[200px] shrink-0 flex-col gap-5 bg-bg-sidebar px-3 py-5 shadow-[1px_0_0_rgb(var(--line-rgb)/.06)] max-lg:hidden">
-      <span className="flex items-center gap-2 px-2 text-[13px] font-medium"><LogoMark size="sm" />{BRAND_NAME}</span>
+      <span className="flex items-center gap-2 px-2 text-[13px] font-medium">
+        <LogoMark size="sm" />
+        {BRAND_NAME}
+      </span>
       <div className="flex flex-col gap-0.5">
         {PREVIEW_NAV.map((n, i) => (
           <span
             key={n.key}
-            className={cn('flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-[13px]', i === 0 ? 'bg-surface font-medium shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]' : 'text-ink-2')}
+            className={cn(
+              "flex h-9 items-center gap-2.5 rounded-[10px] px-2.5 text-[13px]",
+              i === 0
+                ? "bg-surface font-medium shadow-[0_0_0_1px_rgb(var(--line-rgb)/.06)]"
+                : "text-ink-2",
+            )}
           >
             <Icon as={n.icon} size={16} />
             {t(n.key)}
@@ -59,40 +78,64 @@ function MiniSidebar() {
 }
 
 function Countdown() {
-  const t = useTranslations('landing.preview.countdown');
+  const t = useTranslations("landing.preview.countdown");
   const [, b2, c1] = LEVELS;
   return (
     <div className="relative flex flex-col gap-5 overflow-hidden rounded-card bg-hero px-6 py-5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,.18)]">
       <div className="grid-backdrop-light pointer-events-none absolute inset-0 bg-size-[32px_32px] mask-[radial-gradient(ellipse_70%_90%_at_100%_0%,#000,transparent_70%)]" />
       <div className="relative flex items-start justify-between">
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-white/72">{t('label')}</span>
+          <span className="text-xs text-white/72">{t("label")}</span>
           <span className="text-[52px] leading-[.95] font-light tracking-[-0.06em]">
             <CountUp value={DEMO_EXAM.daysLeft} />
-            <span className="ml-1.5 text-base tracking-normal text-white/70">{t('days')}</span>
+            <span className="ml-1.5 text-base tracking-normal text-white/70">
+              {t("days")}
+            </span>
           </span>
         </div>
-        <span className="flex h-6 items-center rounded-[8px] bg-white/14 px-2 text-[11px]">{t('badge', { date: t('date'), level: DEMO_EXAM.target })}</span>
+        <span className="flex h-6 items-center rounded-[8px] bg-white/14 px-2 text-[11px]">
+          {t("badge", { date: t("date"), level: DEMO_EXAM.target })}
+        </span>
       </div>
       <div className="relative">
-        <ScaleBar value={DEMO_EXAM.currentScore} variant="onDark" labels={[t('now', { score: DEMO_EXAM.currentScore }), `${b2.code} · ${b2.min}`, `${c1.code} · ${c1.min}`]} />
+        <ScaleBar
+          value={DEMO_EXAM.currentScore}
+          variant="onDark"
+          labels={[
+            t("now", { score: DEMO_EXAM.currentScore }),
+            `${b2.code} · ${b2.min}`,
+            `${c1.code} · ${c1.min}`,
+          ]}
+        />
       </div>
     </div>
   );
 }
 
 function SkillTiles() {
-  const t = useTranslations('skills');
+  const t = useTranslations("skills");
+
   return (
     <div className="grid grid-cols-2 gap-2.5">
       {DASHBOARD_SKILLS.map((s, i) => (
-        <div key={s.skill} className="flex flex-col gap-2.5 rounded-[18px] bg-surface p-4 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)]">
+        <div
+          key={s.skill}
+          className="flex flex-col gap-2.5 rounded-[18px] bg-surface p-4 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)]"
+        >
           <span className="text-xs text-ink-2">{t(s.skill)}</span>
           <span className="text-[28px] leading-none font-light tracking-[-0.05em]">
             <CountUp value={s.score} delay={i * 0.1} />
-            <span className="ml-1 font-mono text-[11px] tracking-normal text-ink-3">/{MAX_SCORE}</span>
+            <span className="ml-1 font-mono text-[11px] tracking-normal text-ink-3">
+              /{MAX_SCORE}
+            </span>
           </span>
-          <ProgressBar value={s.score} max={MAX_SCORE} size="xs" tone={s.weak ? 'warning' : 'blue'} delay={i * 0.1} />
+          <ProgressBar
+            value={s.score}
+            max={MAX_SCORE}
+            size="xs"
+            tone={s.weak ? "warning" : "blue"}
+            delay={i * 0.1}
+          />
         </div>
       ))}
     </div>
@@ -100,22 +143,29 @@ function SkillTiles() {
 }
 
 function ChartCard() {
-  const t = useTranslations('landing.preview');
+  const t = useTranslations("landing.preview");
   return (
     <div className="flex flex-col gap-2 rounded-card bg-surface px-5 pt-4 pb-1 shadow-[0_0_0_1px_rgb(var(--line-rgb)/.05)] lg:col-span-2">
-      <span className="text-xs text-ink-2">{t('overall')}</span>
-      <LineChart data={PROGRESS_SCORES} thresholds={LEVEL_THRESHOLDS} label={t('chartLabel')} height={200} />
+      <span className="text-xs text-ink-2">{t("overall")}</span>
+      <LineChart
+        data={PROGRESS_SCORES}
+        thresholds={LEVEL_THRESHOLDS}
+        label={t("chartLabel")}
+        height={200}
+      />
     </div>
   );
 }
 
 function DashboardMock() {
-  const t = useTranslations('landing.preview');
+  const t = useTranslations("landing.preview");
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-4 bg-bg-app p-4 md:p-6">
       <div className="flex flex-col gap-0.5">
-        <span className="text-xs text-ink-2">{t('today')}</span>
-        <span className="text-xl font-medium tracking-[-0.03em] md:text-2xl">{t('greeting', { name: DEMO_USER.firstName })}</span>
+        <span className="text-xs text-ink-2">{t("today")}</span>
+        <span className="text-xl font-medium tracking-[-0.03em] md:text-2xl">
+          {t("greeting", { name: DEMO_USER.firstName })}
+        </span>
       </div>
       <div className="grid gap-3 lg:grid-cols-[1.2fr_1fr]">
         <Countdown />
@@ -127,12 +177,22 @@ function DashboardMock() {
 }
 
 export function ProductPreview() {
-  const t = useTranslations('landing.preview');
+  const t = useTranslations("landing.preview");
   return (
     <Container className="flex flex-col items-center gap-10 pt-20 md:gap-14 md:pt-32">
       <div className="flex flex-col items-center gap-4 text-center">
-        <SectionHeading eyebrow={t('eyebrow')} title={t.rich('title', richTags)} align="center" />
-        <Reveal delay={0.1} as="span" className="max-w-[520px] text-base leading-[1.6] text-ink-2">{t('text')}</Reveal>
+        <SectionHeading
+          eyebrow={t("eyebrow")}
+          title={t.rich("title", richTags)}
+          align="center"
+        />
+        <Reveal
+          delay={0.1}
+          as="span"
+          className="max-w-[520px] text-base leading-[1.6] text-ink-2"
+        >
+          {t("text")}
+        </Reveal>
       </div>
       <div className="relative w-full">
         <div className="pointer-events-none absolute inset-x-[8%] -top-10 h-2/3 rounded-full bg-[radial-gradient(closest-side,oklch(0.9_0.08_140/.6),transparent)] dark:opacity-15 blur-3xl" />

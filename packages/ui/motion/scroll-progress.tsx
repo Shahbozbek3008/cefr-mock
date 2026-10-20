@@ -1,10 +1,15 @@
-'use client';
+"use client";
 
-import { motion, useScroll, useSpring } from 'motion/react';
+import { motion, useScroll, useSpring } from "motion/react";
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, mass: 0.3 });
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 30,
+    mass: 0.3,
+  });
+
   return (
     <motion.div
       aria-hidden
