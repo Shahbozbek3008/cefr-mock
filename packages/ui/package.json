@@ -17,10 +17,19 @@
     "next-intl": "^4.14.9",
     "radix-ui": "^1.7.0",
     "react": "19.2.3",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "use-intl": "^4.14.9"
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
     "typescript": "^5"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "next-intl": {
+      "optional": true
+    }
   }
 }

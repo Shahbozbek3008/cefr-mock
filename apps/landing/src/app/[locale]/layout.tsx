@@ -10,8 +10,10 @@ import { BRAND_NAME } from "@cefr/ui/components/logo";
 import { initLocale, resolveLocale, type LocaleParams } from "@cefr/ui/i18n/locale";
 import { routing } from "@cefr/ui/i18n/routing";
 import { MotionProvider } from "@cefr/ui/motion/motion-provider";
+import { NextNavigationProvider } from "@cefr/ui/navigation/next-navigation";
 import { THEME_COLORS } from "@cefr/ui/theme/constants";
 import { ThemeScript } from "@cefr/ui/theme/theme-script";
+import { ThemeSync } from "@cefr/ui/theme/theme-sync";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -96,15 +98,18 @@ export default async function LocaleLayout({
         <ThemeScript />
       </head>
       <body>
+        <ThemeSync />
         <NextIntlClientProvider>
-          <MotionProvider>
-            <div className="min-h-dvh overflow-x-clip bg-bg max-md:pb-[120px]">
-              <MarketingHeader />
-              <main>{children}</main>
-              <MarketingFooter />
-              <StickyCta />
-            </div>
-          </MotionProvider>
+          <NextNavigationProvider>
+            <MotionProvider>
+              <div className="min-h-dvh overflow-x-clip bg-bg max-md:pb-[120px]">
+                <MarketingHeader />
+                <main>{children}</main>
+                <MarketingFooter />
+                <StickyCta />
+              </div>
+            </MotionProvider>
+          </NextNavigationProvider>
         </NextIntlClientProvider>
       </body>
     </html>

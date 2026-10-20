@@ -103,7 +103,7 @@ export function BigNumber({ value, max, size, className }: BigNumberProps) {
 }
 
 interface PageTitleProps {
-  meta?: string;
+  meta?: ReactNode;
   title: ReactNode;
 }
 

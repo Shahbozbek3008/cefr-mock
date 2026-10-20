@@ -22,6 +22,8 @@ const apply = (preference: ThemePreference) => {
   document.documentElement.dataset.theme = resolve(preference);
 };
 
+export const applyStoredTheme = () => apply(readPreference());
+
 const notify = () => listeners.forEach((listener) => listener());
 
 function subscribe(listener: () => void) {

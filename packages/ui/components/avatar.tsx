@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface AvatarProps {
   initial: string;
   size: 32 | 64;
@@ -14,14 +12,7 @@ export function Avatar({ initial, size, src }: AvatarProps) {
       aria-hidden
     >
       {src ? (
-        <Image
-          src={src}
-          alt=""
-          width={size}
-          height={size}
-          unoptimized
-          className="size-full object-cover"
-        />
+        <img src={src} alt="" width={size} height={size} className="size-full object-cover" />
       ) : (
         initial
       )}

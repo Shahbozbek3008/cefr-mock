@@ -1,0 +1,49 @@
+import { useState, type FormEvent } from 'react';
+import { useTranslations } from 'use-intl';
+import { PHONE_DIGITS, formatPhone, isPhoneComplete, requestCode, sanitizeDigits, useCefrClient } from '@cefr/core';
+import { useRouter } from '@/shared/i18n/navigation';
+import { ROUTES } from '@/shared/config/routes';
+import { Button } from '@cefr/ui/components/button';
+import { Field, PhoneInput } from '@cefr/ui/components/field';
+import { authErrorKey } from '@/features/auth/lib/auth-error';
+
+export function PhoneLoginForm({ next = ROUTES.loginVerify }: { next?: string }) {
+  const t = useTranslations('auth');
+  const client = useCefrClient();
+  const router = useRouter();
+  const [digits, setDigits] = useState('');
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<ReturnType<typeof authErrorKey> | null>(null);
+
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!isPhoneComplete(digits) || pending) return;
+    setPending(true);
+    setError(null);
+    try {
+      await requestCode(client, digits);
+      router.push(`${next}?phone=${digits}`);
+    } catch (failure) {
+      setError(authErrorKey(failure));
+      setPending(false);
+    }
+  };
+
+  return (
+    <form onSubmit={submit} className="flex flex-col gap-4">
+      <Field label={t('phone')} htmlFor="phone" hint={error && <span className="text-error-text">{t(`errors.${error}`)}</span>}>
+        <PhoneInput
+          id="phone"
+          name="phone"
+          autoFocus
+          placeholder="90 123 45 67"
+          value={formatPhone(digits)}
+          onChange={(e) => setDigits(sanitizeDigits(e.target.value, PHONE_DIGITS))}
+        />
+      </Field>
+      <Button type="submit" arrow block disabled={!isPhoneComplete(digits)} loading={pending}>
+        {t('sendCode')}
+      </Button>
+    </form>
+  );
+}
