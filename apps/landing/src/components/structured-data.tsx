@@ -7,13 +7,17 @@ import { PLANS } from "@cefr/ui/lib/plans";
 import { PRICE_CURRENCY } from "@cefr/ui/seo/constants";
 import { getTranslations } from "next-intl/server";
 
+interface StructuredDataProps {
+  locale: Locale;
+}
+
 const stripTags = (text: string) =>
   text
     .replace(/<[^>]*>/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
-export async function StructuredData({ locale }: { locale: Locale }) {
+export async function StructuredData({ locale }: StructuredDataProps) {
   const [tm, tf, tp] = await Promise.all([
     getTranslations({ locale, namespace: "metadata" }),
     getTranslations({ locale, namespace: "landing.faq.items" }),
