@@ -4,6 +4,8 @@ import { renderMessage, toLocale } from './messages.ts';
 import type { NotificationKind } from './messages.ts';
 
 const FRESH_WINDOW_MS = 10 * 60 * 1000;
+// Enforced only once the secret is configured, so deploy order can't break pushes.
+const webhookSecret = Deno.env.get('PUSH_WEBHOOK_SECRET') ?? '';
 
 const admin = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '', {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -41,6 +43,9 @@ const claimNotification = async (id: string) => {
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return respond({ error: 'invalid_request' }, 405);
+  if (webhookSecret && req.headers.get('x-webhook-secret') !== webhookSecret) {
+    return respond({ error: 'unauthorized' }, 401);
+  }
 
   const body = await req.json().catch(() => null);
   const notificationId = typeof body?.notificationId === 'string' ? body.notificationId : '';
