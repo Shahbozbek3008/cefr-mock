@@ -27,6 +27,7 @@ export type Database = {
           reminder_enabled: boolean;
           push_token: string | null;
           is_pro: boolean;
+          is_admin: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -56,7 +57,7 @@ export type Database = {
           is_free: boolean;
           is_pro: boolean;
           content: Json;
-          published_at: string;
+          published_at: string | null;
         };
         Insert: { [_ in never]: never };
         Update: { [_ in never]: never };
@@ -219,6 +220,22 @@ export type Database = {
       submit_attempt: {
         Args: { attempt_id: string };
         Returns: string;
+      };
+      is_admin: {
+        Args: Record<string, never>;
+        Returns: boolean;
+      };
+      admin_save_test: {
+        Args: { test_id: string; meta: Json; content: Json; keys: Json; scripts: Json };
+        Returns: undefined;
+      };
+      admin_set_published: {
+        Args: { test_id: string; published: boolean };
+        Returns: undefined;
+      };
+      admin_delete_test: {
+        Args: { test_id: string };
+        Returns: undefined;
       };
     };
     Enums: { [_ in never]: never };

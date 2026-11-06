@@ -1,7 +1,3 @@
--- 1) Section deadlines (attempts.ends_at) can no longer be extended by the client.
---    The client only ever adds a key when a section starts and never changes an
---    existing one, so: existing keys are frozen, new keys are clamped to
---    now() + longest section (60 min) + 5 min grace, non-numeric values are dropped.
 create or replace function public.guard_attempt_deadlines()
 returns trigger
 language plpgsql
@@ -24,7 +20,6 @@ begin
     end loop;
   end if;
 
-  -- right side wins: deadlines already stored stay untouched
   new.ends_at := incoming || coalesce(old.ends_at, '{}');
   return new;
 end;
@@ -35,11 +30,6 @@ create trigger attempts_guard_deadlines
 before update of ends_at on public.attempts
 for each row execute function public.guard_attempt_deadlines();
 
--- 2) push-notify: project URL and shared secret come from Vault instead of being
---    hardcoded. Falls back to the previous URL and no header, so pushes keep
---    working until the Vault secrets are created.
---      select vault.create_secret('https://<project>.supabase.co', 'project_url');
---      select vault.create_secret('<random string>', 'push_webhook_secret');
 create or replace function public.dispatch_push()
 returns trigger
 language plpgsql

@@ -1,0 +1,325 @@
+{
+  "common": {
+    "language": "Til",
+    "done": "Tayyor",
+    "failed": "Xatolik",
+    "moveUp": "Yuqoriga",
+    "moveDown": "Pastga",
+    "remove": "O'chirish"
+  },
+  "shell": {
+    "badge": "Admin"
+  },
+  "auth": {
+    "title": "Admin panel",
+    "subtitle": "Testlarni boshqarish",
+    "phone": "Telefon raqam",
+    "phonePlaceholder": "90 123 45 67",
+    "getCode": "Kod olish",
+    "codeSent": "Kod {phone} raqamiga yuborildi",
+    "codeLabel": "Tasdiqlash kodi",
+    "previousCodeValid": "Kod yaqinda yuborilgan va hali amal qiladi. O'sha kodni kiriting yoki bir daqiqadan keyin yangisini so'rang.",
+    "signIn": "Kirish",
+    "changePhone": "Raqamni o'zgartirish",
+    "notConfigured": "apps/admin/.env.local faylida VITE_SUPABASE_URL va VITE_SUPABASE_ANON_KEY yo'q.",
+    "deniedTitle": "Ruxsat yo'q",
+    "deniedText": "{account} akkaunti admin emas. Admin huquqini Supabase SQL Editor orqali bering:",
+    "signOut": "Chiqish",
+    "errors": {
+      "invalid_code": "Kod noto'g'ri",
+      "code_expired": "Kod muddati o'tgan, qayta so'rang",
+      "too_many_attempts": "Juda ko'p urinish, yangi kod so'rang",
+      "too_many_requests": "Biroz kuting va qayta urinib ko'ring",
+      "sms_unavailable": "SMS xizmati hozir ishlamayapti",
+      "invalid_phone": "Telefon raqam noto'g'ri",
+      "network_error": "Internet bilan muammo",
+      "function_not_found": "Kirish xizmati topilmadi",
+      "server_error": "Serverda xatolik",
+      "not_configured": "Kirish xizmati sozlanmagan"
+    }
+  },
+  "tests": {
+    "title": "Testlar",
+    "subtitle": "Draft testlar o'quvchilarga ko'rinmaydi",
+    "new": "Yangi test",
+    "empty": "Hali test yo'q.",
+    "columns": {
+      "number": "#",
+      "title": "Nomi",
+      "format": "Format",
+      "status": "Holat"
+    },
+    "edit": "Tahrirlash",
+    "publish": "Nashr qilish",
+    "hide": "Yashirish",
+    "delete": "O'chirish"
+  },
+  "testStatus": {
+    "published": "Nashr qilingan",
+    "draft": "Draft",
+    "pro": "Pro",
+    "free": "Bepul",
+    "new": "Yangi"
+  },
+  "publish": {
+    "confirmPublish": "\"{title}\" o'quvchilarga ko'rinadi. Nashr qilasizmi?",
+    "confirmHide": "\"{title}\" katalogdan yashiriladi. Boshlagan o'quvchilar davom ettira oladi. Davom etasizmi?"
+  },
+  "deleteTest": {
+    "confirm": "\"{title}\" ({id}) testini butunlay o'chirasizmi? Audio fayllar ham o'chadi."
+  },
+  "errors": {
+    "numberTaken": "Bu raqamli test allaqachon mavjud",
+    "idTaken": "\"{id}\" ID bilan test allaqachon bor, boshqa raqam yoki ID tanlang",
+    "hasAttempts": "Bu testni o'quvchilar ishlagan, uni o'chirib bo'lmaydi. Uning o'rniga yashiring.",
+    "forbidden": "Ruxsat yo'q (admin emassiz)",
+    "invalidTestId": "Test ID noto'g'ri",
+    "notFound": "Topilmadi",
+    "ttsFailed": "Ovoz yaratib bo'lmadi",
+    "notConfigured": "Xizmat sozlanmagan (DEEPGRAM_API_KEY)",
+    "onlyMp3": "Faqat MP3 fayl qabul qilinadi",
+    "needsScript": "Avval skript yozing",
+    "audioUnreadable": "Audio faylni o'qib bo'lmadi",
+    "publishedWithErrors": "Test nashr qilingan, {count} ta xato bilan saqlab bo'lmaydi. Avval xatolarni tuzating yoki testni yashiring.",
+    "publishBlocked": "Nashr qilib bo'lmaydi: {count} ta xato bor. Tekshiruv panelini oching.",
+    "network": "Internet bilan muammo",
+    "unknown": "Noma'lum xato"
+  },
+  "choices": {
+    "placeholder": "Variant matni",
+    "add": "Variant qo'shish",
+    "remove": "Variantni o'chirish"
+  },
+  "question": {
+    "badge": "{number}-savol",
+    "number": "Raqam",
+    "kind": "Turi",
+    "kinds": {
+      "mcq": "Variantli (A/B/C)",
+      "gap": "Bo'sh joyni to'ldirish",
+      "tfng": "True / False / No Information",
+      "match": "Moslashtirish"
+    },
+    "group": "Guruh",
+    "groupHint": "Bitta matnga tegishli savollarni birlashtiradi",
+    "prompt": "Savol matni",
+    "answer": "To'g'ri javob",
+    "answerPlaceholder": "masalan: library",
+    "explanation": "Izoh",
+    "explanationHint": "Natijalar sahifasida ko'rsatiladi",
+    "add": "Savol qo'shish",
+    "markCorrect": "{key} variantini to'g'ri deb belgilash",
+    "optionText": "{key} variant matni",
+    "removeOption": "Variantni o'chirish",
+    "addOption": "Variant qo'shish",
+    "markHint": "To'g'ri javobni chap tomondagi doirachani bosib belgilang",
+    "noPartChoices": "Avval yuqorida qism variantlarini kiriting",
+    "complete": "To'ldirilgan",
+    "incomplete": "To'ldirilmagan",
+    "promptOptional": "Savol matni (ixtiyoriy)",
+    "gapPlaceholder": "Savol matni, bo'sh joy uchun ___ yozing",
+    "advanced": "Qo'shimcha"
+  },
+  "script": {
+    "voice": "Ovoz",
+    "textPlaceholder": "Gapiriladigan matn",
+    "question": "Savol",
+    "questionTitle": "Shu qatordan boshlanadigan savol raqami",
+    "pause": "Pauza",
+    "pauseTitle": "Qatordan keyingi pauza (soniya)",
+    "addLine": "Qator qo'shish",
+    "voices": {
+      "narrator": "Diktor",
+      "woman": "Ayol 1",
+      "man": "Erkak 1",
+      "woman2": "Ayol 2",
+      "man2": "Erkak 2",
+      "woman3": "Ayol 3",
+      "man3": "Erkak 3"
+    }
+  },
+  "mapField": {
+    "label": "Xarita (JSON)",
+    "hint": "width, height, roads, blocks, labels. Maydondan chiqqanda saqlanadi.",
+    "invalidJson": "JSON noto'g'ri",
+    "invalidShape": "\"roads\" va \"blocks\" massiv bo'lishi kerak"
+  },
+  "audio": {
+    "present": "Audio bor",
+    "missing": "Bu qism uchun audio yo'q",
+    "upload": "MP3 yuklash",
+    "generate": "Skriptdan yaratish",
+    "cues": "Savollar boshlanish vaqti (soniya). Skriptdan yaratilganda avtomatik to'ldiriladi.",
+    "status": {
+      "measuring": "Davomiylik aniqlanmoqda…",
+      "uploading": "Yuklanmoqda…",
+      "synthesizing": "Ovoz yaratilmoqda: {done}/{total}"
+    }
+  },
+  "json": {
+    "importTitle": "JSON import",
+    "importText": "Testni tayyor JSON fayldan yuklang. Format pastdagi eksport bilan bir xil. Import qilingandan keyin formada tekshirib, saqlang.",
+    "chooseFile": "JSON fayl tanlash",
+    "template": "Bo'sh shablon",
+    "pastePlaceholder": "Yoki JSON matnini shu yerga joylang",
+    "importFromText": "Matndan import",
+    "confirmReplace": "Joriy ma'lumotlar import qilingan JSON bilan almashtiriladi. Davom etasizmi?",
+    "exportTitle": "JSON eksport",
+    "copy": "Nusxa olish",
+    "download": "Yuklab olish",
+    "errors": {
+      "invalidJson": "JSON noto'g'ri",
+      "notObject": "JSON obyekt bo'lishi kerak",
+      "notArray": "\"{key}\" massiv bo'lishi kerak"
+    }
+  },
+  "issues": {
+    "ok": "Tekshiruv: xato yo'q, test nashrga tayyor.",
+    "title": "Tekshiruv natijasi",
+    "errors": "{count} ta xato",
+    "warnings": "{count} ta ogohlantirish",
+    "hint": "Draft sifatida saqlash mumkin, nashr qilish uchun xatolar tuzatilishi kerak",
+    "where": {
+      "general": "Umumiy",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "part": "{index}-qism",
+      "question": "{number}-savol",
+      "item": "{index}-topshiriq"
+    },
+    "codes": {
+      "invalidId": "ID faqat kichik lotin harflari, raqam va \"-\" dan iborat bo'lishi mumkin",
+      "titleRequired": "Sarlavha kiritilmagan",
+      "numberInvalid": "Test raqami musbat butun son bo'lishi kerak",
+      "questionCount": "{count} ta savol bor, {expected} ta bo'lishi kerak",
+      "notSequential": "Savol raqamlari 1 dan {count} gacha ketma-ket emas",
+      "duplicateNumber": "Savol raqami takrorlangan",
+      "answerMissing": "To'g'ri javob kiritilmagan",
+      "matchWithoutChoices": "Moslashtirish savoli uchun qismda variantlar yo'q",
+      "answerNotInChoices": "\"{answer}\" javobi variantlar orasida yo'q ({allowed})",
+      "emptyOption": "Bo'sh variant matni bor",
+      "audioMissing": "Audio yo'q",
+      "instructionEmpty": "Ko'rsatma bo'sh",
+      "scriptCuesMissing": "Skriptda ba'zi savollarga belgi qo'yilmagan",
+      "passageEmpty": "Matn bo'sh",
+      "writingMissing": "Topshiriq yo'q",
+      "writingPromptEmpty": "Topshiriq matni bo'sh",
+      "speakingMissing": "Savol yo'q",
+      "speakingPromptEmpty": "Savol matni bo'sh"
+    }
+  },
+  "editor": {
+    "back": "Testlar",
+    "newTest": "Yangi test",
+    "unsaved": "Saqlanmagan",
+    "save": "Saqlash",
+    "publish": "Nashr qilish",
+    "hide": "Yashirish",
+    "confirmLeave": "Saqlanmagan o'zgarishlar yo'qoladi. Chiqasizmi?",
+    "confirmPublish": "Test saqlanadi va o'quvchilarga ko'rinadi. Nashr qilasizmi?",
+    "confirmHide": "Test katalogdan yashiriladi. Boshlagan o'quvchilar davom ettira oladi. Davom etasizmi?",
+    "tabs": {
+      "label": "Test bo'limlari",
+      "general": "Umumiy",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "json": "JSON"
+    },
+    "outcome": {
+      "saved": "Saqlandi",
+      "savedAndPublished": "Saqlandi va nashr qilindi",
+      "hidden": "Test yashirildi"
+    }
+  },
+  "meta": {
+    "heading": "Umumiy ma'lumot",
+    "number": "Test raqami",
+    "id": "ID",
+    "idHintNew": "Saqlangandan keyin o'zgartirib bo'lmaydi",
+    "idHintLocked": "O'zgartirib bo'lmaydi",
+    "title": "Sarlavha",
+    "formatMonth": "Format oyi",
+    "formatYear": "Format yili",
+    "durationLabel": "Davomiylik yorlig'i",
+    "durationHint": "Katalogda ko'rinadi, masalan 2:45",
+    "pro": "Pro (faqat obunachilar uchun)",
+    "isNew": "\"Yangi\" belgisi",
+    "advanced": "Qo'shimcha sozlamalar"
+  },
+  "parts": {
+    "instruction": "Ko'rsatma",
+    "emphasis": "Ajratilgan qism",
+    "emphasisHint": "masalan: A, B or C",
+    "titleOptional": "Sarlavha (ixtiyoriy)",
+    "title": "Sarlavha",
+    "map": "Xarita",
+    "questions": "Savollar",
+    "script": "Skript",
+    "scriptHint": "Natijalar sahifasida transkript sifatida ko'rsatiladi va audio yaratish uchun ishlatiladi",
+    "audio": "Audio",
+    "passage": "Matn",
+    "add": "Qism qo'shish",
+    "confirmRemove": "{index}-qismni o'chirasizmi?",
+    "name": "{index}-qism",
+    "progress": "{done}/{total} savol",
+    "choices": "Variantlar ro'yxati",
+    "choicesHint": "Moslashtirish savollari shu variantlardan tanlanadi",
+    "settings": "Qism sozlamalari"
+  },
+  "passage": {
+    "label": "Belgi (A, 1…)",
+    "text": "Paragraf matni",
+    "highlight": "Ajratib ko'rsatiladigan ibora (ixtiyoriy)",
+    "add": "Paragraf qo'shish"
+  },
+  "writing": {
+    "task": "{index}-topshiriq",
+    "name": "Nomi",
+    "kind": "Turi",
+    "kindHint": "Letter, Essay…",
+    "minWords": "Min. so'z",
+    "targetWords": "Maqsad so'z",
+    "weight": "Og'irlik",
+    "weightHint": "Task 1 = 1, Task 2 = 2",
+    "context": "Vaziyat (ixtiyoriy)",
+    "contextHint": "masalan: kelgan xat matni",
+    "prompt": "Topshiriq matni",
+    "add": "Topshiriq qo'shish"
+  },
+  "speaking": {
+    "title": "Speaking · {count} ta savol",
+    "part": "Qism",
+    "partHint": "1.1, 1.2, 2, 3",
+    "image": "Rasm tavsifi",
+    "imageHint": "Rasm o'rnida ko'rsatiladigan matn",
+    "prep": "Tayyorlanish (s)",
+    "answer": "Javob (s)",
+    "prompt": "{index}-savol matni",
+    "add": "Savol qo'shish"
+  },
+  "createTest": {
+    "title": "Yangi test · #{number}",
+    "modeLabel": "Qanday boshlaymiz?",
+    "modes": {
+      "template": {
+        "title": "Rasmiy format shabloni",
+        "text": "Qismlar, savol turlari va ko'rsatmalar tayyor. Faqat matnlarni yozasiz."
+      },
+      "copy": {
+        "title": "Mavjud testdan nusxa",
+        "text": "Tanlangan testning to'liq nusxasi. Audio qayta yuklanadi."
+      },
+      "blank": {
+        "title": "Bo'sh test",
+        "text": "Hammasini noldan yaratasiz."
+      }
+    },
+    "source": "Asos qilinadigan test",
+    "sourceHint": "Struktura shu testdan olinadi",
+    "continue": "Davom etish"
+  }
+}

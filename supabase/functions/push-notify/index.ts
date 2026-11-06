@@ -4,7 +4,6 @@ import { renderMessage, toLocale } from './messages.ts';
 import type { NotificationKind } from './messages.ts';
 
 const FRESH_WINDOW_MS = 10 * 60 * 1000;
-// Enforced only once the secret is configured, so deploy order can't break pushes.
 const webhookSecret = Deno.env.get('PUSH_WEBHOOK_SECRET') ?? '';
 
 const admin = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '', {

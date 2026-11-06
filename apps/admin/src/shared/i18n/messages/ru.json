@@ -1,0 +1,325 @@
+{
+  "common": {
+    "language": "Язык",
+    "done": "Готово",
+    "failed": "Ошибка",
+    "moveUp": "Вверх",
+    "moveDown": "Вниз",
+    "remove": "Удалить"
+  },
+  "shell": {
+    "badge": "Админ"
+  },
+  "auth": {
+    "title": "Админ-панель",
+    "subtitle": "Управление тестами",
+    "phone": "Номер телефона",
+    "phonePlaceholder": "90 123 45 67",
+    "getCode": "Получить код",
+    "codeSent": "Код отправлен на номер {phone}",
+    "codeLabel": "Код подтверждения",
+    "previousCodeValid": "Код уже был отправлен недавно и ещё действует. Введите его или запросите новый через минуту.",
+    "signIn": "Войти",
+    "changePhone": "Изменить номер",
+    "notConfigured": "В файле apps/admin/.env.local нет VITE_SUPABASE_URL и VITE_SUPABASE_ANON_KEY.",
+    "deniedTitle": "Нет доступа",
+    "deniedText": "Аккаунт {account} не является администратором. Выдайте права через Supabase SQL Editor:",
+    "signOut": "Выйти",
+    "errors": {
+      "invalid_code": "Неверный код",
+      "code_expired": "Срок действия кода истёк, запросите новый",
+      "too_many_attempts": "Слишком много попыток, запросите новый код",
+      "too_many_requests": "Подождите немного и попробуйте снова",
+      "sms_unavailable": "SMS-сервис сейчас недоступен",
+      "invalid_phone": "Неверный номер телефона",
+      "network_error": "Проблема с интернетом",
+      "function_not_found": "Сервис входа не найден",
+      "server_error": "Ошибка сервера",
+      "not_configured": "Сервис входа не настроен"
+    }
+  },
+  "tests": {
+    "title": "Тесты",
+    "subtitle": "Черновики не видны ученикам",
+    "new": "Новый тест",
+    "empty": "Тестов пока нет.",
+    "columns": {
+      "number": "#",
+      "title": "Название",
+      "format": "Формат",
+      "status": "Статус"
+    },
+    "edit": "Редактировать",
+    "publish": "Опубликовать",
+    "hide": "Скрыть",
+    "delete": "Удалить"
+  },
+  "testStatus": {
+    "published": "Опубликован",
+    "draft": "Черновик",
+    "pro": "Pro",
+    "free": "Бесплатный",
+    "new": "Новый"
+  },
+  "publish": {
+    "confirmPublish": "«{title}» станет виден ученикам. Опубликовать?",
+    "confirmHide": "«{title}» будет скрыт из каталога. Начавшие ученики смогут продолжить. Продолжить?"
+  },
+  "deleteTest": {
+    "confirm": "Удалить тест «{title}» ({id}) навсегда? Аудиофайлы тоже будут удалены."
+  },
+  "errors": {
+    "numberTaken": "Тест с таким номером уже существует",
+    "idTaken": "Тест с ID «{id}» уже существует, выберите другой номер или ID",
+    "hasAttempts": "Этот тест уже проходили ученики, удалить его нельзя. Скройте его вместо удаления.",
+    "forbidden": "Нет доступа (вы не администратор)",
+    "invalidTestId": "Неверный ID теста",
+    "notFound": "Не найдено",
+    "ttsFailed": "Не удалось сгенерировать озвучку",
+    "notConfigured": "Сервис не настроен (DEEPGRAM_API_KEY)",
+    "onlyMp3": "Принимаются только файлы MP3",
+    "needsScript": "Сначала напишите скрипт",
+    "audioUnreadable": "Не удалось прочитать аудиофайл",
+    "publishedWithErrors": "Тест опубликован: нельзя сохранить с {count, plural, one {# ошибкой} other {# ошибками}}. Исправьте ошибки или скройте тест.",
+    "publishBlocked": "Нельзя опубликовать: {count, plural, one {# ошибка} few {# ошибки} many {# ошибок} other {# ошибки}}. Откройте панель проверки.",
+    "network": "Проблема с интернетом",
+    "unknown": "Неизвестная ошибка"
+  },
+  "choices": {
+    "placeholder": "Текст варианта",
+    "add": "Добавить вариант",
+    "remove": "Удалить вариант"
+  },
+  "question": {
+    "badge": "Вопрос {number}",
+    "number": "Номер",
+    "kind": "Тип",
+    "kinds": {
+      "mcq": "С вариантами (A/B/C)",
+      "gap": "Заполнить пропуск",
+      "tfng": "True / False / No Information",
+      "match": "Сопоставление"
+    },
+    "group": "Группа",
+    "groupHint": "Объединяет вопросы к одному тексту",
+    "prompt": "Текст вопроса",
+    "answer": "Правильный ответ",
+    "answerPlaceholder": "например: library",
+    "explanation": "Пояснение",
+    "explanationHint": "Показывается на странице результатов",
+    "add": "Добавить вопрос",
+    "markCorrect": "Отметить вариант {key} как правильный",
+    "optionText": "Текст варианта {key}",
+    "removeOption": "Удалить вариант",
+    "addOption": "Добавить вариант",
+    "markHint": "Отметьте правильный ответ кружком слева",
+    "noPartChoices": "Сначала заполните варианты части выше",
+    "complete": "Заполнено",
+    "incomplete": "Не заполнено",
+    "promptOptional": "Текст вопроса (необязательно)",
+    "gapPlaceholder": "Текст вопроса, для пропуска напишите ___",
+    "advanced": "Дополнительно"
+  },
+  "script": {
+    "voice": "Голос",
+    "textPlaceholder": "Произносимый текст",
+    "question": "Вопрос",
+    "questionTitle": "Номер вопроса, который начинается с этой строки",
+    "pause": "Пауза",
+    "pauseTitle": "Пауза после строки (секунды)",
+    "addLine": "Добавить строку",
+    "voices": {
+      "narrator": "Диктор",
+      "woman": "Женщина 1",
+      "man": "Мужчина 1",
+      "woman2": "Женщина 2",
+      "man2": "Мужчина 2",
+      "woman3": "Женщина 3",
+      "man3": "Мужчина 3"
+    }
+  },
+  "mapField": {
+    "label": "Карта (JSON)",
+    "hint": "width, height, roads, blocks, labels. Сохраняется при выходе из поля.",
+    "invalidJson": "Неверный JSON",
+    "invalidShape": "«roads» и «blocks» должны быть массивами"
+  },
+  "audio": {
+    "present": "Аудио есть",
+    "missing": "Для этой части нет аудио",
+    "upload": "Загрузить MP3",
+    "generate": "Сгенерировать из скрипта",
+    "cues": "Время начала вопросов (секунды). Заполняется автоматически при генерации.",
+    "status": {
+      "measuring": "Определяем длительность…",
+      "uploading": "Загрузка…",
+      "synthesizing": "Генерация озвучки: {done}/{total}"
+    }
+  },
+  "json": {
+    "importTitle": "Импорт JSON",
+    "importText": "Загрузите тест из готового JSON-файла. Формат такой же, как у экспорта ниже. После импорта проверьте форму и сохраните.",
+    "chooseFile": "Выбрать JSON-файл",
+    "template": "Пустой шаблон",
+    "pastePlaceholder": "Или вставьте текст JSON сюда",
+    "importFromText": "Импорт из текста",
+    "confirmReplace": "Текущие данные будут заменены импортированным JSON. Продолжить?",
+    "exportTitle": "Экспорт JSON",
+    "copy": "Копировать",
+    "download": "Скачать",
+    "errors": {
+      "invalidJson": "Неверный JSON",
+      "notObject": "JSON должен быть объектом",
+      "notArray": "«{key}» должен быть массивом"
+    }
+  },
+  "issues": {
+    "ok": "Проверка: ошибок нет, тест готов к публикации.",
+    "title": "Результат проверки",
+    "errors": "{count, plural, one {# ошибка} few {# ошибки} many {# ошибок} other {# ошибки}}",
+    "warnings": "{count, plural, one {# предупреждение} few {# предупреждения} many {# предупреждений} other {# предупреждения}}",
+    "hint": "Черновик можно сохранить, для публикации ошибки нужно исправить",
+    "where": {
+      "general": "Общее",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "part": "Часть {index}",
+      "question": "Вопрос {number}",
+      "item": "Задание {index}"
+    },
+    "codes": {
+      "invalidId": "ID может содержать только строчные латинские буквы, цифры и «-»",
+      "titleRequired": "Не указано название",
+      "numberInvalid": "Номер теста должен быть положительным целым числом",
+      "questionCount": "Вопросов: {count}, должно быть {expected}",
+      "notSequential": "Номера вопросов не идут подряд от 1 до {count}",
+      "duplicateNumber": "Номер вопроса повторяется",
+      "answerMissing": "Не указан правильный ответ",
+      "matchWithoutChoices": "Для вопроса на сопоставление в части нет вариантов",
+      "answerNotInChoices": "Ответа «{answer}» нет среди вариантов ({allowed})",
+      "emptyOption": "Есть пустой вариант",
+      "audioMissing": "Нет аудио",
+      "instructionEmpty": "Инструкция пустая",
+      "scriptCuesMissing": "В скрипте отмечены не все вопросы",
+      "passageEmpty": "Текст пустой",
+      "writingMissing": "Нет заданий",
+      "writingPromptEmpty": "Текст задания пустой",
+      "speakingMissing": "Нет вопросов",
+      "speakingPromptEmpty": "Текст вопроса пустой"
+    }
+  },
+  "editor": {
+    "back": "Тесты",
+    "newTest": "Новый тест",
+    "unsaved": "Не сохранено",
+    "save": "Сохранить",
+    "publish": "Опубликовать",
+    "hide": "Скрыть",
+    "confirmLeave": "Несохранённые изменения будут потеряны. Выйти?",
+    "confirmPublish": "Тест будет сохранён и станет виден ученикам. Опубликовать?",
+    "confirmHide": "Тест будет скрыт из каталога. Начавшие ученики смогут продолжить. Продолжить?",
+    "tabs": {
+      "label": "Разделы теста",
+      "general": "Общее",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "json": "JSON"
+    },
+    "outcome": {
+      "saved": "Сохранено",
+      "savedAndPublished": "Сохранено и опубликовано",
+      "hidden": "Тест скрыт"
+    }
+  },
+  "meta": {
+    "heading": "Общие сведения",
+    "number": "Номер теста",
+    "id": "ID",
+    "idHintNew": "После сохранения изменить нельзя",
+    "idHintLocked": "Изменить нельзя",
+    "title": "Название",
+    "formatMonth": "Месяц формата",
+    "formatYear": "Год формата",
+    "durationLabel": "Метка длительности",
+    "durationHint": "Показывается в каталоге, например 2:45",
+    "pro": "Pro (только для подписчиков)",
+    "isNew": "Метка «Новый»",
+    "advanced": "Дополнительные настройки"
+  },
+  "parts": {
+    "instruction": "Инструкция",
+    "emphasis": "Выделенная часть",
+    "emphasisHint": "например: A, B or C",
+    "titleOptional": "Заголовок (необязательно)",
+    "title": "Заголовок",
+    "map": "Карта",
+    "questions": "Вопросы",
+    "script": "Скрипт",
+    "scriptHint": "Показывается как транскрипт на странице результатов и используется для генерации аудио",
+    "audio": "Аудио",
+    "passage": "Текст",
+    "add": "Добавить часть",
+    "confirmRemove": "Удалить часть {index}?",
+    "name": "Часть {index}",
+    "progress": "{done}/{total} вопр.",
+    "choices": "Список вариантов",
+    "choicesHint": "Ответы на вопросы сопоставления выбираются из этих вариантов",
+    "settings": "Настройки части"
+  },
+  "passage": {
+    "label": "Метка (A, 1…)",
+    "text": "Текст абзаца",
+    "highlight": "Выделяемая фраза (необязательно)",
+    "add": "Добавить абзац"
+  },
+  "writing": {
+    "task": "Задание {index}",
+    "name": "Название",
+    "kind": "Тип",
+    "kindHint": "Letter, Essay…",
+    "minWords": "Мин. слов",
+    "targetWords": "Цель слов",
+    "weight": "Вес",
+    "weightHint": "Task 1 = 1, Task 2 = 2",
+    "context": "Ситуация (необязательно)",
+    "contextHint": "например: текст полученного письма",
+    "prompt": "Текст задания",
+    "add": "Добавить задание"
+  },
+  "speaking": {
+    "title": "Speaking · {count, plural, one {# вопрос} few {# вопроса} many {# вопросов} other {# вопроса}}",
+    "part": "Часть",
+    "partHint": "1.1, 1.2, 2, 3",
+    "image": "Описание картинки",
+    "imageHint": "Текст, показываемый вместо картинки",
+    "prep": "Подготовка (с)",
+    "answer": "Ответ (с)",
+    "prompt": "Текст вопроса {index}",
+    "add": "Добавить вопрос"
+  },
+  "createTest": {
+    "title": "Новый тест · #{number}",
+    "modeLabel": "С чего начнём?",
+    "modes": {
+      "template": {
+        "title": "Шаблон официального формата",
+        "text": "Части, типы вопросов и инструкции готовы. Вы пишете только тексты."
+      },
+      "copy": {
+        "title": "Копия существующего теста",
+        "text": "Полная копия выбранного теста. Аудио нужно загрузить заново."
+      },
+      "blank": {
+        "title": "Пустой тест",
+        "text": "Всё создаётся с нуля."
+      }
+    },
+    "source": "Тест-основа",
+    "sourceHint": "Структура берётся из этого теста",
+    "continue": "Продолжить"
+  }
+}

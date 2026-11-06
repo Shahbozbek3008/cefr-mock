@@ -1,0 +1,7 @@
+@import "@cefr/ui/styles/globals.css";
+@source "../..";
+
+:root {
+  --font-onest: "Onest Variable";
+  --font-geist-mono: "Geist Mono";
+}

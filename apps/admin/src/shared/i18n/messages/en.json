@@ -1,0 +1,325 @@
+{
+  "common": {
+    "language": "Language",
+    "done": "Done",
+    "failed": "Failed",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "remove": "Remove"
+  },
+  "shell": {
+    "badge": "Admin"
+  },
+  "auth": {
+    "title": "Admin panel",
+    "subtitle": "Test management",
+    "phone": "Phone number",
+    "phonePlaceholder": "90 123 45 67",
+    "getCode": "Get code",
+    "codeSent": "Code sent to {phone}",
+    "codeLabel": "Verification code",
+    "previousCodeValid": "A code was sent recently and is still valid. Enter it, or request a new one in a minute.",
+    "signIn": "Sign in",
+    "changePhone": "Change number",
+    "notConfigured": "apps/admin/.env.local is missing VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
+    "deniedTitle": "Access denied",
+    "deniedText": "The account {account} is not an admin. Grant admin rights in the Supabase SQL Editor:",
+    "signOut": "Sign out",
+    "errors": {
+      "invalid_code": "Invalid code",
+      "code_expired": "The code has expired, request a new one",
+      "too_many_attempts": "Too many attempts, request a new code",
+      "too_many_requests": "Please wait a moment and try again",
+      "sms_unavailable": "The SMS service is unavailable right now",
+      "invalid_phone": "Invalid phone number",
+      "network_error": "Network problem",
+      "function_not_found": "Sign-in service not found",
+      "server_error": "Server error",
+      "not_configured": "Sign-in service is not configured"
+    }
+  },
+  "tests": {
+    "title": "Tests",
+    "subtitle": "Drafts are hidden from students",
+    "new": "New test",
+    "empty": "No tests yet.",
+    "columns": {
+      "number": "#",
+      "title": "Title",
+      "format": "Format",
+      "status": "Status"
+    },
+    "edit": "Edit",
+    "publish": "Publish",
+    "hide": "Hide",
+    "delete": "Delete"
+  },
+  "testStatus": {
+    "published": "Published",
+    "draft": "Draft",
+    "pro": "Pro",
+    "free": "Free",
+    "new": "New"
+  },
+  "publish": {
+    "confirmPublish": "\"{title}\" will become visible to students. Publish?",
+    "confirmHide": "\"{title}\" will be hidden from the catalog. Students who started it can continue. Continue?"
+  },
+  "deleteTest": {
+    "confirm": "Permanently delete \"{title}\" ({id})? Its audio files will be deleted too."
+  },
+  "errors": {
+    "numberTaken": "A test with this number already exists",
+    "idTaken": "A test with ID \"{id}\" already exists, choose another number or ID",
+    "hasAttempts": "Students have taken this test, so it can't be deleted. Hide it instead.",
+    "forbidden": "Access denied (not an admin)",
+    "invalidTestId": "Invalid test ID",
+    "notFound": "Not found",
+    "ttsFailed": "Couldn't generate speech",
+    "notConfigured": "Service is not configured (DEEPGRAM_API_KEY)",
+    "onlyMp3": "Only MP3 files are accepted",
+    "needsScript": "Write the script first",
+    "audioUnreadable": "Couldn't read the audio file",
+    "publishedWithErrors": "This test is published and can't be saved with {count, plural, one {# error} other {# errors}}. Fix them or hide the test first.",
+    "publishBlocked": "Can't publish: {count, plural, one {# error} other {# errors}}. Open the check panel.",
+    "network": "Network problem",
+    "unknown": "Unknown error"
+  },
+  "choices": {
+    "placeholder": "Option text",
+    "add": "Add option",
+    "remove": "Remove option"
+  },
+  "question": {
+    "badge": "Question {number}",
+    "number": "Number",
+    "kind": "Type",
+    "kinds": {
+      "mcq": "Multiple choice (A/B/C)",
+      "gap": "Fill in the gap",
+      "tfng": "True / False / No Information",
+      "match": "Matching"
+    },
+    "group": "Group",
+    "groupHint": "Groups questions that belong to one text",
+    "prompt": "Question text",
+    "answer": "Correct answer",
+    "answerPlaceholder": "e.g. library",
+    "explanation": "Explanation",
+    "explanationHint": "Shown on the results page",
+    "add": "Add question",
+    "markCorrect": "Mark option {key} as correct",
+    "optionText": "Option {key} text",
+    "removeOption": "Remove option",
+    "addOption": "Add option",
+    "markHint": "Mark the correct answer with the circle on the left",
+    "noPartChoices": "Fill in the part options above first",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "promptOptional": "Question text (optional)",
+    "gapPlaceholder": "Question text, write ___ for the gap",
+    "advanced": "Advanced"
+  },
+  "script": {
+    "voice": "Voice",
+    "textPlaceholder": "Spoken text",
+    "question": "Question",
+    "questionTitle": "Number of the question that starts at this line",
+    "pause": "Pause",
+    "pauseTitle": "Pause after the line (seconds)",
+    "addLine": "Add line",
+    "voices": {
+      "narrator": "Narrator",
+      "woman": "Woman 1",
+      "man": "Man 1",
+      "woman2": "Woman 2",
+      "man2": "Man 2",
+      "woman3": "Woman 3",
+      "man3": "Man 3"
+    }
+  },
+  "mapField": {
+    "label": "Map (JSON)",
+    "hint": "width, height, roads, blocks, labels. Saved when the field loses focus.",
+    "invalidJson": "Invalid JSON",
+    "invalidShape": "\"roads\" and \"blocks\" must be arrays"
+  },
+  "audio": {
+    "present": "Audio ready",
+    "missing": "This part has no audio",
+    "upload": "Upload MP3",
+    "generate": "Generate from script",
+    "cues": "Question start times (seconds). Filled in automatically when generated.",
+    "status": {
+      "measuring": "Measuring duration…",
+      "uploading": "Uploading…",
+      "synthesizing": "Generating speech: {done}/{total}"
+    }
+  },
+  "json": {
+    "importTitle": "JSON import",
+    "importText": "Load a test from a prepared JSON file. The format matches the export below. After importing, review the form and save.",
+    "chooseFile": "Choose JSON file",
+    "template": "Blank template",
+    "pastePlaceholder": "Or paste JSON here",
+    "importFromText": "Import from text",
+    "confirmReplace": "The current data will be replaced with the imported JSON. Continue?",
+    "exportTitle": "JSON export",
+    "copy": "Copy",
+    "download": "Download",
+    "errors": {
+      "invalidJson": "Invalid JSON",
+      "notObject": "JSON must be an object",
+      "notArray": "\"{key}\" must be an array"
+    }
+  },
+  "issues": {
+    "ok": "Check passed: no errors, the test is ready to publish.",
+    "title": "Check results",
+    "errors": "{count, plural, one {# error} other {# errors}}",
+    "warnings": "{count, plural, one {# warning} other {# warnings}}",
+    "hint": "You can save a draft; errors must be fixed before publishing",
+    "where": {
+      "general": "General",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "part": "Part {index}",
+      "question": "Question {number}",
+      "item": "Task {index}"
+    },
+    "codes": {
+      "invalidId": "ID may only contain lowercase Latin letters, digits and \"-\"",
+      "titleRequired": "Title is missing",
+      "numberInvalid": "Test number must be a positive integer",
+      "questionCount": "{count} questions, expected {expected}",
+      "notSequential": "Question numbers don't run 1 to {count} in order",
+      "duplicateNumber": "Duplicate question number",
+      "answerMissing": "Correct answer is missing",
+      "matchWithoutChoices": "The part has no options for this matching question",
+      "answerNotInChoices": "Answer \"{answer}\" is not among the options ({allowed})",
+      "emptyOption": "An option is empty",
+      "audioMissing": "No audio",
+      "instructionEmpty": "Instruction is empty",
+      "scriptCuesMissing": "Some questions aren't marked in the script",
+      "passageEmpty": "Passage is empty",
+      "writingMissing": "No tasks",
+      "writingPromptEmpty": "Task text is empty",
+      "speakingMissing": "No questions",
+      "speakingPromptEmpty": "Question text is empty"
+    }
+  },
+  "editor": {
+    "back": "Tests",
+    "newTest": "New test",
+    "unsaved": "Unsaved",
+    "save": "Save",
+    "publish": "Publish",
+    "hide": "Hide",
+    "confirmLeave": "Unsaved changes will be lost. Leave?",
+    "confirmPublish": "The test will be saved and become visible to students. Publish?",
+    "confirmHide": "The test will be hidden from the catalog. Students who started it can continue. Continue?",
+    "tabs": {
+      "label": "Test sections",
+      "general": "General",
+      "listening": "Listening",
+      "reading": "Reading",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "json": "JSON"
+    },
+    "outcome": {
+      "saved": "Saved",
+      "savedAndPublished": "Saved and published",
+      "hidden": "Test hidden"
+    }
+  },
+  "meta": {
+    "heading": "General",
+    "number": "Test number",
+    "id": "ID",
+    "idHintNew": "Can't be changed after saving",
+    "idHintLocked": "Can't be changed",
+    "title": "Title",
+    "formatMonth": "Format month",
+    "formatYear": "Format year",
+    "durationLabel": "Duration label",
+    "durationHint": "Shown in the catalog, e.g. 2:45",
+    "pro": "Pro (subscribers only)",
+    "isNew": "\"New\" badge",
+    "advanced": "Advanced settings"
+  },
+  "parts": {
+    "instruction": "Instruction",
+    "emphasis": "Emphasis",
+    "emphasisHint": "e.g. A, B or C",
+    "titleOptional": "Title (optional)",
+    "title": "Title",
+    "map": "Map",
+    "questions": "Questions",
+    "script": "Script",
+    "scriptHint": "Shown as the transcript on the results page and used to generate audio",
+    "audio": "Audio",
+    "passage": "Passage",
+    "add": "Add part",
+    "confirmRemove": "Remove part {index}?",
+    "name": "Part {index}",
+    "progress": "{done}/{total} questions",
+    "choices": "Options list",
+    "choicesHint": "Answers to matching questions are picked from these options",
+    "settings": "Part settings"
+  },
+  "passage": {
+    "label": "Label (A, 1…)",
+    "text": "Paragraph text",
+    "highlight": "Highlighted phrase (optional)",
+    "add": "Add paragraph"
+  },
+  "writing": {
+    "task": "Task {index}",
+    "name": "Name",
+    "kind": "Type",
+    "kindHint": "Letter, Essay…",
+    "minWords": "Min. words",
+    "targetWords": "Target words",
+    "weight": "Weight",
+    "weightHint": "Task 1 = 1, Task 2 = 2",
+    "context": "Context (optional)",
+    "contextHint": "e.g. the letter being answered",
+    "prompt": "Task text",
+    "add": "Add task"
+  },
+  "speaking": {
+    "title": "Speaking · {count, plural, one {# question} other {# questions}}",
+    "part": "Part",
+    "partHint": "1.1, 1.2, 2, 3",
+    "image": "Picture description",
+    "imageHint": "Text shown in place of the picture",
+    "prep": "Preparation (s)",
+    "answer": "Answer (s)",
+    "prompt": "Question {index} text",
+    "add": "Add question"
+  },
+  "createTest": {
+    "title": "New test · #{number}",
+    "modeLabel": "How do you want to start?",
+    "modes": {
+      "template": {
+        "title": "Official format template",
+        "text": "Parts, question types and instructions are ready. You only write the texts."
+      },
+      "copy": {
+        "title": "Copy an existing test",
+        "text": "A full copy of the selected test. Audio has to be uploaded again."
+      },
+      "blank": {
+        "title": "Blank test",
+        "text": "Build everything from scratch."
+      }
+    },
+    "source": "Base test",
+    "sourceHint": "The structure is taken from this test",
+    "continue": "Continue"
+  }
+}
