@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: { "/*": ["../../packages/ui/assets/fonts/**"] },
   experimental: {
     optimizePackageImports: ["lucide-react", "radix-ui"],
+    agentUpgrade: "security",
   },
 };
 
